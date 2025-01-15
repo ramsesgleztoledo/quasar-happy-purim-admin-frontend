@@ -1,0 +1,31 @@
+.user-client-title {
+  font-family: Open Sans;
+  font-size: 20px;
+  font-weight: 700;
+  line-height: 27.24px;
+  text-align: left;
+  text-underline-position: from-font;
+  text-decoration-skip-ink: none;
+}
+.user-client-title {
+  width: 166px;
+  border-right: solid 2px #e3e3e3;
+}
+
+.user-client-title-col {
+  border-bottom: solid 2px #e3e3e3;
+}
+
+.DashboardPage-right-container {
+  padding: 5px;
+}
+.DashboardPage-left-container {
+  padding: 5px;
+}
+.DashboardPage-members-stats-container {
+  border: solid 1px #dedede;
+  height: 400px;
+  border-radius: 5px;
+  overflow: auto;
+  width: 98%;
+}

@@ -1,12 +1,12 @@
+import { dashboardRoutes } from 'src/modules/dashboard/router';
 import type { RouteRecordRaw } from 'vue-router';
 
 const routes: RouteRecordRaw[] = [
   {
     path: '/',
-    component: () => import('layouts/MainLayout.vue'),
-    children: [{ path: '', component: () => import('pages/IndexPage.vue') }],
+    redirect: '/dashboard'
   },
-
+  ...dashboardRoutes,
   // Always leave this as last one,
   // but you can also remove it
   {

@@ -1,1 +1,21 @@
 // app global css in SCSS form
+
+.user-select-none {
+  -webkit-user-select: none; /* Safari */
+  -moz-user-select: none; /* Firefox */
+  -ms-user-select: none; /* Internet Explorer/Edge */
+  user-select: none; /* default */
+}
+
+// re check this is the content is hid
+
+hr {
+  height: 1px;
+  background-color: #e3e3e3;
+  border-radius: 10px;
+}
+
+.align-content-center {
+  display: flex;
+  justify-content: center;
+}

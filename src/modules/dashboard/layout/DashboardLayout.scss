@@ -1,0 +1,50 @@
+// .dashboard-layout-header {
+//   left: 0px !important;
+//   background-color: rgb(255, 255, 255);
+// }
+// .dashboard-layout-title {
+//   padding: 10px;
+//   .row {
+//     align-items: center;
+//   }
+
+//   p {
+//     color: #eb3658;
+//     font-weight: 800;
+//     font-family: cursive;
+//     margin: 0px;
+//     margin-right: 10px;
+//   }
+// }
+// .dashboard-layout-right-info {
+//   color: black;
+//   display: flex;
+//   flex-direction: column;
+//   align-items: flex-end;
+// }
+
+// .dashboard-user-info {
+//   color: #3c5ce0;
+// }
+
+// .dashboard-happypurim-logo {
+//   cursor: pointer;
+// }
+
+.dashboard-page-container {
+  padding-left: 310px !important;
+}
+
+.dashboard-breadcrumbs-container {
+  margin-bottom: 30px;
+}
+
+.dashboard-router-view {
+  padding: 20px;
+  height: calc(100vh - 170px);
+  overflow-y: auto;
+}
+
+.dashboard-layout-container {
+  overflow: hidden;
+}
