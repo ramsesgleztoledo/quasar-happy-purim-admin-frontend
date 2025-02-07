@@ -32,11 +32,15 @@
 // }
 
 .dashboard-page-container {
-  padding-left: 310px !important;
+  padding-left: 300px !important;
 }
 
 .dashboard-breadcrumbs-container {
-  margin-bottom: 30px;
+  position: relative;
+  padding: 20px;
+  z-index: 99;
+  background-color: white;
+  box-shadow: 0 5px 5px -3px rgb(203 192 192);
 }
 
 .dashboard-router-view {
@@ -48,3 +52,4 @@
 .dashboard-layout-container {
   overflow: hidden;
 }
+

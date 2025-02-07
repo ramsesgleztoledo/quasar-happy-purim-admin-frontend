@@ -1,99 +1,79 @@
 <template>
   <div>
     <div class="row">
-      <div class="col-12 user-client-title-col">
+      <div class="col-12 top-title-col">
         <p class="user-client-title">Demo Synagogue</p>
+        <div class="separator-right q-mr-sm q-ml-sm"></div>
       </div>
     </div>
     <div class="row q-mt-sm">
-      <div class="col-12 col-md-8 DashboardPage-left-container">
+      <div class="col-12">
+        <div class="row q-mb-md">
+          <DashboardPageChartsComponent />
+        </div>
+      </div>
+      <div
+        class="DashboardPage-left-container"
+        :class="{
+          'col-8': !isMobile,
+          'col-12': isMobile,
+        }"
+      >
         <div class="row">
-          <div class="col-12 col-md-4 q-mb-sm">
-            <WidGet
-              icon="discount"
-              first-p="$24.82"
-              second-p="Daily Total:"
-              third-p="Wednesday July 17, 2024"
-              icon-color="#3cd856"
-              background-color="#dcfce7"
-            ></WidGet>
-          </div>
-          <div class="col-12 col-md-4 q-mb-sm">
-            <WidGet
-              icon="signal_cellular_alt"
-              first-p="$84,138.33"
-              second-p="Running Total:"
-              third-p="Wednesday July 17, 2024"
-              icon-color="#5A65FA"
-              background-color="#E2EAFF"
-            ></WidGet>
-          </div>
-          <div class="col-12 col-md-4 q-mb-sm">
-            <WidGet
-              icon="group_add"
-              first-p="21%"
-              second-p="Participation Rate"
-              third-p="0,5% from yesterday"
-              icon-color="#BF83FF"
-              background-color="#F3E8FF"
-            ></WidGet>
-          </div>
+          <WidGetsComponent />
         </div>
         <div class="row">
-          <div class="col-12 col-md-6 q-mb-sm align-content-center">
+          <div
+            class="q-mb-sm align-content-center"
+            :class="{
+              'col-6': !isMobile,
+              'col-12': isMobile,
+            }"
+          >
             <div class="DashboardPage-members-stats-container">
-
-              
-
-
-              L1</div>
+              <DashboardPageStatsComponent />
+            </div>
           </div>
-          <div class="col-12 col-md-6 q-mb-sm align-content-center">
+          <div
+            class="q-mb-sm align-content-center"
+            :class="{
+              'col-6': !isMobile,
+              'col-12': isMobile,
+            }"
+          >
             <div
-              style="
-                border: solid 1px #dedede;
-                height: 400px;
-                border-radius: 5px;
-                overflow: auto;
-                width: 98%;
-              "
+              class="DashboardPage-members-stats-container DashboardPage-members-stats-container-2"
             >
-              L2
+              <DashboardPageInfoComponent />
             </div>
           </div>
         </div>
         <div class="row">
           <div class="col-12 q-mb-sm align-content-center">
-            <div
-              style="
-                border: solid 1px #dedede;
-                height: 400px;
-                border-radius: 5px;
-                overflow: auto;
-                width: 99%;
-              "
-            >
-              L3
+            <div class="DashboardPage-recent-orders-table" style="">
+              <RecentOrdersComponents />
             </div>
           </div>
         </div>
       </div>
-      <div class="col-12 col-md-4 DashboardPage-right-container">
+      <div
+        class="DashboardPage-right-container"
+        :class="{
+          'col-4': !isMobile,
+          'col-12': isMobile,
+        }"
+      >
         <div class="row q-mb-sm">
           <div class="col-12">
-            <div
-              style="border: solid 1px #dedede; height: 400px; border-radius: 5px; overflow: auto"
-            >
-              R1
+            <div class="DashboardPage-basket-statistics-container">
+              <BasketStatisticsComponent />
             </div>
           </div>
         </div>
         <div class="row q-mb-sm">
           <div class="col-12">
-            <div
-              style="border: solid 1px #dedede; height: 600px; border-radius: 5px; overflow: auto"
-            >
-              R2
+            <div class="DashboardPage-basket-statistics-container">
+              <OtherOrderItemsComponent />
             </div>
           </div>
         </div>
@@ -103,7 +83,15 @@
 </template>
 
 <script setup lang="ts">
-import WidGet from '../../components/widget/WidGet.vue'
+import DashboardPageStatsComponent from './components/DashboardPageStatsComponent/DashboardPageStatsComponent.vue'
+import DashboardPageChartsComponent from './components/DashboardPageChartsComponent/DashboardPageChartsComponent.vue'
+import WidGetsComponent from './components/WidGetsComponent/WidGetsComponent.vue'
+import DashboardPageInfoComponent from './components/DashboardPageInfoComponent/DashboardPageInfoComponent.vue'
+import RecentOrdersComponents from './components/RecentOrdersComponents/RecentOrdersComponents.vue'
+import BasketStatisticsComponent from './components/BasketStatisticsComponent/BasketStatisticsComponent.vue'
+import OtherOrderItemsComponent from './components/OtherOrderItemsComponent/OtherOrderItemsComponent.vue'
+import { useUI } from 'src/modules/UI/composables'
+const { isMobile } = useUI()
 </script>
 
 <style scoped lang="scss">

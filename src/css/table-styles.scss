@@ -1,0 +1,62 @@
+.table-sticky-header-column-table {
+  /* height or max-height is important */
+
+  /* specifying max-width so the example can
+    highlight the sticky column on any browser window */
+
+  tr th {
+    position: sticky;
+    /* higher than z-index for td below */
+    z-index: 2;
+    /* bg color is important; just specify one */
+    background: $happypurim;
+    color: white;
+  }
+
+  /* this will be the loading indicator */
+  thead tr:last-child th {
+    /* height of all previous header rows */
+    top: 48px;
+    /* highest z-index */
+    z-index: 3;
+  }
+
+  thead tr:first-child th {
+    top: 0;
+    z-index: 1;
+  }
+
+  tr:first-child th:first-child {
+    /* highest z-index */
+    z-index: 3;
+  }
+
+  td:first-child {
+    z-index: 1;
+  }
+
+  // td:first-child,
+  // th:first-child {
+  //   position: sticky;
+  //   left: 0;
+  // }
+
+  /* prevent scrolling behind sticky top row on focus */
+  tbody {
+    /* height of all previous header rows */
+    scroll-margin-top: 48px;
+  }
+
+  overflow: auto;
+  border: none;
+}
+
+.table-cursor-pinter-custom {
+  tr {
+    cursor: pointer;
+  }
+
+}
+tr:hover {
+  background-color: adjust-color($happypurim, $lightness: 25%);
+}

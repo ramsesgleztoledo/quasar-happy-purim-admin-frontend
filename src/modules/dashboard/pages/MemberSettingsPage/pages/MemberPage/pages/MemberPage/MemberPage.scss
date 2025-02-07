@@ -1,0 +1,35 @@
+p {
+  margin-bottom: 0px;
+}
+.MemberPage-user-title {
+  font-family: Open Sans;
+  font-size: 20px;
+  font-weight: 700;
+  line-height: 27.24px;
+  text-align: left;
+  text-underline-position: from-font;
+  text-decoration-skip-ink: none;
+}
+
+.MemberPage-user-title-col {
+  border-bottom: solid 2px #e3e3e3;
+  border-top: solid 2px #e3e3e3;
+  padding: 5px;
+  display: flex;
+  align-items: center;
+}
+
+.MemberPage-login-code {
+  cursor: pointer;
+  color: #9ea2a4;
+  font-size: 13px;
+  font-weight: 400;
+  line-height: 17.39px;
+  letter-spacing: -0.01em;
+  text-align: left;
+  text-underline-position: from-font;
+  text-decoration-skip-ink: none;
+  b {
+    color: black;
+  }
+}

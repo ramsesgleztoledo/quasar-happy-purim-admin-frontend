@@ -6,14 +6,7 @@
   text-align: left;
   text-underline-position: from-font;
   text-decoration-skip-ink: none;
-}
-.user-client-title {
   width: 166px;
-  border-right: solid 2px #e3e3e3;
-}
-
-.user-client-title-col {
-  border-bottom: solid 2px #e3e3e3;
 }
 
 .DashboardPage-right-container {
@@ -22,10 +15,32 @@
 .DashboardPage-left-container {
   padding: 5px;
 }
+
 .DashboardPage-members-stats-container {
   border: solid 1px #dedede;
-  height: 400px;
   border-radius: 5px;
   overflow: auto;
   width: 98%;
+  padding: 5px;
+  max-height: 248px;
+  overflow: auto;
+}
+.DashboardPage-members-stats-container-2 {
+  display: flex;
+  align-items: center;
+}
+
+.DashboardPage-recent-orders-table {
+  border: solid 1px #dedede;
+  // height: 400px;
+  border-radius: 5px;
+  overflow: auto;
+  width: 99%;
+}
+
+.DashboardPage-basket-statistics-container {
+  border: solid 1px #dedede;
+  border-radius: 5px;
+  overflow: auto;
+  padding: 20px;
 }

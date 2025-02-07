@@ -1,0 +1,31 @@
+.WidgetChart-container {
+  min-height: 258px;
+  border: solid 1px #dedede;
+  border-radius: 5px;
+  overflow: auto;
+  width: 100%;
+  padding: 10px;
+  overflow: auto;
+  background-color: white;
+}
+
+.WidgetChart-first-row {
+  align-items: center;
+  justify-content: space-between;
+  p {
+    margin: 0px;
+    font-weight: 500;
+  }
+}
+
+.WidgetChart-earned {
+  font-size: 22px;
+  font-weight: 600;
+}
+.WidgetChart-description {
+  color: rgb(193, 188, 188);
+}
+
+.WidgetChart-graph {
+  height: 80px;
+}

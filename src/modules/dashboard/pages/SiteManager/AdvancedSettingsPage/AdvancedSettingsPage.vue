@@ -1,31 +1,75 @@
 <template>
-  <div>AdvancedSettingsPage</div>
+  <div class="row q-mb-md">
+    <div class="col-12 top-title-col">
+      <p class="page-main-title">Advance Settings</p>
+      <div class="separator-right q-mr-sm q-ml-sm"></div>
+    </div>
+  </div>
+  <div class="row q-mb-md">
+    <div class="col-12">
+      <q-btn-toggle v-model="pageView" spread no-caps :options="pageOption" />
+    </div>
+  </div>
+  <template v-if="pageView === '1'">
+    <ProfileOptions />
+  </template>
+  <template v-if="pageView === '2'">
+    <AdditionalOrderingOptions />
+  </template>
+  <template v-if="pageView === '3'">
+    <BasketSizes />
+  </template>
+  <template v-if="pageView === '4'">
+    <AdditionalReceiptText />
+  </template>
 </template>
 
 <script setup lang="ts">
-/**========================================================================
- *                           variables here
- *========================================================================**/
+import { onMounted, ref, watch } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
+import ProfileOptions from './components/ProfileOptions/ProfileOptions.vue'
+import AdditionalOrderingOptions from './components/AdditionalOrderingOptions/AdditionalOrderingOptions.vue'
+import BasketSizes from './components/BasketSizes/BasketSizes.vue'
+import AdditionalReceiptText from './components/AdditionalReceiptText/AdditionalReceiptText.vue'
 
-/*============================ END OF SECTION ============================*/
 
-/**========================================================================
- *                          life cycles here
- *========================================================================**/
 
-/*============================ END OF SECTION ============================*/
+const $route = useRoute()
+const $router = useRouter()
 
-/**========================================================================
- *                          Watch here
- *========================================================================**/
+const pageView = ref('1')
+const pageOption = ref([
+  { label: 'Profile Options/Questions', value: '1' },
+  { label: 'Additional Ordering Options', value: '2' },
+  { label: 'Basket Sizes', value: '3' },
+  { label: 'Additional Receipt Text', value: '4' },
+])
 
-/*============================ END OF SECTION ============================*/
+onMounted(() => {
+  loadPage()
+})
 
-/**========================================================================
- *                          methods here here
- *========================================================================**/
+const goToPage = (page: string) => {
+  $router.push({
+    name: 'dashboard-SiteManagerPage-AdvanceSettingsPage',
+    query: {
+      page: page,
+    },
+  })
+}
 
-/*============================ END OF SECTION ============================*/
+const loadPage = () => {
+  const { page } = $route.query
+  if (page) {
+    const exist = pageOption.value.find((p) => p.value === page)
+    if (exist) pageView.value = page as string
+    else goToPage('1')
+  } else goToPage('1')
+}
+
+watch(pageView, (value) => {
+  goToPage(value)
+})
 </script>
 
 <style scoped lang="scss"></style>

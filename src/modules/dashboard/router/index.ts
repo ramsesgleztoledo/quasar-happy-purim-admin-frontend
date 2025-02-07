@@ -1,4 +1,5 @@
 import type { RouteRecordRaw } from "vue-router";
+import { memberRoutes } from "../pages/MemberSettingsPage/router";
 
 export const dashboardRoutes: RouteRecordRaw[] = [
   {
@@ -6,6 +7,7 @@ export const dashboardRoutes: RouteRecordRaw[] = [
     name: 'DashboardLayout',
     component: () =>
       import(/* webpackChunkName: "DashboardLayout" */ "../layout/DashboardLayout.vue"),
+    redirect: { name: 'dashboard-DashboardPage', },
     children: [
       {
         path: '',
@@ -14,20 +16,17 @@ export const dashboardRoutes: RouteRecordRaw[] = [
           import(/* webpackChunkName: "dashboard-DashboardPage" */ "../pages/DashboardPage/DashboardPage.vue"),
       }
       ,
-      {
-        path: 'members-settings',
-        name: 'dashboard-MembersSettingsPage',
-        component: () =>
-          import(/* webpackChunkName: "dashboard-MembersSettingsPage" */ "../pages/MemberSettingsPage.vue"),
-      }
+      ...memberRoutes
       ,
       {
         path: 'site-manager',
         name: 'dashboard-SiteManagerPage',
+        redirect: { name: 'dashboard-SiteManagerPage-BasicSettingsPage', },
         children: [
           {
             path: '',
-            redirect: 'basic-settings'
+            redirect: { name: 'dashboard-SiteManagerPage-BasicSettingsPage' },
+            name: 'site-manager-root'
           },
           {
             path: 'advance-settings',
@@ -48,29 +47,58 @@ export const dashboardRoutes: RouteRecordRaw[] = [
         path: 'order-archive',
         name: 'dashboard-OrderArchivePage',
         component: () =>
-          import(/* webpackChunkName: "dashboard-OrderArchivePage" */ "../pages/OrderArchivePage.vue"),
+          import(/* webpackChunkName: "dashboard-OrderArchivePage" */ "../pages/OrderArchivePage/OrderArchivePage.vue"),
       }
       ,
       {
         path: 'mail-merge-reports',
         name: 'dashboard-MailMergeReportsPage',
-        component: () =>
-          import(/* webpackChunkName: "dashboard-MailMergeReportsPage" */ "../pages/MailMergeReportsPage.vue"),
+        redirect: { name: 'MailMergeReportsPage-MailMergeReportsPage' },
+        children: [
+          {
+            path: '',
+            name: 'MailMergeReportsPage-MailMergeReportsPage',
+            component: () =>
+              import(/* webpackChunkName: "MailMergeReportsPage-MailMergeReportsPage" */ "../pages/MailMergeReportsPage/pages/MailMergeReportsPage/MailMergeReportsPage.vue"),
+          },
+          {
+            path: ':reportId',
+            name: 'MailMergeReportsPage-MailMergePage',
+            component: () =>
+              import(/* webpackChunkName: "MailMergeReportsPage-MailMergePage" */ "../pages/MailMergeReportsPage/pages/MailMergePage/MailMergePage.vue"),
+          },
+        ]
       }
       ,
       {
         path: 'print-labels',
         name: 'dashboard-PrintLabelsPage',
         component: () =>
-          import(/* webpackChunkName: "dashboard-PrintLabelsPage" */ "../pages/PrintLabelsPage.vue"),
+          import(/* webpackChunkName: "dashboard-PrintLabelsPage" */ "../pages/PrintLabelsPage/PrintLabelsPage.vue"),
       }
       ,
       {
         path: 'email-stats',
         name: 'dashboard-EmailStatsPage',
-        component: () =>
-          import(/* webpackChunkName: "dashboard-EmailStatsPage" */ "../pages/EmailStatsPage.vue"),
+        redirect: { name: 'EmailStatsPage-Email' },
+
+        children: [
+          {
+            path: '',
+            name: 'EmailStatsPage-Email',
+            component: () =>
+              import(/* webpackChunkName: "EmailStatsPage-Email" */ "../pages/EmailStatsPage/pages/EmailStatsPage/EmailStatsPage.vue"),
+          },
+          {
+            path: ':campaignId',
+            name: 'EmailStatsPage-campaign',
+            component: () =>
+              import(/* webpackChunkName: "EmailStatsPage-campaign" */ "../pages/EmailStatsPage/pages/EmailStatsCampaignPage/EmailStatsCampaignPage.vue"),
+          },
+        ]
+
       }
+
     ]
   }
 ]

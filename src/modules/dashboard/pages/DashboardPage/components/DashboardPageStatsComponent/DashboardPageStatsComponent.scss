@@ -1,0 +1,45 @@
+.DashboardPageStatsComponent-members {
+  font-size: 20px;
+  font-weight: 700;
+}
+.DashboardPageStatsComponent-description {
+  color: #727272;
+  line-height: 12.26px;
+  text-align: left;
+  text-underline-position: from-font;
+  text-decoration-skip-ink: none;
+  padding: 7px;
+  margin: 0px;
+}
+.DashboardPageStatsComponent-number {
+  //   font-family: Poppins;
+  //   font-size: 14px;
+  font-weight: 800;
+  line-height: 22px;
+  text-align: left;
+  text-underline-position: from-font;
+  text-decoration-skip-ink: none;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.DashboardPageStatsComponent-left-description-container {
+  display: flex;
+  align-items: center;
+}
+
+.DashboardPageStatsComponent-custom-circle {
+  width: 12px;
+  height: 12px;
+  border-radius: 20px;
+}
+
+.DashboardPageStatsComponent-labels-container {
+  max-height: 140px;
+  overflow: auto;
+}
+
+.DashboardPageStatsComponent-chart-container {
+  display: flex;
+  align-items: center;
+}

@@ -4,9 +4,10 @@
     :disable="disabled"
     clickable
     class="user-select-none"
-    @click="navigateTo(to)"
+    @click="navigateTo(name)"
     :class="{
-      'selected-item': $route.name === to,
+      'selected-item': isSelected(name, routeClass).value,
+      'dropdown-selected-in-route': isInRoute,
     }"
   >
     <q-item-section avatar>
@@ -27,7 +28,7 @@
 
   <q-expansion-item
     v-else
-    header-class="dropdown-selected-in-route"
+    :header-class="{ 'dropdown-selected-in-route': isInRoute }"
     v-model="expanded"
     expand-separator
     :icon="icon ? icon : 'none'"
@@ -35,14 +36,14 @@
     :caption="caption"
   >
     <q-item
-      v-for="child in children"
-      :key="child.id"
+      v-for="(child, i) in children"
+      :key="i"
       :disable="disabled"
       clickable
       class="user-select-none"
-      @click="navigateTo(child.to)"
+      @click="navigateTo(child.name)"
       :class="{
-        'selected-item': $route.name === child.to,
+        'selected-item': isSelected(child.name, child.routeClass).value,
       }"
     >
       <q-item-section avatar>
@@ -60,28 +61,31 @@
 <script setup lang="ts">
 import { useRoute, useRouter } from 'vue-router'
 import type { LinksDataInterface } from '../../data/links'
-import { onMounted, ref } from 'vue'
+import { computed, onMounted, ref } from 'vue'
 const $props = defineProps<LinksDataInterface>()
 
 const $router = useRouter()
 const $route = useRoute()
 
-const navigateTo = (to: string) => {
-  console.log('navigating to ==> ', to)
-
-  $router.push({
-    name: to,
-  })
+const navigateTo = (to?: string) => {
+  if (to)
+    $router.push({
+      name: to,
+    })
 }
 
 const expanded = ref<boolean>(false)
 
-const isInRoute = () => {
-  return !!$route.matched.find((ro) => ro.name === $props.to)
-}
+const isSelected = (name: string, routeClass?: string[]) =>
+  computed(() => {
+    if (routeClass) return routeClass.includes($route.name as string)
+    return $route.name === name
+  })
+
+const isInRoute = computed<boolean>(() => !!$route.matched.find((ro) => ro.name === $props.name))
 
 const checkExpanded = () => {
-  expanded.value = isInRoute()
+  if ($props.children) expanded.value = isInRoute.value
 }
 
 onMounted(() => {

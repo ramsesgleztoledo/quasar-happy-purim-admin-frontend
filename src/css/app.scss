@@ -1,4 +1,17 @@
 // app global css in SCSS form
+@import './table-styles.scss';
+@import url('https://fonts.googleapis.com/css2?family=Arial:wght@400&family=Comic+Sans+MS:wght@400&family=Courier+New:wght@400&family=Times+New+Roman:wght@400&family=Verdana:wght@400&display=swap');
+
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+  background-color: adjust-color($happypurim, $lightness: 25%);
+}
+::-webkit-scrollbar-thumb {
+  background: $happypurim;
+  border-radius: 18px;
+  border: solid 1px black;
+}
 
 .user-select-none {
   -webkit-user-select: none; /* Safari */
@@ -18,4 +31,231 @@ hr {
 .align-content-center {
   display: flex;
   justify-content: center;
+}
+
+.dropdown-selected-in-route {
+  background-color: #ef698287;
+}
+
+.q-spinner-mat {
+  color: $happypurim;
+}
+
+/**========================================================================
+ *                           form components
+ *========================================================================**/
+
+.q-input {
+  .q-field__control {
+    height: 42px;
+  }
+  input {
+    padding-top: 11px;
+  }
+  .q-field__label {
+    top: 12px;
+  }
+  .q-field__append,
+  .q-field__before,
+  .q-field__after,
+  .q-field__prepend {
+    justify-content: center;
+    height: 100%;
+  }
+  i {
+    font-size: 12px;
+  }
+  .q-field__bottom {
+    padding: 3px;
+  }
+  .q-field__control-container {
+    padding-bottom: 5px;
+  }
+  .q-field__prefix {
+    padding-top: 14px;
+  }
+  .q-field__suffix {
+    padding-top: 14px;
+  }
+  .q-field--labeled {
+    padding-top: 24px;
+  }
+  .q-field__native {
+    padding-top: 23px;
+  }
+}
+
+.q-btn {
+  color: $happypurim;
+}
+
+.separator-right {
+  height: 100%;
+  border-right: solid 2px #e3e3e3;
+}
+.separator-bottom {
+  width: 100%;
+  border-bottom: solid 2px #e3e3e3;
+}
+
+.q-select {
+  height: 42px !important;
+  .q-field__inner {
+    height: 100%;
+  }
+  .q-field__control {
+    height: 42px;
+    min-height: 42px;
+  }
+  .q-field__label {
+    top: 12px;
+  }
+  .q-field__bottom--animated {
+    bottom: -14px;
+  }
+
+  .q-field__append,
+  .q-field__before,
+  .q-field__after,
+  .q-field__prepend {
+    justify-content: center;
+    height: 100%;
+  }
+  i {
+    font-size: 12px;
+  }
+  .q-field__bottom {
+    padding: 7px;
+  }
+}
+/*============================ END OF SECTION ============================*/
+
+.border-container {
+  border: solid 1px #e3e3e3;
+  border-radius: 5px;
+  padding: 10px;
+}
+
+.cancel-save-btn-container {
+  padding: 10px;
+  background-color: #f2f2f2;
+  border-radius: 5px;
+  .col-12 {
+    display: flex;
+    justify-content: center;
+  }
+}
+
+.dialog-header {
+  height: 72px;
+  background: $happypurim;
+  color: white;
+  padding: 20px;
+  p {
+    font-family: Open Sans;
+    font-size: 24px;
+    font-weight: 600;
+    line-height: 36px;
+    letter-spacing: -0.005em;
+    text-underline-position: from-font;
+    text-decoration-skip-ink: none;
+  }
+}
+
+.align-items-center-custom {
+  display: flex;
+  align-items: center;
+}
+
+.top-title-col {
+  border-bottom: solid 2px #e3e3e3;
+  padding: 5px;
+  display: flex;
+  align-items: center;
+  p {
+    margin-bottom: 0px;
+  }
+}
+.q-field--auto-height.q-field--labeled .q-field__control-container {
+  padding-top: 18px;
+}
+
+.q-checkbox__inner--truthy .q-checkbox__bg,
+.q-checkbox__inner--indet .q-checkbox__bg {
+  border: solid 1px black;
+}
+
+.white-100-container {
+  height: 100%;
+  width: 100%;
+  background-color: white;
+}
+.page-main-title {
+  font-family: Open Sans;
+  font-size: 20px;
+  font-weight: 700;
+  line-height: 27.24px;
+  text-align: left;
+  text-underline-position: from-font;
+  text-decoration-skip-ink: none;
+  margin-right: 18px;
+}
+
+.EditorCustom-token {
+  border: solid 1px black;
+  border-radius: 5px;
+  background-color: var(--happypurim);
+  color: white;
+}
+
+.justify-content-end {
+  display: flex;
+  justify-content: flex-end;
+}
+.justify-content-center {
+  display: flex;
+  justify-content: center;
+}
+
+// .cm-content {
+//   width: 20px !important;
+//   overflow: auto !important;
+// }
+
+.cm-editor {
+  width: 100% !important;
+  overflow: auto;
+}
+
+.justify-content-space-between {
+  display: flex;
+  justify-content: space-between;
+}
+
+.d-flex {
+  display: flex;
+}
+
+.w-full {
+  width: 100%;
+}
+.h-full {
+  height: 100%;
+}
+
+.a-full {
+  width: 100%;
+  height: 100%;
+}
+
+.w-50 {
+  width: 50%;
+}
+.h-50 {
+  height: 50%;
+}
+
+.a-50 {
+  width: 50%;
+  height: 50%;
 }

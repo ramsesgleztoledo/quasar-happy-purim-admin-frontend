@@ -1,0 +1,34 @@
+.BasketStatisticsComponent-basket-statistics {
+  font-family: Open Sans;
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 21.79px;
+  text-align: left;
+  text-underline-position: from-font;
+  text-decoration-skip-ink: none;
+}
+
+.BasketStatisticsComponent-chart-labels-container {
+  display: flex;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  height: 100%;
+  margin-left: 20px;
+}
+
+.BasketStatisticsComponent-chart-labels-info {
+  display: flex;
+  align-items: center;
+  p {
+    margin: 0px;
+  }
+}
+
+.BasketStatisticsComponent-custom-square {
+  width: 10px;
+  height: 10px;
+}
+.BasketStatisticsComponent-baskets-type-container{
+    
+}

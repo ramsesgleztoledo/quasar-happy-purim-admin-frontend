@@ -1,0 +1,52 @@
+<template>
+  <q-dialog v-model="modelVisible" persistent>
+    <q-card>
+      <q-card-section class="row items-center">
+        <q-avatar icon="warning" color="primary" text-color="white" />
+        <span class="q-ml-sm">{{ msg }}</span>
+      </q-card-section>
+
+      <q-card-actions align="right">
+        <q-btn
+          @click="() => $emit('onFinish', false)"
+          outline
+          label="Cancel"
+          class="q-mr-sm q-mt-sm"
+          style="color: #990000; border-color: #990000"
+          v-close-popup
+        />
+        <q-btn
+          @click="() => $emit('onFinish', true)"
+          class="q-mr-sm q-mt-sm"
+          style="background: var(--happypurim); color: white"
+          label="ok"
+          v-close-popup
+        />
+      </q-card-actions>
+    </q-card>
+  </q-dialog>
+</template>
+
+<script setup lang="ts">
+import { computed } from 'vue'
+
+interface DialogAlertPropsInterface {
+  msg: string
+  modelValue: boolean
+}
+
+// Define props
+const $props = defineProps<DialogAlertPropsInterface>()
+
+const modelVisible = computed({
+  get: () => $props.modelValue,
+  set: (val) => $emit('update:modelValue', val),
+})
+
+// Emit the updated value when the internal state changes
+const $emit = defineEmits(['update:modelValue', 'onFinish'])
+</script>
+
+<style scoped lang="scss">
+@import './DialogAlert';
+</style>

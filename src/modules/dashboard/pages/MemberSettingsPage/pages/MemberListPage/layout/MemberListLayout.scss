@@ -1,0 +1,32 @@
+:deep(.MemberListLayout-stepper) {
+  box-shadow: none;
+
+  .q-stepper__header--border {
+    border-bottom: none;
+  }
+  .q-stepper__step-inner {
+    display: none;
+  }
+  .q-stepper__tab {
+    padding: 0px;
+    padding-left: 10px;
+    padding-right: 10px;
+  }
+}
+
+.MemberListLayout-container {
+  height: 540px;
+  overflow: auto;
+}
+
+.MemberListLayout-last-info-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.MemberListLayout-last-info {
+  border: solid 1px #d8d8d8;
+  border-radius: 10px;
+  padding: 30px;
+}

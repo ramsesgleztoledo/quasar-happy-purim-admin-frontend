@@ -4,7 +4,7 @@ import type { RouteRecordRaw } from 'vue-router';
 const routes: RouteRecordRaw[] = [
   {
     path: '/',
-    redirect: '/dashboard'
+    redirect: { name: 'dashboard-DashboardPage' },
   },
   ...dashboardRoutes,
   // Always leave this as last one,

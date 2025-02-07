@@ -1,0 +1,53 @@
+.uploader-card {
+  margin: auto;
+  text-align: center;
+  
+}
+
+.drop-area {
+  border: 2px dashed #ccc;
+  padding: 30px;
+  cursor: pointer;
+  transition: 0.3s;
+  border-radius: 10px;
+}
+
+.drop-area.drop-active {
+  border-color: #1976d2;
+  background-color: rgba(25, 118, 210, 0.1);
+}
+
+.UploaderComponent-title {
+  font-family: Open Sans;
+  font-size: 18px;
+  font-weight: 600;
+  line-height: 32px;
+  letter-spacing: -0.005em;
+  text-align: left;
+  text-underline-position: from-font;
+  text-decoration-skip-ink: none;
+}
+
+.UploaderComponent-description {
+  // font-family: Open Sans;
+  font-size: 13px;
+  font-weight: 400;
+  line-height: 20.15px;
+  text-align: left;
+  text-underline-position: from-font;
+  text-decoration-skip-ink: none;
+  color: rgb(188, 183, 183);
+}
+
+.UploaderComponent-files-section {
+  height: 122px;
+  overflow: auto;
+}
+
+
+.UploaderComponent-file-container{
+      border: solid 1px #c6bebe;
+    border-radius: 10px;
+    background-color: #FAFAFA;
+    margin-bottom: 10px;
+}

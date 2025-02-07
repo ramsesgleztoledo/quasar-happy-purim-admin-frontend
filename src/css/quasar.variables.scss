@@ -12,8 +12,18 @@
 // to match your app's branding.
 // Tip: Use the "Theme Builder" on Quasar's documentation website.
 
+:root {
+  --c-color1: #19c554;
+  --c-color2: #f08615;
+  --c-color3: #3c93e0;
+  --happypurim: #ef6982;
+}
+
+$color1: #19c554;
+$color2: #f08615;
+$color3: #3c93e0;
 $happypurim: #ef6982;
-$primary: #1976d2;
+$primary: #ef6982;
 $secondary: #26a69a;
 $accent: #9c27b0;
 

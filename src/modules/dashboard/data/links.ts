@@ -1,71 +1,244 @@
+
+
 export interface LinksDataInterface {
-  id: string;
-  title: string;
-  to: string;
+  title: string
+  name: string;
+  routeClass?: string[];
   icon?: string;
   caption?: string;
-  disabled?: boolean;
   children?: LinksDataInterface[];
+  disabled?: boolean
 }
 
 export const linksData: LinksDataInterface[] = [
+
   {
-    id: '1',
     title: 'Dashboard',
     icon: 'home',
-    to: 'dashboard-DashboardPage',
-    // caption: 'home'
+    name: 'dashboard-DashboardPage',
+
   },
   {
-    id: '2',
     title: 'Members Settings',
     icon: 'group',
-    to: 'dashboard-MembersSettingsPage',
+    name: 'MembersSettingsPage',
+    routeClass: ['MembersSettingsPage', 'MembersSettingsPage-home'],
   },
   {
-    id: '3',
     title: 'Site Manager',
     icon: 'display_settings',
-    to: 'dashboard-SiteManagerPage',
+    name: 'dashboard-SiteManagerPage',
+
     children: [
       {
-        id: '3-1',
+
         title: 'Basic Settings',
         icon: 'settings',
-        to: 'dashboard-SiteManagerPage-BasicSettingsPage',
+        name: 'dashboard-SiteManagerPage-BasicSettingsPage',
 
       },
       {
-        id: '3-2',
+
         title: 'Advanced Settings',
         icon: 'settings_suggest',
-        to: 'dashboard-SiteManagerPage-AdvanceSettingsPage',
+        name: 'dashboard-SiteManagerPage-AdvanceSettingsPage',
       },
     ],
 
   },
   {
-    id: '4',
+
     title: 'Order Archive',
     icon: 'archive',
-    to: 'dashboard-OrderArchivePage',
+    name: 'dashboard-OrderArchivePage',
   },
   {
-    id: '5',
+
     title: 'Mail Merge & Reports',
     icon: 'email',
-    to: 'dashboard-MailMergeReportsPage',
+    name: 'dashboard-MailMergeReportsPage',
+    routeClass: ['dashboard-MailMergeReportsPage', 'MailMergeReportsPage-MailMergeReportsPage']
   },
   {
-    id: '6',
+
     title: 'Print & Labels',
     icon: 'print',
-    to: 'dashboard-PrintLabelsPage',
+    name: 'dashboard-PrintLabelsPage',
   },
   {
-    id: '7',
     title: 'Email Stats',
     icon: 'query_stats',
-    to: 'dashboard-EmailStatsPage',
+    name: 'dashboard-EmailStatsPage',
+    routeClass: ['dashboard-EmailStatsPage', 'EmailStatsPage-Email'],
+  },
+]
+
+
+export interface routeParamInterface {
+  [x: string]: string | string[] | undefined
+}
+export interface routeDataInterface {
+  name: string
+  icon: string
+  title: string
+  params?: string[]
+  titleParam?: ((value?: routeParamInterface) => string);
+}
+
+
+
+
+export const routeInfo: routeDataInterface[] = [
+  {
+
+    title: 'Home',
+    icon: 'home',
+    name: 'DashboardLayout',
+
+  },
+  {
+    title: 'Dashboard',
+    icon: 'home',
+    name: 'dashboard-DashboardPage',
+  },
+  {
+
+    title: 'Members Settings',
+    icon: 'group',
+    name: 'MembersSettingsPage',
+
+  },
+  {
+
+    title: 'Members List',
+    icon: 'group',
+    name: 'MembersSettingsPage-home',
+
+  },
+  {
+
+    title: 'Member',
+    icon: 'group',
+    name: 'MembersSettingsPage-MemberPage',
+
+  },
+  {
+
+    title: 'Create Order',
+    icon: 'add',
+    name: 'MemberPage-CreateOrderPage',
+
+  },
+
+  {
+
+    title: 'Site Manager',
+    icon: 'display_settings',
+    name: 'dashboard-SiteManagerPage',
+
+  },
+  {
+
+    title: 'Basic Settings',
+    icon: 'settings',
+    name: 'dashboard-SiteManagerPage-BasicSettingsPage',
+
+  },
+  {
+
+    title: 'Advanced Settings',
+    icon: 'settings_suggest',
+    name: 'dashboard-SiteManagerPage-AdvanceSettingsPage',
+
+  },
+
+  {
+
+    title: 'Order Archive',
+    icon: 'archive',
+    name: 'dashboard-OrderArchivePage',
+
+  },
+  {
+
+    title: 'Mail Merge & Reports',
+    icon: 'email',
+    name: 'dashboard-MailMergeReportsPage',
+  },
+  {
+
+    title: 'Mail Merge & Reports',
+    icon: 'email',
+    name: 'MailMergeReportsPage-MailMergeReportsPage',
+
+  },
+  {
+
+    title: 'Mail Merge & Reports',
+    icon: 'email',
+    name: 'MailMergeReportsPage-MailMergePage',
+    params: ['reportId'],
+    titleParam: (value?: routeParamInterface) => `Campaign - ${value?.reportId}`
+  },
+  {
+
+    title: 'Print & Labels',
+    icon: 'print',
+    name: 'dashboard-PrintLabelsPage',
+
+  },
+  {
+
+    title: 'Email Stats',
+    icon: 'query_stats',
+    name: 'dashboard-EmailStatsPage',
+
+  },
+  {
+
+    title: 'Email Stats',
+    icon: 'query_stats',
+    name: 'EmailStatsPage-Email',
+
+  },
+  {
+
+    title: 'Campaign',
+    icon: 'query_stats',
+    name: 'EmailStatsPage-campaign',
+    params: ['campaignId'],
+    titleParam: (value?: routeParamInterface) => `Campaign - ${value?.campaignId}`
+  },
+  {
+    title: 'Member',
+    icon: 'person',
+    name: 'MemberLayout',
+    params: ['memberId'],
+    titleParam: (value?: routeParamInterface) => `Member - ${value?.memberId}`
+  },
+  {
+    title: 'Member Data',
+    icon: 'data_object',
+    name: 'MemberLayout-MemberPage',
+  },
+  {
+    title: 'Create Order',
+    icon: 'add',
+    name: 'MemberLayout-CreateOrderPage',
+  },
+  {
+    title: 'Create Order By Code',
+    icon: 'add',
+    name: 'MemberLayout-CreateOrderPageByCode',
+  },
+  {
+    title: 'Add Member',
+    icon: 'add',
+    name: 'MembersSettingsPage-AddMemberPage',
+  },
+  {
+    title: 'Upload Member List',
+    icon: 'upload',
+    name: 'MembersSettingsPage-MemberListLayout',
   },
 ]

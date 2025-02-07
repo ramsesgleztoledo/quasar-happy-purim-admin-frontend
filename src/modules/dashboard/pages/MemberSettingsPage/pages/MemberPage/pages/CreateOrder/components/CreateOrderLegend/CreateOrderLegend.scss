@@ -1,0 +1,32 @@
+.CreateOrderLegend-square {
+  width: 20px;
+  height: 20px;
+  background-color: #9acd32;
+  margin-right: 20px;
+}
+
+.CreateOrderLegend-square-red-check {
+  width: 20px;
+  height: 20px;
+  background-color: #f0f0f0;
+  position: relative;
+  border: 2px solid #ccc;
+  border-radius: 8px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-right: 20px;
+}
+
+/* Check */
+.CreateOrderLegend-square-red-check::after {
+  content: '';
+  width: 10px;
+  height: 20px;
+  border: solid red;
+  border-width: 0 4px 4px 0;
+  transform: rotate(45deg);
+  position: absolute;
+  bottom: 25%;
+  left: 40%;
+}

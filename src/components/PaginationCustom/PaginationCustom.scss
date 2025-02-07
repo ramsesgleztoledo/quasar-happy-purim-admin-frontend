@@ -1,0 +1,18 @@
+.PaginationCustom-paginator {
+  display: flex;
+  .PaginationCustom-total-pages {
+    color: #929292;
+  }
+  p {
+    margin: 0px;
+    margin-right: 10px;
+  }
+  button {
+    margin: 0px;
+  }
+}
+
+.PaginationCustom-paginator-align {
+  display: flex;
+  align-items: center;
+}
