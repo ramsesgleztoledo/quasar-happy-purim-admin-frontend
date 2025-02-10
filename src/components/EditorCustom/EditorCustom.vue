@@ -107,7 +107,7 @@
             @click="add(token.name)"
           >
             <q-item-section side>
-              <q-icon :name="token.icon" />
+              <q-icon v-if="token.icon" :name="token.icon" />
             </q-item-section>
             <q-item-section>{{ token.label }}</q-item-section>
           </q-item>
@@ -153,7 +153,7 @@ import { computed, ref } from 'vue'
 interface EditorCustomPropsInterface {
   modelValue: string
   height?: string
-  tokens?: { name: string; label: string; icon: string }[]
+  tokens?: { name: string; label: string; icon?: string }[]
 }
 
 const fullscreenClass = ref<boolean>(false)
@@ -204,6 +204,8 @@ const onColorPickedBackground = () => {
   edit.runCmd('backColor', colorPickerBackground.value)
   edit.focus()
 }
+
+defineExpose({ add })
 </script>
 
 <style scoped lang="scss">

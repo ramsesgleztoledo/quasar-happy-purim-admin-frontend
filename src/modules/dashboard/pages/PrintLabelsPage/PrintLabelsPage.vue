@@ -22,7 +22,7 @@
           <q-item-label caption> {{ item.caption }} </q-item-label></q-item-section
         >
         <q-item-section side>
-          <q-btn color="primary" flat icon="download" label="download" />
+          <q-btn color="primary" flat icon="download" padding="none" />
         </q-item-section>
       </q-item>
     </div>

@@ -1,0 +1,15 @@
+:deep(.MailMergePage-stepper) {
+  box-shadow: none;
+
+  .q-stepper__header--border {
+    border-bottom: none;
+  }
+  .q-stepper__step-inner {
+    display: none;
+  }
+  .q-stepper__tab {
+    padding: 0px;
+    padding-left: 10px;
+    padding-right: 10px;
+  }
+}

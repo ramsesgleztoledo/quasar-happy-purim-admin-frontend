@@ -99,19 +99,19 @@ hr {
 }
 
 .q-select {
-  height: 42px !important;
+  // height: 42px !important;
   .q-field__inner {
     height: 100%;
   }
   .q-field__control {
-    height: 42px;
+    // height: 42px;
     min-height: 42px;
   }
   .q-field__label {
     top: 12px;
   }
   .q-field__bottom--animated {
-    bottom: -14px;
+    bottom: 5px;
   }
 
   .q-field__append,
@@ -120,12 +120,13 @@ hr {
   .q-field__prepend {
     justify-content: center;
     height: 100%;
+    margin-top: 10px;
   }
   i {
     font-size: 12px;
   }
   .q-field__bottom {
-    padding: 7px;
+    padding: 8px;
   }
 }
 /*============================ END OF SECTION ============================*/

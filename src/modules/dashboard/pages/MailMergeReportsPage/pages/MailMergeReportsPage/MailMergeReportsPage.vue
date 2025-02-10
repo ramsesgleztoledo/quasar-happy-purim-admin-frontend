@@ -46,11 +46,12 @@
             <q-item-section side>
               <div class="row">
                 <q-btn
+                  class="q-mr-sm"
                   v-if="item.view"
+                  padding="none"
                   color="primary"
                   flat
                   icon="visibility"
-                  label="view report"
                   :to="{
                     name: 'MailMergeReportsPage-MailMergePage',
                     params: {
@@ -58,7 +59,7 @@
                     },
                   }"
                 />
-                <q-btn v-if="item.download" color="primary" flat icon="download" label="download" />
+                <q-btn v-if="item.download" padding="none" color="primary" flat icon="download" />
               </div>
             </q-item-section>
           </q-item>
