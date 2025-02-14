@@ -15,7 +15,7 @@
         v-model="range"
         :options="rangeOptions"
         label=""
-        filled
+        outlined
         @update:model-value="onRangeTypeChanged"
       />
     </div>

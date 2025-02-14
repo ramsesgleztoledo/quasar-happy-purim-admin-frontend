@@ -1,14 +1,14 @@
 <template>
   <q-dialog v-model="modelVisible">
     <q-card class="">
-      <div class="row dialog-header">
+      <div class="row dialog-header custom-dialog-header-container">
         <div class="col-12">
           <p>{{ title }}</p>
         </div>
       </div>
 
       <q-card-section class="q-pt-none" style="padding: 50px">
-        <div class="row">
+        <div class="row custom-dialog-body-container">
           <div class="col-12">
             <p v-if="!innerHTML">
               {{ msg }}
@@ -18,7 +18,7 @@
         </div>
       </q-card-section>
 
-      <q-card-actions align="right">
+      <q-card-actions class="custom-dialog-footer-container" align="right">
         <q-btn label="Close" color="primary" v-close-popup />
       </q-card-actions>
     </q-card>

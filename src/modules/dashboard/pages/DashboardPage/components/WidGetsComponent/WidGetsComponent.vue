@@ -40,7 +40,7 @@
   >
     <WidGet
       icon="group_add"
-      first-p="21%"
+      :first-p="`${convertWithCommas(21)}%`"
       second-p="Participation Rate"
       third-p="0,5% from yesterday"
       icon-color="#BF83FF"
@@ -52,6 +52,7 @@
 <script setup lang="ts">
 import { useUI } from 'src/modules/UI/composables'
 import WidGet from '../../../../components/widget/WidGet.vue'
+import { convertWithCommas } from 'src/helpers'
 const { isMobile } = useUI()
 </script>
 

@@ -3,14 +3,15 @@
 @import url('https://fonts.googleapis.com/css2?family=Arial:wght@400&family=Comic+Sans+MS:wght@400&family=Courier+New:wght@400&family=Times+New+Roman:wght@400&family=Verdana:wght@400&display=swap');
 
 ::-webkit-scrollbar {
-  width: 10px;
-  height: 10px;
+  width: 6px;
+  height: 6px;
   background-color: adjust-color($happypurim, $lightness: 25%);
 }
 ::-webkit-scrollbar-thumb {
   background: $happypurim;
   border-radius: 18px;
   border: solid 1px black;
+  cursor: pointer;
 }
 
 .user-select-none {
@@ -259,4 +260,24 @@ hr {
 .a-50 {
   width: 50%;
   height: 50%;
+}
+
+.q-item-bordered {
+  border: solid 1px #e2e2e2;
+  border-radius: 10px;
+}
+
+.custom-dialog-header-container {
+  box-shadow: 0px 0px 10px 0px black !important;
+  position: relative;
+  z-index: 9;
+}
+.custom-dialog-body-container {
+  max-height: 400px;
+  overflow: auto;
+}
+.custom-dialog-footer-container {
+  box-shadow: 0px 1px 8px -3px black !important;
+  position: relative;
+  z-index: 9;
 }

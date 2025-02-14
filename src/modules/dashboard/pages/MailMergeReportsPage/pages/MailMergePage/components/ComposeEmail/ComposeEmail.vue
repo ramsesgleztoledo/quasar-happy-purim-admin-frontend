@@ -52,8 +52,8 @@
     >
       <div class="row">
         <div class="col-12 q-gutter-sm justify-content-end">
-          <q-btn icon="article" label="Select Template" />
-          <q-btn icon="image" label="Insert images" />
+          <q-btn icon="article" label="Select Template" @click="selectTemplateDialogFlag = true" />
+          <q-btn icon="image" label="Insert images" @click="selectImagesDialogFlag = true" />
           <div v-if="!isMobile" class="separator-right"></div>
           <q-btn color="primary" icon="save" label="save template" />
         </div>
@@ -93,6 +93,13 @@
   <template v-else>
     <EditorCustom v-model="email" height="500px" :tokens="tokens" />
   </template>
+
+  <!--=============================== Dialogs =============================-->
+
+  <SelectTemplate v-model="selectTemplateDialogFlag" />
+  <SelectImages v-model="selectImagesDialogFlag" />
+  <SelectRecipients v-model="selectRecipientsDialogFlag" />
+  <!--=========================== END OF SECTION ===========================-->
 </template>
 
 <script setup lang="ts">
@@ -101,6 +108,14 @@ import type { FormField } from 'src/composables'
 import { lazyRules, useForm, validations } from 'src/composables'
 import { useUI } from 'src/modules/UI/composables'
 import { ref } from 'vue'
+import SelectTemplate from '../../Dialogs/SelectTemplate/SelectTemplate.vue'
+import SelectImages from '../../Dialogs/SelectImages/SelectImages.vue'
+import SelectRecipients from '../../Dialogs/SelectRecipients/SelectRecipients.vue'
+
+const selectTemplateDialogFlag = ref<boolean>(false)
+const selectImagesDialogFlag = ref<boolean>(false)
+const selectRecipientsDialogFlag = ref<boolean>(true)
+
 const { isMobile } = useUI()
 
 const editorRef = ref<InstanceType<typeof EditorCustom> | null>(null)

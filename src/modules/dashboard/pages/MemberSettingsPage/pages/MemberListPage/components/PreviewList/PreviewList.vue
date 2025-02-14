@@ -39,26 +39,28 @@
   <!--=============================== dialogs =============================-->
 
   <q-dialog v-model="contentDialogFlag">
-    <q-card class="">
-      <div class="row dialog-header">
+    <q-card>
+      <div class="row dialog-header custom-dialog-header-container">
         <div class="col-12">
           <p>Member Update</p>
         </div>
       </div>
 
       <q-card-section class="q-pt-none" style="padding: 50px">
-        <div class="row">
-          <p><b>16 </b> Members will be updated</p>
-        </div>
-        <div class="row">
-          <p><b>16 </b> Members will be updated</p>
-        </div>
-        <div class="row">
-          <p><b>16 </b> Members will be updated</p>
+        <div class="custom-dialog-body-container">
+          <div class="row">
+            <p><b>16 </b> Members will be updated</p>
+          </div>
+          <div class="row">
+            <p><b>16 </b> Members will be updated</p>
+          </div>
+          <div class="row">
+            <p><b>16 </b> Members will be updated</p>
+          </div>
         </div>
       </q-card-section>
 
-      <q-card-actions align="right">
+      <q-card-actions class="custom-dialog-footer-container" align="right">
         <q-btn label="Close" color="primary" v-close-popup />
       </q-card-actions>
     </q-card>

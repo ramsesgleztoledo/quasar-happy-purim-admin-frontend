@@ -1,132 +1,110 @@
 <template>
-  <div class="row q-mb-md">
-    <div class="col-12 justify-content-end">
-      <q-btn
-        color="primary"
-        icon="visibility"
-        label="view schedule"
-        @click="ScheduleSendDialogFlag = true"
-      />
-    </div>
-  </div>
-  <div class="row q-mb-md">
-    <div
-      class="q-mb-sm"
-      :class="{
-        'col-6': !isMobile,
-        'col-12': isMobile,
-      }"
-    >
-      <q-select
-        outlined
-        v-model="filters"
-        multiple
-        :options="filtersOptions"
-        use-chips
-        stack-label
-        clearable
-        label="Filter By"
-      />
-    </div>
-    <div
-      :class="{
-        'col-6': !isMobile,
-        'col-12': isMobile,
-      }"
-    >
-      <div class="row q-gutter-sm justify-content-end">
-        <q-btn icon="email" label="email merge" />
-        <q-btn icon="print" label="print email merge" />
-      </div>
-    </div>
-  </div>
-
-  <div class="row ReviewReport-container" :class="{ fullscreen: isFullScreen }">
-    <div class="col-12">
-      <div class="row">
-        <div class="col-12 justify-content-end">
-          <q-btn
-            flat
-            round
-            color="primary"
-            :icon="isFullScreen ? 'fullscreen_exit' : 'fullscreen'"
-            @click="isFullScreen = !isFullScreen"
-          />
-        </div>
-      </div>
-      <div class="row" style="height: fit-content">
+  <q-dialog v-model="show" persistent>
+    <q-card>
+      <div class="row dialog-header custom-dialog-header-container">
         <div class="col-12">
-          <q-table
-            :style="{ height: isFullScreen ? '800px' : '400px' }"
-            class="table-sticky-header-column-table"
-            flat
-            bordered
-            ref="tableRef"
-            :rows="rows"
-            :columns="columns"
-            row-key="name"
-            selection="multiple"
-            v-model:selected="selected"
-          >
-            <template v-slot:header="props">
-              <q-tr :props="props">
-                <q-th auto-width> <q-checkbox v-model="props.selected" /> </q-th>
-                <q-th v-for="col in props.cols" :key="col.name" :props="props">
-                  {{ col.label }}
-                </q-th>
-                <q-th auto-width> </q-th>
-              </q-tr>
-            </template>
-            <template v-slot:body="props">
-              <q-tr :props="props">
-                <q-td auto-width>
-                  <q-checkbox v-model="props.selected" />
-                </q-td>
-
-                <q-td v-for="col in props.cols" :key="col.name" :props="props">
-                  {{ col.value }}
-                </q-td>
-                <q-td auto-width>
-                  <q-btn
-                    size="sm"
-                    color="primary"
-                    round
-                    dense
-                    @click="props.expand = !props.expand"
-                    :icon="props.expand ? 'expand_less' : 'expand_more'"
-                  />
-                </q-td>
-              </q-tr>
-              <q-tr v-show="props.expand" :props="props">
-                <q-td colspan="100%">
-                  <div class="text-left">
-                    This is expand slot for row above: {{ props.row.name }}.
-                  </div>
-                </q-td>
-              </q-tr>
-            </template>
-          </q-table>
+          <p>Select Recipients</p>
         </div>
       </div>
-    </div>
-  </div>
 
-  <!--=============================== Dialogs =============================-->
+      <div class="custom-dialog-body-container q-pa-lg">
+        <q-select
+          outlined
+          v-model="filters"
+          multiple
+          :options="filtersOptions"
+          use-chips
+          stack-label
+          clearable
+          label="Filter By"
+        />
 
-  <ScheduleSend v-model="ScheduleSendDialogFlag" />
-  <!--=========================== END OF SECTION ===========================-->
+        <div class="row SelectRecipients-list-container" :class="{ fullscreen: isFullScreen }">
+          <div class="col-12">
+            <div class="row">
+              <div class="col-12 justify-content-end">
+                <q-btn
+                  flat
+                  round
+                  color="primary"
+                  :icon="isFullScreen ? 'fullscreen_exit' : 'fullscreen'"
+                  @click="isFullScreen = !isFullScreen"
+                />
+              </div>
+            </div>
+            <div class="row" style="height: fit-content">
+              <div class="col-12">
+                <q-table
+                  :style="{ height: isFullScreen ? '800px' : '400px' }"
+                  class="table-sticky-header-column-table"
+                  flat
+                  bordered
+                  ref="tableRef"
+                  :rows="rows"
+                  :columns="columns"
+                  row-key="name"
+                  selection="multiple"
+                  v-model:selected="selected"
+                >
+                  <template v-slot:header="props">
+                    <q-tr :props="props">
+                      <q-th auto-width> <q-checkbox v-model="props.selected" /> </q-th>
+                      <q-th v-for="col in props.cols" :key="col.name" :props="props">
+                        {{ col.label }}
+                      </q-th>
+                    </q-tr>
+                  </template>
+                  <template v-slot:body="props">
+                    <q-tr :props="props">
+                      <q-td auto-width>
+                        <q-checkbox v-model="props.selected" />
+                      </q-td>
+
+                      <q-td v-for="col in props.cols" :key="col.name" :props="props">
+                        {{ col.value }}
+                      </q-td>
+                    </q-tr>
+                  </template>
+                </q-table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <q-card-actions class="custom-dialog-footer-container" align="right">
+        <q-btn
+          outline
+          label="Cancel"
+          class="q-mr-sm q-mt-sm"
+          style="color: #990000; border-color: #990000"
+          v-close-popup
+        />
+        <q-btn
+          class="q-mr-sm q-mt-sm"
+          style="background: var(--happypurim); color: white"
+          label="Save List"
+          v-close-popup
+        />
+      </q-card-actions> </q-card
+  ></q-dialog>
 </template>
 
 <script setup lang="ts">
 import type { QTableColumn } from 'quasar'
-import { useUI } from 'src/modules/UI/composables'
-import { ref } from 'vue'
-import ScheduleSend from '../../Dialogs/ScheduleSend/ScheduleSend.vue'
+import { computed, ref } from 'vue'
 
-const { isMobile } = useUI()
+interface ScheduleSendPropsInterface {
+  modelValue: boolean
+}
 
-const isFullScreen = ref<boolean>(false)
-const ScheduleSendDialogFlag = ref<boolean>(false)
+const $emit = defineEmits(['update:modelValue'])
+
+const $props = defineProps<ScheduleSendPropsInterface>()
+
+const show = computed({
+  get: () => $props.modelValue,
+  set: (val) => $emit('update:modelValue', val),
+})
 
 const filters = ref([
   'Filter1',
@@ -173,14 +151,10 @@ const filtersOptions = ref([
   'Filter20',
 ])
 
-//* table data
 const tableRef = ref()
 const selected = ref([])
 
-// const onSelectAll = () => {
-
-// }
-
+const isFullScreen = ref<boolean>(false)
 const columns: QTableColumn[] = [
   {
     name: 'name',
@@ -617,5 +591,5 @@ const rows = [
 </script>
 
 <style scoped lang="scss">
-@import './ReviewReport';
+@import './SelectRecipients';
 </style>

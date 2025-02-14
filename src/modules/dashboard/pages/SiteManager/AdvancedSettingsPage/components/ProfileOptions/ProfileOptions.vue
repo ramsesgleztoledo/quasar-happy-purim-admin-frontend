@@ -146,7 +146,7 @@
   <div class="row q-pa-sm ProfileOptions-table-content" :class="{ fullscreen: isFullScreen }">
     <div class="col-12">
       <div class="row q-mb-sm justify-content-space-between">
-        <p style="margin: 0px">Additional Profile Question/Options</p>
+        <p style="margin: 0px">Additional Profile Questions/Options</p>
         <q-btn
           flat
           round

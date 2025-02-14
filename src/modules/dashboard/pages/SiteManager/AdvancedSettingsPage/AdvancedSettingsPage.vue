@@ -1,7 +1,7 @@
 <template>
   <div class="row q-mb-md">
     <div class="col-12 top-title-col">
-      <p class="page-main-title">Advance Settings</p>
+      <p class="page-main-title">Advanced Settings</p>
       <div class="separator-right q-mr-sm q-ml-sm"></div>
     </div>
   </div>
@@ -31,8 +31,6 @@ import ProfileOptions from './components/ProfileOptions/ProfileOptions.vue'
 import AdditionalOrderingOptions from './components/AdditionalOrderingOptions/AdditionalOrderingOptions.vue'
 import BasketSizes from './components/BasketSizes/BasketSizes.vue'
 import AdditionalReceiptText from './components/AdditionalReceiptText/AdditionalReceiptText.vue'
-
-
 
 const $route = useRoute()
 const $router = useRouter()
