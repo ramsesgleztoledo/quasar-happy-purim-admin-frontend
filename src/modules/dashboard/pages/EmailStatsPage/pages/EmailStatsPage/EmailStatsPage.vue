@@ -40,11 +40,19 @@
 </template>
 
 <script setup lang="ts">
+<<<<<<< Updated upstream
 import { ref } from 'vue'
+=======
+import { onMounted, ref } from 'vue'
+>>>>>>> Stashed changes
 
 import type { QTableColumn } from 'quasar'
 import { convertToUSDate, convertWithCommas } from 'src/helpers'
 import TableCustom from 'src/components/TableCustom/TableCustom.vue'
+<<<<<<< Updated upstream
+=======
+import { getEmailStatsByOrganizationId } from 'src/services/emailstatsService'
+>>>>>>> Stashed changes
 
 const searchText = ref('')
 
@@ -53,7 +61,11 @@ const archive = [
     id: 1,
     orderNumber: 13616548,
     date: new Date(),
+<<<<<<< Updated upstream
     memberName: 'Jane',
+=======
+    memberName: 'Jane2',
+>>>>>>> Stashed changes
     setNumber: 1315311,
     method: '-',
     total: 36.33,
@@ -198,6 +210,15 @@ const columns: QTableColumn[] = [
     sortable: true,
   },
 ]
+<<<<<<< Updated upstream
+=======
+
+onMounted(() => {
+  getEmailStatsByOrganizationId(757).then((res) => {
+    console.log(res)
+  })
+})
+>>>>>>> Stashed changes
 </script>
 
 <style scoped lang="scss">
