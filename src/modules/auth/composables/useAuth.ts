@@ -100,9 +100,7 @@ export const useAuth = () => {
       const authState: authStateInterface | null = $q.localStorage.getItem('authState')
       if (authState) {
         $aStore.$patch(authState)
-        prepareTokenTime(
-          authState.token_exp!
-        )
+        prepareTokenTime(authState.token_exp!)
       }
     }
 

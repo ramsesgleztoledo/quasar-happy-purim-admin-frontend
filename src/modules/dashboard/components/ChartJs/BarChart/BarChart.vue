@@ -23,6 +23,7 @@ interface BarChartPropsInterface {
   showFullScreenToggle?: boolean
   title?: string
   showLabel?: boolean
+  showSeriesLabel?: boolean
   charData: {
     label: string
     color: string
@@ -54,13 +55,14 @@ watch(
       },
       tooltip: {
         trigger: 'item',
-        formatter: '{b} : {c} ',
+        formatter: '{a} - ({b}) : {c} ',
         z: 2147483647,
         confine: true,
       },
       series: [
         ...($props.charData?.map((data) => ({
           type: 'bar',
+          name: data.label,
           data:
             data.data.map((va) => ({
               value: va.quantity,
@@ -70,7 +72,7 @@ watch(
               },
             })) || [],
           label: {
-            show: false,
+            show: !!$props.showSeriesLabel,
           },
           labelLine: {
             show: false,
