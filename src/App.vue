@@ -1,20 +1,16 @@
 <template>
-  <router-view />
+  <div>
+    <router-view />
+  </div>
 </template>
 
 <script setup lang="ts">
-import { useQuasar } from 'quasar'
+import { onMounted } from 'vue'
+import { useAuth } from './modules/auth/composables/useAuth'
 
-//TODO: remove loading here
-const $q = useQuasar()
+const { checkLocalStoreAuth } = useAuth()
 
-$q.loading.show({
-  message: 'Loading ...',
-  spinnerColor: '#ef6982',
-  messageColor: '#ef6982',
+onMounted(() => {
+  checkLocalStoreAuth()
 })
-
-setTimeout(() => {
-  $q.loading.hide()
-}, 1000)
 </script>

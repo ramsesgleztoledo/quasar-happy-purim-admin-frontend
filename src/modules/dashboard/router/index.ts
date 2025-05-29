@@ -1,10 +1,12 @@
 import type { RouteRecordRaw } from "vue-router";
 import { memberRoutes } from "../pages/MemberSettingsPage/router";
+import isAuth from "src/modules/auth/guards/auth.guard";
 
 export const dashboardRoutes: RouteRecordRaw[] = [
   {
     path: '/dashboard',
     name: 'DashboardLayout',
+    beforeEnter: [isAuth],
     component: () =>
       import(/* webpackChunkName: "DashboardLayout" */ "../layout/DashboardLayout.vue"),
     redirect: { name: 'dashboard-DashboardPage', },

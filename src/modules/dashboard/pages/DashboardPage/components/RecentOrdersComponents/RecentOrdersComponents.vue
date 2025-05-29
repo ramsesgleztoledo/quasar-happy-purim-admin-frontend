@@ -1,6 +1,6 @@
 <template>
   <div class="q-pa-md">
-    <TableCustom
+    <!-- <TableCustom
       class-name="table-sticky-header-column-table"
       flat
       bordered
@@ -9,7 +9,58 @@
       :columns="columns"
       row-key="id"
       styles="height: 360px"
-    />
+      @onRowClick="onRowClick"
+    /> -->
+    <div class="row RecentOrders-container" :class="{ fullscreen: isFullScreen }">
+      <div class="col-12">
+        <div class="row">
+          <div class="col-12 justify-content-end">
+            <q-btn
+              flat
+              round
+              color="primary"
+              :icon="isFullScreen ? 'fullscreen_exit' : 'fullscreen'"
+              @click="isFullScreen = !isFullScreen"
+            />
+          </div>
+        </div>
+        <q-table
+          title="Recent Orders"
+          :style="{ height: isFullScreen ? '800px' : '400px' }"
+          class="table-sticky-header-column-table"
+          flat
+          bordered
+          ref="tableRef"
+          :rows="rows"
+          :columns="columns"
+          row-key="id"
+          styles="height: 360px"
+        >
+          <template v-slot:body="props">
+            <q-tr :props="props">
+              <q-td v-for="col in props.cols" :key="col.name" :props="props">
+                <q-btn v-if="col.name === 'id'" flat color="primary" :label="col.value" :to="{}" />
+
+                <q-btn
+                  v-else-if="col.name === 'member'"
+                  flat
+                  color="primary"
+                  :label="col.value"
+                  :to="{
+                    name: 'MemberLayout',
+                    params: { memberId: props.row.memberId },
+                  }"
+                />
+
+                <p v-else>
+                  {{ col.value }}
+                </p>
+              </q-td>
+            </q-tr>
+          </template>
+        </q-table>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -17,7 +68,22 @@
 import type { QTableColumn } from 'quasar'
 import { convertToUSDate } from 'src/helpers/convertToUSDate'
 import { convertWithCommas } from 'src/helpers/convertWithCommas'
-import TableCustom from 'src/components/TableCustom/TableCustom.vue'
+// import TableCustom from 'src/components/TableCustom/TableCustom.vue'
+import { useDashboardStore } from 'src/modules/dashboard/store/dashboardStore'
+import { computed, ref } from 'vue'
+
+// interface TransactionRowInterface {
+//   id: string
+//   processed: string
+//   amount: number
+//   method: string
+//   member: string
+//   memberId: number
+// }
+
+const dStore = useDashboardStore()
+
+const isFullScreen = ref<boolean>(false)
 
 const columns: QTableColumn[] = [
   {
@@ -65,92 +131,16 @@ const columns: QTableColumn[] = [
   },
 ]
 
-const rows = [
-  {
-    id: 8219430,
-    processed: new Date().toISOString(),
-    amount: 24400.82,
-    method: 'Credit Card',
-    member: 'Green, Ari',
-  },
-  {
-    id: 8219430,
-    processed: new Date().toISOString(),
-    amount: 24400.82,
-    method: 'Credit Card',
-    member: 'Green, Ari',
-  },
-  {
-    id: 8219430,
-    processed: new Date().toISOString(),
-    amount: 24400.82,
-    method: 'Credit Card',
-    member: 'Green, Ari',
-  },
-  {
-    id: 8219430,
-    processed: new Date().toISOString(),
-    amount: 24400.82,
-    method: 'Credit Card',
-    member: 'Green, Ari',
-  },
-  {
-    id: 8219430,
-    processed: new Date().toISOString(),
-    amount: 24400.82,
-    method: 'Credit Card',
-    member: 'Green, Ari',
-  },
-  {
-    id: 8219430,
-    processed: new Date().toISOString(),
-    amount: 24400.82,
-    method: 'Credit Card',
-    member: 'Green, Ari',
-  },
-  {
-    id: 8219430,
-    processed: new Date().toISOString(),
-    amount: 24400.82,
-    method: 'Credit Card',
-    member: 'Green, Ari',
-  },
-  {
-    id: 8219430,
-    processed: new Date().toISOString(),
-    amount: 24400.82,
-    method: 'Credit Card',
-    member: 'Green, Ari',
-  },
-  {
-    id: 8219430,
-    processed: new Date().toISOString(),
-    amount: 24400.82,
-    method: 'Credit Card',
-    member: 'Green, Ari',
-  },
-  {
-    id: 8219430,
-    processed: new Date().toISOString(),
-    amount: 24400.82,
-    method: 'Credit Card',
-    member: 'Green, Ari',
-  },
-  {
-    id: 8219430,
-    processed: new Date().toISOString(),
-    amount: 24400.82,
-    method: 'Credit Card',
-    member: 'Green, Ari',
-  },
-  {
-    id: 8219430,
-    processed: new Date().toISOString(),
-    amount: 24400.82,
-    method: 'Credit Card',
-    member: 'Green, Ari',
-  },
-]
+const rows = computed(() => [
+  ...dStore.topTransactions.map((order) => ({
+    id: order.order,
+    processed: new Date(order.processed).toISOString(),
+    amount: order.amount,
+    method: order.method,
+    member: order.member,
+    memberId: order.memberId,
+  })),
+])
 </script>
 
 <style lang="scss">

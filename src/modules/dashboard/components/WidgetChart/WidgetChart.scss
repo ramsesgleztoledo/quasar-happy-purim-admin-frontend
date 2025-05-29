@@ -1,5 +1,6 @@
 .WidgetChart-container {
   min-height: 258px;
+  height: 100%;
   border: solid 1px #dedede;
   border-radius: 5px;
   overflow: auto;
@@ -19,13 +20,18 @@
 }
 
 .WidgetChart-earned {
-  font-size: 22px;
+  font-size: 14px;
   font-weight: 600;
 }
 .WidgetChart-description {
+  font-size: 10px;
   color: rgb(193, 188, 188);
 }
 
 .WidgetChart-graph {
   height: 80px;
+}
+
+p {
+  margin: 0px;
 }

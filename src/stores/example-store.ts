@@ -3,6 +3,7 @@ import { defineStore, acceptHMRUpdate } from 'pinia';
 export const useCounterStore = defineStore('counter', {
   state: () => ({
     counter: 0,
+    total: 0
   }),
 
   getters: {

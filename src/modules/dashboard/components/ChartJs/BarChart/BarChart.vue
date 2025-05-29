@@ -25,8 +25,12 @@ interface BarChartPropsInterface {
   showLabel?: boolean
   charData: {
     label: string
-    quantity: number
-    color?: string
+    color: string
+    data: {
+      label: string
+      quantity: number
+      color?: string
+    }[]
   }[]
 }
 
@@ -43,7 +47,7 @@ watch(
       xAxis: {
         type: 'category',
         boundaryGap: false,
-        data: $props.showLabel ? $props.charData?.map((va) => va.label) || [] : [],
+        data: $props.showLabel ? $props.charData[0]?.data.map((va) => va.label) || [] : [],
       },
       yAxis: {
         type: 'value',
@@ -55,10 +59,10 @@ watch(
         confine: true,
       },
       series: [
-        {
+        ...($props.charData?.map((data) => ({
           type: 'bar',
           data:
-            $props.charData?.map((va) => ({
+            data.data.map((va) => ({
               value: va.quantity,
               name: va.label,
               itemStyle: {
@@ -71,7 +75,7 @@ watch(
           labelLine: {
             show: false,
           },
-        },
+        })) || []),
       ],
     }
   },

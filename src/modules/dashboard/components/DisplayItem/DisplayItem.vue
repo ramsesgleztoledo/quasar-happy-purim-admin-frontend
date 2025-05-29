@@ -8,46 +8,54 @@
         }"
       >
         <p>{{ item.label }}</p>
-        <p :style="{ color: item.color ? item.color : '#3c5ce0' }">{{ item.value }}</p>
+
+        <p
+          @click="() => onItemCLicked(item)"
+          :style="{
+            color: item.color ? item.color : 'black',
+            cursor: item.redirectTo || item.hover ? 'pointer' : '',
+          }"
+        >
+          {{ item.value }}
+          <q-tooltip v-if="item.hover" transition-show="flip-right" transition-hide="flip-left"
+            ><div v-html="item.hover"></div>
+          </q-tooltip>
+        </p>
       </div>
     </div>
   </div>
-  <div class="row" v-if="countTotal">
+  <div class="row" v-if="countTotal != null">
     <div class="col-12 DisplayItem-item-container">
       <p>
         <b> {{ totalLabel ? totalLabel : 'Total' }} </b>
       </p>
       <p>
-        <b> {{ total }} </b>
+        <b> {{ countTotal }} </b>
       </p>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { isNumber } from 'chart.js/helpers'
-import { computed } from 'vue'
+import { useRouter } from 'vue-router'
+import type { ItemBasketInterface } from '../../interfaces/item-interface'
 
 interface DisplayItemPropsInterface {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   styles?: any
-  countTotal?: boolean
+  countTotal?: number
   totalLabel?: string
-  items: {
-    label: string
-    value: number | string
-    color?: string
-  }[]
+  items: ItemBasketInterface[]
 }
 
-const $props = defineProps<DisplayItemPropsInterface>()
+const $router = useRouter()
 
-const total = computed<number>(() =>
-  $props.items.reduce((pre, cur) => {
-    if (!isNumber(cur.value)) return pre
-    return pre + cur.value
-  }, 0),
-)
+defineProps<DisplayItemPropsInterface>()
+
+const onItemCLicked = (item: ItemBasketInterface) => {
+  if (!item.redirectTo) return
+  return $router.push({ name: item.redirectTo })
+}
 </script>
 
 <style scoped lang="scss">

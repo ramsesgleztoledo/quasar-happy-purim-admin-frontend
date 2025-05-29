@@ -1,6 +1,6 @@
 <template>
   <div class="row">
-    <div class="col-12" v-for="(info, index) in infos" :key="index">
+    <div class="col-12" v-for="(info, index) in totalsRaised" :key="index">
       <q-item>
         <q-item-section>
           <q-item-label>
@@ -19,26 +19,32 @@
 </template>
 
 <script setup lang="ts">
-const infos = [
+import { convertWithCommas } from 'src/helpers'
+import { useDashboardStore } from 'src/modules/dashboard/store/dashboardStore'
+import { computed } from 'vue'
+
+const dStore = useDashboardStore()
+
+const totalsRaised = computed(() => [
   {
     text: 'Total Funds Raised',
-    caption: 'Global',
-    number: '$84,138.33',
+    caption: `from reciprocity - ($${convertWithCommas(dStore.totalsRaised?.totalFundsFromReciprocity || 0)})`,
+    number: `$${convertWithCommas(dStore.totalsRaised?.totalFunds || 0)}`,
     color: 'var(--c-color1)',
   },
   {
     text: 'Charitable Contributions',
     caption: 'Global',
-    number: '$35,037.75',
+    number: `$${convertWithCommas(dStore.totalsRaised?.totalCharity || 0)}`,
     color: 'var(--c-color2)',
   },
   {
     text: 'Total Reciprocity',
     caption: 'Global',
-    number: ' $120.00',
+    number: `$${convertWithCommas(dStore.totalsRaised?.totalReciprocity || 0)}`,
     color: 'var(--c-color3)',
   },
-]
+])
 </script>
 
 <style scoped lang="scss">

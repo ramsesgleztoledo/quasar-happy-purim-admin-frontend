@@ -8,7 +8,7 @@
             maxHeight: '250px',
             overflow: 'auto',
           }"
-          :items="baskets"
+          :items="orderItems"
         />
       </div>
     </div>
@@ -16,34 +16,37 @@
 </template>
 
 <script setup lang="ts">
+import { computed } from 'vue'
 import DisplayItem from '../../../../components/DisplayItem/DisplayItem.vue'
+import { useDashboardStore } from 'src/modules/dashboard/store/dashboardStore'
+import type { ItemBasketInterface } from 'src/modules/dashboard/interfaces/item-interface'
 
-const baskets = [
+const dStore = useDashboardStore()
+
+const orderItems = computed<ItemBasketInterface[]>(() => [
   {
-    label: 'Members logged in:',
-    value: 19,
+    label: 'Total Members',
+    value: dStore.memberSummary?.totalMembers || 0,
   },
   {
-    label: 'Members Currently Online:',
-    value: 0,
+    label: 'Member logged in',
+    value: dStore.memberSummary?.membersLoggedIn || 0,
   },
   {
-    label: 'Send to all board for $50:',
-    value: '$100.00',
+    label: 'Member online',
+    value: dStore.memberSummary?.membersOnline || 0,
   },
   {
-    label: 'Health Theme Basket ($55):',
-    value: 1,
+    label: 'Member online Names',
+    value: 'show',
+    color: '#3c5ce0',
+    hover: `<p> ${dStore.memberSummary?.membersOnlineNames || ''} </p>`,
   },
-  {
-    label: 'Israel Theme Basket ($45)',
-    value: 1,
-  },
-  {
-    label: 'Regular Coffee Basket ($30):',
-    value: 4,
-  },
-]
+  ...dStore.orderItems.map((item) => ({
+    label: item.itemDescription,
+    value: item.itemTotal,
+  })),
+])
 </script>
 
 <style scoped lang="scss">

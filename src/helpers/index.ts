@@ -1,4 +1,6 @@
 export * from './convertToUSDate'
+export * from './convertToTextDate'
 export * from './convertWithCommas'
+export * from './generateRandomColor'
 export * from './isValidDate'
 export * from './isValidTime'

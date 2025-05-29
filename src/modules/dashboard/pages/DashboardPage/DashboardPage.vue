@@ -6,6 +6,19 @@
         <div class="separator-right q-mr-sm q-ml-sm"></div>
       </div>
     </div>
+
+    <InfoAlert
+      v-if="fundraiserStatus.fundraiserClosed"
+      class="q-mb-md q-mt-md"
+      type="error"
+      :inner-h-t-m-l="fundraiserClosedHTML"
+    />
+    <InfoAlert
+      v-if="fundraiserStatus.hasReciprocityTrans"
+      class="q-mb-md q-mt-md"
+      type="warning"
+      :inner-h-t-m-l="fundraiserReciprocityHTML"
+    />
     <div class="row q-mt-sm">
       <div class="col-12">
         <div class="row q-mb-md">
@@ -91,7 +104,38 @@ import RecentOrdersComponents from './components/RecentOrdersComponents/RecentOr
 import BasketStatisticsComponent from './components/BasketStatisticsComponent/BasketStatisticsComponent.vue'
 import OtherOrderItemsComponent from './components/OtherOrderItemsComponent/OtherOrderItemsComponent.vue'
 import { useUI } from 'src/modules/UI/composables'
+import InfoAlert from 'src/components/InfoAlert/InfoAlert.vue'
+import { useDashboardStore } from 'src/modules/dashboard/store/dashboardStore'
+import { computed, onMounted, ref } from 'vue'
+import { _fundraiserClosedHTML, _fundraiserReciprocityHTML } from 'src/static-data/data'
+import { useRouter } from 'vue-router'
 const { isMobile } = useUI()
+const dStore = useDashboardStore()
+const $router = useRouter()
+
+const fundraiserStatus = computed(() => ({
+  fundraiserClosed: dStore.fundraiserStatus?.fundraiserClosed || true,
+  hasReciprocityTrans: dStore.fundraiserStatus?.hasReciprocityTrans || false,
+}))
+
+const fundraiserClosedHTML = ref(_fundraiserClosedHTML)
+const fundraiserReciprocityHTML = ref(_fundraiserReciprocityHTML)
+const prepareClickEvents = () => {
+  //! redirect to dashboard-SiteManagerPage when click in click here
+  document.addEventListener('click', (event) => {
+    const target = event.target as HTMLElement
+    if (
+      target &&
+      (target.id === 'fundraiserClosedHTML' || target.id === 'fundraiserReciprocityHTML')
+    ) {
+      $router.push({ name: 'dashboard-SiteManagerPage' })
+    }
+  })
+}
+
+onMounted(() => {
+  prepareClickEvents()
+})
 </script>
 
 <style scoped lang="scss">

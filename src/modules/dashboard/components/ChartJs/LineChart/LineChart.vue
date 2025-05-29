@@ -1,5 +1,5 @@
 <template>
-   <div class="white-100-container" :class="{ fullscreen: isFullScreen }">
+  <div class="white-100-container" :class="{ fullscreen: isFullScreen }">
     <div v-if="showFullScreenToggle" class="row q-mb-sm" style="justify-content: flex-end">
       <q-btn
         flat
@@ -9,7 +9,7 @@
         @click="isFullScreen = !isFullScreen"
       />
     </div>
-  <VChart :option="option" autoresize />
+    <VChart :option="option" autoresize />
   </div>
 </template>
 
@@ -21,10 +21,15 @@ interface BarChartPropsInterface {
   showFullScreenToggle?: boolean
   title?: string
   showLabel?: boolean
+  showAreaStyle?: boolean
   charData: {
     label: string
-    quantity: number
-    color?: string
+    color: string
+    data: {
+      label: string
+      quantity: number
+      color?: string
+    }[]
   }[]
 }
 
@@ -41,7 +46,7 @@ watch(
       xAxis: {
         type: 'category',
         boundaryGap: false,
-        data: $props.showLabel ? $props.charData?.map((va) => va.label) || [] : [],
+        data: $props.showLabel ? $props.charData[0]?.data.map((va) => va.label) || [] : [],
       },
       yAxis: {
         type: 'value',
@@ -53,10 +58,10 @@ watch(
         confine: true,
       },
       series: [
-        {
+        ...($props.charData?.map((data) => ({
           type: 'line',
           data:
-            $props.charData?.map((va) => ({
+            data.data.map((va) => ({
               value: va.quantity,
               name: va.label,
               itemStyle: {
@@ -69,8 +74,11 @@ watch(
           labelLine: {
             show: false,
           },
-          areaStyle: { color: '#ef6982' },
-        },
+          lineStyle: {
+            color: data.color ? data.color : '#ef6982',
+          },
+          areaStyle: $props.showAreaStyle ? { color: data.color } : undefined,
+        })) || []),
       ],
     }
   },

@@ -14,7 +14,11 @@ declare module 'vue' {
 // good idea to move this instance creation inside of the
 // "export default () => {}" function below (which runs individually
 // for each client)
-const api = axios.create({ baseURL: 'https://api.example.com' });
+
+// const basUrlDev = 'https://localhost:7126/api'
+const basUrlProd = 'https://api.happypurim.dev/api'
+
+const api = axios.create({ baseURL: basUrlProd });
 
 export default defineBoot(({ app }) => {
   // for use inside Vue files (Options API) through this.$axios and this.$api

@@ -2,8 +2,13 @@
   <div v-if="show" class="row">
     <div class="col-12 InfoAlert-container-row" :style="{ backgroundColor: background }">
       <div class="InfoAlert-container-left">
-        <q-icon name="info" :style="{ color: iconInternal }" />
-        <p>{{ text }} <q-icon v-if="icon" :name="icon" :style="{ color: iconColor }" /></p>
+        <q-icon class="q-mr-sm" name="info" :style="{ color: iconInternal }" />
+        <p v-if="!innerHTML">
+          {{ text }}
+          <q-icon v-if="icon" :name="icon" :style="{ color: iconColor }" />
+        </p>
+
+        <div v-else v-html="innerHTML"></div>
       </div>
       <q-icon @click="show = false" name="close" />
     </div>
@@ -15,7 +20,8 @@ import { computed, ref } from 'vue'
 
 interface InfoAlertPropsInterface {
   type: 'info' | 'error' | 'success' | 'warning'
-  text: string
+  text?: string
+  innerHTML?: string
   icon?: string
   iconColor?: string
 }

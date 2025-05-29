@@ -35,37 +35,29 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import HalfDoughnutChart from '../../../../components/ChartJs/HalfDoughnutChart/HalfDoughnutChart.vue'
+import { useDashboardStore } from 'src/modules/dashboard/store/dashboardStore'
+import { generateRandomColor } from 'src/helpers'
 
 interface DataArrayInterface {
-  dataArray?: {
-    label: string
-    quantity: number
-    color: string
-  }[]
+  label: string
+  quantity: number
+  color: string
 }
 
-const $props = withDefaults(defineProps<DataArrayInterface>(), {
-  dataArray: () => [
-    {
-      label: 'Without orders who have not logged in',
-      quantity: 70,
-      color: '#19c554',
-    },
-    {
-      label: 'Without orders who have not logged in',
-      quantity: 111,
-      color: '#f08615',
-    },
-    {
-      label: 'Without orders who have not logged in',
-      quantity: 30,
-      color: '#3c93e0',
-    },
-  ],
-})
+const dashboardStore = useDashboardStore()
+
+const colors = ['#19c554', '#f08615', '#3c93e0']
+
+const dataArray = computed<DataArrayInterface[]>(() => [
+  ...dashboardStore.membersOrdersGraph.map((item, index) => ({
+    label: item.status,
+    quantity: item.total,
+    color: colors[index] || generateRandomColor(),
+  })),
+])
 
 const total = computed<number>(() =>
-  $props.dataArray.reduce((prev, current) => prev + current.quantity, 0),
+  dataArray.value.reduce((prev, current) => prev + current.quantity, 0),
 )
 
 const getPercent = (quantity: number) =>

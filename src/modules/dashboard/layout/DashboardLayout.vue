@@ -1,6 +1,6 @@
 <template>
   <!-- Navbar -->
-  <q-layout view="lHh Lpr lFf" class="dashboard-layout-container">
+  <q-layout v-if="!isLoading" view="lHh Lpr lFf" class="dashboard-layout-container">
     <q-header elevated class="dashboard-layout-header">
       <NavBar />
     </q-header>
@@ -31,27 +31,55 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted } from 'vue'
+import { onMounted, onUnmounted, ref } from 'vue'
 import EssentialLink from '../components/EssentialLink/EssentialLink.vue'
 import NavBar from '../components/NavBar/NavBar.vue'
 import BreadCrumbs from '../components/BreadCrumbs/BreadCrumbs.vue'
-
 import type { LinksDataInterface } from '../data/links'
 import { linksData } from '../data/links'
-
-import { useRoute } from 'vue-router'
 import { useUI } from 'src/modules/UI/composables'
 import { useUIStore } from 'src/modules/UI/store/ui-store'
+import { useQuasar } from 'quasar'
+import { useRouter } from 'vue-router'
+import { useDashboard } from '../composables/useDashboard'
 
 const $uiStore = useUIStore()
-
-const $route = useRoute()
+const $q = useQuasar()
+const $router = useRouter()
 const { isMobile } = useUI()
+const { loadStartedData, getMemberSummary } = useDashboard()
 
+const isLoading = ref(true)
+
+let getMembersSummaryInterval: NodeJS.Timeout | null = null
 const linksList: LinksDataInterface[] = linksData
 
 onMounted(() => {
-  console.log('CHECKING THE ROUTE HERE ===>', { matches: $route.matched })
+  $q.loading.show({
+    message: 'Loading ...',
+    spinnerColor: '#ef6982',
+    messageColor: '#ef6982',
+  })
+
+  // console.log('==== getting initial data in dashboard layout ====')
+
+  loadStartedData()
+    .then(() => {
+      $q.loading.hide()
+      isLoading.value = false
+      getMembersSummaryInterval = setInterval(() => {
+        getMemberSummary().then()
+      }, 8000)
+    })
+    .catch(() => {
+      $q.loading.hide()
+      isLoading.value = false
+      $router.push({ name: '500' })
+    })
+})
+
+onUnmounted(() => {
+  if (getMembersSummaryInterval) clearInterval(getMembersSummaryInterval)
 })
 </script>
 
