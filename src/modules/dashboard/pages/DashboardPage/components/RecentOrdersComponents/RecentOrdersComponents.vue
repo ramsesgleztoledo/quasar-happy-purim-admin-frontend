@@ -69,17 +69,8 @@ import type { QTableColumn } from 'quasar'
 import { convertToUSDate } from 'src/helpers/convertToUSDate'
 import { convertWithCommas } from 'src/helpers/convertWithCommas'
 // import TableCustom from 'src/components/TableCustom/TableCustom.vue'
-import { useDashboardStore } from 'src/modules/dashboard/store/dashboardStore'
+import { useDashboardStore } from 'src/modules/dashboard/store/dashboardStore/dashboardStore'
 import { computed, ref } from 'vue'
-
-// interface TransactionRowInterface {
-//   id: string
-//   processed: string
-//   amount: number
-//   method: string
-//   member: string
-//   memberId: number
-// }
 
 const dStore = useDashboardStore()
 

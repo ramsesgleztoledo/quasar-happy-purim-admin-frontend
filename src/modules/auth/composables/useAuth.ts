@@ -2,24 +2,33 @@ import { computed } from "vue";
 import { useAuthStore } from "../store/auth.store";
 import { useQuasar } from "quasar";
 import type { authStateInterface } from "../store/auth-store-interfaces";
-import { useDashboardStore } from "src/modules/dashboard/store/dashboardStore";
+import { useDashboardStore } from "src/modules/dashboard/store/dashboardStore/dashboardStore";
 import { useRouter } from "vue-router";
 import { decodeJWT } from "src/helpers/JsonWebToken";
+import { useEmailStore } from "src/modules/dashboard/store/emailStore/emailStore";
+import { useAuthService } from "../service/auth.service";
+import type { AuthJWTInterface } from "../interfaces/auth.interfaces";
 
 export const useAuth = () => {
 
+  //* stores
   const $aStore = useAuthStore()
   const $dStore = useDashboardStore()
+  const $eStore = useEmailStore()
+
+  const { login: authLogin } = useAuthService()
+
   const $q = useQuasar();
   const $router = useRouter()
   let tokenTimeOut: NodeJS.Timeout | undefined = undefined;
 
-  const state = computed(() => $aStore.$state);
+  const authState = computed(() => $aStore.$state);
 
   const logOut = () => {
     $q.localStorage.clear()
     $aStore.$reset()
     $dStore.$reset()
+    $eStore.$reset()
     return $router.push({ name: '401' })
   }
   const prepareTokenTime = (exp: number) => {
@@ -63,34 +72,77 @@ export const useAuth = () => {
 
   };
 
-  const login = (token: string, dontRedirect?: boolean) => {
-    const payload = decodeJWT(token)
-    const authState: authStateInterface = {
-      company: null,
-      user: null,
-      token,
-      token_exp: payload?.exp,
-      refresh_token: token
+  const login = async (tokenUrl: string, dontRedirect?: boolean) => {
+    try {
+
+      const token = tokenUrl.split(' ').join('+')
+
+
+      const result = await authLogin(token)
+
+      if (!result)
+        return logOut()
+      const payload = decodeJWT<AuthJWTInterface>(result.accessToken)
+
+      if (!payload)
+        return logOut()
+
+
+      const authState: authStateInterface = {
+        shul: {
+          shulId: payload.shulId,
+          shulName: payload.shulName,
+        },
+        user: {
+          id: payload.u_id,
+          guid: payload.u_guid,
+          firstName: payload.fname,
+          lastName: payload.lname,
+        },
+        token: {
+          token: result.accessToken,
+          token_exp: payload.exp,
+          refresh_token: token,
+
+        },
+        serverToken: {
+          accessToken: result.accessToken,
+          refreshToken: result.refreshToken,
+          accessTokenExpires: result.accessTokenExpires,
+        }
+      }
+
+      $aStore.$patch(authState)
+      $q.localStorage.setItem('authState', $aStore.$state)
+      prepareTokenTime(authState.token!.token_exp)
+
+      if (!dontRedirect)
+        return $router.push({ name: 'DashboardLayout' })
+
+    } catch (error) {
+      console.error(error);
+      $q.notify({
+        color: 'red',
+        textColor: 'white',
+        icon: 'error',
+        message: 'Error authorizing the user',
+
+      })
+      return logOut()
     }
-    $aStore.$patch(authState)
-    $q.localStorage.setItem('authState', $aStore.$state)
-    prepareTokenTime(authState.token_exp!)
-    if (!dontRedirect)
-      return $router.push({ name: 'DashboardLayout' })
   }
 
 
   const refreshToken = () => {
-    const token = state.value.refresh_token || ''
-    login(token)
+    const token = authState.value.token?.refresh_token || ''
+    login(token, true)
   }
 
 
   return {
 
     isAuthenticated: computed(() => $aStore.isAuthenticated),
-    state,
-
+    authState,
     // methods
     login,
     refreshToken,
@@ -100,12 +152,9 @@ export const useAuth = () => {
       const authState: authStateInterface | null = $q.localStorage.getItem('authState')
       if (authState) {
         $aStore.$patch(authState)
-        prepareTokenTime(authState.token_exp!)
+        prepareTokenTime(authState.token!.token_exp!)
       }
     }
-
-
-
   }
 
 };

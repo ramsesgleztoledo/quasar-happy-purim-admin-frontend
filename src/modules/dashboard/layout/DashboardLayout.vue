@@ -1,3 +1,5 @@
+<!-- eslint-disable @typescript-eslint/no-unused-vars -->
+
 <template>
   <!-- Navbar -->
   <q-layout v-if="!isLoading" view="lHh Lpr lFf" class="dashboard-layout-container">
@@ -39,12 +41,9 @@ import type { LinksDataInterface } from '../data/links'
 import { linksData } from '../data/links'
 import { useUI } from 'src/modules/UI/composables'
 import { useUIStore } from 'src/modules/UI/store/ui-store'
-import { useQuasar } from 'quasar'
 import { useRouter } from 'vue-router'
 import { useDashboard } from '../composables/useDashboard'
-
 const $uiStore = useUIStore()
-const $q = useQuasar()
 const $router = useRouter()
 const { isMobile } = useUI()
 const { loadStartedData, getMemberSummary } = useDashboard()
@@ -55,32 +54,25 @@ let getMembersSummaryInterval: NodeJS.Timeout | null = null
 const linksList: LinksDataInterface[] = linksData
 
 onMounted(() => {
-  $q.loading.show({
-    message: 'Loading ...',
-    spinnerColor: '#ef6982',
-    messageColor: '#ef6982',
-  })
-
-  // console.log('==== getting initial data in dashboard layout ====')
-
-  loadStartedData()
-    .then(() => {
-      $q.loading.hide()
-      isLoading.value = false
-      getMembersSummaryInterval = setInterval(() => {
-        getMemberSummary().then()
-      }, 8000)
-    })
-    .catch(() => {
-      $q.loading.hide()
-      isLoading.value = false
-      $router.push({ name: '500' })
-    })
+  loadData().catch(console.error)
 })
 
 onUnmounted(() => {
   if (getMembersSummaryInterval) clearInterval(getMembersSummaryInterval)
 })
+
+const loadData = async () => {
+  try {
+    await loadStartedData()
+    isLoading.value = false
+    getMembersSummaryInterval = setInterval(() => {
+      getMemberSummary().then()
+    }, 8000)
+  } catch {
+    isLoading.value = false
+    $router.push({ name: '500' })
+  }
+}
 </script>
 
 <style lang="scss" scoped>

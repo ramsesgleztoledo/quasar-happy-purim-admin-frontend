@@ -18,7 +18,7 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import DisplayItem from '../../../../components/DisplayItem/DisplayItem.vue'
-import { useDashboardStore } from 'src/modules/dashboard/store/dashboardStore'
+import { useDashboardStore } from 'src/modules/dashboard/store/dashboardStore/dashboardStore'
 import type { ItemBasketInterface } from 'src/modules/dashboard/interfaces/item-interface'
 
 const dStore = useDashboardStore()

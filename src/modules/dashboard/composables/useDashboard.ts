@@ -1,9 +1,9 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { computed } from "vue";
-import { useDashboardStore } from "../store/dashboardStore";
-import { useDashboardService } from "src/services/dashboard.service";
+import { useDashboardStore } from "../store/dashboardStore/dashboardStore";
+import { useDashboardService } from "src/modules/dashboard/services/dashboard.service";
 import { useQuasar } from "quasar";
-import type { DashboardStateInterface } from "../store/dashboard-store-interfaces";
+import type { DashboardStateInterface } from "../store/dashboardStore/dashboard-store-interfaces";
 
 export const useDashboard = () => {
 
@@ -15,10 +15,16 @@ export const useDashboard = () => {
 
 
   return {
-    state: computed(() => $dStore.$state),
+    dashboardState: computed(() => $dStore.$state),
     reset: () => $dStore.$reset(),
 
     async loadStartedData() {
+      $q.loading.show({
+        message: 'Loading ...',
+        spinnerColor: '#ef6982',
+        messageColor: '#ef6982',
+      })
+
       const promises: Promise<any>[] =
         [
           getOrderTotalGraph(),
@@ -67,7 +73,7 @@ export const useDashboard = () => {
 
       $dStore.$patch(dashboardState)
 
-
+      $q.loading.hide()
     },
     async getMemberSummary() {
       try {

@@ -57,24 +57,10 @@ export interface BasketSizeBreakdownInterface {
 }
 
 export interface BasketInfoInterface {
-  result: BasketInfoResultInterface;
-  premiumBaskets: number | null;
-  cardsEmails: number | null;
+  label: string;
+  value: number;
+  redirect?: string | undefined | null;
 }
-
-export interface BasketInfoResultInterface {
-  delivery: number;
-  shipping: number | null;
-  shippingSummary: ShippingSummaryInterface[];
-  personalUse: number;
-  total: number;
-}
-
-export interface ShippingSummaryInterface {
-  description: string;
-  ordered: number;
-}
-
 export interface OrderItemsInterface {
   itemID: number;
   itemDescription: string;
@@ -87,8 +73,4 @@ export interface MemberSummaryInterface {
   membersOnline: number;
   membersOnlineNames: string;
 }
-
-
-
-
 

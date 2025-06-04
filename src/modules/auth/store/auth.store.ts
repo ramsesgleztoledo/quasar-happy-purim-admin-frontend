@@ -4,10 +4,9 @@ import type { authStateInterface } from './auth-store-interfaces';
 
 const initialState: authStateInterface = {
   user: null,
-  company: null,
+  shul: null,
   token: null,
-  token_exp: null,
-  refresh_token: null
+  serverToken: null
 }
 
 export const useAuthStore = defineStore('authStore', {
@@ -17,13 +16,13 @@ export const useAuthStore = defineStore('authStore', {
   }),
 
   getters: {
-    isAuthenticated: (state) => !!state.token,
+    isAuthenticated: (state) => !!state.token?.token,
   },
 
   actions: {
-    setToken(token: string) {
-      this.token = token;
-    },
+    // setToken(token: string) {
+    //   this.token = token;
+    // },
 
   },
 });

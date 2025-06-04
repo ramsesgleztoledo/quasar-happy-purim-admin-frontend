@@ -1,7 +1,7 @@
 export interface ItemBasketInterface {
-  label: string
-  value: number | string
-  color?: string
-  redirectTo?: string
-  hover?: string
+  label: string;
+  value: number | string;
+  color?: string | undefined;
+  redirectTo?: string | null | undefined;
+  hover?: string;
 }

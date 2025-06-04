@@ -35,7 +35,7 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import HalfDoughnutChart from '../../../../components/ChartJs/HalfDoughnutChart/HalfDoughnutChart.vue'
-import { useDashboardStore } from 'src/modules/dashboard/store/dashboardStore'
+import { useDashboardStore } from 'src/modules/dashboard/store/dashboardStore/dashboardStore'
 import { generateRandomColor } from 'src/helpers'
 
 interface DataArrayInterface {

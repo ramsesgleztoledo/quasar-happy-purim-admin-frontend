@@ -1,5 +1,5 @@
 import type { RouteRecordRaw } from "vue-router";
-import { memberRoutes } from "../pages/MemberSettingsPage/router";
+import { memberRoutes } from "../pages/MemberSettingsPage/router/routes";
 import isAuth from "src/modules/auth/guards/auth.guard";
 
 export const dashboardRoutes: RouteRecordRaw[] = [

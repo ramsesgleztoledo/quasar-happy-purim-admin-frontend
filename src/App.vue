@@ -10,6 +10,8 @@ import { useAuth } from './modules/auth/composables/useAuth'
 
 const { checkLocalStoreAuth } = useAuth()
 
+
+
 onMounted(() => {
   checkLocalStoreAuth()
 })

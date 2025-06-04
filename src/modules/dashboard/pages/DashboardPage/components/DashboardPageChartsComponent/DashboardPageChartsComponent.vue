@@ -40,7 +40,7 @@
 <script setup lang="ts">
 import { useUI } from 'src/modules/UI/composables'
 import WidgetChart from '../../../../components/WidgetChart/WidgetChart.vue'
-import { useDashboardStore } from 'src/modules/dashboard/store/dashboardStore'
+import { useDashboardStore } from 'src/modules/dashboard/store/dashboardStore/dashboardStore'
 import { computed } from 'vue'
 import type { DataItemInterface } from 'src/modules/dashboard/components/WidgetChart/widget-chart-interfaces'
 

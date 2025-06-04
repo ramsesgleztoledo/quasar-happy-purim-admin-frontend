@@ -29,8 +29,6 @@
     <div class="col-12">
       <div class="BasketStatisticsComponent-baskets-type-container">
         <DisplayItem
-          total-label="Total Baskets Required:"
-          :count-total="totalBaskets"
           :styles="{
             maxHeight: '250px',
             overflow: 'auto',
@@ -43,7 +41,7 @@
 </template>
 
 <script setup lang="ts">
-import { useDashboardStore } from 'src/modules/dashboard/store/dashboardStore'
+import { useDashboardStore } from 'src/modules/dashboard/store/dashboardStore/dashboardStore'
 import PieChart from '../../../../components/ChartJs/PieChart/PieChart.vue'
 import DisplayItem from '../../../../components/DisplayItem/DisplayItem.vue'
 import { computed } from 'vue'
@@ -56,89 +54,25 @@ interface DataArrayInterface {
   color: string
 }
 
-const dStore = useDashboardStore()
+const $dStore = useDashboardStore()
 
 const dataArray = computed<DataArrayInterface[]>(() =>
-  dStore.basketSizeBreakdown.map((item) => ({
+  $dStore.basketSizeBreakdown.map((item) => ({
     label: item.basketSize,
     quantity: item.total,
     color: generateRandomColor(),
   })),
 )
-
-const totalBaskets = computed(() => dStore.basketInfo?.result?.total || 0)
-
-const baskets = computed(() => {
-  let bks: ItemBasketInterface[] = []
-
-  if (dStore.basketInfo?.result?.delivery !== null) {
-    bks = [
-      ...bks,
-      {
-        label: 'Baskets Required for Delivery:',
-        value: dStore.basketInfo?.result?.delivery || 0,
-        redirectTo: 'has',
-        color: '#3c5ce0',
-      },
-    ]
-  }
-  if (dStore.basketInfo?.result?.personalUse !== null) {
-    bks = [
-      ...bks,
-      {
-        label: 'Baskets sold for Personal Use:',
-        value: dStore.basketInfo?.result?.personalUse || 0,
-        redirectTo: 'has',
-        color: '#3c5ce0',
-      },
-    ]
-  }
-
-  if (dStore.basketInfo?.result?.shipping !== null) {
-    bks = [
-      ...bks,
-      {
-        label: 'Shipping Baskets',
-        value: dStore.basketInfo?.result?.shipping || 0,
-        redirectTo: 'has',
-        color: '#3c5ce0',
-      },
-    ]
-  }
-
-  bks = [
-    ...bks,
-    ...(dStore.basketInfo?.result?.shippingSummary.map((item) => ({
-      label: item.description,
-      value: item.ordered,
-      redirectTo: 'has',
-      color: '#3c5ce0',
-    })) || []),
-  ]
-
-  if (dStore.basketInfo?.premiumBaskets !== null) {
-    bks = [
-      ...bks,
-      {
-        label: 'Premium Baskets',
-        value: dStore.basketInfo?.premiumBaskets || 0,
-      },
-    ]
-  }
-  if (dStore.basketInfo?.cardsEmails !== null) {
-    bks = [
-      ...bks,
-      {
-        label: 'Cards Emails',
-        value: dStore.basketInfo?.cardsEmails || 0,
-        redirectTo: 'has',
-        color: '#3c5ce0',
-      },
-    ]
-  }
-
-  return bks
-})
+const baskets = computed<ItemBasketInterface[]>(() =>
+  $dStore.basketInfo.map((item) => ({
+    label: item.label,
+    value: item.value,
+    redirectTo:
+      typeof item.redirect === 'string' && item.redirect != 'undefined' ? item.redirect : undefined,
+    color:
+      typeof item.redirect === 'string' && item.redirect != 'undefined' ? '#3c5ce0' : undefined,
+  })),
+)
 </script>
 
 <style scoped lang="scss">

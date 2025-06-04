@@ -97,7 +97,12 @@
           </div>
         </div>
       </template>
-      <InfoDialog v-model="agreementDialogFlag" title="Payment Processing" :innerHTML="innerHTML" />
+      <InfoDialog
+        v-model="agreementDialogFlag"
+        title="Payment Processing"
+        :innerHTML="innerHTML"
+        btnLabel="Ok"
+      />
     </div>
   </div>
 </template>

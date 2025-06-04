@@ -1,7 +1,7 @@
 
 import { defineStore, acceptHMRUpdate } from 'pinia';
 import type { DashboardStateInterface } from './dashboard-store-interfaces';
-import type { MemberSummaryInterface } from 'src/interfaces/dashboard.interface';
+import type { MemberSummaryInterface } from 'src/modules/dashboard/interfaces/dashboard.interface';
 
 
 
@@ -15,7 +15,7 @@ const initialState: DashboardStateInterface = {
   topTransactions: [],
   totalsRaised: undefined,
   basketSizeBreakdown: [],
-  basketInfo: undefined,
+  basketInfo: [],
   orderItems: [],
   memberSummary: undefined,
 }

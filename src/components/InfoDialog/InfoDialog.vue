@@ -8,18 +8,23 @@
       </div>
 
       <q-card-section class="q-pt-none" style="padding: 50px">
-        <div class="row custom-dialog-body-container">
+        <div
+          class="row custom-dialog-body-container"
+          :style="{
+            maxHeight: !height ? '400px' : 'auto',
+          }"
+        >
           <div class="col-12">
             <p v-if="!innerHTML">
               {{ msg }}
             </p>
-            <div v-else v-html="innerHTML"></div>
+            <div v-else v-html="innerHTML" :class="htmlContainerClasses"></div>
           </div>
         </div>
       </q-card-section>
 
       <q-card-actions class="custom-dialog-footer-container" align="right">
-        <q-btn label="Close" color="primary" v-close-popup />
+        <q-btn :label="btnLabel ? btnLabel : 'Close'" color="primary" v-close-popup />
       </q-card-actions>
     </q-card>
   </q-dialog>
@@ -33,6 +38,9 @@ interface DialogAlertPropsInterface {
   innerHTML?: string
   modelValue: boolean
   title?: string
+  height?: string
+  htmlContainerClasses?: string
+  btnLabel?: string
 }
 
 const $props = withDefaults(defineProps<DialogAlertPropsInterface>(), {

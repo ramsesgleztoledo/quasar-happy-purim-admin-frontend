@@ -19,18 +19,19 @@
           <TableCustom
             class-name="table-sticky-header-column-table table-cursor-pinter-custom"
             styles="height: 628px"
-            :rows="archive"
+            :rows="emailState.campaigns"
             :columns="columns"
             row-key="id"
             title="Campaigns"
             @onRowClick="
-              () =>
+              ({ row }) => {
                 $router.push({
                   name: 'EmailStatsPage-campaign',
                   params: {
-                    campaignId: 33,
+                    campaignId: row.campaignID,
                   },
                 })
+              }
             "
           />
         </div>
@@ -40,108 +41,35 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
+import { onMounted, ref } from 'vue'
 
 import type { QTableColumn } from 'quasar'
-import { convertToUSDate, convertWithCommas } from 'src/helpers'
+import { convertToUSDate } from 'src/helpers'
 import TableCustom from 'src/components/TableCustom/TableCustom.vue'
+import { useEmail } from 'src/modules/dashboard/composables/useEmail'
+
+const { getEmails, emailState } = useEmail()
 
 const searchText = ref('')
 
-const archive = [
-  {
-    id: 1,
-    orderNumber: 13616548,
-    date: new Date(),
-    memberName: 'Jane',
-    setNumber: 1315311,
-    method: '-',
-    total: 36.33,
-    authCode: 10019,
-    nameOnCard: 'John',
-  },
-  {
-    id: 1,
-    orderNumber: 13616548,
-    date: new Date(),
-    memberName: 'Jane',
-    setNumber: 1315311,
-    method: '-',
-    total: 36.33,
-    authCode: 10019,
-    nameOnCard: 'John',
-  },
-  {
-    id: 1,
-    orderNumber: 13616548,
-    date: new Date(),
-    memberName: 'Jane',
-    setNumber: 1315311,
-    method: '-',
-    total: 36.33,
-    authCode: 10019,
-    nameOnCard: 'John',
-  },
-  {
-    id: 1,
-    orderNumber: 13616548,
-    date: new Date(),
-    memberName: 'Jane',
-    setNumber: 1315311,
-    method: '-',
-    total: 36.33,
-    authCode: 10019,
-    nameOnCard: 'John',
-  },
-  {
-    id: 1,
-    orderNumber: 13616548,
-    date: new Date(),
-    memberName: 'Jane',
-    setNumber: 1315311,
-    method: '-',
-    total: 36.33,
-    authCode: 10019,
-    nameOnCard: 'John',
-  },
-  {
-    id: 1,
-    orderNumber: 13616548,
-    date: new Date(),
-    memberName: 'Jane',
-    setNumber: 1315311,
-    method: '-',
-    total: 36.33,
-    authCode: 10019,
-    nameOnCard: 'John',
-  },
-  {
-    id: 1,
-    orderNumber: 13616548,
-    date: new Date(),
-    memberName: 'Jane',
-    setNumber: 1315311,
-    method: '-',
-    total: 36.33,
-    authCode: 10019,
-    nameOnCard: 'John',
-  },
-]
+onMounted(() => {
+  getEmails()
+})
 
 const columns: QTableColumn[] = [
   {
-    name: 'orderNumber',
+    name: 'campaignID',
     required: true,
-    label: 'Order#',
+    label: 'campaign ID',
     align: 'left',
-    field: 'orderNumber',
+    field: 'campaignID',
     // format: (val: any) => `${val}`,
     sortable: true,
   },
   {
     name: 'date',
     required: true,
-    label: 'Date Added',
+    label: 'Date',
     align: 'left',
     field: 'date',
     format: (date: string) => convertToUSDate(date),
@@ -149,50 +77,65 @@ const columns: QTableColumn[] = [
   },
 
   {
-    name: 'memberName',
+    name: 'subject',
     required: true,
-    label: 'Member Name',
+    label: 'Subject',
     align: 'left',
-    field: 'memberName',
+    field: 'subject',
     sortable: true,
   },
   {
-    name: 'setNumber',
-    field: 'setNumber',
+    name: 'sentFrom',
+    field: 'sentFrom',
+    label: 'Sent From',
+    align: 'left',
+    required: true,
+    sortable: true,
+  },
+  {
+    name: 'sent',
+    field: 'sent',
     label: '#Sent',
     align: 'left',
     required: true,
     sortable: true,
   },
   {
-    name: 'method',
-    field: 'method',
-    label: 'Method',
+    name: 'processed',
+    field: 'processed',
+    label: '#Processed',
     align: 'left',
     required: true,
     sortable: true,
   },
   {
-    name: 'total',
-    field: 'total',
-    label: 'Total',
-    align: 'left',
-    format: (total: number) => `$${convertWithCommas(total)}`,
-    required: true,
-    sortable: true,
-  },
-  {
-    name: 'authCode',
-    field: 'authCode',
-    label: 'Auth Code',
+    name: 'dropped',
+    field: 'dropped',
+    label: '#Dropped',
     align: 'left',
     required: true,
     sortable: true,
   },
   {
-    name: 'nameOnCard',
-    field: 'nameOnCard',
-    label: 'Name on Card',
+    name: 'deferred',
+    field: 'deferred',
+    label: '#Deferred',
+    align: 'left',
+    required: true,
+    sortable: true,
+  },
+  {
+    name: 'delivered',
+    field: 'delivered',
+    label: '#Delivered',
+    align: 'left',
+    required: true,
+    sortable: true,
+  },
+  {
+    name: 'bounced',
+    field: 'bounced',
+    label: '#Bounced',
     align: 'left',
     required: true,
     sortable: true,

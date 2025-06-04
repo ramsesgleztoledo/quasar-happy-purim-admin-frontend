@@ -12,14 +12,9 @@ import type {
   BasketInfoInterface,
   OrderItemsInterface,
   MemberSummaryInterface
-} from "src/interfaces/dashboard.interface";
-import type { ExtraOptionsInterface } from "./api-interfaces";
-import { useApiCall } from "./apiCall";
-
-
-
-
-
+} from "src/modules/dashboard/interfaces/dashboard.interface";
+import type { ExtraOptionsInterface } from "../../../services/api-interfaces";
+import { useApiCall } from "../../../services/apiCall";
 
 export const useDashboardService = () => {
 
@@ -29,16 +24,16 @@ export const useDashboardService = () => {
   return {
     getOrderTotalGraph: async (extraOptions?: ExtraOptionsInterface): Promise<OrderGraphInterface[]> => {
 
-      const nextUrl = '/order-totals/graph';
+      const nextUrl = '/order-totals-graph';
       const url = `${baseUrl}${nextUrl}`;
       return await apiCall({
         url,
-        extraOptions
+        extraOptions,
       }) || []
     },
     getMembersOrdersGraph: async (extraOptions?: ExtraOptionsInterface): Promise<MembersOrdersGraphInterface[]> => {
 
-      const nextUrl = '/members-orders/graph';
+      const nextUrl = '/members-orders-graph';
       const url = `${baseUrl}${nextUrl}`;
       return await apiCall({
         url,
@@ -48,7 +43,7 @@ export const useDashboardService = () => {
 
     getParticipationInfoGraph: async (extraOptions?: ExtraOptionsInterface): Promise<ParticipationInfoGraphInterface | undefined | null> => {
 
-      const nextUrl = '/participation-info/graph';
+      const nextUrl = '/participation-info-graph';
       const url = `${baseUrl}${nextUrl}`;
       return await apiCall({
         url,
@@ -58,7 +53,7 @@ export const useDashboardService = () => {
 
     getFundraiserStatus: async (extraOptions?: ExtraOptionsInterface): Promise<FundraiserStatusInterface | undefined | null> => {
 
-      const nextUrl = '/fundraiser/status';
+      const nextUrl = '/fundraiser-status';
       const url = `${baseUrl}${nextUrl}`;
       return await apiCall({
         url,
@@ -116,14 +111,14 @@ export const useDashboardService = () => {
       }) || []
     },
 
-    getBasketInfo: async (extraOptions?: ExtraOptionsInterface): Promise<BasketInfoInterface | undefined | null> => {
+    getBasketInfo: async (extraOptions?: ExtraOptionsInterface): Promise<BasketInfoInterface[]> => {
 
       const nextUrl = '/baskets';
       const url = `${baseUrl}${nextUrl}`;
       return await apiCall({
         url,
         extraOptions,
-      })
+      }) || []
     },
 
     getOrderItems: async (extraOptions?: ExtraOptionsInterface): Promise<OrderItemsInterface[]> => {

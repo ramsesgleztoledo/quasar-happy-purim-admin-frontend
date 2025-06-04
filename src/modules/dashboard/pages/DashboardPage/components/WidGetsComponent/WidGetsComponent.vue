@@ -53,7 +53,7 @@
 import { useUI } from 'src/modules/UI/composables'
 import WidGet from '../../../../components/widget/WidGet.vue'
 import { convertToTextDate, convertWithCommas } from 'src/helpers'
-import { useDashboardStore } from 'src/modules/dashboard/store/dashboardStore'
+import { useDashboardStore } from 'src/modules/dashboard/store/dashboardStore/dashboardStore'
 import { computed } from 'vue'
 const { isMobile } = useUI()
 

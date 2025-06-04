@@ -105,7 +105,7 @@ import BasketStatisticsComponent from './components/BasketStatisticsComponent/Ba
 import OtherOrderItemsComponent from './components/OtherOrderItemsComponent/OtherOrderItemsComponent.vue'
 import { useUI } from 'src/modules/UI/composables'
 import InfoAlert from 'src/components/InfoAlert/InfoAlert.vue'
-import { useDashboardStore } from 'src/modules/dashboard/store/dashboardStore'
+import { useDashboardStore } from 'src/modules/dashboard/store/dashboardStore/dashboardStore'
 import { computed, onMounted, ref } from 'vue'
 import { _fundraiserClosedHTML, _fundraiserReciprocityHTML } from 'src/static-data/data'
 import { useRouter } from 'vue-router'

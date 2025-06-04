@@ -269,15 +269,50 @@ hr {
 
 .custom-dialog-header-container {
   box-shadow: 0px 0px 10px 0px black !important;
-  position: relative;
+  position: sticky;
+  top: 0;
   z-index: 9;
 }
 .custom-dialog-body-container {
-  max-height: 400px;
   overflow: auto;
 }
 .custom-dialog-footer-container {
   box-shadow: 0px 1px 8px -3px black !important;
-  position: relative;
+  position: sticky;
+  bottom: 0;
   z-index: 9;
+  background-color: white;
+}
+
+.table-white-container {
+  background-color: white;
+  overflow: auto;
+}
+
+.html-display-container {
+  width: 100%;
+}
+
+.html-display-container {
+  width: 100% !important;
+  overflow-wrap: break-word !important;
+  box-sizing: border-box !important;
+}
+
+.html-display-container img {
+  max-width: 100% !important;
+}
+
+.html-display-container table {
+  max-width: 100% !important;
+}
+
+.html-display-container div {
+  width: 100% !important;
+}
+
+@media (min-width: 600px) {
+  .q-dialog__inner--minimized > div {
+    max-width: 1000px !important;
+  }
 }

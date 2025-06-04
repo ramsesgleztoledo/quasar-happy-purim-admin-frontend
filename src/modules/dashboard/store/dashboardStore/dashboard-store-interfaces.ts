@@ -1,4 +1,4 @@
-import type { BasketInfoInterface, BasketSizeBreakdownInterface, FundraiserStatusInterface, FundraiserTotalsInterface, MembersOrdersGraphInterface, MemberSummaryInterface, OrderGraphInterface, OrderItemsInterface, ParticipationInfoGraphInterface, ParticipationRateInterface, TopTransactionsInterface, TotalsRaisedInterface } from 'src/interfaces/dashboard.interface';
+import type { BasketInfoInterface, BasketSizeBreakdownInterface, FundraiserStatusInterface, FundraiserTotalsInterface, MembersOrdersGraphInterface, MemberSummaryInterface, OrderGraphInterface, OrderItemsInterface, ParticipationInfoGraphInterface, ParticipationRateInterface, TopTransactionsInterface, TotalsRaisedInterface } from 'src/modules/dashboard/interfaces/dashboard.interface';
 
 export interface DashboardStateInterface {
   orderTotalGraph: OrderGraphInterface[];
@@ -10,7 +10,7 @@ export interface DashboardStateInterface {
   topTransactions: TopTransactionsInterface[];
   totalsRaised?: TotalsRaisedInterface | undefined;
   basketSizeBreakdown: BasketSizeBreakdownInterface[];
-  basketInfo?: BasketInfoInterface | undefined;
+  basketInfo: BasketInfoInterface[];
   orderItems: OrderItemsInterface[];
   memberSummary?: MemberSummaryInterface | undefined;
 }

@@ -20,7 +20,7 @@
 
 <script setup lang="ts">
 import { convertWithCommas } from 'src/helpers'
-import { useDashboardStore } from 'src/modules/dashboard/store/dashboardStore'
+import { useDashboardStore } from 'src/modules/dashboard/store/dashboardStore/dashboardStore'
 import { computed } from 'vue'
 
 const dStore = useDashboardStore()

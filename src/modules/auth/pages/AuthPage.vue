@@ -1,3 +1,6 @@
+<template>
+  <div></div>
+</template>
 <script setup lang="ts">
 import { useQuasar } from 'quasar'
 import { onMounted } from 'vue'
@@ -18,5 +21,3 @@ onMounted(() => {
   $q.loading.hide()
 })
 </script>
-
-<style scoped lang="scss"></style>
