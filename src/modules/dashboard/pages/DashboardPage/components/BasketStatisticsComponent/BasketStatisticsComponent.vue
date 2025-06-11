@@ -46,7 +46,7 @@ import PieChart from '../../../../components/ChartJs/PieChart/PieChart.vue'
 import DisplayItem from '../../../../components/DisplayItem/DisplayItem.vue'
 import { computed } from 'vue'
 import { generateRandomColor } from 'src/helpers'
-import type { ItemBasketInterface } from 'src/modules/dashboard/interfaces/item-interface'
+import type { ItemBasketInterface } from 'src/modules/dashboard/interfaces/item-interfaces'
 
 interface DataArrayInterface {
   label: string

@@ -45,10 +45,12 @@
         <div>
           <div v-if="!isMobile" class="dashboard-layout-right-info">
             <div class="row">
-              <div class="col-12">Demo Synagogue</div>
+              <div class="col-12">{{ $aStore.$state.shul?.shulName }}</div>
             </div>
             <div class="row">
-              <div class="col-12 dashboard-user-info">JANE COHEN</div>
+              <div class="col-12 dashboard-user-info">
+                {{ $aStore.$state.user?.firstName }} {{ $aStore.$state.user?.lastName }}
+              </div>
             </div>
           </div>
           <div v-else class="dashboard-search-icon-mobile">
@@ -89,11 +91,13 @@
 </template>
 
 <script setup lang="ts">
+import { useAuthStore } from 'src/modules/auth/store/auth.store'
 import { useUI } from 'src/modules/UI/composables'
 import { useUIStore } from 'src/modules/UI/store/ui-store'
 import { ref } from 'vue'
 
 const $uiStore = useUIStore()
+const $aStore = useAuthStore()
 
 const { isMobile, goBack, goForward } = useUI()
 

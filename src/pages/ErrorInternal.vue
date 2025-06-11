@@ -8,7 +8,7 @@
       </div>
 
       <q-btn
-        class="q-mt-xl"
+        class="q-mt-xl q-ma-sm"
         color="white"
         text-color="blue"
         unelevated
@@ -16,8 +16,21 @@
         label="Go Home"
         no-caps
       />
+      <q-btn
+        v-if="isDev"
+        class="q-mt-xl q-ma-sm"
+        color="black"
+        text-color="white"
+        unelevated
+        to="/accounts"
+        label="Go to accounts (dev)"
+        no-caps
+      />
     </div>
   </div>
 </template>
 
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import { useUI } from 'src/modules/UI/composables'
+const { isDev } = useUI()
+</script>

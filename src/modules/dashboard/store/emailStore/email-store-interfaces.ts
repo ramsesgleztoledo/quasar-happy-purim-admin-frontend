@@ -3,5 +3,5 @@ import type { CampaignDetailsInterface, CampaignInterface, } from "../../interfa
 
 export interface emailStateInterface {
   campaigns: CampaignInterface[];
-  selectedCampaign?: CampaignDetailsInterface | undefined | null;
+  selectedCampaign: CampaignDetailsInterface | undefined | null;
 }

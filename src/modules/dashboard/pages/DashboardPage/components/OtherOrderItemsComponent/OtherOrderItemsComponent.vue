@@ -1,5 +1,5 @@
 <template>
-  <p class="OtherOrderItemsComponent-basket-statistics q-mb-md">Other Order Items</p>
+  <p class="OtherOrderItemsComponent-basket-statistics q-mb-md">Other Orders Items</p>
   <div class="row q-mt-md">
     <div class="col-12">
       <div class="BasketStatisticsComponent-baskets-type-container">
@@ -19,32 +19,25 @@
 import { computed } from 'vue'
 import DisplayItem from '../../../../components/DisplayItem/DisplayItem.vue'
 import { useDashboardStore } from 'src/modules/dashboard/store/dashboardStore/dashboardStore'
-import type { ItemBasketInterface } from 'src/modules/dashboard/interfaces/item-interface'
+import type { ItemBasketInterface } from 'src/modules/dashboard/interfaces/item-interfaces'
+import { convertWithCommas } from 'src/helpers'
 
 const dStore = useDashboardStore()
 
 const orderItems = computed<ItemBasketInterface[]>(() => [
-  {
-    label: 'Total Members',
-    value: dStore.memberSummary?.totalMembers || 0,
-  },
-  {
-    label: 'Member logged in',
-    value: dStore.memberSummary?.membersLoggedIn || 0,
-  },
-  {
-    label: 'Member online',
-    value: dStore.memberSummary?.membersOnline || 0,
-  },
-  {
-    label: 'Member online Names',
-    value: 'show',
-    color: '#3c5ce0',
-    hover: `<p> ${dStore.memberSummary?.membersOnlineNames || ''} </p>`,
-  },
   ...dStore.orderItems.map((item) => ({
     label: item.itemDescription,
-    value: item.itemTotal,
+    value: `$${convertWithCommas(item.itemTotal)}`,
+    redirectTo: {
+      name: 'dashboard-itemDetailsPage',
+      params: {
+        itemId: item.itemID,
+      },
+      query: {
+        description: item.itemDescription,
+      },
+    },
+    color: '#3c5ce0',
   })),
 ])
 </script>

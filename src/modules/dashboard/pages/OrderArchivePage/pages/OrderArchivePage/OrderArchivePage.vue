@@ -19,10 +19,20 @@
           <TableCustom
             class-name="table-sticky-header-column-table table-cursor-pinter-custom"
             styles="height: 628px"
-            :rows="archive"
+            :rows="ordersArchiveState.orders"
             :columns="columns"
             row-key="id"
             title="Archived"
+            @onRowClick="
+              ({ row }) => {
+                $router.push({
+                  name: 'OrderArchivePage-orderDetails',
+                  params: {
+                    orderId: row.orderNum,
+                  },
+                })
+              }
+            "
           />
         </div>
       </div>
@@ -31,101 +41,28 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
+import { onMounted, ref } from 'vue'
 
 import type { QTableColumn } from 'quasar'
 import { convertToUSDate, convertWithCommas } from 'src/helpers'
 import TableCustom from 'src/components/TableCustom/TableCustom.vue'
+import { useOrderArchive } from '../../../../composables/useOrderArchive'
+
+const { getOrdersArchive, ordersArchiveState } = useOrderArchive()
 
 const searchText = ref('')
 
-const archive = [
-  {
-    id: 1,
-    orderNumber: 13616548,
-    date: new Date(),
-    memberName: 'Jane',
-    setNumber: 1315311,
-    method: '-',
-    total: 36.33,
-    authCode: 10019,
-    nameOnCard: 'John',
-  },
-  {
-    id: 1,
-    orderNumber: 13616548,
-    date: new Date(),
-    memberName: 'Jane',
-    setNumber: 1315311,
-    method: '-',
-    total: 36.33,
-    authCode: 10019,
-    nameOnCard: 'John',
-  },
-  {
-    id: 1,
-    orderNumber: 13616548,
-    date: new Date(),
-    memberName: 'Jane',
-    setNumber: 1315311,
-    method: '-',
-    total: 36.33,
-    authCode: 10019,
-    nameOnCard: 'John',
-  },
-  {
-    id: 1,
-    orderNumber: 13616548,
-    date: new Date(),
-    memberName: 'Jane',
-    setNumber: 1315311,
-    method: '-',
-    total: 36.33,
-    authCode: 10019,
-    nameOnCard: 'John',
-  },
-  {
-    id: 1,
-    orderNumber: 13616548,
-    date: new Date(),
-    memberName: 'Jane',
-    setNumber: 1315311,
-    method: '-',
-    total: 36.33,
-    authCode: 10019,
-    nameOnCard: 'John',
-  },
-  {
-    id: 1,
-    orderNumber: 13616548,
-    date: new Date(),
-    memberName: 'Jane',
-    setNumber: 1315311,
-    method: '-',
-    total: 36.33,
-    authCode: 10019,
-    nameOnCard: 'John',
-  },
-  {
-    id: 1,
-    orderNumber: 13616548,
-    date: new Date(),
-    memberName: 'Jane',
-    setNumber: 1315311,
-    method: '-',
-    total: 36.33,
-    authCode: 10019,
-    nameOnCard: 'John',
-  },
-]
+onMounted(() => {
+  getOrdersArchive()
+})
 
 const columns: QTableColumn[] = [
   {
-    name: 'orderNumber',
+    name: 'orderNum',
     required: true,
     label: 'Order#',
     align: 'left',
-    field: 'orderNumber',
+    field: 'orderNum',
     // format: (val: any) => `${val}`,
     sortable: true,
   },
@@ -148,8 +85,8 @@ const columns: QTableColumn[] = [
     sortable: true,
   },
   {
-    name: 'setNumber',
-    field: 'setNumber',
+    name: 'numSent',
+    field: 'numSent',
     label: '#Sent',
     align: 'left',
     required: true,
@@ -191,4 +128,6 @@ const columns: QTableColumn[] = [
 ]
 </script>
 
-<style scoped lang="scss"></style>
+<style scoped lang="scss">
+@import './OrderArchivePage.scss';
+</style>

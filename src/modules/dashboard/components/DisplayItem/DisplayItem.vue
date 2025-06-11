@@ -38,7 +38,7 @@
 
 <script setup lang="ts">
 import { useRouter } from 'vue-router'
-import type { ItemBasketInterface } from '../../interfaces/item-interface'
+import type { ItemBasketInterface } from '../../interfaces/item-interfaces'
 
 interface DisplayItemPropsInterface {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -54,7 +54,7 @@ defineProps<DisplayItemPropsInterface>()
 
 const onItemCLicked = (item: ItemBasketInterface) => {
   if (!item.redirectTo) return
-  return $router.push({ name: item.redirectTo })
+  return $router.push(item.redirectTo)
 }
 </script>
 

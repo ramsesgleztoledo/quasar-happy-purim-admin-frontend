@@ -1,12 +1,13 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 
 import { AxiosError, AxiosHeaders } from "axios";
 import { useQuasar } from "quasar";
 import { api } from "src/boot/axios";
 import { useRouter } from "vue-router";
 import type { ApiCallInterface } from "./api-interfaces";
-import type { ExtraOptionsInterface } from './api-interfaces';
+import type { ExtraOptionsInterface, CacheItemInterface } from './api-interfaces';
 import type { authStateInterface } from "src/modules/auth/store/auth-store-interfaces";
-import { fetchWithCache } from "./api-cache";
+import Dexie, { type Table } from 'dexie';
 
 
 
@@ -14,6 +15,14 @@ export const useApiCall = () => {
 
   const $q = useQuasar();
   const $router = useRouter();
+
+  const db = new Dexie('CacheDB');
+
+  db.version(1).stores({
+    cache: 'key, timestamp',
+  });
+
+  const cache: Table<CacheItemInterface, string> = db.table('cache');
 
 
 
@@ -50,6 +59,45 @@ export const useApiCall = () => {
     }
   };
 
+  const saveInCache = async (key: string, data: any) => {
+    const timestamp = Date.now();
+    await cache.put({ key, data, timestamp });
+  };
+
+  const fetchWithCache = async <T>(
+    key: string,
+    fetchFunction: () => Promise<T>,
+    extraOptions?: ExtraOptionsInterface | undefined | null)
+    : Promise<T> => {
+
+    try {
+      const ttl = (extraOptions?.ttl ? extraOptions?.ttl : 20) * 60 * 1000;
+      const cached = await cache.get(key);
+
+      const now = Date.now();
+
+      if (
+        extraOptions?.useCache &&
+        cached &&
+        (now - cached.timestamp) < ttl
+      ) {
+        const cachedData: T = cached.data
+
+        return cachedData;
+      }
+
+      const data: T = await fetchFunction()
+      await saveInCache(key, data)
+
+      return data
+    }
+
+    catch (error) {
+      console.error(error);
+      throw error
+    }
+  }
+
   const apiCall = async <T>(options: ApiCallInterface): Promise<T | undefined | null> => {
 
     const method: string = options.method || 'GET';
@@ -78,7 +126,7 @@ export const useApiCall = () => {
         })
       }
 
-      const key = options.url;
+      const key = `${options.url}:::${token}`;
       const fetchFunction = async () => {
         return (await api({
           data: options.data,
@@ -114,9 +162,17 @@ export const useApiCall = () => {
     return data;
   };
 
+  const clearCache = async () => {
+    return await cache.clear()
+  };
+
+
   return {
     apiCall,
-    errorAction
+    errorAction,
+    saveInCache,
+    fetchWithCache,
+    clearCache,
   }
 
 }

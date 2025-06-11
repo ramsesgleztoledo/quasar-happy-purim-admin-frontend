@@ -16,6 +16,12 @@ export const dashboardRoutes: RouteRecordRaw[] = [
         name: 'dashboard-DashboardPage',
         component: () =>
           import(/* webpackChunkName: "dashboard-DashboardPage" */ "../pages/DashboardPage/DashboardPage.vue"),
+      },
+      {
+        path: 'item-details/:itemId',
+        name: 'dashboard-itemDetailsPage',
+        component: () =>
+          import(/* webpackChunkName: "dashboard-itemDetailsPage" */ "../pages/ItemsPage/ItemsPage.vue"),
       }
       ,
       ...memberRoutes
@@ -48,8 +54,21 @@ export const dashboardRoutes: RouteRecordRaw[] = [
       {
         path: 'order-archive',
         name: 'dashboard-OrderArchivePage',
-        component: () =>
-          import(/* webpackChunkName: "dashboard-OrderArchivePage" */ "../pages/OrderArchivePage/OrderArchivePage.vue"),
+        redirect: { name: 'OrderArchivePage-orders' },
+        children: [
+          {
+            path: '',
+            name: 'OrderArchivePage-orders',
+            component: () =>
+              import(/* webpackChunkName: "dashboard-OrderArchivePage" */ "../pages/OrderArchivePage/pages/OrderArchivePage/OrderArchivePage.vue"),
+          },
+          {
+            path: ':orderId',
+            name: 'OrderArchivePage-orderDetails',
+            component: () =>
+              import(/* webpackChunkName: "dashboard-OrderArchivePage" */ "../pages/OrderArchivePage/pages/OrderDetailPage/OrderDetailPage.vue"),
+          },
+        ]
       }
       ,
       {

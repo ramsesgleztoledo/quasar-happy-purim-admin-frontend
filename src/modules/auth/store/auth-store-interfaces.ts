@@ -1,8 +1,8 @@
 export interface authStateInterface {
-  shul?: authShulInterface | undefined | null;
-  user?: authUserInterface | undefined | null;
-  token?: authTokenInterface | undefined | null;
-  serverToken?: authServerTokenInterface | undefined | null;
+  shul: authShulInterface | undefined | null;
+  user: authUserInterface | undefined | null;
+  token: authTokenInterface | undefined | null;
+  serverToken: authServerTokenInterface | undefined | null;
 }
 export interface authShulInterface {
   shulId: string;

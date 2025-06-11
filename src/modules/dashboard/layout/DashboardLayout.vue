@@ -29,6 +29,13 @@
         </div>
       </div>
     </q-page-container>
+    <q-footer reveal elevated>
+      <q-toolbar style="min-height: 5px !important">
+        <p class="d-flex justify-content-end w-full q-pa-sm" style="margin: 0px">
+          2025 Happy Purim LLC, ALl Rights Reserved. | HappyPurim Admin Panel (v{{ version }})
+        </p>
+      </q-toolbar>
+    </q-footer>
   </q-layout>
 </template>
 
@@ -43,9 +50,10 @@ import { useUI } from 'src/modules/UI/composables'
 import { useUIStore } from 'src/modules/UI/store/ui-store'
 import { useRouter } from 'vue-router'
 import { useDashboard } from '../composables/useDashboard'
+
 const $uiStore = useUIStore()
 const $router = useRouter()
-const { isMobile } = useUI()
+const { isMobile, version } = useUI()
 const { loadStartedData, getMemberSummary } = useDashboard()
 
 const isLoading = ref(true)
@@ -65,8 +73,9 @@ const loadData = async () => {
   try {
     await loadStartedData()
     isLoading.value = false
+    if (getMembersSummaryInterval) clearInterval(getMembersSummaryInterval)
     getMembersSummaryInterval = setInterval(() => {
-      getMemberSummary().then()
+      getMemberSummary().catch(console.error)
     }, 8000)
   } catch {
     isLoading.value = false

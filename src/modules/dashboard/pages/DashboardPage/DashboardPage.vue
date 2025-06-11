@@ -2,7 +2,7 @@
   <div>
     <div class="row">
       <div class="col-12 top-title-col">
-        <p class="user-client-title">Demo Synagogue</p>
+        <p class="user-client-title">{{ $aStore.$state.shul?.shulName }}</p>
         <div class="separator-right q-mr-sm q-ml-sm"></div>
       </div>
     </div>
@@ -86,6 +86,13 @@
         <div class="row q-mb-sm">
           <div class="col-12">
             <div class="DashboardPage-basket-statistics-container">
+              <MembersSummaryComponent />
+            </div>
+          </div>
+        </div>
+        <div class="row q-mb-sm">
+          <div class="col-12">
+            <div class="DashboardPage-basket-statistics-container">
               <OtherOrderItemsComponent />
             </div>
           </div>
@@ -109,13 +116,18 @@ import { useDashboardStore } from 'src/modules/dashboard/store/dashboardStore/da
 import { computed, onMounted, ref } from 'vue'
 import { _fundraiserClosedHTML, _fundraiserReciprocityHTML } from 'src/static-data/data'
 import { useRouter } from 'vue-router'
+import { useAuthStore } from 'src/modules/auth/store/auth.store'
+import MembersSummaryComponent from './components/MembersSumaryComponent/MembersSummaryComponent.vue'
+
 const { isMobile } = useUI()
-const dStore = useDashboardStore()
 const $router = useRouter()
 
+const $dStore = useDashboardStore()
+const $aStore = useAuthStore()
+
 const fundraiserStatus = computed(() => ({
-  fundraiserClosed: dStore.fundraiserStatus?.fundraiserClosed || true,
-  hasReciprocityTrans: dStore.fundraiserStatus?.hasReciprocityTrans || false,
+  fundraiserClosed: $dStore.fundraiserStatus?.fundraiserClosed || true,
+  hasReciprocityTrans: $dStore.fundraiserStatus?.hasReciprocityTrans || false,
 }))
 
 const fundraiserClosedHTML = ref(_fundraiserClosedHTML)

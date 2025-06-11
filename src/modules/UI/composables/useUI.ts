@@ -95,6 +95,8 @@ export const useUI = () => {
     isMobileByQuasar,
     reloadPage,
     goBack,
-    goForward
+    goForward,
+    isDev: computed(() => process.env.NODE_ENV === 'development'),
+    version: computed(() => process.env.VERSION || ''),
   };
 };

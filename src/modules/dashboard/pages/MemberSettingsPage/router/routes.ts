@@ -5,6 +5,8 @@ export const memberRoutes: RouteRecordRaw[] = [
     path: 'members-settings',
     name: 'MembersSettingsPage',
     redirect: { name: 'MembersSettingsPage-home', },
+    component: () =>
+      import(/* webpackChunkName: "members-settings" */ "../layout/MemberLayout.vue"),
     children: [
 
       {

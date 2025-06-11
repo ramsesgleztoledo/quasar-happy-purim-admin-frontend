@@ -1,7 +1,7 @@
 
 import { defineStore, acceptHMRUpdate } from 'pinia';
 import type { DashboardStateInterface } from './dashboard-store-interfaces';
-import type { MemberSummaryInterface } from 'src/modules/dashboard/interfaces/dashboard.interface';
+import type { MemberSummaryInterface } from 'src/modules/dashboard/interfaces/dashboard-interfaces';
 
 
 
@@ -31,7 +31,7 @@ export const useDashboardStore = defineStore('dashBoardStore', {
 
   actions: {
     setMemberSummary(memberSummary: MemberSummaryInterface) {
-      this.memberSummary = memberSummary
+      this.memberSummary = { ...memberSummary }
     },
 
   }

@@ -1,7 +1,7 @@
 <template>
   <div class="row">
     <div
-    class="q-mb-sm"
+      class="q-mb-sm"
       :class="{
         'col-4': !isMobile,
         'col-12': isMobile,
@@ -39,13 +39,13 @@
       <TableCustom
         class-name="table-sticky-header-column-table table-cursor-pinter-custom"
         styles="height: 628px"
-        :rows="membersMock"
+        :rows="memberState.members"
         :columns="columns"
         row-key="id"
-        title="Recent Orders"
+        title="Members List"
         @on-row-click="
           (data) => {
-            goToMember(data.row.id)
+            goToMember(data.row.m_id)
           }
         "
       />
@@ -57,13 +57,15 @@
 import type { QTableColumn } from 'quasar'
 import { convertToUSDate } from 'src/helpers/convertToUSDate'
 import { ref } from 'vue'
-import { members } from './mockups/mockups'
 import TableCustom from 'src/components/TableCustom/TableCustom.vue'
 import { useRouter } from 'vue-router'
 import { useUI } from 'src/modules/UI/composables'
+import type { MemberInterface } from '../../interfaces/member-interfaces'
+import { useMember } from '../../composables/useMember'
 
 const { isMobile } = useUI()
 const $router = useRouter()
+const { memberState } = useMember()
 
 const goToMember = (memberId: number) => {
   $router.push({
@@ -74,16 +76,13 @@ const goToMember = (memberId: number) => {
   })
 }
 
-const membersMock = members
-
-const columns: QTableColumn[] = [
+const columns: QTableColumn<MemberInterface>[] = [
   {
     name: 'lastName',
     required: true,
     label: 'Last Name',
     align: 'left',
-    field: 'lastName',
-    // format: (val: any) => `${val}`,
+    field: 'm_LastName',
     sortable: true,
   },
 
@@ -92,12 +91,12 @@ const columns: QTableColumn[] = [
     required: true,
     label: 'First Name',
     align: 'left',
-    field: 'firstName',
+    field: 'm_FName',
     sortable: true,
   },
   {
     name: 'spouse',
-    field: 'spouse',
+    field: 'm_SFName',
     label: 'Spouse',
     align: 'left',
     required: true,
@@ -105,7 +104,7 @@ const columns: QTableColumn[] = [
   },
   {
     name: 'title',
-    field: 'title',
+    field: 'm_title',
     label: 'Title',
     align: 'left',
     required: true,
@@ -113,7 +112,7 @@ const columns: QTableColumn[] = [
   },
   {
     name: 'address',
-    field: 'address',
+    field: 'm_Address1',
     label: 'Address',
     align: 'left',
     required: true,
@@ -121,7 +120,7 @@ const columns: QTableColumn[] = [
   },
   {
     name: 'city',
-    field: 'city',
+    field: 'm_City',
     label: 'City',
     align: 'left',
     required: true,
@@ -129,7 +128,7 @@ const columns: QTableColumn[] = [
   },
   {
     name: 'zipCode',
-    field: 'zipCode',
+    field: 'm_Zip',
     label: 'Zip Code',
     align: 'left',
     required: true,
@@ -137,7 +136,7 @@ const columns: QTableColumn[] = [
   },
   {
     name: 'phone',
-    field: 'phone',
+    field: 'm_phone',
     label: 'Phone#',
     align: 'left',
     required: true,
@@ -145,7 +144,7 @@ const columns: QTableColumn[] = [
   },
   {
     name: 'email',
-    field: 'email',
+    field: 'm_email',
     label: 'Email',
     align: 'left',
     required: true,
@@ -153,7 +152,7 @@ const columns: QTableColumn[] = [
   },
   {
     name: 'code',
-    field: 'code',
+    field: 'm_Code',
     label: 'Code',
     align: 'left',
     required: true,
@@ -161,7 +160,7 @@ const columns: QTableColumn[] = [
   },
   {
     name: 'misc',
-    field: 'misc',
+    field: 'm_misc',
     label: 'Misc',
     align: 'left',
     required: true,
@@ -172,8 +171,8 @@ const columns: QTableColumn[] = [
     required: true,
     label: 'Date Added',
     align: 'left',
-    field: 'dateAdded',
-    format: (processed: string) => convertToUSDate(processed),
+    field: 'm_added',
+    format: (date: string) => convertToUSDate(date),
     sortable: true,
   },
 ]

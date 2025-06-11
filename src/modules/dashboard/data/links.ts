@@ -10,13 +10,23 @@ export interface LinksDataInterface {
   disabled?: boolean
 }
 
+const linksDataDev: LinksDataInterface[] = [];
+
+if (process.env.NODE_ENV === 'development')
+  linksDataDev.push({
+    title: 'go to Accounts (dev)',
+    icon: 'person',
+    name: 'accountPage',
+  })
+
+
 export const linksData: LinksDataInterface[] = [
 
   {
     title: 'Dashboard',
     icon: 'home',
     name: 'dashboard-DashboardPage',
-
+    routeClass: ['dashboard-DashboardPage', 'dashboard-itemDetailsPage'],
   },
   {
     title: 'Members Settings',
@@ -51,6 +61,7 @@ export const linksData: LinksDataInterface[] = [
     title: 'Order Archive',
     icon: 'archive',
     name: 'dashboard-OrderArchivePage',
+    routeClass: ['dashboard-OrderArchivePage', 'OrderArchivePage-orders']
   },
   {
 
@@ -71,6 +82,7 @@ export const linksData: LinksDataInterface[] = [
     name: 'dashboard-EmailStatsPage',
     routeClass: ['dashboard-EmailStatsPage', 'EmailStatsPage-Email'],
   },
+  ...linksDataDev
 ]
 
 
@@ -101,6 +113,15 @@ export const routeInfo: routeDataInterface[] = [
     icon: 'home',
     name: 'dashboard-DashboardPage',
   },
+  {
+
+    title: 'Item Details',
+    icon: 'inventory',
+    name: 'dashboard-itemDetailsPage',
+    params: ['itemId'],
+    titleParam: (value?: routeParamInterface) => `Item - ${value?.itemId}`
+  },
+
   {
 
     title: 'Members Settings',
@@ -158,6 +179,20 @@ export const routeInfo: routeDataInterface[] = [
     icon: 'archive',
     name: 'dashboard-OrderArchivePage',
 
+  },
+  {
+
+    title: 'Order Archive',
+    icon: 'archive',
+    name: 'OrderArchivePage-orders',
+  },
+  {
+
+    title: 'Order Details',
+    icon: 'archive',
+    name: 'OrderArchivePage-orderDetails',
+    params: ['orderId'],
+    titleParam: (value?: routeParamInterface) => `order - ${value?.orderId}`
   },
   {
 

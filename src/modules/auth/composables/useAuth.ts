@@ -32,8 +32,6 @@ export const useAuth = () => {
     return $router.push({ name: '401' })
   }
   const prepareTokenTime = (exp: number) => {
-
-
     const triggerTime = (exp - 600) * 1000; // 600 secs = 10 mins
     const now = Date.now(); //  msecs
 

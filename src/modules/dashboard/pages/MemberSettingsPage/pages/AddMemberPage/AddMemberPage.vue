@@ -27,11 +27,12 @@
       >
         <div class="row q-mt-md">
           <div class="col-6 q-pl-sm q-pr-sm">
-            <q-select
+            <q-input
               v-model="(realForm.memberTitle as FormField).value as string"
               outlined
-              :options="memberTitleOptions"
               label="Title"
+              lazy-rules
+              :rules="[lazyRules.required()]"
             />
           </div>
         </div>
@@ -57,11 +58,12 @@
         </div>
         <div class="row q-mt-md">
           <div class="col-6 q-pl-sm q-pr-sm">
-            <q-select
+            <q-input
               v-model="(realForm.spouseTitle as FormField).value as string"
               outlined
-              :options="memberTitleOptions"
               label="Title"
+              lazy-rules
+              :rules="[lazyRules.required()]"
             />
           </div>
         </div>
@@ -406,7 +408,6 @@ import { ref } from 'vue'
 
 const { reloadPage, isMobile } = useUI()
 
-const memberTitleOptions: string[] = ['Mr', 'Mrs']
 const statesOptions: string[] = ['Fl', 'NY']
 const altAddress = ref<boolean>(false)
 const cancelOrderDialogFlag = ref<boolean>(false)

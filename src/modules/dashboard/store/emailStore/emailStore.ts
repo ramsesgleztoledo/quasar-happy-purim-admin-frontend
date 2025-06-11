@@ -19,11 +19,11 @@ export const useEmailStore = defineStore('emailStore', {
   },
 
   actions: {
+    setCampaigns(campaigns: CampaignInterface[]) {
+      this.campaigns = [...campaigns];
+    },
     setSelectedCampaign(selectedCampaign: CampaignDetailsInterface) {
       this.selectedCampaign = selectedCampaign;
-    },
-    setCampaigns(campaigns: CampaignInterface[]) {
-      this.campaigns = campaigns;
     },
   }
 });

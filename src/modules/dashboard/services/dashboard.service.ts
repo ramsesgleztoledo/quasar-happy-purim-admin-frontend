@@ -12,7 +12,7 @@ import type {
   BasketInfoInterface,
   OrderItemsInterface,
   MemberSummaryInterface
-} from "src/modules/dashboard/interfaces/dashboard.interface";
+} from "src/modules/dashboard/interfaces/dashboard-interfaces";
 import type { ExtraOptionsInterface } from "../../../services/api-interfaces";
 import { useApiCall } from "../../../services/apiCall";
 
