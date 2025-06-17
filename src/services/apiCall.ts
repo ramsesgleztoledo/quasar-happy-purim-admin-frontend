@@ -4,10 +4,11 @@ import { AxiosError, AxiosHeaders } from "axios";
 import { useQuasar } from "quasar";
 import { api } from "src/boot/axios";
 import { useRouter } from "vue-router";
-import type { ApiCallInterface } from "./api-interfaces";
+import type { ApiCallInterface, ApiCallResponseInterface } from "./api-interfaces";
 import type { ExtraOptionsInterface, CacheItemInterface } from './api-interfaces';
 import type { authStateInterface } from "src/modules/auth/store/auth-store-interfaces";
 import Dexie, { type Table } from 'dexie';
+
 
 
 
@@ -98,7 +99,9 @@ export const useApiCall = () => {
     }
   }
 
-  const apiCall = async <T>(options: ApiCallInterface): Promise<T | undefined | null> => {
+
+
+  const apiCall = async <T>(options: ApiCallInterface): Promise<ApiCallResponseInterface<T>> => {
 
     const method: string = options.method || 'GET';
     const responseType = options.responseType || 'json';
@@ -114,8 +117,6 @@ export const useApiCall = () => {
     });
 
     const extraOptions = options.extraOptions;
-    let data: T | undefined | null = undefined
-
     try {
 
       if (extraOptions?.loading) {
@@ -138,28 +139,47 @@ export const useApiCall = () => {
         })).data
       }
 
-      data = await fetchWithCache<T>(key, fetchFunction, extraOptions)
+      const dataValue = await fetchWithCache<T>(key, fetchFunction, extraOptions)
+      if (extraOptions?.loading) {
+        $q.loading.hide()
+      }
+      const data: ApiCallResponseInterface<T> = {
+        code: 200,
+        ok: true,
+        data: dataValue
+      }
 
-    } catch (error: AxiosError | unknown) {
+      return data
 
-
+    } catch (error: AxiosError | any) {
 
 
       if (error instanceof AxiosError) {
         if (!extraOptions?.dontUseErrorAction)
           errorAction(error.status!, extraOptions)
       }
+
+
       else {
         if (!extraOptions?.dontUseErrorAction)
           errorAction(500.1, extraOptions)
       }
 
-    }
-    if (extraOptions?.loading) {
-      $q.loading.hide()
-    }
 
-    return data;
+
+
+      if (extraOptions?.loading) {
+        $q.loading.hide()
+      }
+
+      const data: ApiCallResponseInterface<T> = {
+        code: error.status!,
+        ok: false,
+        data: error.response?.data || error.message
+      }
+
+      return data;
+    }
   };
 
   const clearCache = async () => {

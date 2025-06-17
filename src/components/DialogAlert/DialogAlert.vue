@@ -9,7 +9,7 @@
       <q-card-section class="row items-center">
         <div class="row custom-dialog-body-container">
           <div class="col-12">
-            <q-avatar icon="warning" color="primary" text-color="white" />
+            <q-avatar v-if="!dontShowIcon" icon="warning" color="primary" text-color="white" />
             <span class="q-ml-sm">{{ msg }}</span>
           </div>
         </div>
@@ -19,7 +19,7 @@
         <q-btn
           @click="() => $emit('onFinish', false)"
           outline
-          label="Cancel"
+          :label="cancelBtnText || 'Cancel'"
           class="q-mr-sm q-mt-sm"
           style="color: #990000; border-color: #990000"
           v-close-popup
@@ -28,7 +28,7 @@
           @click="() => $emit('onFinish', true)"
           class="q-mr-sm q-mt-sm"
           style="background: var(--happypurim); color: white"
-          label="ok"
+          :label="okBtnText || 'ok'"
           v-close-popup
         />
       </q-card-actions>
@@ -43,6 +43,9 @@ interface DialogAlertPropsInterface {
   title?: string
   msg: string
   modelValue: boolean
+  dontShowIcon?: boolean
+  cancelBtnText?: string
+  okBtnText?: string
 }
 
 // Define props

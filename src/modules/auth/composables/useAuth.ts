@@ -8,6 +8,8 @@ import { decodeJWT } from "src/helpers/JsonWebToken";
 import { useEmailStore } from "src/modules/dashboard/store/emailStore/emailStore";
 import { useAuthService } from "../service/auth.service";
 import type { AuthJWTInterface } from "../interfaces/auth.interfaces";
+import { useOrderArchiveStore } from "src/modules/dashboard/store/orderArchiveStore/orderArchiveStore";
+import { useMemberStore } from "src/modules/dashboard/store/memberStore/memberStore";
 
 export const useAuth = () => {
 
@@ -15,6 +17,8 @@ export const useAuth = () => {
   const $aStore = useAuthStore()
   const $dStore = useDashboardStore()
   const $eStore = useEmailStore()
+  const $oStore = useOrderArchiveStore()
+  const $mStore = useMemberStore()
 
   const { login: authLogin } = useAuthService()
 
@@ -29,6 +33,8 @@ export const useAuth = () => {
     $aStore.$reset()
     $dStore.$reset()
     $eStore.$reset()
+    $oStore.$reset()
+    $mStore.$reset()
     return $router.push({ name: '401' })
   }
   const prepareTokenTime = (exp: number) => {
@@ -78,9 +84,9 @@ export const useAuth = () => {
 
       const result = await authLogin(token)
 
-      if (!result)
+      if (!result || !result.ok)
         return logOut()
-      const payload = decodeJWT<AuthJWTInterface>(result.accessToken)
+      const payload = decodeJWT<AuthJWTInterface>(result.data.accessToken)
 
       if (!payload)
         return logOut()
@@ -98,15 +104,15 @@ export const useAuth = () => {
           lastName: payload.lname,
         },
         token: {
-          token: result.accessToken,
+          token: result.data.accessToken,
           token_exp: payload.exp,
           refresh_token: token,
 
         },
         serverToken: {
-          accessToken: result.accessToken,
-          refreshToken: result.refreshToken,
-          accessTokenExpires: result.accessTokenExpires,
+          accessToken: result.data.accessToken,
+          refreshToken: result.data.refreshToken,
+          accessTokenExpires: result.data.accessTokenExpires,
         }
       }
 

@@ -17,5 +17,5 @@ export const lazyRules = {
 
   greaterThan: (number: number, equal: boolean, msg?: string) => (value: number) => !validations.greaterThan(number, equal)({ value }) || (msg ? msg : `This field needs to be greater ${equal ? 'or equal' : ''} than ${number}`),
 
-  lowerThan: (number: number, equal: boolean, msg?: string) => (value: number) => !validations.lowerThan(number, equal)({ value }) || (msg ? msg : `This field needs to be greater ${equal ? 'or equal' : ''} than ${number}`),
+  lowerThan: (number: number, equal: boolean, msg?: string) => (value: number) => !validations.lowerThan(number, equal)({ value }) || (msg ? msg : `This field needs to be lower ${equal ? 'or equal' : ''} than ${number}`),
 }

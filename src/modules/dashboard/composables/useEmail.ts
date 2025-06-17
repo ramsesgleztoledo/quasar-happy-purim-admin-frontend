@@ -20,7 +20,7 @@ export const useEmail = () => {
           message: 'loading emails...'
         }
       })
-      $eStore.setCampaigns(campaigns);
+      $eStore.setCampaigns(campaigns.ok ? campaigns.data : []);
     },
     async getCampaignDetailById(id: number) {
       const campaignsDetails = await getCampaignDetailById(id, {
@@ -28,7 +28,7 @@ export const useEmail = () => {
           message: 'loading campaign details...'
         }
       })
-      $eStore.setSelectedCampaign(campaignsDetails!);
+      $eStore.setSelectedCampaign(campaignsDetails.ok ? campaignsDetails.data : undefined);
       return campaignsDetails
     },
     async getEmailContentByEmailId(id: number) {
@@ -39,7 +39,7 @@ export const useEmail = () => {
         },
         useCache: true
       })
-      return emailContent?.body || ''
+      return emailContent.ok ? (emailContent.data.body || "") : ""
     },
 
   }

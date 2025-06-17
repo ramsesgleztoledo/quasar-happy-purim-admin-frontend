@@ -86,3 +86,37 @@ export interface MemberReciprocityInterface {
   showReciprocity: boolean
   isReciprocal: boolean
 }
+export interface PendingDeletionInterface {
+  isPendingDeletion: boolean
+}
+
+
+export interface AlternativeMemberAddress {
+  showAlternateDelivery: boolean;
+}
+
+export interface MemberTransactionInterface {
+  tranId: number;
+  trancctype: string;
+  tranPostedDate: Date;
+  tranProcessedDate: Date;
+  tranNameOnCard: string;
+  recordedBy: string;
+  trantotalcharge: number;
+  paid: number;
+  balanceDue: number;
+}
+export interface MemberDonateBasketOptionInterface {
+  visible: boolean;
+  text?: string;
+  checked?: boolean;
+}
+
+
+export interface EmailLoginCodeInfoInterface {
+  toEmail: string;
+  fromEmail: string;
+  fromName: string;
+  subject: string;
+  body: string;
+}

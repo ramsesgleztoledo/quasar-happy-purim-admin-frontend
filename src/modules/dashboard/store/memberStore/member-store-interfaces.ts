@@ -1,11 +1,17 @@
-import type { MemberDataInterface, MemberInterface, MemberOptionsInterface } from "../../interfaces/member-interfaces";
+import type { MemberCategoryInterface } from "../../interfaces/category-interfaces";
+import type { AlternativeMemberAddress, MemberDataInterface, MemberDonateBasketOptionInterface, MemberInterface, MemberOptionsInterface, MemberTransactionInterface } from "../../interfaces/member-interfaces";
 import type { NoneType } from "../../services/service-interfaces";
 
 
 export interface MemberStateInterface {
   members: MemberInterface[];
   selectedMember: MemberDataInterface | NoneType;
-  memberOptions: MemberOptionsInterface
+  memberOptions: MemberOptionsInterface;
+  memberCategories: MemberCategoryInterface[];
+  isPendingDeletion: boolean;
+  memberAlternativeAddress: AlternativeMemberAddress | NoneType;
+  memberTransactions: MemberTransactionInterface[];
+  memberDonateBasketOption: MemberDonateBasketOptionInterface | NoneType;
 }
 
 

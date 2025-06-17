@@ -1,6 +1,7 @@
-import type { ExtraOptionsInterface } from "../../../services/api-interfaces";
+import type { ApiCallResponseInterface, ExtraOptionsInterface } from "../../../services/api-interfaces";
 import { useApiCall } from "../../../services/apiCall";
 import type { CampaignDetailsInterface, CampaignInterface, EmailContentInterface } from "../interfaces/email-interfaces";
+
 
 
 export const useEmailService = () => {
@@ -9,7 +10,7 @@ export const useEmailService = () => {
   const { apiCall } = useApiCall()
 
   return {
-    getEmails: async (extraOptions?: ExtraOptionsInterface): Promise<CampaignInterface[]> => {
+    getEmails: async (extraOptions?: ExtraOptionsInterface): Promise<ApiCallResponseInterface<CampaignInterface[]>> => {
 
       const nextUrl = `/email-campaigns`;
       const url = `${baseUrl}${nextUrl}`;
@@ -19,7 +20,7 @@ export const useEmailService = () => {
       }) || []
     },
 
-    getCampaignDetailById: async (campaignId: number, extraOptions?: ExtraOptionsInterface): Promise<CampaignDetailsInterface | undefined | null> => {
+    getCampaignDetailById: async (campaignId: number, extraOptions?: ExtraOptionsInterface): Promise<ApiCallResponseInterface<CampaignDetailsInterface>> => {
       const nextUrl = `/emails/${campaignId}/details`;
       const url = `${baseUrl}${nextUrl}`;
       return await apiCall({
@@ -27,7 +28,15 @@ export const useEmailService = () => {
         extraOptions
       })
     },
-    getEmailContentByEmailId: async (emailId: number, extraOptions?: ExtraOptionsInterface): Promise<EmailContentInterface | undefined | null> => {
+    getEmailContentByEmailId: async (emailId: number, extraOptions?: ExtraOptionsInterface): Promise<ApiCallResponseInterface<EmailContentInterface>> => {
+      const nextUrl = `/emails/${emailId}/content`;
+      const url = `${baseUrl}${nextUrl}`;
+      return await apiCall({
+        url,
+        extraOptions
+      })
+    },
+    SendEmail: async (emailId: number, extraOptions?: ExtraOptionsInterface): Promise<ApiCallResponseInterface<EmailContentInterface>> => {
       const nextUrl = `/emails/${emailId}/content`;
       const url = `${baseUrl}${nextUrl}`;
       return await apiCall({

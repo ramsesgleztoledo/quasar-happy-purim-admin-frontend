@@ -97,6 +97,11 @@ const goToPage = (emit?: boolean) => {
 
   onPageChange(emit)
 }
+
+defineExpose({
+  goToPage,
+  pageGo,
+})
 </script>
 
 <style scoped lang="scss">

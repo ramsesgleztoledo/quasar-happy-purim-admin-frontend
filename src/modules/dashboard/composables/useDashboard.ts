@@ -3,7 +3,8 @@ import { computed } from "vue";
 import { useDashboardStore } from "../store/dashboardStore/dashboardStore";
 import { useDashboardService } from "src/modules/dashboard/services/dashboard.service";
 import { useQuasar } from "quasar";
-import type { DashboardStateInterface } from "../store/dashboardStore/dashboard-store-interfaces";
+import type { BasketInfoInterface, BasketSizeBreakdownInterface, FundraiserStatusInterface, FundraiserTotalsInterface, MembersOrdersGraphInterface, MemberSummaryInterface, OrderGraphInterface, OrderItemsInterface, ParticipationInfoGraphInterface, ParticipationRateInterface, TopTransactionsInterface, TotalsRaisedInterface } from "../interfaces/dashboard-interfaces";
+import type { ApiCallResponseInterface } from "src/services/api-interfaces";
 
 export const useDashboard = () => {
 
@@ -25,7 +26,20 @@ export const useDashboard = () => {
         messageColor: '#ef6982',
       })
 
-      const promises: Promise<any>[] =
+      const promises: [
+        any,
+        any,
+        any,
+        any,
+        any,
+        any,
+        any,
+        any,
+        any,
+        any,
+        any,
+        any
+      ] =
         [
           getOrderTotalGraph(),
           getMembersOrdersGraph(),
@@ -54,24 +68,40 @@ export const useDashboard = () => {
         basketInfo,
         orderItems,
         memberSummary,
-      ]: any = await Promise.all(promises)
+      ]:
+        [
+          ApiCallResponseInterface<OrderGraphInterface[]>,
+          ApiCallResponseInterface<MembersOrdersGraphInterface[]>,
+          ApiCallResponseInterface<ParticipationInfoGraphInterface>,
+          ApiCallResponseInterface<FundraiserStatusInterface>,
+          ApiCallResponseInterface<FundraiserTotalsInterface>,
+          ApiCallResponseInterface<ParticipationRateInterface>,
+          ApiCallResponseInterface<TopTransactionsInterface[]>,
+          ApiCallResponseInterface<TotalsRaisedInterface>,
+          ApiCallResponseInterface<BasketSizeBreakdownInterface[]>,
+          ApiCallResponseInterface<BasketInfoInterface[]>,
+          ApiCallResponseInterface<OrderItemsInterface[]>,
+          ApiCallResponseInterface<MemberSummaryInterface>,
 
-      const dashboardState: DashboardStateInterface = {
-        orderTotalGraph,
-        membersOrdersGraph,
-        participationInfoGraph,
-        fundraiserStatus,
-        fundraiserTotals,
-        participationRate,
-        topTransactions,
-        totalsRaised,
-        basketSizeBreakdown,
-        basketInfo,
-        orderItems,
-        memberSummary,
-      }
+        ]
+        = await Promise.all(promises)
 
-      $dStore.$patch(dashboardState)
+
+
+      $dStore.$patch({
+        orderTotalGraph: orderTotalGraph.ok ? orderTotalGraph.data : [],
+        membersOrdersGraph: membersOrdersGraph.ok ? membersOrdersGraph.data : [],
+        participationInfoGraph: participationInfoGraph.ok ? participationInfoGraph.data : undefined,
+        fundraiserStatus: fundraiserStatus.ok ? fundraiserStatus.data : undefined,
+        fundraiserTotals: fundraiserTotals.ok ? fundraiserTotals.data : undefined,
+        participationRate: participationRate.ok ? participationRate.data : undefined,
+        topTransactions: topTransactions.ok ? topTransactions.data : [],
+        totalsRaised: totalsRaised.ok ? totalsRaised.data : undefined,
+        basketSizeBreakdown: basketSizeBreakdown.ok ? basketSizeBreakdown.data : [],
+        basketInfo: basketInfo.ok ? basketInfo.data : [],
+        orderItems: orderItems.ok ? orderItems.data : [],
+        memberSummary: memberSummary.ok ? memberSummary.data : undefined,
+      })
 
       $q.loading.hide()
     },
@@ -82,8 +112,7 @@ export const useDashboard = () => {
           dontRedirect: true,
           dontShowToast: true
         })
-        if (memberSummary)
-          $dStore.setMemberSummary(memberSummary);
+        $dStore.setMemberSummary(memberSummary.ok ? memberSummary.data : undefined);
       } catch (error) {
         console.error(error);
 

@@ -22,7 +22,7 @@ export const useEmailStore = defineStore('emailStore', {
     setCampaigns(campaigns: CampaignInterface[]) {
       this.campaigns = [...campaigns];
     },
-    setSelectedCampaign(selectedCampaign: CampaignDetailsInterface) {
+    setSelectedCampaign(selectedCampaign: CampaignDetailsInterface | undefined) {
       this.selectedCampaign = selectedCampaign;
     },
   }

@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import type { ExtraOptionsInterface } from "../../../services/api-interfaces";
+import type { ApiCallResponseInterface, ExtraOptionsInterface } from "../../../services/api-interfaces";
 import { useApiCall } from "../../../services/apiCall";
 import type { LoginInterface, LoginUrlInterface } from "../interfaces/auth.interfaces";
 
@@ -26,14 +26,14 @@ export const useAuthService = () => {
         }
       });
       let finalData = ""
-      if (data)
-        finalData = `${window.location.protocol}//${window.location.hostname}/authenticate?token=${data.token}`
+      if (data.ok && data.data)
+        finalData = `${window.location.protocol}//${window.location.hostname}/authenticate?token=${data.data.token}`
 
       return finalData
     }
 
   return {
-    login: async (encryptedToken: string, extraOptions?: ExtraOptionsInterface): Promise<LoginInterface | undefined | null> => {
+    login: async (encryptedToken: string, extraOptions?: ExtraOptionsInterface): Promise<ApiCallResponseInterface<LoginInterface>> => {
       const nextUrl = '/login';
       const url = `${baseUrl}${nextUrl}`;
       return await apiCall({

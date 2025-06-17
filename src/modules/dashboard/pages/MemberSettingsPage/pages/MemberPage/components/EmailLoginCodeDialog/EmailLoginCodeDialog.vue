@@ -22,6 +22,7 @@
                     label="From Name"
                     lazy-rules
                     :rules="[lazyRules.required()]"
+                    disable
                   />
                 </div>
                 <div class="col-6 q-pr-sm q-pl-sm">
@@ -31,6 +32,7 @@
                     label="From Email"
                     lazy-rules
                     :rules="[lazyRules.required(), lazyRules.isEmail()]"
+                    disable
                   />
                 </div>
               </div>
@@ -47,7 +49,7 @@
               </div>
               <div class="row">
                 <div class="col-12">
-                  <EditorCustom :tokens="tokensForEdit" v-model="emailContent" />
+                  <EditorCustom :attacher="attacherForEdit" v-model="emailContent" />
                 </div>
               </div>
             </div>
@@ -69,6 +71,7 @@
         style="background: var(--happypurim); color: white"
         label="send email"
         v-close-popup
+        :disable="!isValidForm()"
       />
     </q-card-actions>
   </q-card>
@@ -78,21 +81,83 @@
 import type { FormField } from 'src/composables'
 import { lazyRules, useForm, validations } from 'src/composables'
 import EditorCustom from 'src/components/EditorCustom/EditorCustom.vue'
-import { ref } from 'vue'
+import { onMounted, ref } from 'vue'
+import { useMember } from 'src/modules/dashboard/composables/useMember'
+import { useRoute } from 'vue-router'
+const {
+  getEmailLoginCodeInfo,
+  memberState: {
+    value: { selectedMember },
+  },
+} = useMember()
+const $route = useRoute()
 
-const tokensForEdit = ref([
-  { name: 'email', label: 'email', icon: 'email' },
-  { name: 'code', label: 'code', icon: 'code' },
-  { name: 'token-link', label: 'token-link', icon: 'link' },
+const attacherForEdit = ref([
+  {
+    name: 'code',
+    label: 'code',
+    icon: 'code',
+    value: `
+  <b>${selectedMember?.loginCode}</b>
+`,
+  },
+  {
+    name: 'token-link',
+    label: 'token-link',
+    icon: 'link',
+    value: `
+  <a href="${selectedMember?.signOnLink}" target="_blank">${selectedMember?.signOnLink}</a>
+`,
+  },
+  {
+    name: 'name',
+    label: 'first and last name',
+    icon: 'person',
+    value: `
+  <p >${selectedMember?.firstName} ${selectedMember?.lastName}</p>
+`,
+  },
+  {
+    name: 'nameSpouse',
+    label: 'Spouse first and last name',
+    icon: 'person',
+    value: `
+  <p >${selectedMember?.spouseFirstName} ${selectedMember?.spouseLastName}</p>
+`,
+  },
 ])
 
-const { realForm } = useForm({
+const {
+  realForm,
+  onFormReset,
+  isValidForm: isValidRealForm,
+} = useForm({
   fromName: { value: '', validations: [validations.required] },
   fromEmail: { value: '', validations: [validations.required, validations.isEmail] },
+  toEmail: { value: '', validations: [validations.required, validations.isEmail] },
   subject: { value: '', validations: [validations.required] },
 })
 
 const emailContent = ref<string>('')
+
+onMounted(() => {
+  const id = Number($route.params.memberId)
+  getEmailLoginCodeInfo(id).then((res) => {
+    onFormReset({
+      fromName: res.fromName,
+      fromEmail: res.fromEmail,
+      subject: res.subject,
+      toEmail: `ramsesgleztoledo@gmail.com`,
+    })
+    emailContent.value = res.body
+  })
+})
+
+const isValidForm = () => {
+  if (!emailContent.value) return false
+  if (!isValidRealForm()) return false
+  return true
+}
 </script>
 
 <style scoped lang="scss">

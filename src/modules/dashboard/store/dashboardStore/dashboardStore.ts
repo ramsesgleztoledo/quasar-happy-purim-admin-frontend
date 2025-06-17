@@ -30,8 +30,8 @@ export const useDashboardStore = defineStore('dashBoardStore', {
   },
 
   actions: {
-    setMemberSummary(memberSummary: MemberSummaryInterface) {
-      this.memberSummary = { ...memberSummary }
+    setMemberSummary(memberSummary: MemberSummaryInterface | undefined) {
+      this.memberSummary = memberSummary
     },
 
   }

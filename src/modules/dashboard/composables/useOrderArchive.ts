@@ -23,7 +23,7 @@ export const useOrderArchive = () => {
           message: 'loading orders...'
         }
       })
-      $oStore.setOrders(orders);
+      $oStore.setOrders(orders.ok ? orders.data : []);
     },
     async getItemTableByItemId(itemId: number) {
       const items = await getItemTableByItemId(itemId, {
@@ -31,7 +31,7 @@ export const useOrderArchive = () => {
           message: 'loading items...'
         }
       })
-      $oStore.setItemDetails(items);
+      $oStore.setItemDetails(items.ok ? items.data : []);
     },
     async getOrdersAllOrderDetails(orderId: number) {
 

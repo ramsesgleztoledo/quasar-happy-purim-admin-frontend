@@ -27,6 +27,7 @@
         :to="{ name: 'MembersSettingsPage-AddMemberPage' }"
       />
       <q-btn
+        disable
         outline
         label="UPLOAD MEMBER LIST"
         :to="{ name: 'MembersSettingsPage-MemberListLayout' }"

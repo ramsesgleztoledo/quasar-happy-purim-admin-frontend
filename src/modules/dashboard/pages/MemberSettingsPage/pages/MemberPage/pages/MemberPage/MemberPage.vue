@@ -1,19 +1,26 @@
 <template>
-  <div v-if="isReady">
+  <template v-if="isReady">
     <div class="row q-mb-lg">
       <PaginationCustom
+        ref="paginationCustomRef"
         :total="memberState.members.length"
         :current="currentMemberPage"
         @page-change="onPageChange"
       />
     </div>
+    <InfoAlert
+      v-if="memberState.isPendingDeletion"
+      class="q-mb-md q-mt-md"
+      type="error"
+      text="This member is pending for delete"
+    />
 
     <div class="q-mb-md">
       <div class="row">
         <!--=============================== if desktop =============================-->
 
         <div v-if="!isMobile" class="col-12 top-title-col">
-          <p class="MemberPage-user-title">{{ (realForm.displayName as FormField).value }}</p>
+          <p class="MemberPage-user-title">{{ memberState.selectedMember?.displayAs }}</p>
           <div class="separator-right q-mr-sm q-ml-sm"></div>
           <p
             class="MemberPage-login-code"
@@ -38,7 +45,7 @@
             class="col-12 MemberPage-user-title-col"
             style="display: flex; justify-content: space-between"
           >
-            <p class="MemberPage-user-title">{{ (realForm.displayName as FormField).value }}</p>
+            <p class="MemberPage-user-title">{{ memberState.selectedMember?.displayAs }}</p>
             <q-btn-dropdown icon="edit" color="primary" label="Actions">
               <q-list>
                 <q-item clickable v-close-popup>
@@ -65,7 +72,13 @@
                 </q-item>
                 <q-item clickable v-close-popup>
                   <q-item-section>
-                    <q-btn icon="close" outline label="CLEAR CART" class="q-mr-sm q-mt-sm" />
+                    <q-btn
+                      icon="close"
+                      outline
+                      label="CLEAR CART"
+                      class="q-mr-sm q-mt-sm"
+                      @click="clearCartMemberDialogFlag = true"
+                    />
                   </q-item-section>
                 </q-item>
                 <q-item clickable v-close-popup>
@@ -94,10 +107,10 @@
                 <q-item clickable v-close-popup>
                   <q-item-section>
                     <q-btn
-                      icon="delete"
+                      :icon="`${memberState.isPendingDeletion ? 'close' : 'delete'}`"
                       @click="deleteMemberDialogFlag = true"
                       outline
-                      label="DELETE"
+                      :label="`${memberState.isPendingDeletion ? 'RESTORE' : 'DELETE'}`"
                       class="q-mr-sm q-mt-sm"
                       style="color: #990000; border-color: #990000"
                     />
@@ -158,7 +171,13 @@
               :to="{ name: 'MemberLayout-CreateOrderPageByCode' }"
               class="q-mr-sm q-mt-sm"
             />
-            <q-btn outline icon="close" label="CLEAR CART" class="q-mr-sm q-mt-sm" />
+            <q-btn
+              outline
+              icon="close"
+              label="CLEAR CART"
+              class="q-mr-sm q-mt-sm"
+              @click="clearCartMemberDialogFlag = true"
+            />
             <q-btn
               icon="email"
               class="q-mr-sm q-mt-sm"
@@ -175,10 +194,10 @@
             />
           </div>
           <q-btn
-            icon="delete"
+            :icon="`${memberState.isPendingDeletion ? 'close' : 'delete'}`"
             @click="deleteMemberDialogFlag = true"
             outline
-            label="DELETE"
+            :label="`${memberState.isPendingDeletion ? 'RESTORE' : 'DELETE'}`"
             class="q-mr-sm q-mt-sm"
             style="color: #990000; border-color: #990000"
           />
@@ -432,61 +451,66 @@
               />
             </div>
           </div>
-          <div class="row q-mt-md">
-            <div class="col-12">
-              <q-checkbox v-model="altAddress" label="Deliver My Basket to an Alternate Address" />
-            </div>
-          </div>
-          <div v-if="altAddress">
+          <div v-if="memberState.memberAlternativeAddress?.showAlternateDelivery">
             <div class="row q-mt-md">
-              <div class="col-12 q-pl-sm q-pr-sm">
-                <q-input
-                  v-model="(realForm.address as FormField).value as string"
-                  outlined
-                  label="Address *"
-                  lazy-rules
-                  :rules="[lazyRules.required()]"
+              <div class="col-12">
+                <q-checkbox
+                  v-model="altAddress"
+                  label="Deliver My Basket to an Alternate Address"
                 />
               </div>
             </div>
-            <div class="row q-mt-md">
-              <div class="col-6 q-pl-sm q-pr-sm">
-                <q-input
-                  v-model="(realForm.address2 as FormField).value as string"
-                  outlined
-                  label="Address 2"
-                />
+            <div v-if="altAddress">
+              <div class="row q-mt-md">
+                <div class="col-12 q-pl-sm q-pr-sm">
+                  <q-input
+                    v-model="(realForm.address as FormField).value as string"
+                    outlined
+                    label="Address *"
+                    lazy-rules
+                    :rules="[lazyRules.required()]"
+                  />
+                </div>
               </div>
-              <div class="col-6 q-pl-sm q-pr-sm">
-                <q-input
-                  v-model="(realForm.city as FormField).value as string"
-                  outlined
-                  label="City *"
-                  lazy-rules
-                  :rules="[lazyRules.required()]"
-                />
+              <div class="row q-mt-md">
+                <div class="col-6 q-pl-sm q-pr-sm">
+                  <q-input
+                    v-model="(realForm.address2 as FormField).value as string"
+                    outlined
+                    label="Address 2"
+                  />
+                </div>
+                <div class="col-6 q-pl-sm q-pr-sm">
+                  <q-input
+                    v-model="(realForm.city as FormField).value as string"
+                    outlined
+                    label="City *"
+                    lazy-rules
+                    :rules="[lazyRules.required()]"
+                  />
+                </div>
               </div>
-            </div>
-            <div class="row q-mt-md">
-              <div class="col-6 q-pl-sm q-pr-sm">
-                <q-select
-                  v-model="(realForm.state as FormField).value as string"
-                  outlined
-                  :options="statesOptions"
-                  label="State *"
-                  lazy-rules
-                  :rules="[lazyRules.required()]"
-                />
-              </div>
-              <div class="col-6 q-pl-sm q-pr-sm">
-                <q-input
-                  v-model="(realForm.zipCode as FormField).value as string"
-                  outlined
-                  label="Zip Code *"
-                  mask="#####"
-                  lazy-rules
-                  :rules="[lazyRules.required()]"
-                />
+              <div class="row q-mt-md">
+                <div class="col-6 q-pl-sm q-pr-sm">
+                  <q-select
+                    v-model="(realForm.state as FormField).value as string"
+                    outlined
+                    :options="statesOptions"
+                    label="State *"
+                    lazy-rules
+                    :rules="[lazyRules.required()]"
+                  />
+                </div>
+                <div class="col-6 q-pl-sm q-pr-sm">
+                  <q-input
+                    v-model="(realForm.zipCode as FormField).value as string"
+                    outlined
+                    label="Zip Code *"
+                    mask="#####"
+                    lazy-rules
+                    :rules="[lazyRules.required()]"
+                  />
+                </div>
               </div>
             </div>
           </div>
@@ -501,7 +525,7 @@
               <div class="border-container">
                 <label>Options</label>
                 <div class="q-mt-md">
-                  <div v-for="(item, index) in otherOptions" :key="index" class="row q-mb-sm">
+                  <div v-for="(item, index) in options" :key="index" class="row q-mb-sm">
                     <q-checkbox v-model="item.value" :label="item.label" />
                   </div>
                 </div>
@@ -518,6 +542,24 @@
                 <label>Profile Questions</label>
                 <div class="q-mt-md">
                   <div v-for="(item, index) in customOptions" :key="index" class="row q-mb-sm">
+                    <q-checkbox v-model="item.value" :label="item.label" />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div v-if="!!memberState.memberDonateBasketOption?.visible" class="row q-mt-md">
+            <div
+              class="q-pl-sm q-pr-sm q-mb-md"
+              :class="{
+                'col-6': !isMobile,
+                'col-12': isMobile,
+              }"
+            >
+              <div class="border-container">
+                <label>Other Options</label>
+                <div class="q-mt-md">
+                  <div v-for="(item, index) in otherOptions" :key="index" class="row q-mb-sm">
                     <q-checkbox v-model="item.value" :label="item.label" />
                   </div>
                 </div>
@@ -554,6 +596,7 @@
             class="q-mr-sm"
             style="background: var(--happypurim); color: white"
             label="SAVE CHANGES"
+            @click="() => onUpdateMember()"
           />
         </div>
       </div>
@@ -582,15 +625,25 @@
     <DialogAlert
       @on-finish="
         (value) => {
-          if (value) deleteMember()
+          if (value) setDeleteMember()
         }
       "
-      msg="Are you sure you want to delete this member?"
+      :msg="`Are you sure you want to ${memberState.isPendingDeletion ? 'restore' : 'delete'} this member?`"
       v-model="deleteMemberDialogFlag"
+    />
+    <!--* confirm cart clear --->
+    <DialogAlert
+      @on-finish="
+        (value) => {
+          if (value) clearMemberCart(memberState.selectedMember?.memberId!)
+        }
+      "
+      :msg="`Are you sure you want to clear the cart for this member?`"
+      v-model="clearCartMemberDialogFlag"
     />
 
     <!--=========================== END OF SECTION ===========================-->
-  </div>
+  </template>
 </template>
 
 <script setup lang="ts">
@@ -602,7 +655,7 @@ import RecordPaymentDialog from '../../components/RecordPaymentDialog/RecordPaym
 import EmailLoginCodeDialog from '../../components/EmailLoginCodeDialog/EmailLoginCodeDialog.vue'
 import type { FormField } from 'src/composables'
 import { lazyRules, useForm, validations } from 'src/composables'
-import { onMounted, ref } from 'vue'
+import { ref, watch } from 'vue'
 import { useUI } from 'src/modules/UI/composables'
 import { statesOptions } from 'src/modules/dashboard/data'
 import { useMember } from 'src/modules/dashboard/composables/useMember'
@@ -613,15 +666,17 @@ const $route = useRoute()
 const $router = useRouter()
 const $q = useQuasar()
 const { copyToClipboard, isMobile } = useUI()
-const { getMemberDataById, memberState, deleteMemberById } = useMember()
+const { memberState, deleteMemberById, updateMember, clearMemberCart } = useMember()
 
 const currentMemberPage = ref<number>(1)
+const paginationCustomRef = ref()
 const isReady = ref<boolean>(false)
 
 const altAddress = ref<boolean>(false)
 const recordPaymentDialogFlag = ref<boolean>(false)
 const emailLoginCodeDialogFlag = ref<boolean>(false)
 const deleteMemberDialogFlag = ref<boolean>(false)
+const clearCartMemberDialogFlag = ref<boolean>(false)
 
 const categories = ref([
   { value: false, label: 'Incomplete Address' },
@@ -633,10 +688,13 @@ const categories = ref([
   { value: false, label: 'Avel' },
   { value: false, label: 'Staff' },
 ])
-const otherOptions = ref([
+
+const options = ref([
   { value: false, label: 'Reciprocity' },
   { value: false, label: 'Hidden' },
 ])
+const otherOptions = ref([{ value: false, label: 'donate my basket' }])
+
 const customOptions = ref([
   {
     value: false,
@@ -682,25 +740,35 @@ const { realForm, onFormReset } = useForm({
   notes: { value: '', validations: [] },
 })
 
-onMounted(() => {
-  loadData()
-})
+const onPageChange = (page: number) => {
+  const member = memberState.value.members[page - 1]
 
-const loadData = () => {
-  loadInitialData()
-    .catch(console.error)
-    .finally(() => {
-      setTimeout(() => {
-        currentMemberPage.value =
-          memberState.value.members.findIndex(
-            (member) => member.m_id === Number($route.params.memberId),
-          ) + 1
-        isReady.value = true
-      }, 500)
-    })
+  // const routeId = $route.params.memberId
+  // const memberId = (member?.m_id || 0).toString()
+
+  // if (routeId != memberId)
+  $router.push({
+    name: 'MemberLayout',
+    params: {
+      memberId: member?.m_id || 0,
+    },
+  })
+}
+
+const loadPage = () => {
+  isReady.value = false
+  currentMemberPage.value =
+    memberState.value.members.findIndex(
+      (member) => member.m_id === Number($route.params.memberId),
+    ) + 1
+  if (currentMemberPage.value === 0) return
+
+  onPageChange(currentMemberPage.value)
+  isReady.value = true
 }
 
 const resetForm = (showNotify: boolean = false) => {
+  //main form
   onFormReset({
     memberTitle: memberState.value.selectedMember?.title,
     firstName: memberState.value.selectedMember?.firstName,
@@ -724,12 +792,31 @@ const resetForm = (showNotify: boolean = false) => {
     salutation: memberState.value.selectedMember?.salutation,
     notes: memberState.value.selectedMember?.notes,
   })
-  otherOptions.value = [{ value: memberState.value.memberOptions.hidden, label: 'Hidden' }]
+
+  // options
+  options.value = [{ value: memberState.value.memberOptions.hidden, label: 'Hidden' }]
 
   if (memberState.value.memberOptions.reciprocity.showReciprocity)
-    otherOptions.value = [
+    options.value = [
       { value: memberState.value.memberOptions.reciprocity.isReciprocal, label: 'Reciprocity' },
-      ...otherOptions.value,
+      ...options.value,
+    ]
+
+  //categories
+  categories.value = [
+    ...memberState.value.memberCategories.map((cat) => ({
+      id: cat.categoryId,
+      value: cat.selected,
+      label: cat.categoryName,
+    })),
+  ]
+
+  if (memberState.value.memberDonateBasketOption?.visible)
+    otherOptions.value = [
+      {
+        value: !!memberState.value.memberDonateBasketOption.checked,
+        label: memberState.value.memberDonateBasketOption.text || '',
+      },
     ]
 
   if (showNotify)
@@ -741,32 +828,27 @@ const resetForm = (showNotify: boolean = false) => {
     })
 }
 
-const loadInitialData = async () => {
-  try {
-    const memberId = $route.params.memberId
-    await getMemberDataById(Number(memberId))
-    resetForm()
-  } catch (error) {
-    return error
-  }
-}
-
-const onPageChange = (page: number) => {
-  const member = memberState.value.members[page - 1]
-
-  $router.push({
-    name: 'MemberLayout',
-    params: {
-      memberId: member?.m_id || 0,
-    },
-  })
-  loadData()
-}
-
-const deleteMember = async () => {
+const setDeleteMember = async () => {
   await deleteMemberById(Number($route.params.memberId))
-  $router.push({ name: 'MembersSettingsPage' })
 }
+
+const onUpdateMember = async () => {
+  const id = Number($route.params.memberId)
+  const data = {
+    reciprocityValue: !!options.value[0]?.value,
+  }
+
+  await updateMember(id, data)
+}
+
+watch(
+  () => [memberState.value.selectedMember?.memberId, memberState.value.members],
+  () => {
+    resetForm()
+    loadPage()
+  },
+  { immediate: true },
+)
 </script>
 
 <style scoped lang="scss">

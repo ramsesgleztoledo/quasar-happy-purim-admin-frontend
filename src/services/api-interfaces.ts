@@ -35,3 +35,8 @@ export interface CacheItemInterface {
 }
 
 
+export interface ApiCallResponseInterface<T> {
+  code: number;
+  ok: boolean;
+  data: T
+}

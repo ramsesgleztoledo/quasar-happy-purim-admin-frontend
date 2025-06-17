@@ -1,8 +1,9 @@
 
 import { defineStore, acceptHMRUpdate } from 'pinia';
 import type { MemberStateInterface } from './member-store-interfaces';
-import type { MemberDataInterface, MemberOptionsInterface } from '../../interfaces/member-interfaces';
+import type { AlternativeMemberAddress, MemberDataInterface, MemberDonateBasketOptionInterface, MemberOptionsInterface, MemberTransactionInterface } from '../../interfaces/member-interfaces';
 import type { NoneType } from '../../services/service-interfaces';
+import type { MemberCategoryInterface } from '../../interfaces/category-interfaces';
 
 
 const initialState: MemberStateInterface = {
@@ -14,7 +15,12 @@ const initialState: MemberStateInterface = {
       isReciprocal: false,
       showReciprocity: false
     }
-  }
+  },
+  memberCategories: [],
+  isPendingDeletion: false,
+  memberAlternativeAddress: undefined,
+  memberTransactions: [],
+  memberDonateBasketOption: undefined,
 }
 
 export const useMemberStore = defineStore('memberStore', {
@@ -32,7 +38,22 @@ export const useMemberStore = defineStore('memberStore', {
     },
     setMemberOptions(memberOptions: MemberOptionsInterface) {
       this.memberOptions = { ...memberOptions };
-    }
+    },
+    setMemberCategories(memberCategories: MemberCategoryInterface[]) {
+      this.memberCategories = [...memberCategories];
+    },
+    setIsPendingDeletion(value: boolean) {
+      this.isPendingDeletion = value
+    },
+    setMemberAlternativeAddress(memberAlternativeAddress: AlternativeMemberAddress | NoneType) {
+      this.memberAlternativeAddress = memberAlternativeAddress
+    },
+    setMemberTransactions(memberTransactions: MemberTransactionInterface[]) {
+      this.memberTransactions = memberTransactions
+    },
+    setMemberDonateBasketOption(memberDonateBasketOption: MemberDonateBasketOptionInterface | NoneType) {
+      this.memberDonateBasketOption = memberDonateBasketOption
+    },
   }
 });
 

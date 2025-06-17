@@ -3,7 +3,7 @@ import { defineStore, acceptHMRUpdate } from 'pinia';
 import { computed, ref } from 'vue';
 
 
-export const useUIStore = defineStore('ui', () => {
+export const useUIStore = defineStore('uiStore', () => {
 
   const sideMenu = ref(false)
 

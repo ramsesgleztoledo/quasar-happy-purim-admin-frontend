@@ -42,3 +42,17 @@ export interface CampaignMetadataInterface {
 export interface EmailContentInterface {
   body: string;
 }
+
+
+export interface SendEmailInterface {
+  toEmail: string;
+  fromEmail: string;
+  fromName: string;
+  subject: string;
+  body: string;
+  replyTo: string;
+  bcc: string[];
+  cc: string[];
+  isBodyHtml: boolean;
+  encoding: string;
+}

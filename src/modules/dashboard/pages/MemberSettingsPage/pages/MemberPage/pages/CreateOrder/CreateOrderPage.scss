@@ -20,3 +20,39 @@
 .item-width-200 {
   width: 200px;
 }
+
+.cancel-save-btn-container {
+  // position: absolute;
+  // bottom: 50px;
+  // width: 100%;
+}
+
+.CreateOrderPage-container {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.CreateOrderPage-top {
+  // padding: 10px;
+}
+
+.CreateOrderPage-middle {
+  flex-grow: 1;
+  // padding: 10px;
+}
+
+.CreateOrderPage-bottom {
+  // padding: 10px;
+}
+
+.CreateOrderPage-left-container {
+  max-height: 80vh;
+  overflow: auto;
+  border-right: 1px solid #e3e3e3;
+}
+.CreateOrderPage-right-container {
+  max-height: 80vh;
+  overflow: auto;
+  border-left: 1px solid #e3e3e3;
+}

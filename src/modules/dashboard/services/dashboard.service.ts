@@ -13,8 +13,9 @@ import type {
   OrderItemsInterface,
   MemberSummaryInterface
 } from "src/modules/dashboard/interfaces/dashboard-interfaces";
-import type { ExtraOptionsInterface } from "../../../services/api-interfaces";
+import type { ApiCallResponseInterface, ExtraOptionsInterface } from "../../../services/api-interfaces";
 import { useApiCall } from "../../../services/apiCall";
+
 
 export const useDashboardService = () => {
 
@@ -22,7 +23,7 @@ export const useDashboardService = () => {
   const { apiCall } = useApiCall()
 
   return {
-    getOrderTotalGraph: async (extraOptions?: ExtraOptionsInterface): Promise<OrderGraphInterface[]> => {
+    getOrderTotalGraph: async (extraOptions?: ExtraOptionsInterface): Promise<ApiCallResponseInterface<OrderGraphInterface[]>> => {
 
       const nextUrl = '/order-totals-graph';
       const url = `${baseUrl}${nextUrl}`;
@@ -31,7 +32,7 @@ export const useDashboardService = () => {
         extraOptions,
       }) || []
     },
-    getMembersOrdersGraph: async (extraOptions?: ExtraOptionsInterface): Promise<MembersOrdersGraphInterface[]> => {
+    getMembersOrdersGraph: async (extraOptions?: ExtraOptionsInterface): Promise<ApiCallResponseInterface<MembersOrdersGraphInterface[]>> => {
 
       const nextUrl = '/members-orders-graph';
       const url = `${baseUrl}${nextUrl}`;
@@ -41,7 +42,7 @@ export const useDashboardService = () => {
       }) || []
     },
 
-    getParticipationInfoGraph: async (extraOptions?: ExtraOptionsInterface): Promise<ParticipationInfoGraphInterface | undefined | null> => {
+    getParticipationInfoGraph: async (extraOptions?: ExtraOptionsInterface): Promise<ApiCallResponseInterface<ParticipationInfoGraphInterface>> => {
 
       const nextUrl = '/participation-info-graph';
       const url = `${baseUrl}${nextUrl}`;
@@ -51,7 +52,7 @@ export const useDashboardService = () => {
       })
     },
 
-    getFundraiserStatus: async (extraOptions?: ExtraOptionsInterface): Promise<FundraiserStatusInterface | undefined | null> => {
+    getFundraiserStatus: async (extraOptions?: ExtraOptionsInterface): Promise<ApiCallResponseInterface<FundraiserStatusInterface>> => {
 
       const nextUrl = '/fundraiser-status';
       const url = `${baseUrl}${nextUrl}`;
@@ -62,7 +63,7 @@ export const useDashboardService = () => {
     },
 
 
-    getFundraiserTotals: async (extraOptions?: ExtraOptionsInterface): Promise<FundraiserTotalsInterface | undefined | null> => {
+    getFundraiserTotals: async (extraOptions?: ExtraOptionsInterface): Promise<ApiCallResponseInterface<FundraiserTotalsInterface>> => {
 
       const nextUrl = '/fundraiser-totals';
       const url = `${baseUrl}${nextUrl}`;
@@ -71,7 +72,7 @@ export const useDashboardService = () => {
         extraOptions,
       })
     },
-    getParticipationRate: async (extraOptions?: ExtraOptionsInterface): Promise<ParticipationRateInterface | undefined | null> => {
+    getParticipationRate: async (extraOptions?: ExtraOptionsInterface): Promise<ApiCallResponseInterface<ParticipationRateInterface>> => {
 
       const nextUrl = '/participation-rate';
       const url = `${baseUrl}${nextUrl}`;
@@ -81,7 +82,7 @@ export const useDashboardService = () => {
       })
     },
 
-    getTopTransactions: async (extraOptions?: ExtraOptionsInterface): Promise<TopTransactionsInterface[]> => {
+    getTopTransactions: async (extraOptions?: ExtraOptionsInterface): Promise<ApiCallResponseInterface<TopTransactionsInterface[]>> => {
 
       const nextUrl = '/top-transactions';
       const url = `${baseUrl}${nextUrl}`;
@@ -91,7 +92,7 @@ export const useDashboardService = () => {
       }) || []
     },
 
-    getTotalsRaised: async (extraOptions?: ExtraOptionsInterface): Promise<TotalsRaisedInterface | undefined | null> => {
+    getTotalsRaised: async (extraOptions?: ExtraOptionsInterface): Promise<ApiCallResponseInterface<TotalsRaisedInterface>> => {
 
       const nextUrl = '/totals-raised';
       const url = `${baseUrl}${nextUrl}`;
@@ -101,7 +102,7 @@ export const useDashboardService = () => {
       })
     },
 
-    getBasketSizeBreakdown: async (extraOptions?: ExtraOptionsInterface): Promise<BasketSizeBreakdownInterface[]> => {
+    getBasketSizeBreakdown: async (extraOptions?: ExtraOptionsInterface): Promise<ApiCallResponseInterface<BasketSizeBreakdownInterface[]>> => {
 
       const nextUrl = '/basket-size-breakdown';
       const url = `${baseUrl}${nextUrl}`;
@@ -111,7 +112,7 @@ export const useDashboardService = () => {
       }) || []
     },
 
-    getBasketInfo: async (extraOptions?: ExtraOptionsInterface): Promise<BasketInfoInterface[]> => {
+    getBasketInfo: async (extraOptions?: ExtraOptionsInterface): Promise<ApiCallResponseInterface<BasketInfoInterface[]>> => {
 
       const nextUrl = '/baskets';
       const url = `${baseUrl}${nextUrl}`;
@@ -121,7 +122,7 @@ export const useDashboardService = () => {
       }) || []
     },
 
-    getOrderItems: async (extraOptions?: ExtraOptionsInterface): Promise<OrderItemsInterface[]> => {
+    getOrderItems: async (extraOptions?: ExtraOptionsInterface): Promise<ApiCallResponseInterface<OrderItemsInterface[]>> => {
 
       const nextUrl = '/order-items';
       const url = `${baseUrl}${nextUrl}`;
@@ -131,7 +132,7 @@ export const useDashboardService = () => {
       }) || []
     },
 
-    getMemberSummary: async (extraOptions?: ExtraOptionsInterface): Promise<MemberSummaryInterface | undefined | null> => {
+    getMemberSummary: async (extraOptions?: ExtraOptionsInterface): Promise<ApiCallResponseInterface<MemberSummaryInterface>> => {
 
       const nextUrl = '/member-summary';
       const url = `${baseUrl}${nextUrl}`;

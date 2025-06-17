@@ -1,0 +1,17 @@
+.basket-img-container {
+  height: 150px;
+  cursor: pointer;
+}
+:hover.basket-img-container {
+  border: solid 2px $happypurim-light;
+}
+
+.selected-basket-img-container {
+  border: solid 1px $happypurim;
+}
+
+
+.basket-img-row-container{
+  max-height: 200px;
+  overflow: auto;
+}

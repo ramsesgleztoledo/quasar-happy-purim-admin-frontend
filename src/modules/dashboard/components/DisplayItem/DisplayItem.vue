@@ -17,7 +17,11 @@
           }"
         >
           {{ item.value }}
-          <q-tooltip v-if="item.hover" transition-show="flip-right" transition-hide="flip-left"
+          <q-tooltip
+            style="background-color: var(--happypurim); font-size: 16px"
+            v-if="item.hover"
+            transition-show="flip-right"
+            transition-hide="flip-left"
             ><div v-html="item.hover"></div>
           </q-tooltip>
         </p>

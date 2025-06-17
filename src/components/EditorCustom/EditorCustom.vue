@@ -1,6 +1,5 @@
 <template>
   <q-editor
-    @update:model-value="() => console.log('updating')"
     ref="editorRef"
     :content-style="{
       backgroundColor: '#f1f1f1',
@@ -38,7 +37,7 @@
         'removeFormat',
       ],
       ['undo', 'redo'],
-      ['token', 'hr', 'link', 'custom_btn', 'upload'],
+      ['token', 'insert', 'hr', 'link', 'custom_btn', 'upload'],
       [
         {
           label: $q.lang.editor.formatting,
@@ -114,6 +113,34 @@
         </q-list>
       </q-btn-dropdown>
     </template>
+    <template v-if="!!attacher" v-slot:insert>
+      <q-btn-dropdown
+        dense
+        no-caps
+        ref="attacherRef"
+        no-wrap
+        unelevated
+        color="white"
+        text-color="primary"
+        label="Insert"
+        size="sm"
+      >
+        <q-list dense>
+          <q-item
+            v-for="(att, i) in attacher"
+            :key="i"
+            tag="label"
+            clickable
+            @click="addHTML(att.value)"
+          >
+            <q-item-section side>
+              <q-icon v-if="att.icon" :name="att.icon" />
+            </q-item-section>
+            <q-item-section>{{ att.label }}</q-item-section>
+          </q-item>
+        </q-list>
+      </q-btn-dropdown>
+    </template>
 
     <template v-slot:colorPicker>
       <q-btn :class="colorBtnClasses" style="font-size: 10px"
@@ -154,6 +181,7 @@ interface EditorCustomPropsInterface {
   modelValue: string
   height?: string
   tokens?: { name: string; label: string; icon?: string }[]
+  attacher?: { name: string; label: string; icon?: string; value: string }[]
 }
 
 const fullscreenClass = ref<boolean>(false)
@@ -172,6 +200,7 @@ const text = computed({
   set: (val) => $emit('update:modelValue', val),
 })
 const tokenRef = ref<QBtnDropdown | undefined>(undefined)
+const attacherRef = ref<QBtnDropdown | undefined>(undefined)
 const editorRef = ref<QEditor | undefined>(undefined)
 // Emit the updated value when the internal state changes
 const $emit = defineEmits(['update:modelValue'])
@@ -185,6 +214,14 @@ const add = (name: string) => {
     'insertHTML',
     `&nbsp;<div class="EditorCustom-token editor_token row inline items-center" contenteditable="false">&nbsp;<span>${name}</span>&nbsp;<i class="q-icon material-icons cursor-pointer" onclick="this.parentNode.parentNode.removeChild(this.parentNode)">close</i></div>&nbsp;`,
   )
+  edit.focus()
+}
+const addHTML = (value: string) => {
+  if (!editorRef.value) return
+  const edit = editorRef.value
+  attacherRef.value?.hide()
+  edit.caret.restore()
+  edit.runCmd('insertHTML', value)
   edit.focus()
 }
 
@@ -205,7 +242,7 @@ const onColorPickedBackground = () => {
   edit.focus()
 }
 
-defineExpose({ add })
+defineExpose({ add, addHTML })
 </script>
 
 <style scoped lang="scss">

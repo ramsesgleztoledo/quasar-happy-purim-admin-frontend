@@ -8,7 +8,10 @@
   <div class="row">
     <div class="col-12 top-title-col">
       <!-- eslint-disable-next-line no-irregular-whitespace -->
-      <p class="CreateOrderPage-title-3">Blumenfeld, George - <b>3 baskets selected.</b></p>
+      <p class="CreateOrderPage-title-3">
+        {{ memberState.selectedMember?.lastName }}, {{ memberState.selectedMember?.firstName }} -
+        <b>3 baskets selected.</b>
+      </p>
     </div>
   </div>
 
@@ -95,7 +98,14 @@
   />
   <!--* confirm cancel --->
   <DialogAlert
-    @on-finish="(value) => console.log('on finish', { value })"
+    @on-finish="
+      (value) => {
+        if (value)
+          $router.push({
+            name: 'MemberLayout-MemberPage',
+          })
+      }
+    "
     msg="Are you sure you want to cancel this order?"
     v-model="cancelOrderDialogFlag"
   />
@@ -108,6 +118,9 @@ import type { QTableColumn } from 'quasar'
 import { convertWithCommas } from 'src/helpers/convertWithCommas'
 import { ref } from 'vue'
 import DialogAlert from 'src/components/DialogAlert/DialogAlert.vue'
+import { useMember } from 'src/modules/dashboard/composables/useMember'
+
+const { memberState } = useMember()
 
 const search = ref('')
 const deleteOrderDialogFlag = ref(false)
