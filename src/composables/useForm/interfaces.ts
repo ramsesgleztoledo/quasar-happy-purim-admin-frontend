@@ -8,16 +8,16 @@ export interface AuxForm {
 export interface AuxFormField {
   value: string | number | object | boolean | any[] | null | undefined,
   type?: 'string' | 'number' | 'object' | 'boolean' | 'array',
-  validations?: any[]
+  validations?: ValidationFn[]
 }
-export interface FormField {
+export interface FormField<T = string | number | object | boolean> {
   id: string,
-  value: string | number | object | boolean,
+  value: T,
   type: 'string' | 'number' | 'object' | 'boolean' | 'array',
-  validations: any[]
+  validations: ValidationFn[]
 }
 
 
-
+export type ValidationFn = ({ value }: { value: any }) => any | null;
 
 

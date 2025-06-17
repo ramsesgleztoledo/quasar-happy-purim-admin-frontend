@@ -30,7 +30,7 @@ export const useDashboardService = () => {
       return await apiCall({
         url,
         extraOptions,
-      }) || []
+      })
     },
     getMembersOrdersGraph: async (extraOptions?: ExtraOptionsInterface): Promise<ApiCallResponseInterface<MembersOrdersGraphInterface[]>> => {
 
@@ -39,7 +39,7 @@ export const useDashboardService = () => {
       return await apiCall({
         url,
         extraOptions,
-      }) || []
+      })
     },
 
     getParticipationInfoGraph: async (extraOptions?: ExtraOptionsInterface): Promise<ApiCallResponseInterface<ParticipationInfoGraphInterface>> => {
@@ -89,7 +89,7 @@ export const useDashboardService = () => {
       return await apiCall({
         url,
         extraOptions,
-      }) || []
+      })
     },
 
     getTotalsRaised: async (extraOptions?: ExtraOptionsInterface): Promise<ApiCallResponseInterface<TotalsRaisedInterface>> => {
@@ -109,7 +109,7 @@ export const useDashboardService = () => {
       return await apiCall({
         url,
         extraOptions,
-      }) || []
+      })
     },
 
     getBasketInfo: async (extraOptions?: ExtraOptionsInterface): Promise<ApiCallResponseInterface<BasketInfoInterface[]>> => {
@@ -119,7 +119,7 @@ export const useDashboardService = () => {
       return await apiCall({
         url,
         extraOptions,
-      }) || []
+      })
     },
 
     getOrderItems: async (extraOptions?: ExtraOptionsInterface): Promise<ApiCallResponseInterface<OrderItemsInterface[]>> => {
@@ -129,7 +129,7 @@ export const useDashboardService = () => {
       return await apiCall({
         url,
         extraOptions,
-      }) || []
+      }) 
     },
 
     getMemberSummary: async (extraOptions?: ExtraOptionsInterface): Promise<ApiCallResponseInterface<MemberSummaryInterface>> => {

@@ -1,16 +1,5 @@
 <template>
   <div class="q-pa-md">
-    <!-- <TableCustom
-      class-name="table-sticky-header-column-table"
-      flat
-      bordered
-      title="Recent Orders"
-      :rows="rows"
-      :columns="columns"
-      row-key="id"
-      styles="height: 360px"
-      @onRowClick="onRowClick"
-    /> -->
     <div class="row RecentOrders-container" :class="{ fullscreen: isFullScreen }">
       <div class="col-12">
         <div class="row">

@@ -173,9 +173,9 @@ export const useApiCall = () => {
       }
 
       const data: ApiCallResponseInterface<T> = {
-        code: error.status!,
+        code: error.status! || 500,
         ok: false,
-        data: error.response?.data || error.message
+        data: error.response?.data || error.message || 'unknown error'
       }
 
       return data;

@@ -8,6 +8,7 @@ import type { AlternativeMemberAddress, EmailLoginCodeInfoInterface, MemberDataI
 import type { MemberReciprocityInterface } from '../interfaces/member-interfaces';
 import type { MemberCategoryInterface } from "../interfaces/category-interfaces";
 import type { ApiCallResponseInterface } from "src/services/api-interfaces";
+import { useUI } from "src/modules/UI/composables";
 
 
 export const useMember = () => {
@@ -15,6 +16,7 @@ export const useMember = () => {
 
   const $mStore = useMemberStore()
   const $q = useQuasar()
+  const { downloadFile } = useUI()
 
   const {
     getMembersList,
@@ -29,6 +31,9 @@ export const useMember = () => {
     clearCartByMemberId,
     getMemberDonateBasketOptionByMemberId,
     getEmailLoginCodeInfo,
+    downloadMembersLogged,
+    getBasketReceived,
+    downloadBasketReceived,
   } = useMemberService()
 
   const { getCategoriesByMemberId } = useCategoryService()
@@ -226,6 +231,21 @@ export const useMember = () => {
         subject: emailCodeInfo.ok ? emailCodeInfo.data.subject : "",
         body: emailCodeInfo.ok ? emailCodeInfo.data.body : "",
       }
-    }
+    },
+    async downloadMembersLogged(): Promise<any> {
+      await downloadFile(downloadMembersLogged, 'csv', 'members-logged')
+    },
+    async getBasketReceived() {
+      const resp = await getBasketReceived({
+        loading: {
+          message: 'Loading received basket ...'
+        }
+      })
+
+      return resp.ok ? resp.data : []
+    },
+    async downloadBasketReceived(): Promise<any> {
+      await downloadFile(downloadBasketReceived, 'csv', 'baskets-to-delivery')
+    },
   };
 }

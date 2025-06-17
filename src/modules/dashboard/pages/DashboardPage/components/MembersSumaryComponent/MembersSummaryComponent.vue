@@ -31,6 +31,10 @@ const orderItems = computed<ItemBasketInterface[]>(() => [
   {
     label: 'Member logged in',
     value: $dStore.memberSummary?.membersLoggedIn || 0,
+    color: '#3c5ce0',
+    redirectTo: {
+      name: 'dashboard-memberLoggedPage',
+    },
   },
   {
     label: 'Member online',

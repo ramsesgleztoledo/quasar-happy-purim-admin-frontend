@@ -47,6 +47,7 @@ import DisplayItem from '../../../../components/DisplayItem/DisplayItem.vue'
 import { computed } from 'vue'
 import { generateRandomColor } from 'src/helpers'
 import type { ItemBasketInterface } from 'src/modules/dashboard/interfaces/item-interfaces'
+import { backendRoutes } from 'src/modules/dashboard/data/backend-routes-redirection'
 
 interface DataArrayInterface {
   label: string
@@ -68,7 +69,9 @@ const baskets = computed<ItemBasketInterface[]>(() =>
     label: item.label,
     value: item.value,
     redirectTo:
-      typeof item.redirect === 'string' && item.redirect != 'undefined' ? item.redirect : undefined,
+      typeof item.redirect === 'string' && item.redirect != 'undefined'
+        ? { name: backendRoutes[item.redirect] }
+        : undefined,
     color:
       typeof item.redirect === 'string' && item.redirect != 'undefined' ? '#3c5ce0' : undefined,
   })),

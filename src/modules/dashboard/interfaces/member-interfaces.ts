@@ -120,3 +120,40 @@ export interface EmailLoginCodeInfoInterface {
   subject: string;
   body: string;
 }
+
+
+export interface MembersLoggedInterface {
+  totalCount: number;
+  totalOrdered: number;
+  rows: MemberLoggedInterface[];
+}
+
+export interface MemberLoggedInterface {
+  memberID: number;
+  firstName: string;
+  lastName: string;
+  spouse: string;
+  address: string;
+  phone: string;
+  email: string;
+  orders: number;
+}
+
+
+export interface BasketReceivedInterface {
+  memberID:      number;
+  lastName:      string;
+  firstName:     string;
+  spouse:        string;
+  phone:         string;
+  address:       string;
+  address2:      string;
+  city:          string;
+  state:         string;
+  zip:           string;
+  code:          string;
+  route:         string;
+  sendingTo:     number;
+  receivingFrom: number;
+  displayName:   string;
+}

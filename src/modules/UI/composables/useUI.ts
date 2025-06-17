@@ -2,6 +2,9 @@ import { useQuasar } from 'quasar';
 import { computed, onBeforeUnmount, onMounted, ref } from 'vue';
 import { useRouter } from 'vue-router';
 import { useUIStore } from '../store/ui-store';
+import type { downloadEndPointType } from './ui-interfaces';
+import { generateDownload } from 'src/helpers/generateDownload';
+import type { FileType } from 'src/interfaces/ui-interfaces';
 
 
 export const useUI = () => {
@@ -98,5 +101,39 @@ export const useUI = () => {
     goForward,
     isDev: computed(() => process.env.NODE_ENV === 'development'),
     version: computed(() => process.env.VERSION || ''),
+
+    async downloadFile(endPoint: downloadEndPointType, fileType: FileType, fileName?: string) {
+
+      const response = await endPoint({
+        dontRedirect: true,
+        dontShowToast: true,
+      })
+
+      if (!response.ok) {
+        $q.notify({
+          color: 'red',
+          textColor: 'white',
+          icon: 'error',
+          message: 'Something went wrong downloading the file, please try again later',
+        })
+        return undefined
+      }
+
+      const file = response.data
+
+      const date = new Date().getTime()
+      const name = `${fileName ? `${fileName + '-'}` : ''}${date}.csv`
+
+      generateDownload(file, name, fileType)
+
+      $q.notify({
+        color: 'blue',
+        textColor: 'black',
+        icon: 'error',
+        message: 'Filed downloaded',
+      })
+
+    },
+
   };
 };

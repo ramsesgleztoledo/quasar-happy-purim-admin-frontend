@@ -18,7 +18,7 @@ export const useOrderArchiveService = () => {
       return await apiCall({
         url,
         extraOptions
-      }) || []
+      })
     },
     getOrderReceiptByOrderId: async (orderId: number, extraOptions?: ExtraOptionsInterface): Promise<ApiCallResponseInterface<OrderReceiptInterface>> => {
 
@@ -38,7 +38,7 @@ export const useOrderArchiveService = () => {
       return await apiCall({
         url,
         extraOptions
-      }) || []
+      })
     },
 
 

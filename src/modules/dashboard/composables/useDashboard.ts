@@ -5,6 +5,8 @@ import { useDashboardService } from "src/modules/dashboard/services/dashboard.se
 import { useQuasar } from "quasar";
 import type { BasketInfoInterface, BasketSizeBreakdownInterface, FundraiserStatusInterface, FundraiserTotalsInterface, MembersOrdersGraphInterface, MemberSummaryInterface, OrderGraphInterface, OrderItemsInterface, ParticipationInfoGraphInterface, ParticipationRateInterface, TopTransactionsInterface, TotalsRaisedInterface } from "../interfaces/dashboard-interfaces";
 import type { ApiCallResponseInterface } from "src/services/api-interfaces";
+import { useMemberService } from "../services/member.service";
+import type { MembersLoggedInterface } from "../interfaces/member-interfaces";
 
 export const useDashboard = () => {
 
@@ -13,6 +15,7 @@ export const useDashboard = () => {
   const $q = useQuasar()
 
   const { getBasketInfo, getBasketSizeBreakdown, getFundraiserStatus, getFundraiserTotals, getMembersOrdersGraph, getMemberSummary, getOrderItems, getOrderTotalGraph, getParticipationInfoGraph, getParticipationRate, getTopTransactions, getTotalsRaised } = useDashboardService()
+  const { getMembersLogged } = useMemberService()
 
 
   return {
@@ -38,7 +41,8 @@ export const useDashboard = () => {
         any,
         any,
         any,
-        any
+        any,
+        any,
       ] =
         [
           getOrderTotalGraph(),
@@ -53,6 +57,7 @@ export const useDashboard = () => {
           getBasketInfo(),
           getOrderItems(),
           getMemberSummary(),
+          getMembersLogged(),
         ]
 
       const [
@@ -68,6 +73,7 @@ export const useDashboard = () => {
         basketInfo,
         orderItems,
         memberSummary,
+        membersLogged
       ]:
         [
           ApiCallResponseInterface<OrderGraphInterface[]>,
@@ -82,6 +88,7 @@ export const useDashboard = () => {
           ApiCallResponseInterface<BasketInfoInterface[]>,
           ApiCallResponseInterface<OrderItemsInterface[]>,
           ApiCallResponseInterface<MemberSummaryInterface>,
+          ApiCallResponseInterface<MembersLoggedInterface>,
 
         ]
         = await Promise.all(promises)
@@ -101,6 +108,7 @@ export const useDashboard = () => {
         basketInfo: basketInfo.ok ? basketInfo.data : [],
         orderItems: orderItems.ok ? orderItems.data : [],
         memberSummary: memberSummary.ok ? memberSummary.data : undefined,
+        membersLogged: membersLogged.ok ? membersLogged.data : undefined,
       })
 
       $q.loading.hide()

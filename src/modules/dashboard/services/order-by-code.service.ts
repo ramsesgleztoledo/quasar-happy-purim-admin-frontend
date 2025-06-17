@@ -29,7 +29,7 @@ export const useOrderByCodeService = () => {
       return await apiCall({
         url,
         extraOptions
-      }) || []
+      }) 
     },
 
 

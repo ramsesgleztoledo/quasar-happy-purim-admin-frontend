@@ -17,7 +17,7 @@ export const useEmailService = () => {
       return await apiCall({
         url,
         extraOptions
-      }) || []
+      }) 
     },
 
     getCampaignDetailById: async (campaignId: number, extraOptions?: ExtraOptionsInterface): Promise<ApiCallResponseInterface<CampaignDetailsInterface>> => {

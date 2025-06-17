@@ -12,6 +12,9 @@ export default {
   minCharacters:
     (min: number) =>
       ({ value }: { value: string }) => {
+
+        if (!value) return null;
+
         const stringValue = `${value}`;
 
         if (stringValue.length >= min) {
@@ -24,6 +27,7 @@ export default {
   maxCharacters:
     (max: number) =>
       ({ value }: { value: string }) => {
+        if (!value) return null;
         const stringValue = `${value}`;
 
         if (stringValue.length <= max) {
@@ -37,6 +41,7 @@ export default {
   minValue:
     (min: number) =>
       ({ value }: { value: string }) => {
+        if (!value) return null;
         if (typeof value !== 'number' && value !== '')
           throw new Error(
             `Validation minValue can be applied only to a number value, value: "${JSON.stringify(
@@ -54,6 +59,7 @@ export default {
   maxValue:
     (max: number) =>
       ({ value }: { value: string }) => {
+        if (!value) return null;
         if (typeof value !== 'number' && value !== '')
           throw new Error(
             `Validation maxValue can be applied only to a number value, value: "${JSON.stringify(
@@ -69,6 +75,7 @@ export default {
       },
   //* isEmail
   isEmail: ({ value }: { value: string }) => {
+    if (!value) return null
     const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
 
     if (emailPattern.test(value)) return null;
@@ -76,6 +83,7 @@ export default {
   },
   //* isGoodPassword
   isGoodPassword: ({ value }: { value: string }) => {
+    if (!value) return null;
     const goodPassword =
       /^(?=.*[0-9])(?=.*[-[\]_=+!@#$%^'"/,.?:;)(}{&*<>])(?=.*[A-Z]).*$/;
 
@@ -86,6 +94,7 @@ export default {
   pattern:
     (patter: RegExp) =>
       ({ value }: { value: string }) => {
+        if (!value) return null;
         if (!(patter instanceof RegExp))
           throw new Error(
             `Validation pattern can be applied only with a RegExp, patter: "${JSON.stringify(
@@ -100,6 +109,7 @@ export default {
   includes:
     (include: string) =>
       ({ value }: { value: string }) => {
+        if (!value) return null;
         const stringValue = `${value}`;
 
         if (stringValue.includes(`${include}`)) return null;
@@ -109,6 +119,7 @@ export default {
   notIncludes:
     (include: string) =>
       ({ value }: { value: string }) => {
+        if (!value) return null;
         const stringValue = `${value}`;
 
         if (!stringValue.includes(`${include}`)) return null;
@@ -118,6 +129,7 @@ export default {
   includesIgnoreCap:
     (include: string) =>
       ({ value }: { value: string }) => {
+        if (!value) return null;
         const stringValue = `${value}`.toLowerCase();
 
         if (stringValue.includes(`${include.toLowerCase()}`)) return null;
@@ -127,6 +139,7 @@ export default {
   notIncludesIgnoreCap:
     (include: string) =>
       ({ value }: { value: string }) => {
+        if (!value) return null;
         const stringValue = `${value}`.toLowerCase();
 
         if (!stringValue.includes(`${include.toLowerCase()}`)) return null;
@@ -136,6 +149,7 @@ export default {
   equal:
     (equal: string) =>
       ({ value }: { value: string }) => {
+        if (!value) return null;
         const stringValue = `${value}`;
 
         if (stringValue === `${equal}`) return null;
@@ -145,6 +159,7 @@ export default {
   equalIgnoreCap:
     (equal: string) =>
       ({ value }: { value: string }) => {
+        if (!value) return null;
         const stringValue = `${value}`.toLowerCase();
 
         if (stringValue === `${equal}`.toLowerCase()) return null;
@@ -154,6 +169,7 @@ export default {
   notEqualIgnoreCap:
     (equal: string) =>
       ({ value }: { value: string }) => {
+        if (!value) return null;
         const stringValue = `${value}`.toLowerCase();
 
         if (stringValue !== `${equal}`.toLowerCase()) return null;
@@ -163,6 +179,7 @@ export default {
   startWith:
     (start: string) =>
       ({ value }: { value: string }) => {
+        if (!value) return null;
         const stringValue = `${value}`[0];
 
         if (stringValue === start[0]) return null;
@@ -172,6 +189,7 @@ export default {
   startWithIgnoreCase:
     (start: string) =>
       ({ value }: { value: string }) => {
+        if (!value) return null;
         const stringValue = `${value}`.toLowerCase()[0];
 
         if (stringValue === start.toLowerCase()[0]) return null;
@@ -181,6 +199,7 @@ export default {
   endWith:
     (end: string) =>
       ({ value }: { value: string }) => {
+        if (!value) return null;
         let stringValue: string | undefined = `${value}`;
         stringValue = stringValue[stringValue.length - 1];
 
@@ -191,6 +210,7 @@ export default {
   endWithIgnoreCase:
     (end: string) =>
       ({ value }: { value: string }) => {
+        if (!value) return null;
         let stringValue: string | undefined = `${value}`.toLowerCase();
         stringValue = stringValue[stringValue.length - 1];
 
@@ -199,6 +219,7 @@ export default {
       },
   //* startWithUpperCase
   startWithUpperCase: ({ value }: { value: string }) => {
+    if (!value) return null;
     const stringValue = `${value}`.toUpperCase()[0];
 
     if (stringValue === value[0]) return null;
@@ -206,6 +227,7 @@ export default {
   },
   //* startWithLowerCase
   startWithLowerCase: ({ value }: { value: string }) => {
+    if (!value) return null;
     const stringValue = `${value}`.toLowerCase()[0];
 
     if (stringValue === value[0]) return null;
@@ -213,6 +235,7 @@ export default {
   },
   //* isLowerCase
   isLowerCase: ({ value }: { value: string }) => {
+    if (!value) return null;
     const stringValue = `${value}`.toLowerCase();
 
     if (stringValue === value) return null;
@@ -220,6 +243,7 @@ export default {
   },
   //* isUpperCase
   isUpperCase: ({ value }: { value: string }) => {
+    if (!value) return null;
     const stringValue = `${value}`.toUpperCase();
 
     if (stringValue === value) return null;
@@ -227,6 +251,7 @@ export default {
   },
   //* notSpaces
   notSpaces: ({ value }: { value: string }) => {
+    if (!value) return null;
     const stringValue = `${value}`;
 
     for (let i = 0; i < stringValue.length; i++) {
@@ -240,6 +265,7 @@ export default {
   },
   //* upperCaseWords
   upperCaseWords: ({ value }: { value: string }) => {
+    if (!value) return null;
     const stringValue = `${value}`;
 
     let newWord = true;
@@ -260,8 +286,8 @@ export default {
   isPhone:
     (code: string) =>
       ({ value }: { value: string }) => {
+        if (!value) return null;
         console.log(code);
-
         const auxValue = value ? value : ''
         const numbers = auxValue.match(/\d+/g);
         const result = numbers ? numbers.join('') : null;
@@ -272,7 +298,7 @@ export default {
   greaterThan:
     (number: number, equal?: boolean) =>
       ({ value }: { value: number }) => {
-
+        if (!value) return null;
         let result = false;
 
         if (equal)
@@ -286,7 +312,7 @@ export default {
   lowerThan:
     (number: number, equal?: boolean) =>
       ({ value }: { value: number }) => {
-
+        if (!value) return null;
         let result = false;
 
         if (equal)

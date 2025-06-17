@@ -21,11 +21,39 @@ export const dashboardRoutes: RouteRecordRaw[] = [
         path: 'item-details/:itemId',
         name: 'dashboard-itemDetailsPage',
         component: () =>
-          import(/* webpackChunkName: "dashboard-itemDetailsPage" */ "../pages/ItemsPage/ItemsPage.vue"),
-      }
-      ,
-      ...memberRoutes
-      ,
+          import( "../pages/ItemsPage/ItemsPage.vue"),
+      },
+      {
+        path: 'member-logged',
+        name: 'dashboard-memberLoggedPage',
+        component: () =>
+          import( "../pages/MemberLoggedPage/MemberLoggedPage.vue"),
+      },
+      {
+        path: 'transactions-history',
+        name: 'dashboard-transactionPage',
+        component: () =>
+          import( "../pages/TransactionPage/TransactionPage.vue"),
+      },
+      {
+        path: 'donations-history',
+        name: 'dashboard-donationPage',
+        component: () =>
+          import( "../pages/DonationsPage/DonationsPage.vue"),
+      },
+      {
+        path: 'received-baskets',
+        name: 'dashboard-receivedBasketPage',
+        component: () =>
+          import( "../pages/ReceivedBasketPage/ReceivedBasketPage.vue"),
+      },
+      {
+        path: 'baskets-ship',
+        name: 'dashboard-BasketsToBeShipPage',
+        component: () =>
+          import( "../pages/BasketsToBeShipPage/BasketsToBeShipPage.vue"),
+      },
+      ...memberRoutes,
       {
         path: 'site-manager',
         name: 'dashboard-SiteManagerPage',

@@ -26,7 +26,15 @@ export const linksData: LinksDataInterface[] = [
     title: 'Dashboard',
     icon: 'home',
     name: 'dashboard-DashboardPage',
-    routeClass: ['dashboard-DashboardPage', 'dashboard-itemDetailsPage'],
+    routeClass: [
+      'dashboard-DashboardPage',
+      'dashboard-itemDetailsPage',
+      'dashboard-memberLoggedPage',
+      'dashboard-transactionPage',
+      'dashboard-donationPage',
+      'dashboard-receivedBasketPage',
+      'dashboard-BasketsToBeShipPage',
+    ],
   },
   {
     title: 'Members Settings',
@@ -102,11 +110,9 @@ export interface routeDataInterface {
 
 export const routeInfo: routeDataInterface[] = [
   {
-
     title: 'Home',
     icon: 'home',
     name: 'DashboardLayout',
-
   },
   {
     title: 'Dashboard',
@@ -120,6 +126,41 @@ export const routeInfo: routeDataInterface[] = [
     name: 'dashboard-itemDetailsPage',
     params: ['itemId'],
     titleParam: (value?: routeParamInterface) => `Item - ${value?.itemId}`
+  },
+  {
+
+    title: 'Member Logged',
+    icon: 'person',
+    name: 'dashboard-memberLoggedPage',
+
+  },
+  {
+
+    title: 'Required Baskets for Delivery',
+    icon: 'shopping_basket',
+    name: 'dashboard-receivedBasketPage',
+
+  },
+  {
+
+    title: 'Baskets to be shipped',
+    icon: 'shopping_basket',
+    name: 'dashboard-BasketsToBeShipPage',
+
+  },
+  {
+
+    title: 'Charity Breakdown',
+    icon: 'volunteer_activism',
+    name: 'dashboard-donationPage',
+
+  },
+  {
+
+    title: 'Transactions History',
+    icon: 'receipt',
+    name: 'dashboard-transactionPage',
+
   },
 
   {
