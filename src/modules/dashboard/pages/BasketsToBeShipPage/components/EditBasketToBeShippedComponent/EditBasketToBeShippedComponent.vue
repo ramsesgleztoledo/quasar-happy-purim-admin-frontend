@@ -12,6 +12,7 @@
             <div class="row q-mb-sm">
               <div class="col-12 q-pr-sm q-pl-sm">
                 <q-input
+                  :disable="dontEdit"
                   v-model="realForm.sendTo.value"
                   outlined
                   label="Send To"
@@ -23,6 +24,7 @@
             <div class="row q-mb-sm">
               <div class="col-6 q-pr-sm q-pl-sm">
                 <q-input
+                  :disable="dontEdit"
                   v-model="realForm.address.value"
                   outlined
                   label="Address"
@@ -32,6 +34,7 @@
               </div>
               <div class="col-6 q-pr-sm q-pl-sm">
                 <q-input
+                  :disable="dontEdit"
                   v-model="realForm.address2.value"
                   outlined
                   label="Address 2"
@@ -43,6 +46,7 @@
             <div class="row q-mb-sm">
               <div class="col-6 q-pr-sm q-pl-sm">
                 <q-input
+                  :disable="dontEdit"
                   v-model="realForm.city.value"
                   outlined
                   label="City"
@@ -52,6 +56,7 @@
               </div>
               <div class="col-6 q-pr-sm q-pl-sm">
                 <q-select
+                  :disable="dontEdit"
                   v-model="realForm.state.value"
                   outlined
                   :options="statesOptions"
@@ -64,6 +69,7 @@
             <div class="row q-mt-md">
               <div class="col-6 q-pr-sm q-pl-sm">
                 <q-input
+                  :disable="dontEdit"
                   v-model="realForm.zip.value"
                   outlined
                   label="Zip Code"
@@ -74,6 +80,7 @@
               </div>
               <div class="col-6 q-pl-sm q-pr-sm">
                 <q-input
+                  :disable="dontEdit"
                   v-model="realForm.phone.value"
                   outlined
                   label="Phone"
@@ -86,6 +93,7 @@
             <div class="row q-mt-md">
               <div class="col-6 q-pr-sm q-pl-sm">
                 <q-input
+                  :disable="dontEdit"
                   v-model="realForm.route.value"
                   outlined
                   label="Route"
@@ -95,6 +103,7 @@
               </div>
               <div class="col-6 q-pl-sm q-pr-sm">
                 <q-input
+                  :disable="dontEdit"
                   v-model="realForm.misc.value"
                   outlined
                   label="Misc"
@@ -106,6 +115,7 @@
             <div class="row q-mt-md">
               <div class="col-12 q-pr-sm q-pl-sm">
                 <q-input
+                  :disable="dontEdit"
                   v-model="realForm.email.value"
                   outlined
                   label="Email"
@@ -117,6 +127,7 @@
             <div class="row q-mt-md">
               <div class="col-12 q-pr-sm q-pl-sm">
                 <q-input
+                  :disable="dontEdit"
                   type="textarea"
                   v-model="realForm.message.value"
                   outlined
@@ -142,8 +153,8 @@
         <q-btn
           class="q-mr-sm q-mt-sm"
           style="background: var(--happypurim); color: white"
-          label="UPDATE"
-          v-close-popup
+          :label="dontEdit ? 'EDIT' : 'SAVE'"
+          @click="onUpdate"
         />
       </q-card-actions>
     </q-card>
@@ -151,9 +162,21 @@
 </template>
 
 <script setup lang="ts">
+import type { QDialog } from 'quasar'
 import type { FormField } from 'src/composables'
 import { lazyRules, useForm, validations } from 'src/composables'
 import { statesOptions } from 'src/modules/dashboard/data'
+import type { BasketToBeShippedInterface } from 'src/modules/dashboard/interfaces/shipment-interfaces'
+import { onMounted, ref } from 'vue'
+
+interface BasketToBeShippedComponentPropsInterface {
+  dialogRef: QDialog | undefined
+  basket: BasketToBeShippedInterface
+}
+
+const $props = defineProps<BasketToBeShippedComponentPropsInterface>()
+
+const dontEdit = ref(true)
 
 interface FormInterface {
   sendTo: FormField<string>
@@ -169,7 +192,7 @@ interface FormInterface {
   misc: FormField<string>
 }
 
-const { realForm } = useForm<FormInterface>({
+const { realForm, resetForm, getFormValue } = useForm<FormInterface>({
   sendTo: { value: '', validations: [validations.required] },
   address: { value: '', validations: [validations.required] },
   address2: { value: '', validations: [] },
@@ -181,6 +204,29 @@ const { realForm } = useForm<FormInterface>({
   phone: { value: '', validations: [] },
   route: { value: '', validations: [validations.required] },
   misc: { value: '', validations: [] },
+})
+
+const onUpdate = () => {
+  if (dontEdit.value) {
+    dontEdit.value = false
+    return
+  }
+  const refD = $props.dialogRef
+  if (!refD) return
+  refD.hide()
+  console.log({ value: getFormValue() })
+}
+
+onMounted(() => {
+  resetForm(
+    {
+      ...$props.basket,
+    },
+    {
+      omitExtraFields: true,
+      original: true,
+    },
+  )
 })
 </script>
 

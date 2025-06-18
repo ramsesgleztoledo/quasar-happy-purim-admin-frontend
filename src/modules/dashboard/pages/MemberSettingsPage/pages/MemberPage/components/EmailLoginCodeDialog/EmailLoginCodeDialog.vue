@@ -127,11 +127,18 @@ const attacherForEdit = ref([
   },
 ])
 
+interface FormInterface {
+  fromName: FormField<string>
+  fromEmail: FormField<string>
+  toEmail: FormField<string>
+  subject: FormField<string>
+}
+
 const {
   realForm,
-  onFormReset,
+  resetForm,
   isValidForm: isValidRealForm,
-} = useForm({
+} = useForm<FormInterface>({
   fromName: { value: '', validations: [validations.required] },
   fromEmail: { value: '', validations: [validations.required, validations.isEmail] },
   toEmail: { value: '', validations: [validations.required, validations.isEmail] },
@@ -143,7 +150,7 @@ const emailContent = ref<string>('')
 onMounted(() => {
   const id = Number($route.params.memberId)
   getEmailLoginCodeInfo(id).then((res) => {
-    onFormReset({
+    resetForm({
       fromName: res.fromName,
       fromEmail: res.fromEmail,
       subject: res.subject,

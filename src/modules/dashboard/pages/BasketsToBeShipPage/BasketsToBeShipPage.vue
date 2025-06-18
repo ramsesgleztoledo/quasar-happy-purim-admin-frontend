@@ -35,13 +35,16 @@
       />
     </div>
   </div>
-  <q-dialog v-model="ediBasketDialogFlag" persistent>
-    <EditBasketToBeShippedComponent />
+  <q-dialog ref="dialogEditBasketToBeShippedComponentRef" v-model="ediBasketDialogFlag" persistent>
+    <EditBasketToBeShippedComponent
+      :basket="basketEdit!"
+      :dialogRef="dialogEditBasketToBeShippedComponentRef"
+    />
   </q-dialog>
 </template>
 
 <script setup lang="ts">
-import type { QTableColumn } from 'quasar'
+import type { QDialog, QTableColumn } from 'quasar'
 import { onMounted, ref } from 'vue'
 import TableCustom from 'src/components/TableCustom/TableCustom.vue'
 import { useShipment } from '../../composables/useShipment'
@@ -181,6 +184,7 @@ const baskets = ref<BasketToBeShippedInterface[]>([])
 const exportDisabled = ref(false)
 const ediBasketDialogFlag = ref(false)
 const basketEdit = ref<BasketToBeShippedInterface | undefined>(undefined)
+const dialogEditBasketToBeShippedComponentRef = ref<QDialog | undefined>(undefined)
 
 onMounted(() => {
   getBasketsToBeShipped().then((resp) => {

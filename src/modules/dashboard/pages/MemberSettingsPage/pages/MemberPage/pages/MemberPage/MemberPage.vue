@@ -590,7 +590,7 @@
             label="RESET"
             class="q-mr-sm"
             style="color: #990000; border-color: #990000"
-            @click="() => resetForm(true)"
+            @click="() => resetAllForm(true)"
           />
           <q-btn
             class="q-mr-sm"
@@ -707,7 +707,31 @@ const customOptions = ref([
   { value: false, label: 'I would like to pick up my basket in the office' },
 ])
 
-const { realForm, onFormReset } = useForm({
+interface FormInterface {
+  memberTitle: FormField<string>
+  firstName: FormField<string>
+  lastName: FormField<string>
+  spouseTitle: FormField<string>
+  spouseFirstName: FormField<string>
+  spouseLastName: FormField<string>
+  address: FormField<string>
+  address2: FormField<string>
+  city: FormField<string>
+  state: FormField<string>
+  zipCode: FormField<string>
+  phone: FormField<string>
+  phone2: FormField<string>
+  email: FormField<string>
+  email2: FormField<string>
+  misc: FormField<string>
+  misc2: FormField<string>
+  displayName: FormField<string>
+  foods: FormField<string>
+  salutation: FormField<string>
+  notes: FormField<string>
+}
+
+const { realForm, resetForm } = useForm<FormInterface>({
   memberTitle: { value: memberState.value.selectedMember?.title, validations: [] },
   firstName: {
     value: memberState.value.selectedMember?.firstName,
@@ -767,9 +791,9 @@ const loadPage = () => {
   isReady.value = true
 }
 
-const resetForm = (showNotify: boolean = false) => {
+const resetAllForm = (showNotify: boolean = false) => {
   //main form
-  onFormReset({
+  resetForm({
     memberTitle: memberState.value.selectedMember?.title,
     firstName: memberState.value.selectedMember?.firstName,
     lastName: memberState.value.selectedMember?.lastName,
