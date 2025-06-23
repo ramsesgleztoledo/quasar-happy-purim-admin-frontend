@@ -1,6 +1,6 @@
 import { useApiCall } from "src/services/apiCall";
 import type { ApiCallResponseInterface, ExtraOptionsInterface } from "src/services/api-interfaces";
-import type { DonationInterface, TransactionsInterface } from "../interfaces/transaction-interfaces";
+import type { DonationInterface, ReciprocityChargeInterface, TransactionsInterface } from "../interfaces/transaction-interfaces";
 
 
 
@@ -30,6 +30,23 @@ export const useTransactionService = () => {
     },
     downloadCharityCSV: async (extraOptions?: ExtraOptionsInterface): Promise<ApiCallResponseInterface<unknown>> => {
       const nextUrl = `/donations/export`;
+      const url = `${baseUrl}${nextUrl}`;
+      return await apiCall({
+        url,
+        extraOptions,
+        responseType: 'text'
+      })
+    },
+    getReciprocityCharges: async (extraOptions?: ExtraOptionsInterface): Promise<ApiCallResponseInterface<ReciprocityChargeInterface[]>> => {
+      const nextUrl = `/reciprocity-charges`;
+      const url = `${baseUrl}${nextUrl}`;
+      return await apiCall({
+        url,
+        extraOptions
+      })
+    },
+    downloadReciprocityChargesCSV: async (extraOptions?: ExtraOptionsInterface): Promise<ApiCallResponseInterface<unknown>> => {
+      const nextUrl = `/reciprocity-charges/export`;
       const url = `${baseUrl}${nextUrl}`;
       return await apiCall({
         url,

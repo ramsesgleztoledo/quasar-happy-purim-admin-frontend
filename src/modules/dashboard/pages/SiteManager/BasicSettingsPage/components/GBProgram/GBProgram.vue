@@ -14,6 +14,46 @@
       <p style="color: #797979">Last date/time your members can login to place orders.</p>
     </div>
   </div>
+  <div v-if="!basicSettingsState.settings?.hasCustomPricing">
+    <div class="row">
+      <div class="col-12 q-pl-sm q-pr-sm q-mt-md">
+        <q-input
+          v-model="realForm.costPerPerson.value"
+          outlined
+          label="Cost Per Person $"
+          lazy-rules
+          :rules="[lazyRules.required(), lazyRules.greaterThan(0, true)]"
+          type="number"
+        />
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-12 q-pl-sm q-pr-sm q-mt-md">
+        <q-input
+          v-model="realForm.maximumCharge.value"
+          outlined
+          label="Maximum Charge $"
+          lazy-rules
+          :rules="[lazyRules.required(), lazyRules.greaterThan(0, true)]"
+          type="number"
+          hint="(0 = no limit)"
+        />
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-12 q-pl-sm q-pr-sm q-mt-md">
+        <q-input
+          v-model="realForm.reciprocityCharge.value"
+          outlined
+          label="Reciprocity Price $"
+          lazy-rules
+          :rules="[lazyRules.required(), lazyRules.greaterThan(0, true)]"
+          type="number"
+          :hint="`$${realForm.reciprocityCharge.value} per Greeting/Person`"
+        />
+      </div>
+    </div>
+  </div>
   <div class="row">
     <div
       class="q-pa-sm"
@@ -94,22 +134,24 @@
         style="background: white; color: var(--happypurim)"
         icon="save"
         label="update"
-        @click="
-          () => {
-            console.log('editor value', { dateValue, timeValue })
-          }
-        "
+        @click="onUpdate"
       />
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
+import { lazyRules, useForm, validations } from 'src/composables'
 import { isValidDate, isValidTime } from 'src/helpers'
+import { getTimeAndDate } from 'src/helpers/getTimeAndDate'
+import { turnTimeAndDate } from 'src/helpers/turnTimeAndDate'
+import { useBasicSettings } from 'src/modules/dashboard/composables/useBasicSettings'
+import type { GiftBasketProgramFormInterface } from 'src/modules/dashboard/interfaces/basic-settings.interfaces'
 import { useUI } from 'src/modules/UI/composables'
-import { computed, ref } from 'vue'
+import { computed, onMounted, ref } from 'vue'
 
 const { isMobile } = useUI()
+const { basicSettingsState, updatePricingSettings } = useBasicSettings()
 
 const dateValue = ref('')
 const timeValue = ref('')
@@ -125,18 +167,79 @@ const options = ref([
 const dateRules = [(value: string) => isValidDate(value) || 'Invalid date']
 const timeRules = [
   (value: string) => {
-    console.log('is valid the time?', {
-      value,
-      isValid: isValidTime(value),
-    })
-
     return isValidTime(value) || 'Invalid time'
   },
 ]
 
-const isValidData = computed<boolean>(
-  () => isValidTime(timeValue.value) && isValidDate(dateValue.value),
-)
+const isValidData = computed<boolean>(() => {
+  const custom = !!basicSettingsState.value.settings?.hasCustomPricing
+
+  return (
+    isValidTime(timeValue.value) &&
+    isValidDate(dateValue.value) &&
+    (custom || (!custom && !!isValidForm()))
+  )
+})
+
+const { realForm, getFormValue, isValidForm, resetForm } = useForm({
+  costPerPerson: {
+    value: 0,
+    validations: [validations.required, validations.greaterThan(0, true)],
+  },
+  maximumCharge: {
+    value: 0,
+    validations: [validations.required, validations.greaterThan(0, true)],
+  },
+  reciprocityCharge: {
+    value: 0,
+    validations: [validations.required, validations.greaterThan(0, true)],
+  },
+})
+
+onMounted(() => {
+  setOptions()
+  setDateAndTime()
+  resetForm(
+    {
+      ...basicSettingsState.value.settings,
+    },
+    {
+      omitExtraFields: true,
+      original: true,
+    },
+  )
+})
+
+const setOptions = () => {
+  options.value[0]!.value = !!basicSettingsState.value.settings?.displayLastYears
+  options.value[1]!.value = !!basicSettingsState.value.settings?.selectAllByDefault
+  options.value[2]!.value = !!basicSettingsState.value.settings?.reciprocityEnabled
+}
+
+const setDateAndTime = () => {
+  const date = getTimeAndDate(basicSettingsState.value.settings?.endDateTime || '')
+  dateValue.value = date.dateValue
+  timeValue.value = date.timeValue
+}
+
+const onUpdate = async () => {
+  const date = turnTimeAndDate({
+    dateValue: dateValue.value,
+    timeValue: timeValue.value,
+  })
+
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const formData = getFormValue() as unknown as any
+
+  const data: GiftBasketProgramFormInterface = {
+    endDateTime: date as unknown as Date,
+    displayLastYearsOrders: options.value[0]!.value,
+    selectAllByDefault: options.value[1]!.value,
+    reciprocityEnabled: options.value[2]!.value,
+    ...formData,
+  }
+  await updatePricingSettings(data)
+}
 </script>
 
 <style scoped lang="scss">

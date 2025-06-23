@@ -1,12 +1,12 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import type { Ref } from 'vue';
 import { ref } from 'vue';
-import type { AuxFormField, FormComposition, FormField, FormValueType } from './interfaces';
+import type { AuxFormField, FormComposition, FormField, OptionalIfNotArray } from './interfaces';
 
 
 
 const useForm = <T extends Record<string, any>>(form: {
-  [K in keyof T]: AuxFormField | AuxFormField[];
+  [K in keyof T]: T[K] extends Array<infer U> ? AuxFormField<U>[] : AuxFormField<T[K]>
 }): FormComposition<T> => {
 
 
@@ -28,6 +28,8 @@ const useForm = <T extends Record<string, any>>(form: {
         auxForm[prop] = { ...fillObject(form[prop]) };
       }
     }
+
+
 
     return auxForm;
   };
@@ -118,7 +120,7 @@ const useForm = <T extends Record<string, any>>(form: {
 
         break;
       case 'number':
-        if (!value) nextElement.value = '';
+        if (value === undefined || value === null) nextElement.value = '';
         else {
           if (typeof value === 'number') nextElement.value = value;
           else
@@ -190,9 +192,9 @@ const useForm = <T extends Record<string, any>>(form: {
   /*============================ END OF SECTION ============================*/
 
   const realForm = ref(prepareForm()) as Ref<{
-    [K in keyof T]: T[K] extends FormField<infer U> ? FormField<U> :
-    T[K] extends FormField<infer U>[] ? FormField<U>[] :
-    never;
+    [K in keyof T]: T[K] extends Array<infer U>
+    ? FormField<U>[]
+    : FormField<T[K]>;
   }>;
 
   /**========================================================================
@@ -437,7 +439,7 @@ const useForm = <T extends Record<string, any>>(form: {
 
         break;
       case 'number':
-        if (!value) field.value = '';
+        if (value === undefined || value === null) field.value = '';
         else {
           if (typeof value === 'number') field.value = value;
           else
@@ -535,7 +537,7 @@ const useForm = <T extends Record<string, any>>(form: {
 //* of the values are setting by default if original,
 //* otherwise are setting by empty
  *========================================================================**/
-  const resetForm = (newForm?: { [K in keyof T]?: FormValueType<T[K]> | undefined | null }, options?: {
+  const resetForm = (newForm?: { [K in keyof T]?: T[K] | undefined | null }, options?: {
     original?: boolean,
     omitExtraFields?: boolean
   }) => {
@@ -705,7 +707,7 @@ const useForm = <T extends Record<string, any>>(form: {
   /**========================================================================
 //* Get form value
 *========================================================================**/
-  const getFormValue = (): { [K in keyof T]: FormValueType<T[K]> | undefined | null } => {
+  const getFormValue = (): { [K in keyof T]: OptionalIfNotArray<T[K]> } => {
 
     const formValue: any = {};
 

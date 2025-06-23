@@ -51,7 +51,10 @@
                     flat
                     color="primary"
                     :label="col.value"
-                    :to="{}"
+                    :to="{
+                      name: 'dashboard-transactionDetailsPage',
+                      params: { transactionId: props.row.invoiceNum },
+                    }"
                   />
 
                   <q-btn

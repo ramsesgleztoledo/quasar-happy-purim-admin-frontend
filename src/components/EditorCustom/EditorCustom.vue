@@ -11,8 +11,7 @@
       upload: {
         tip: 'Attach Img',
         icon: 'attach_file',
-
-        // handler: uploadIt,
+        handler: () => (uploadInsertFileFlag = true),
       },
       fullscreenClass: {
         tip: 'Toggle Fullscreen',
@@ -171,11 +170,119 @@
       </q-btn>
     </template>
   </q-editor>
+
+  <!-- Insert Img -->
+  <q-dialog v-model="uploadInsertFileFlag" persistent>
+    <q-card>
+      <div class="row dialog-header custom-dialog-header-container">
+        <div class="col-12">
+          <p>Insert File</p>
+        </div>
+      </div>
+      <q-card-section>
+        <div class="row q-mb-md">
+          <div class="col-12 justify-content-end">
+            <q-btn
+              @click="uploadNewFileFlag = true"
+              color="primary"
+              icon="upload"
+              label="Upload File"
+            />
+          </div>
+        </div>
+        <div class="row">
+          <div
+            v-for="item in files"
+            :key="item"
+            class="col-4 q-pa-md"
+            :class="{
+              'col-4': !isMobile,
+              'col-12': isMobile,
+            }"
+          >
+            <div
+              class="EditorCustom-file-container"
+              :class="{
+                'EditorCustom-file-selected': item === selectedFile,
+              }"
+            >
+              <div class="EditorCustom-img-container" @click="() => onFileSelected(item)"></div>
+              <div class="row">
+                <div class="col-12">
+                  <q-btn
+                    @click="() => onDeleteFile(item)"
+                    color="primary"
+                    icon="delete"
+                    label="delete"
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </q-card-section>
+
+      <q-card-actions class="custom-dialog-footer-container" align="right">
+        <q-btn
+          outline
+          label="cancel"
+          class="q-mr-sm q-mt-sm"
+          style="color: #990000; border-color: #990000"
+          v-close-popup
+        />
+        <q-btn
+          class="q-mr-sm q-mt-sm"
+          style="background: var(--happypurim); color: white"
+          label="Insert"
+          @click="insertFile"
+          v-close-popup
+          :disable="!selectedFile"
+        />
+      </q-card-actions>
+    </q-card>
+  </q-dialog>
+
+  <!-- Upload Img -->
+  <q-dialog v-model="uploadNewFileFlag" persistent>
+    <q-card>
+      <div class="row dialog-header custom-dialog-header-container">
+        <div class="col-12">
+          <p>Upload Files</p>
+        </div>
+      </div>
+      <q-card-section>
+        <UploaderComponent title=" " v-model:file-model="newFiles" />
+      </q-card-section>
+
+      <q-card-actions class="custom-dialog-footer-container" align="right">
+        <q-btn
+          outline
+          label="cancel"
+          class="q-mr-sm q-mt-sm"
+          style="color: #990000; border-color: #990000"
+          v-close-popup
+        />
+        <q-btn
+          class="q-mr-sm q-mt-sm"
+          style="background: var(--happypurim); color: white"
+          label="Upload"
+          @click="onUploadMoreFiles"
+          :disable="!newFiles.length"
+          v-close-popup
+        />
+      </q-card-actions>
+    </q-card>
+  </q-dialog>
 </template>
 
 <script setup lang="ts">
 import { QBtnDropdown, QEditor, QPopupProxy } from 'quasar'
-import { computed, ref } from 'vue'
+import { useBasicSettings } from 'src/modules/dashboard/composables/useBasicSettings'
+import { computed, onMounted, ref } from 'vue'
+import UploaderComponent from '../UploaderComponent/UploaderComponent.vue'
+import { useUI } from 'src/modules/UI/composables'
+
+const { isMobile } = useUI()
 
 interface EditorCustomPropsInterface {
   modelValue: string
@@ -184,6 +291,8 @@ interface EditorCustomPropsInterface {
   attacher?: { name: string; label: string; icon?: string; value: string }[]
 }
 
+const uploadInsertFileFlag = ref<boolean>(false)
+const uploadNewFileFlag = ref<boolean>(false)
 const fullscreenClass = ref<boolean>(false)
 const popRefColorPicked = ref<QPopupProxy | undefined>(undefined)
 const popRefColorPickerBackground = ref<QPopupProxy | undefined>(undefined)
@@ -242,7 +351,48 @@ const onColorPickedBackground = () => {
   edit.focus()
 }
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const selectedFile = ref<any>('')
+
+const onFileSelected = (item: unknown) => {
+  selectedFile.value = item
+}
+
+const insertFile = () => {
+  if (!editorRef.value) return
+  const edit = editorRef.value
+  tokenRef.value?.hide()
+  edit.caret.restore()
+  edit.runCmd(
+    'insertHTML',
+    `&nbsp;
+    <img src="https://encrypted-tbn1.gstatic.com/images?q=tbn:ANd9GcSEDXTwqQdVDG_Olz2iNmsW2IQ-vmMTrHIREyAYPJCANU-ZYo1-419gGAJjKB1X4IWf5QzjPbvlhRDnBsrskqbp-B8JgWfXi8fZQuZW4pE" height="100%" style="height:100%; width: 100%">&nbsp;`,
+  )
+  edit.focus()
+}
+
 defineExpose({ add, addHTML })
+
+const files = ref<string[]>([])
+const newFiles = ref<File[]>([])
+
+const { getFiles, uploadFiles, deleteFile } = useBasicSettings()
+
+onMounted(() => {
+  getFiles().then((res) => {
+    files.value = res
+  })
+})
+
+const onUploadMoreFiles = () => {
+  uploadFiles(newFiles.value).then((resp) => {
+    files.value = [...files.value, ...resp]
+  })
+}
+
+const onDeleteFile = async (item: string) => {
+  await deleteFile(item)
+}
 </script>
 
 <style scoped lang="scss">

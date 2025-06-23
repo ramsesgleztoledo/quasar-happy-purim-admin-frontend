@@ -21,6 +21,7 @@
           color="primary"
           icon="import_export"
           @click="onExportToExcel"
+          :loading="exportDisabled"
         />
       </div>
     </div>
@@ -48,7 +49,7 @@ import { useMember } from '../../composables/useMember'
 import { ref } from 'vue'
 
 const { dashboardState } = useDashboard()
-const { downloadMembersLogged } = useMember()
+const { downloadMembersLogged_Co } = useMember()
 const exportDisabled = ref(false)
 
 const columns: QTableColumn<MemberLoggedInterface>[] = [
@@ -113,7 +114,7 @@ const columns: QTableColumn<MemberLoggedInterface>[] = [
 
 const onExportToExcel = () => {
   exportDisabled.value = true
-  downloadMembersLogged()
+  downloadMembersLogged_Co()
     .catch(console.error)
     .finally(() => (exportDisabled.value = false))
 }

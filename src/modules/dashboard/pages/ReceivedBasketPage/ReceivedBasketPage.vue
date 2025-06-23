@@ -14,6 +14,7 @@
         color="primary"
         icon="import_export"
         @click="onExportToExcel"
+        :loading="exportDisabled"
       />
     </div>
   </div>
@@ -146,20 +147,20 @@ const columns: QTableColumn<BasketReceivedInterface>[] = [
   },
 ]
 
-const { getBasketReceived, downloadBasketReceived } = useMember()
+const { getBasketReceived_Co, downloadBasketReceived_Co } = useMember()
 
 const baskets = ref<BasketReceivedInterface[]>([])
 const exportDisabled = ref(false)
 
 onMounted(() => {
-  getBasketReceived().then((resp) => {
+  getBasketReceived_Co().then((resp) => {
     baskets.value = resp
   })
 })
 
 const onExportToExcel = () => {
   exportDisabled.value = true
-  downloadBasketReceived()
+  downloadBasketReceived_Co()
     .catch(console.error)
     .finally(() => (exportDisabled.value = false))
 }

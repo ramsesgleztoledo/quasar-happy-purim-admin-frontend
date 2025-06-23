@@ -7,7 +7,7 @@
   <div class="row">
     <div class="col-12 q-pl-sm q-pr-sm q-mt-md">
       <q-input
-        v-model="(realForm.address as FormField).value as string"
+        v-model="realForm.address.value"
         outlined
         label="Address"
         lazy-rules
@@ -23,11 +23,7 @@
         'col-12': isMobile,
       }"
     >
-      <q-input
-        v-model="(realForm.address2 as FormField).value as string"
-        outlined
-        label="Address 2"
-      />
+      <q-input v-model="realForm.address2.value" outlined label="Address 2" />
     </div>
     <div
       class="q-pl-sm q-pr-sm q-mt-md"
@@ -37,7 +33,7 @@
       }"
     >
       <q-input
-        v-model="(realForm.city as FormField).value as string"
+        v-model="realForm.city.value"
         outlined
         label="City"
         lazy-rules
@@ -54,7 +50,7 @@
       }"
     >
       <q-input
-        v-model="(realForm.zipCode as FormField).value as string"
+        v-model="realForm.zip.value"
         outlined
         label="Zip Code"
         mask="#####"
@@ -70,7 +66,7 @@
       }"
     >
       <q-select
-        v-model="(realForm.state as FormField).value as string"
+        v-model="realForm.state.value"
         outlined
         :options="statesOptions"
         label="State"
@@ -86,34 +82,49 @@
         style="background: white; color: var(--happypurim)"
         icon="save"
         label="update"
-        @click="
-          () => {
-            // console.log('editor value', { dateValue, timeValue })
-          }
-        "
+        @click="onUpdate"
       />
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import type { FormField } from 'src/composables'
 import { lazyRules, useForm, validations } from 'src/composables'
+import { useBasicSettings } from 'src/modules/dashboard/composables/useBasicSettings'
 import { statesOptions } from 'src/modules/dashboard/data'
+import type { OrganizationInformationFormInterface } from 'src/modules/dashboard/interfaces/basic-settings.interfaces'
 import { useUI } from 'src/modules/UI/composables'
+import { onMounted } from 'vue'
 
 const { isMobile } = useUI()
+const { basicSettingsState, updateOrganizationInformation } = useBasicSettings()
 
-const { realForm, isValidForm } = useForm({
+const { realForm, isValidForm, resetForm, getFormValue } = useForm({
   address: { value: '', validations: [validations.required] },
   address2: { value: '', validations: [] },
   city: { value: '', validations: [validations.required] },
   state: { value: '', validations: [validations.required] },
-  zipCode: {
+  zip: {
     value: '',
     validations: [validations.required, validations.minCharacters(5), validations.maxCharacters(5)],
   },
 })
+onMounted(() => {
+  resetForm(
+    {
+      ...basicSettingsState.value.settings,
+    },
+    {
+      omitExtraFields: true,
+    },
+  )
+})
+
+const onUpdate = async () => {
+  const data = getFormValue() as unknown as OrganizationInformationFormInterface
+
+  await updateOrganizationInformation(data)
+}
 </script>
 
 <style scoped lang="scss">

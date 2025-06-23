@@ -34,6 +34,9 @@ export const linksData: LinksDataInterface[] = [
       'dashboard-donationPage',
       'dashboard-receivedBasketPage',
       'dashboard-BasketsToBeShipPage',
+      'dashboard-personalBasketPage',
+      'dashboard-transactionDetailsPage',
+      'dashboard-reciprocityChargePage',
     ],
   },
   {
@@ -146,6 +149,28 @@ export const routeInfo: routeDataInterface[] = [
     title: 'Baskets to be shipped',
     icon: 'shopping_basket',
     name: 'dashboard-BasketsToBeShipPage',
+
+  },
+  {
+
+    title: 'Reciprocity Charges',
+    icon: 'shopping_basket',
+    name: 'dashboard-reciprocityChargePage',
+
+  },
+  {
+
+    title: 'Transaction Details',
+    icon: 'receipt',
+    name: 'dashboard-transactionDetailsPage',
+    params: ['transactionID'],
+    titleParam: (value?: routeParamInterface) => `Transaction - ${value?.transactionID}`
+  },
+  {
+
+    title: 'Personal Baskets',
+    icon: 'shopping_basket',
+    name: 'dashboard-personalBasketPage',
 
   },
   {

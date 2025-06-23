@@ -6,7 +6,8 @@ import { useUI } from "src/modules/UI/composables";
 export const useTransaction = () => {
 
 
-  const { getTransactions, getDonations, downloadCharityCSV } = useTransactionService()
+  const { getTransactions, getDonations, downloadCharityCSV, getReciprocityCharges,
+    downloadReciprocityChargesCSV } = useTransactionService()
   const { downloadFile } = useUI()
 
   return {
@@ -35,6 +36,18 @@ export const useTransaction = () => {
     async downloadCharityCSV() {
       await downloadFile(downloadCharityCSV, 'csv', 'charity-breakdown')
     },
+    async getReciprocityCharges() {
+      const resp = await getReciprocityCharges({
+        loading: {
+          message: 'Loading reciprocity charges...'
+        }
+      })
+      return resp.ok ? resp.data : []
 
+    },
+    async downloadReciprocityChargesCSV() {
+      await downloadFile(downloadReciprocityChargesCSV, 'csv', 'reciprocity-charge')
+    },
+    
   }
 };

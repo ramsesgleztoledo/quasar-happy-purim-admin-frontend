@@ -21,37 +21,55 @@ export const dashboardRoutes: RouteRecordRaw[] = [
         path: 'item-details/:itemId',
         name: 'dashboard-itemDetailsPage',
         component: () =>
-          import( "../pages/ItemsPage/ItemsPage.vue"),
+          import("../pages/ItemsPage/ItemsPage.vue"),
       },
       {
         path: 'member-logged',
         name: 'dashboard-memberLoggedPage',
         component: () =>
-          import( "../pages/MemberLoggedPage/MemberLoggedPage.vue"),
+          import("../pages/MemberLoggedPage/MemberLoggedPage.vue"),
       },
       {
         path: 'transactions-history',
         name: 'dashboard-transactionPage',
         component: () =>
-          import( "../pages/TransactionPage/TransactionPage.vue"),
+          import("../pages/TransactionPage/TransactionPage.vue"),
       },
       {
         path: 'donations-history',
         name: 'dashboard-donationPage',
         component: () =>
-          import( "../pages/DonationsPage/DonationsPage.vue"),
+          import("../pages/DonationsPage/DonationsPage.vue"),
       },
       {
         path: 'received-baskets',
         name: 'dashboard-receivedBasketPage',
         component: () =>
-          import( "../pages/ReceivedBasketPage/ReceivedBasketPage.vue"),
+          import("../pages/ReceivedBasketPage/ReceivedBasketPage.vue"),
       },
       {
         path: 'baskets-ship',
         name: 'dashboard-BasketsToBeShipPage',
         component: () =>
-          import( "../pages/BasketsToBeShipPage/BasketsToBeShipPage.vue"),
+          import("../pages/BasketsToBeShipPage/BasketsToBeShipPage.vue"),
+      },
+      {
+        path: 'personal-baskets',
+        name: 'dashboard-personalBasketPage',
+        component: () =>
+          import("../pages/PersonalBasketPage/PersonalBasketPage.vue"),
+      },
+      {
+        path: 'transaction-details/:transactionID',
+        name: 'dashboard-transactionDetailsPage',
+        component: () =>
+          import("../pages/TransactionDetailsPage/TransactionDetailsPage.vue"),
+      },
+      {
+        path: 'reciprocity-charge',
+        name: 'dashboard-reciprocityChargePage',
+        component: () =>
+          import("../pages/ReciprocityChargePage/ReciprocityChargePage.vue"),
       },
       ...memberRoutes,
       {

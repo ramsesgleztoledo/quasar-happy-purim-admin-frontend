@@ -1,6 +1,6 @@
 import type { ApiCallResponseInterface, ExtraOptionsInterface } from "../../../services/api-interfaces";
 import { useApiCall } from "../../../services/apiCall";
-import type { AlternativeMemberAddress, BasketReceivedInterface, EmailLoginCodeInfoInterface, MemberDataInterface, MemberDonateBasketOptionInterface, MemberHiddenInterface, MemberInterface, MemberReciprocityInterface, MembersLoggedInterface, MemberTransactionInterface, PendingDeletionInterface } from "../interfaces/member-interfaces";
+import type { AlternativeMemberAddress, BasketReceivedInterface, EmailLoginCodeInfoInterface, MemberAddFormInterface, MemberAddResponseInterface, MemberAlternativeAddressDataInterface, MemberDataInterface, MemberDonateBasketOptionInterface, MemberHiddenInterface, MemberInterface, MemberPersonalBasketInterface, MemberReciprocityInterface, MembersLoggedInterface, MemberTransactionInterface, MemberUpdateFormInterface, PendingDeletionInterface } from "../interfaces/member-interfaces";
 
 
 
@@ -18,7 +18,6 @@ export const useMemberService = () => {
         extraOptions
       })
     },
-
     getMemberById: async (memberId: number, extraOptions?: ExtraOptionsInterface): Promise<ApiCallResponseInterface<MemberDataInterface>> => {
 
       const nextUrl = `/${memberId}`;
@@ -28,7 +27,6 @@ export const useMemberService = () => {
         extraOptions
       })
     },
-
     getHiddenByMemberId: async (memberId: number, extraOptions?: ExtraOptionsInterface): Promise<ApiCallResponseInterface<MemberHiddenInterface>> => {
 
       const nextUrl = `/${memberId}/hidden`;
@@ -38,7 +36,6 @@ export const useMemberService = () => {
         extraOptions
       }))
     },
-
     getReciprocityByMemberId: async (memberId: number, extraOptions?: ExtraOptionsInterface): Promise<ApiCallResponseInterface<MemberReciprocityInterface>> => {
 
       const nextUrl = `/${memberId}/reciprocity`;
@@ -48,7 +45,6 @@ export const useMemberService = () => {
         extraOptions
       }))
     },
-
     deleteMemberById: async (memberId: number, extraOptions?: ExtraOptionsInterface): Promise<ApiCallResponseInterface<unknown>> => {
 
       const nextUrl = `/${memberId}/delete`;
@@ -77,6 +73,17 @@ export const useMemberService = () => {
         extraOptions,
       })
     },
+    updateAlternativeAddressByMemberId: async (memberId: number, data: MemberAlternativeAddressDataInterface, extraOptions?: ExtraOptionsInterface): Promise<ApiCallResponseInterface<AlternativeMemberAddress>> => {
+
+      const nextUrl = `/${memberId}/alternate-delivery`;
+      const url = `${baseUrl}${nextUrl}`;
+      return await apiCall({
+        url,
+        extraOptions,
+        data,
+        method: 'PUT'
+      })
+    },
     getTransactionsByMemberId: async (memberId: number, extraOptions?: ExtraOptionsInterface): Promise<ApiCallResponseInterface<MemberTransactionInterface[]>> => {
 
       const nextUrl = `/${memberId}/transactions`;
@@ -93,6 +100,16 @@ export const useMemberService = () => {
       return await apiCall({
         url,
         extraOptions,
+      })
+    },
+    updateMemberDonateBasketOptionByMemberId: async (memberId: number, donateValue: boolean, extraOptions?: ExtraOptionsInterface): Promise<ApiCallResponseInterface<unknown>> => {
+
+      const nextUrl = `/${memberId}/donate-basket-option?value=${donateValue}`;
+      const url = `${baseUrl}${nextUrl}`;
+      return await apiCall({
+        url,
+        extraOptions,
+        method: 'PUT'
       })
     },
     updateReciprocityByMemberId: async (memberId: number, reciprocityValue: boolean, extraOptions?: ExtraOptionsInterface): Promise<ApiCallResponseInterface<unknown>> => {
@@ -158,19 +175,55 @@ export const useMemberService = () => {
         responseType: 'text'
       })
     },
+    getMemberPersonalBasket: async (extraOptions?: ExtraOptionsInterface): Promise<ApiCallResponseInterface<MemberPersonalBasketInterface[]>> => {
+      const nextUrl = `/personal-baskets`;
+      const url = `${baseUrl}${nextUrl}`;
+      return await apiCall({
+        url,
+        extraOptions,
+      })
+    },
+    downloadMemberPersonalBasketCSV: async (extraOptions?: ExtraOptionsInterface): Promise<ApiCallResponseInterface<unknown>> => {
+      const nextUrl = `/personal-baskets/export`;
+      const url = `${baseUrl}${nextUrl}`;
+      return await apiCall({
+        url,
+        extraOptions,
+        responseType: 'text'
+      })
+    },
+    updateMemberByMemberId: async (memberId: number, data: MemberUpdateFormInterface, extraOptions?: ExtraOptionsInterface): Promise<ApiCallResponseInterface<unknown>> => {
+
+      const nextUrl = `/${memberId}`;
+      const url = `${baseUrl}${nextUrl}`;
+      return await apiCall({
+        url,
+        extraOptions,
+        method: 'PUT',
+        data
+      })
+    },
+    updateHiddenByMemberId: async (memberId: number, hiddenValue: boolean, extraOptions?: ExtraOptionsInterface): Promise<ApiCallResponseInterface<unknown>> => {
+
+      const nextUrl = `/${memberId}/hidden?hidden=${hiddenValue}`;
+      const url = `${baseUrl}${nextUrl}`;
+      return await apiCall({
+        url,
+        extraOptions,
+        method: 'PUT'
+      })
+    },
+    addMember: async (data: MemberAddFormInterface, extraOptions?: ExtraOptionsInterface): Promise<ApiCallResponseInterface<MemberAddResponseInterface>> => {
+
+      const nextUrl = `/add`;
+      const url = `${baseUrl}${nextUrl}`;
+      return await apiCall({
+        url,
+        extraOptions,
+        method: 'POST',
+        data
+      })
+    },
 
   }
-
-
-
-
-
-
-
-
-
-
-
-
-
 }

@@ -3,7 +3,7 @@
     <q-card>
       <div class="row dialog-header custom-dialog-header-container">
         <div class="col-12">
-          <p>Update shipment information</p>
+          <p>{{ !dontEdit ? 'Update' : '' }} Shipment Information</p>
         </div>
       </div>
       <q-card-section>
@@ -98,7 +98,7 @@
                   outlined
                   label="Route"
                   lazy-rules
-                  :rules="[lazyRules.required()]"
+                  :rules="[]"
                 />
               </div>
               <div class="col-6 q-pl-sm q-pr-sm">
@@ -163,11 +163,15 @@
 
 <script setup lang="ts">
 import type { QDialog } from 'quasar'
-import type { FormField } from 'src/composables'
 import { lazyRules, useForm, validations } from 'src/composables'
+import { useShipment } from 'src/modules/dashboard/composables/useShipment'
 import { statesOptions } from 'src/modules/dashboard/data'
 import type { BasketToBeShippedInterface } from 'src/modules/dashboard/interfaces/shipment-interfaces'
 import { onMounted, ref } from 'vue'
+
+const { UpdateBasketsToBeShipped } = useShipment()
+
+const emit = defineEmits(['onValueUpdated'])
 
 interface BasketToBeShippedComponentPropsInterface {
   dialogRef: QDialog | undefined
@@ -179,20 +183,20 @@ const $props = defineProps<BasketToBeShippedComponentPropsInterface>()
 const dontEdit = ref(true)
 
 interface FormInterface {
-  sendTo: FormField<string>
-  address: FormField<string>
-  address2: FormField<string>
-  city: FormField<string>
-  state: FormField<string>
-  zip: FormField<string>
-  message: FormField<string>
-  email: FormField<string>
-  phone: FormField<string>
-  route: FormField<string>
-  misc: FormField<string>
+  sendTo: string
+  address: string
+  address2: string
+  city: string
+  state: string
+  zip: string
+  message: string
+  email: string
+  phone: string
+  route: string
+  misc: string
 }
 
-const { realForm, resetForm, getFormValue } = useForm<FormInterface>({
+const { realForm, getFormValue, resetForm } = useForm<FormInterface>({
   sendTo: { value: '', validations: [validations.required] },
   address: { value: '', validations: [validations.required] },
   address2: { value: '', validations: [] },
@@ -202,7 +206,7 @@ const { realForm, resetForm, getFormValue } = useForm<FormInterface>({
   message: { value: '', validations: [] },
   email: { value: '', validations: [validations.isEmail] },
   phone: { value: '', validations: [] },
-  route: { value: '', validations: [validations.required] },
+  route: { value: '', validations: [] },
   misc: { value: '', validations: [] },
 })
 
@@ -213,18 +217,31 @@ const onUpdate = () => {
   }
   const refD = $props.dialogRef
   if (!refD) return
-  refD.hide()
-  console.log({ value: getFormValue() })
+
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const value: any = {
+    ...getFormValue(),
+    shippingID: $props.basket.shippingID,
+    shippingOptionID: $props.basket.shippingOptionID,
+  }
+
+  UpdateBasketsToBeShipped({
+    ...value,
+  })
+    .then((result) => {
+      if (result) emit('onValueUpdated', value)
+    })
+    .catch(console.error)
+    .finally(() => {
+      refD.hide()
+    })
 }
 
 onMounted(() => {
   resetForm(
-    {
-      ...$props.basket,
-    },
+    { ...$props.basket },
     {
       omitExtraFields: true,
-      original: true,
     },
   )
 })

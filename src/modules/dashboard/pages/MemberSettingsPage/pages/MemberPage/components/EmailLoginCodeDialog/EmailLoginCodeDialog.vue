@@ -85,7 +85,7 @@ import { onMounted, ref } from 'vue'
 import { useMember } from 'src/modules/dashboard/composables/useMember'
 import { useRoute } from 'vue-router'
 const {
-  getEmailLoginCodeInfo,
+  getEmailLoginCodeInfo_Co,
   memberState: {
     value: { selectedMember },
   },
@@ -128,10 +128,10 @@ const attacherForEdit = ref([
 ])
 
 interface FormInterface {
-  fromName: FormField<string>
-  fromEmail: FormField<string>
-  toEmail: FormField<string>
-  subject: FormField<string>
+  fromName: string
+  fromEmail: string
+  toEmail: string
+  subject: string
 }
 
 const {
@@ -149,7 +149,7 @@ const emailContent = ref<string>('')
 
 onMounted(() => {
   const id = Number($route.params.memberId)
-  getEmailLoginCodeInfo(id).then((res) => {
+  getEmailLoginCodeInfo_Co(id).then((res) => {
     resetForm({
       fromName: res.fromName,
       fromEmail: res.fromEmail,

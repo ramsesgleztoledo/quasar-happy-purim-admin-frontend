@@ -14,6 +14,7 @@
         color="primary"
         icon="import_export"
         @click="onExportToExcel"
+        :loading="exportDisabled"
       />
     </div>
   </div>

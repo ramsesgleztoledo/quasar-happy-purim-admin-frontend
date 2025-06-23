@@ -6,10 +6,10 @@
 import { useMember } from 'src/modules/dashboard/composables/useMember'
 import { onMounted } from 'vue'
 
-const { getMembers } = useMember()
+const { getMembers_Co } = useMember()
 
 onMounted(() => {
-  getMembers().catch(console.error)
+  getMembers_Co().catch(console.error)
 })
 </script>
 

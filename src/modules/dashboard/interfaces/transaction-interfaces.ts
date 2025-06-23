@@ -38,3 +38,15 @@ export interface DonationInterface {
   email: string;
   phone: string;
 }
+
+export interface ReciprocityChargeInterface {
+  orderId: number;
+  type: string;
+  memberId: number;
+  lastName: string;
+  firstName: string;
+  spouse: string;
+  address: string;
+  reciprocatingToCount: number;
+  orderTotal: number;
+}

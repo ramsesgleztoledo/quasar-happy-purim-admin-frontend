@@ -20,13 +20,19 @@ export interface BasketToBeShippedInterface {
   intCode: number;
 }
 
-
-
-
-
-
-
-
-
-
+export interface BasketToBeShippedUpdateInterface {
+  shippingID: number;
+  sendTo: string;
+  address: string;
+  address2: string;
+  city: string;
+  state: string;
+  zip: string;
+  message: string;
+  email: string;
+  phone: string;
+  route: string;
+  misc: string;
+  shippingOptionID: number;
+}
 

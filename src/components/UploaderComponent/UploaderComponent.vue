@@ -19,7 +19,7 @@
 
         <q-file
           v-model="files"
-          label="Seleccionar archivo(s)"
+          label="Select file(s)"
           filled
           multiple
           style="display: none"

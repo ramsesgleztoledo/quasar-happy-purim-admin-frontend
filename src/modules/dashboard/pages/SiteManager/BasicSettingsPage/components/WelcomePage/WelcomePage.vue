@@ -7,7 +7,7 @@
   <div class="row">
     <div class="col-12">
       <p style="color: #595959">
-        We highly recommend using the editor below to create your Welcome Page. If you choose to
+        We highly recommend using the editor below or using the html editor to create your Welcome Page. If you choose to
         paste from Microsoft Word or any other word processing software, please be sure to click the
         Clean Word Format button on the toolbar below.
       </p>
@@ -36,21 +36,18 @@
         </div>
       </div>
 
+      <!-- :tokens="tokensForEdit" -->
       <EditorCustom
         v-if="listView === 1"
-        :style="{
-          height: isFullScreen ? '100%' : '',
-        }"
-        :height="isFullScreen ? '90%' : '190px'"
+        :height="isFullScreen ? '90%' : '390px'"
         v-model="editor"
-        :tokens="tokensForEdit"
       />
       <CodeEditor
         v-else
         v-model="editor"
         :lang="html"
         :style="{
-          height: isFullScreen ? '90%' : '255px',
+          height: isFullScreen ? '90%' : '390px',
           width: '100%',
         }"
       />
@@ -63,11 +60,7 @@
         style="background: white; color: var(--happypurim)"
         icon="save"
         label="save"
-        @click="
-          () => {
-            console.log('editor value', { editor })
-          }
-        "
+        @click="onUpdate"
       />
     </div>
   </div>
@@ -76,23 +69,34 @@
 <script setup lang="ts">
 import CodeEditor from 'src/components/CodeEditor/CodeEditor.vue'
 import EditorCustom from 'src/components/EditorCustom/EditorCustom.vue'
-import { ref } from 'vue'
+import { onMounted, ref } from 'vue'
 import { html } from '@codemirror/lang-html'
+import { useBasicSettings } from 'src/modules/dashboard/composables/useBasicSettings'
+
+const { basicSettingsState, updateWelcomePage } = useBasicSettings()
 
 const isFullScreen = ref(false)
 const editor = ref('')
 
-const tokensForEdit = ref([
-  { name: 'email', label: 'email', icon: 'email' },
-  { name: 'code', label: 'code', icon: 'code' },
-  { name: 'token-link', label: 'token-link', icon: 'link' },
-])
+// const tokensForEdit = ref([
+//   { name: 'email', label: 'email', icon: 'email' },
+//   { name: 'code', label: 'code', icon: 'code' },
+//   { name: 'token-link', label: 'token-link', icon: 'link' },
+// ])
 
 const listView = ref(1)
 const listViewOptions = ref([
   { label: 'Editor', value: 1 },
   { label: 'HTML', value: 2 },
 ])
+
+onMounted(() => {
+  editor.value = basicSettingsState.value.welcomePage || ''
+})
+
+const onUpdate = async () => {
+  await updateWelcomePage(editor.value)
+}
 </script>
 
 <style scoped lang="scss">

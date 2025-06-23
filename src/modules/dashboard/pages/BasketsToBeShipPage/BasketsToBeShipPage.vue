@@ -14,6 +14,7 @@
         color="primary"
         icon="import_export"
         @click="onExportToExcel"
+        :loading="exportDisabled"
       />
     </div>
   </div>
@@ -37,6 +38,7 @@
   </div>
   <q-dialog ref="dialogEditBasketToBeShippedComponentRef" v-model="ediBasketDialogFlag" persistent>
     <EditBasketToBeShippedComponent
+      @onValueUpdated="onValueUpdated"
       :basket="basketEdit!"
       :dialogRef="dialogEditBasketToBeShippedComponentRef"
     />
@@ -48,7 +50,10 @@ import type { QDialog, QTableColumn } from 'quasar'
 import { onMounted, ref } from 'vue'
 import TableCustom from 'src/components/TableCustom/TableCustom.vue'
 import { useShipment } from '../../composables/useShipment'
-import type { BasketToBeShippedInterface } from '../../interfaces/shipment-interfaces'
+import type {
+  BasketToBeShippedInterface,
+  BasketToBeShippedUpdateInterface,
+} from '../../interfaces/shipment-interfaces'
 import { convertToUSDate } from 'src/helpers'
 import EditBasketToBeShippedComponent from './components/EditBasketToBeShippedComponent/EditBasketToBeShippedComponent.vue'
 
@@ -197,6 +202,17 @@ const onExportToExcel = () => {
   downloadBasketsToBeShippedCSV()
     .catch(console.error)
     .finally(() => (exportDisabled.value = false))
+}
+
+const onValueUpdated = (value: BasketToBeShippedUpdateInterface) => {
+  baskets.value = baskets.value.map((basket) => {
+    if (basket.shippingID === value.shippingID)
+      return {
+        ...basket,
+        ...value,
+      }
+    return basket
+  })
 }
 </script>
 

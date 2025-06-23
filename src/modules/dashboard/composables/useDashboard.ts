@@ -1,4 +1,4 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
+
 import { computed } from "vue";
 import { useDashboardStore } from "../store/dashboardStore/dashboardStore";
 import { useDashboardService } from "src/modules/dashboard/services/dashboard.service";
@@ -28,37 +28,6 @@ export const useDashboard = () => {
         spinnerColor: '#ef6982',
         messageColor: '#ef6982',
       })
-
-      const promises: [
-        any,
-        any,
-        any,
-        any,
-        any,
-        any,
-        any,
-        any,
-        any,
-        any,
-        any,
-        any,
-        any,
-      ] =
-        [
-          getOrderTotalGraph(),
-          getMembersOrdersGraph(),
-          getParticipationInfoGraph(),
-          getFundraiserStatus(),
-          getFundraiserTotals(),
-          getParticipationRate(),
-          getTopTransactions(),
-          getTotalsRaised(),
-          getBasketSizeBreakdown(),
-          getBasketInfo(),
-          getOrderItems(),
-          getMemberSummary(),
-          getMembersLogged(),
-        ]
 
       const [
         orderTotalGraph,
@@ -91,7 +60,21 @@ export const useDashboard = () => {
           ApiCallResponseInterface<MembersLoggedInterface>,
 
         ]
-        = await Promise.all(promises)
+        = await Promise.all([
+          getOrderTotalGraph(),
+          getMembersOrdersGraph(),
+          getParticipationInfoGraph(),
+          getFundraiserStatus(),
+          getFundraiserTotals(),
+          getParticipationRate(),
+          getTopTransactions(),
+          getTotalsRaised(),
+          getBasketSizeBreakdown(),
+          getBasketInfo(),
+          getOrderItems(),
+          getMemberSummary(),
+          getMembersLogged(),
+        ])
 
 
 

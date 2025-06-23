@@ -141,19 +141,113 @@ export interface MemberLoggedInterface {
 
 
 export interface BasketReceivedInterface {
-  memberID:      number;
-  lastName:      string;
-  firstName:     string;
-  spouse:        string;
-  phone:         string;
-  address:       string;
-  address2:      string;
-  city:          string;
-  state:         string;
-  zip:           string;
-  code:          string;
-  route:         string;
-  sendingTo:     number;
+  memberID: number;
+  lastName: string;
+  firstName: string;
+  spouse: string;
+  phone: string;
+  address: string;
+  address2: string;
+  city: string;
+  state: string;
+  zip: string;
+  code: string;
+  route: string;
+  sendingTo: number;
   receivingFrom: number;
-  displayName:   string;
+  displayName: string;
 }
+
+
+export interface MemberPersonalBasketInterface {
+  memberID: number;
+  lastName: string;
+  firstName: string;
+  spouse: string;
+  address: string;
+  address2: string;
+  phone: string;
+  city: string;
+  state: string;
+  zip: string;
+  email: string;
+  email2: string;
+  transactionID: number;
+  quantity: number;
+}
+
+
+export interface MemberUpdateFormInterface {
+  title: string;
+  firstName: string;
+  lastName: string;
+  spouseFirstName: string;
+  spouseLastName: string;
+  displayAs: string;
+  salutation: string;
+  address: string;
+  address2: string;
+  city: string;
+  state: string;
+  zip: string;
+  phone: string;
+  phone2: string;
+  email: string;
+  email2: string;
+  notes: string;
+  route: string;
+  misc: string;
+  category: number[];
+}
+
+
+export interface MemberAlternativeAddressDataInterface {
+  name: string,
+  address: string,
+  address2: string,
+  city: string,
+  state: string,
+  zip: string,
+  useAlternateDelivery: true
+}
+
+export interface MemberUpdateAllDataForm {
+  donate?: boolean | undefined;
+  reciprocity: boolean;
+  hidden: boolean;
+  memberData: MemberUpdateFormInterface;
+  altAddressData: MemberAlternativeAddressDataInterface;
+}
+
+
+export interface MemberAddFormInterface {
+  lastName: string;
+  firstName: string;
+  spouse: string;
+  title: string;
+  displayName: string;
+  address1: string;
+  address2: string;
+  city: string;
+  state: string;
+  zip: string;
+  phone: string;
+  email: string;
+  email2: string;
+  children: string;
+  route: string;
+  misc: string;
+  hidden: boolean;
+  notes: string;
+  secondLastName: string;
+  misc2: string;
+  salutation: string;
+  phone2: string;
+  categoryIds: number[];
+}
+
+export interface MemberAddResponseInterface {
+  message: string
+  memberId: number
+}
+

@@ -28,7 +28,16 @@
           <template v-slot:body="props">
             <q-tr :props="props">
               <q-td v-for="col in props.cols" :key="col.name" :props="props">
-                <q-btn v-if="col.name === 'id'" flat color="primary" :label="col.value" :to="{}" />
+                <q-btn
+                  v-if="col.name === 'id'"
+                  flat
+                  color="primary"
+                  :label="col.value"
+                  :to="{
+                    name: 'dashboard-transactionDetailsPage',
+                    params: { transactionID: props.row.id },
+                  }"
+                />
 
                 <q-btn
                   v-else-if="col.name === 'member'"

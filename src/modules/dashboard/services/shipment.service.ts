@@ -1,6 +1,6 @@
 import { useApiCall } from "src/services/apiCall";
 import type { ApiCallResponseInterface, ExtraOptionsInterface } from "src/services/api-interfaces";
-import type { BasketToBeShippedInterface } from "../interfaces/shipment-interfaces";
+import type { BasketToBeShippedInterface, BasketToBeShippedUpdateInterface } from "../interfaces/shipment-interfaces";
 
 
 
@@ -29,6 +29,17 @@ export const useShipmentService = () => {
         url,
         extraOptions,
         responseType: 'text'
+      })
+    },
+    UpdateBasketsToBeShipped: async (data: BasketToBeShippedUpdateInterface, extraOptions?: ExtraOptionsInterface): Promise<ApiCallResponseInterface<unknown>> => {
+      const nextUrl = `/update-shipment`;
+      const url = `${baseUrl}${nextUrl}`;
+      return await apiCall({
+        url,
+        extraOptions,
+        responseType: 'text',
+        data,
+        method: 'POST'
       })
     },
 

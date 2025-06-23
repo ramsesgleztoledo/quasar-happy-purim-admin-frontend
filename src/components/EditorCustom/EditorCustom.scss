@@ -1,0 +1,30 @@
+.EditorCustom-file-container {
+  width: 100%;
+  min-width: 200px;
+  height: 200px;
+  border-radius: 5px;
+  background-color: rgba(234, 138, 60, 0.452);
+  cursor: pointer;
+  box-shadow: black 4px 4px 3px -2px;
+  border: solid 1px black;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+
+  .EditorCustom-img-container {
+    display: flex;
+    flex: 1;
+    background-color: rgba(55, 248, 1, 0.998);
+  }
+  button {
+    width: 100%;
+  }
+}
+
+:hover.EditorCustom-file-container {
+  border: solid 8px green;
+}
+
+.EditorCustom-file-selected {
+  border: solid 8px $happypurim;
+}

@@ -10,14 +10,14 @@ import { onMounted, ref, watch } from 'vue'
 import { useRoute } from 'vue-router'
 
 const $route = useRoute()
-const { getMemberDataById } = useMember()
+const { getMemberDataById_Co } = useMember()
 
 const isReady = ref<boolean>(false)
 
 const loadInitialData = async () => {
   try {
     const memberId = $route.params.memberId
-    await getMemberDataById(Number(memberId))
+    await getMemberDataById_Co(Number(memberId))
     isReady.value = true
   } catch (error) {
     return error

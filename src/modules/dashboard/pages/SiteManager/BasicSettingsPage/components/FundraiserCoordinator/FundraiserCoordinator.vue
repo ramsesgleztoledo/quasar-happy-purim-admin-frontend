@@ -13,7 +13,7 @@
       }"
     >
       <q-input
-        v-model="(realForm.contactName as FormField).value as string"
+        v-model="realForm.contactName.value"
         outlined
         label="Contact Name"
         lazy-rules
@@ -28,7 +28,7 @@
       }"
     >
       <q-input
-        v-model="(realForm.bccReceiptsTo as FormField).value as string"
+        v-model="realForm.bccReceiptsTo.value"
         outlined
         label="Bcc Receipts To"
         lazy-rules
@@ -45,7 +45,7 @@
       }"
     >
       <q-input
-        v-model="(realForm.contactEmail as FormField).value as string"
+        v-model="realForm.contactEmail.value"
         outlined
         label="Contact Email"
         lazy-rules
@@ -60,7 +60,7 @@
       }"
     >
       <q-input
-        v-model="(realForm.receiptReplyTo as FormField).value as string"
+        v-model="realForm.replyTo.value"
         outlined
         label="Receipt Reply To"
         lazy-rules
@@ -77,7 +77,7 @@
       }"
     >
       <q-input
-        v-model="(realForm.contactPhone as FormField).value as string"
+        v-model="realForm.contactPhone.value"
         outlined
         label="Contact Phone"
         mask="(###) - ### - ####"
@@ -94,30 +94,51 @@
         style="background: white; color: var(--happypurim)"
         icon="save"
         label="update"
-        @click="
-          () => {
-            // console.log('editor value', { dateValue, timeValue })
-          }
-        "
+        @click="onUpdate"
       />
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import type { FormField } from 'src/composables'
 import { lazyRules, useForm, validations } from 'src/composables'
+import { useBasicSettings } from 'src/modules/dashboard/composables/useBasicSettings'
+import type { FundraiserCoordinatorFormInterface } from 'src/modules/dashboard/interfaces/basic-settings.interfaces'
 import { useUI } from 'src/modules/UI/composables'
+import { onMounted } from 'vue'
 
 const { isMobile } = useUI()
+const { basicSettingsState, updateFundraiserCoordinator } = useBasicSettings()
 
-const { realForm, isValidForm } = useForm({
+const { realForm, isValidForm, resetForm, getFormValue } = useForm({
   contactName: { value: '', validations: [validations.required] },
-  bccReceiptsTo: { value: '', validations: [validations.required] },
+
   contactEmail: { value: '', validations: [validations.required, validations.isEmail] },
-  receiptReplyTo: { value: '', validations: [validations.required] },
+
+  bccReceiptsTo: { value: '', validations: [validations.required] },
+
+  replyTo: { value: '', validations: [validations.required] },
+
   contactPhone: { value: '', validations: [validations.required, validations.minCharacters(18)] },
 })
+
+onMounted(() => {
+  resetForm(
+    {
+      ...basicSettingsState.value.settings,
+    },
+    {
+      omitExtraFields: true,
+    },
+  )
+})
+
+const onUpdate = async () => {
+  const data = getFormValue() as unknown as FundraiserCoordinatorFormInterface
+  data.contact = getFormValue().contactName || ''
+
+  await updateFundraiserCoordinator(data)
+}
 </script>
 
 <style scoped lang="scss">

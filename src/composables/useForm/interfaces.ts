@@ -6,8 +6,8 @@ export interface AuxForm {
 }
 
 
-export interface AuxFormField {
-  value: string | number | object | boolean | any[] | null | undefined,
+export interface AuxFormField<T = string | number | object | boolean> {
+  value: T | null | undefined | string,
   type?: 'string' | 'number' | 'object' | 'boolean' | 'array',
   validations?: ValidationFn[]
 }
@@ -24,16 +24,16 @@ export type ValidationFn = ({ value }: { value: any }) => any | null;
 
 export interface FormComposition<T extends Record<string, any>> {
   realForm: Ref<{
-    [K in keyof T]: T[K] extends FormField<infer U> ? FormField<U> :
-    T[K] extends FormField<infer U>[] ? FormField<U>[] :
-    never;
+    [K in keyof T]: T[K] extends Array<infer U>
+    ? FormField<U>[]
+    : FormField<T[K]>;
   }>;
 
   onFieldChange: (
     { target: { value, name } }: { target: { value: any, name: string } },
     fieldLocation?: (string | number)[]
   ) => void;
-  resetForm: (newForm?: { [K in keyof T]?: FormValueType<T[K]> | undefined | null }, options?: { original?: boolean, omitExtraFields?: boolean }) => void;
+  resetForm: (newForm?: { [K in keyof T]?: T[K] | undefined | null }, options?: { original?: boolean, omitExtraFields?: boolean }) => void;
 
   resetField: (fieldLocation: (string | number)[], value?: any) => void;
 
@@ -48,11 +48,14 @@ export interface FormComposition<T extends Record<string, any>> {
     withErrors?: boolean
   ) => { valid: boolean;[key: string]: any } | boolean;
 
-  getFormValue: () => { [K in keyof T]: FormValueType<T[K]> | undefined | null };
+  getFormValue: () => { [K in keyof T]: OptionalIfNotArray<T[K]> };
 }
 
-export type FormValueType<F> = F extends FormField<infer U>
-  ? U
-  : F extends FormField<infer U>[]
-  ? U[]
-  : never;
+export type FormValueType<F> =
+  F extends Array<FormField<infer U>> ? U[] :
+  F extends FormField<infer U> ? U :
+  never;
+
+export type OptionalIfNotArray<T> = T extends any[]
+  ? T | string[]
+  : T | null | undefined | string;

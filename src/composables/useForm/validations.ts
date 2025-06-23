@@ -2,7 +2,7 @@
 export default {
   //* required
   required: ({ value }: { value: string }) => {
-    if (value) {
+    if (value !== undefined && value !== null && value !== '') {
       return null;
     } else {
       return { required: `${value}` };

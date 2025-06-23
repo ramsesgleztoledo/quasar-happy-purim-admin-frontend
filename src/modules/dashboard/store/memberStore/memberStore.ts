@@ -54,6 +54,9 @@ export const useMemberStore = defineStore('memberStore', {
     setMemberDonateBasketOption(memberDonateBasketOption: MemberDonateBasketOptionInterface | NoneType) {
       this.memberDonateBasketOption = memberDonateBasketOption
     },
+    setHidden(hidden: boolean) {
+      this.memberOptions.hidden = hidden
+    },
   }
 });
 
