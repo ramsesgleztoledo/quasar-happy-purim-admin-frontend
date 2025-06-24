@@ -298,7 +298,7 @@ export default {
   greaterThan:
     (number: number, equal?: boolean) =>
       ({ value }: { value: number }) => {
-        if (!value) return null;
+        if (value === undefined || value === null) return null;
         let result = false;
 
         if (equal)
@@ -312,7 +312,7 @@ export default {
   lowerThan:
     (number: number, equal?: boolean) =>
       ({ value }: { value: number }) => {
-        if (!value) return null;
+        if (value === undefined || value === null) return null;
         let result = false;
 
         if (equal)

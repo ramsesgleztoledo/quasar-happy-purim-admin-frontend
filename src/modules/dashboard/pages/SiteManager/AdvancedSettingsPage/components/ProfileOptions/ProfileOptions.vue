@@ -16,21 +16,16 @@
           </div>
           <div class="row">
             <div class="col-12">
-              <q-input
-                v-model="(realForm.value as FormField).value as string"
-                outlined
-                lazy-rules
-                :rules="[lazyRules.required()]"
-              />
+              <q-input v-model="donateValue" outlined lazy-rules :rules="[lazyRules.required()]" />
             </div>
           </div>
           <div class="row">
             <div class="col-12 justify-content-end">
               <q-btn
-                :disable="!isValidForm()"
+                :disable="!donateValue"
                 style="background: white; color: var(--happypurim)"
                 icon="save"
-                label="update"
+                label="save"
                 @click="
                   () => {
                     // console.log('editor value', { dateValue, timeValue })
@@ -45,80 +40,15 @@
   </div>
   <div class="row q-pa-sm q-mb-sm">
     <div class="col-12">
-      <ExpanCustom v-model="AlternateDeliveryFlag" title="Enable Alternate Delivery Address">
+      <ExpanCustom v-model="alternateDeliveryFlag" title="Enable Alternate Delivery Address">
         <!--=============================== TODO: what goes here? =============================-->
         <template v-slot:body>
           <div class="row">
-            <div class="col-12 q-pl-sm q-pr-sm q-mt-md">
+            <div class="col-12">
               <q-input
-                v-model="(addressForm.address as FormField).value as string"
+                label="Question"
+                v-model="alternateDeliveryValue"
                 outlined
-                label="Address"
-                lazy-rules
-                :rules="[lazyRules.required()]"
-              />
-            </div>
-          </div>
-          <div class="row">
-            <div
-              class="q-pl-sm q-pr-sm q-mt-md"
-              :class="{
-                'col-6': !isMobile,
-                'col-12': isMobile,
-              }"
-            >
-              <q-input
-                v-model="(addressForm.address2 as FormField).value as string"
-                outlined
-                label="Address 2"
-              />
-            </div>
-            <div
-              class="q-pl-sm q-pr-sm q-mt-md"
-              :class="{
-                'col-6': !isMobile,
-                'col-12': isMobile,
-              }"
-            >
-              <q-input
-                v-model="(addressForm.city as FormField).value as string"
-                outlined
-                label="City"
-                lazy-rules
-                :rules="[lazyRules.required()]"
-              />
-            </div>
-          </div>
-          <div class="row">
-            <div
-              class="q-pl-sm q-pr-sm q-mt-md"
-              :class="{
-                'col-6': !isMobile,
-                'col-12': isMobile,
-              }"
-            >
-              <q-input
-                v-model="(addressForm.zipCode as FormField).value as string"
-                outlined
-                label="Zip Code"
-                mask="#####"
-                lazy-rules
-                :rules="[
-                  lazyRules.required(),
-                  lazyRules.maxCharacters(5),
-                  lazyRules.minCharacters(5),
-                ]"
-              />
-            </div>
-            <div class="q-pl-sm q-pr-sm q-mt-md" :class="{
-                'col-6': !isMobile,
-                'col-12': isMobile,
-              }">
-              <q-select
-                v-model="(addressForm.state as FormField).value as string"
-                outlined
-                :options="statesOptions"
-                label="State"
                 lazy-rules
                 :rules="[lazyRules.required()]"
               />
@@ -127,7 +57,7 @@
           <div class="row q-mt-sm">
             <div class="col-12 justify-content-end">
               <q-btn
-                :disable="!isAddressFormForm()"
+                :disable="!alternateDeliveryValue"
                 style="background: white; color: var(--happypurim)"
                 icon="save"
                 label="Save"
@@ -209,32 +139,18 @@
 <script setup lang="ts">
 import type { QTableColumn } from 'quasar'
 import ExpanCustom from 'src/components/ExpanCustom/ExpanCustom.vue'
-import type { FormField } from 'src/composables'
-import { lazyRules, useForm, validations } from 'src/composables'
-import { statesOptions } from 'src/modules/dashboard/data'
-import { useUI } from 'src/modules/UI/composables'
+import { lazyRules } from 'src/composables'
+
 import { ref } from 'vue'
 
-const { isMobile } = useUI()
+
 
 const donateBasketFlag = ref(false)
-const AlternateDeliveryFlag = ref(false)
+const donateValue = ref('')
+
+const alternateDeliveryFlag = ref(false)
+const alternateDeliveryValue = ref('')
 const isFullScreen = ref<boolean>(false)
-
-const { realForm, isValidForm } = useForm({
-  value: { value: '', validations: [validations.required] },
-})
-
-const { realForm: addressForm, isValidForm: isAddressFormForm } = useForm({
-  address: { value: '', validations: [validations.required] },
-  address2: { value: '', validations: [] },
-  city: { value: '', validations: [validations.required] },
-  state: { value: '', validations: [validations.required] },
-  zipCode: {
-    value: '',
-    validations: [validations.required, validations.minCharacters(5), validations.maxCharacters(5)],
-  },
-})
 
 const columns = ref<QTableColumn[]>([
   {
@@ -361,6 +277,9 @@ const rows = ref([
     id: 1,
   },
 ])
+
+
+
 </script>
 
 <style scoped lang="scss">

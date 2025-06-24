@@ -3,7 +3,6 @@
   min-width: 200px;
   height: 200px;
   border-radius: 5px;
-  background-color: rgba(234, 138, 60, 0.452);
   cursor: pointer;
   box-shadow: black 4px 4px 3px -2px;
   border: solid 1px black;
@@ -14,7 +13,8 @@
   .EditorCustom-img-container {
     display: flex;
     flex: 1;
-    background-color: rgba(55, 248, 1, 0.998);
+    background-size: cover;
+    background-position: center;
   }
   button {
     width: 100%;
@@ -27,4 +27,13 @@
 
 .EditorCustom-file-selected {
   border: solid 8px $happypurim;
+}
+
+:deep(.editable-div) {
+  resize: both;
+  overflow: hidden;
+  width: 200px;
+  height: 200px;
+  border: 1px dashed #888;
+  display: inline-block;
 }

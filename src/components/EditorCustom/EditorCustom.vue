@@ -36,7 +36,7 @@
         'removeFormat',
       ],
       ['undo', 'redo'],
-      ['token', 'insert', 'hr', 'link', 'custom_btn', 'upload'],
+      ['token', 'insert', 'hr', 'link', 'custom_btn', showUploader ? 'upload' : ''],
       [
         {
           label: $q.lang.editor.formatting,
@@ -179,7 +179,7 @@
           <p>Insert File</p>
         </div>
       </div>
-      <q-card-section>
+      <q-card-section style="min-width: 50vw">
         <div class="row q-mb-md">
           <div class="col-12 justify-content-end">
             <q-btn
@@ -206,7 +206,13 @@
                 'EditorCustom-file-selected': item === selectedFile,
               }"
             >
-              <div class="EditorCustom-img-container" @click="() => onFileSelected(item)"></div>
+              <div
+                class="EditorCustom-img-container"
+                @click="() => onFileSelected(item)"
+                style="
+                  background-image: url('https://encrypted-tbn1.gstatic.com/images?q=tbn:ANd9GcSEDXTwqQdVDG_Olz2iNmsW2IQ-vmMTrHIREyAYPJCANU-ZYo1-419gGAJjKB1X4IWf5QzjPbvlhRDnBsrskqbp-B8JgWfXi8fZQuZW4pE');
+                "
+              ></div>
               <div class="row">
                 <div class="col-12">
                   <q-btn
@@ -250,8 +256,13 @@
           <p>Upload Files</p>
         </div>
       </div>
-      <q-card-section>
-        <UploaderComponent title=" " v-model:file-model="newFiles" />
+      <q-card-section style="min-width: 50vw">
+        <UploaderComponent
+          accept=".jpg, .png, image/*"
+          title="Images only"
+          multiple
+          v-model:file-model="newFiles"
+        />
       </q-card-section>
 
       <q-card-actions class="custom-dialog-footer-container" align="right">
@@ -261,6 +272,7 @@
           class="q-mr-sm q-mt-sm"
           style="color: #990000; border-color: #990000"
           v-close-popup
+          @click="newFiles = []"
         />
         <q-btn
           class="q-mr-sm q-mt-sm"
@@ -276,6 +288,9 @@
 </template>
 
 <script setup lang="ts">
+// @ts-expect-error no for ts
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+import VueResizable from 'vue-resizable'
 import { QBtnDropdown, QEditor, QPopupProxy } from 'quasar'
 import { useBasicSettings } from 'src/modules/dashboard/composables/useBasicSettings'
 import { computed, onMounted, ref } from 'vue'
@@ -289,6 +304,7 @@ interface EditorCustomPropsInterface {
   height?: string
   tokens?: { name: string; label: string; icon?: string }[]
   attacher?: { name: string; label: string; icon?: string; value: string }[]
+  showUploader?: boolean
 }
 
 const uploadInsertFileFlag = ref<boolean>(false)
@@ -366,7 +382,13 @@ const insertFile = () => {
   edit.runCmd(
     'insertHTML',
     `&nbsp;
-    <img src="https://encrypted-tbn1.gstatic.com/images?q=tbn:ANd9GcSEDXTwqQdVDG_Olz2iNmsW2IQ-vmMTrHIREyAYPJCANU-ZYo1-419gGAJjKB1X4IWf5QzjPbvlhRDnBsrskqbp-B8JgWfXi8fZQuZW4pE" height="100%" style="height:100%; width: 100%">&nbsp;`,
+<div
+  class="editable-div">
+  <img
+    src="https://encrypted-tbn1.gstatic.com/images?q=tbn:ANd9GcSEDXTwqQdVDG_Olz2iNmsW2IQ-vmMTrHIREyAYPJCANU-ZYo1-419gGAJjKB1X4IWf5QzjPbvlhRDnBsrskqbp-B8JgWfXi8fZQuZW4pE"
+    style="width: 100%; height: 100%; pointer-events: none;"
+  />
+    &nbsp;`,
   )
   edit.focus()
 }
@@ -384,14 +406,18 @@ onMounted(() => {
   })
 })
 
-const onUploadMoreFiles = () => {
-  uploadFiles(newFiles.value).then((resp) => {
-    files.value = [...files.value, ...resp]
-  })
+const onUploadMoreFiles = async () => {
+  const resp = await uploadFiles(newFiles.value)
+  files.value = [...files.value, ...resp]
+  newFiles.value = []
 }
 
 const onDeleteFile = async (item: string) => {
-  await deleteFile(item)
+  const resp = await deleteFile(item)
+  if (resp) {
+    if (item === selectedFile.value) selectedFile.value = ''
+    files.value = files.value.filter((file) => file !== item)
+  }
 }
 </script>
 

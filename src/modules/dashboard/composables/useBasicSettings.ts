@@ -4,6 +4,7 @@ import { useBasicSettingsStore } from "../store/basicSettingsStore/basicSettings
 import type { FundraiserCoordinatorFormInterface, GiftBasketProgramFormInterface, OrganizationInformationFormInterface, OrganizationSettingsInterface } from "../interfaces/basic-settings.interfaces";
 import { useQuasar } from "quasar";
 import type { ApiCallResponseInterface } from "src/services/api-interfaces";
+import { useUI } from "src/modules/UI/composables";
 
 
 export const useBasicSettings = () => {
@@ -12,7 +13,9 @@ export const useBasicSettings = () => {
   const $bsStore = useBasicSettingsStore()
   const $q = useQuasar()
 
-  const { getSettings, updateOrganizationInformation, updateFundraiserCoordinator, updatePricingSettings, getWelcomePage, updateWelcomePage, getFiles, uploadFile } = useBasicSettingsService()
+  const { getSettings, updateOrganizationInformation, updateFundraiserCoordinator, updatePricingSettings, getWelcomePage, updateWelcomePage, getFiles, uploadFile, deleteFile } = useBasicSettingsService()
+
+  const { showToast } = useUI()
 
 
   return {
@@ -155,6 +158,12 @@ export const useBasicSettings = () => {
     },
     async uploadFiles(files: File[]) {
 
+      $q.loading.show({
+        message: 'uploading files...',
+        spinnerColor: '#ef6982',
+        messageColor: '#ef6982',
+      })
+
       const promises = await Promise.all(files.map(file => uploadFile(file, {
         dontRedirect: true
       })))
@@ -180,16 +189,28 @@ export const useBasicSettings = () => {
         })
       }
 
-      return promises.filter(resp => !resp.ok).map(resp => resp.data.url)
+      $q.loading.hide();
+      return promises.filter(resp => resp.ok).map(resp => resp.data.url)
 
 
     },
     async deleteFile(file: string) {
 
       const splitted = file.split('/')
-      const name = splitted[splitted.length - 1]
+      const name = splitted[splitted.length - 1] || ""
 
-      console.log({ name });
+      const resp = await deleteFile(name, {
+        loading: {
+          message: 'deleting file'
+        },
+        dontRedirect: true
+      })
+      showToast(resp.ok,
+        'filed deleted',
+        'something went wrong deleting the file'
+      )
+
+      return resp.ok
 
     }
   }

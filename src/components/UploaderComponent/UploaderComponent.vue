@@ -18,10 +18,11 @@
         <p v-if="files.length === 0">Drag and drop files here or Browse files</p>
 
         <q-file
+          :accept="accept"
           v-model="files"
           label="Select file(s)"
           filled
-          multiple
+          :multiple="multiple"
           style="display: none"
           ref="fileInput"
         >
@@ -67,6 +68,8 @@ interface UploaderPropsInterface {
   icon?: string
   description?: string
   title?: string
+  accept?: string
+  multiple?: boolean
 }
 
 const $props = withDefaults(defineProps<UploaderPropsInterface>(), {

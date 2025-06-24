@@ -135,5 +135,24 @@ export const useUI = () => {
 
     },
 
+    showToast(ok: boolean, successMsg: string, errorMsg: string) {
+      if (ok) {
+        $q.notify({
+          color: 'green',
+          textColor: 'black',
+          icon: 'error',
+          message: successMsg,
+        })
+      }
+      else {
+        $q.notify({
+          color: 'red',
+          textColor: 'black',
+          icon: 'error',
+          message: errorMsg,
+        })
+      }
+    }
+
   };
 };

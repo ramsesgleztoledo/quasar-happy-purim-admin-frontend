@@ -55,6 +55,7 @@
 </template>
 
 <script setup lang="ts">
+
 import type { QTableColumn } from 'quasar'
 import { convertToUSDate } from 'src/helpers/convertToUSDate'
 import { ref } from 'vue'

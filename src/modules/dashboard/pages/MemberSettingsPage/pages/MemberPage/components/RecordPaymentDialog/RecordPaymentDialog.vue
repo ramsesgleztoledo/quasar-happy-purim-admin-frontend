@@ -395,7 +395,7 @@
                                 :rules="[
                                   lazyRules.required(),
                                   lazyRules.greaterThan(0, false),
-                                  lazyRules.lowerThan(Number(props.row.BalanceDue), true),
+                                  lazyRules.lowerThan(Number(props.row.Due), true),
                                   isValidAmount,
                                 ]"
                                 :disable="isAmountAppliedDisabled(props.row).value"
@@ -542,11 +542,11 @@ const selected = ref<InvoiceUnpaidOrderInterface[]>([])
 
 const columns: QTableColumn<InvoiceUnpaidOrderInterface>[] = [
   {
-    name: 'Order Date',
+    name: 'OrderDate',
     required: true,
     label: 'Order Date',
     align: 'left',
-    field: 'Order Date',
+    field: 'OrderDate',
     format: (date: string) => convertToUSDate(date),
     sortable: true,
   },
@@ -575,7 +575,7 @@ const columns: QTableColumn<InvoiceUnpaidOrderInterface>[] = [
   {
     name: 'due',
     label: 'Due',
-    field: 'BalanceDue',
+    field: 'Due',
     sortable: true,
     format: (amount: number) => `$${convertWithCommas(amount)}`,
   },
@@ -643,11 +643,11 @@ const onAmountChange = (value: string | number | null) => {
   selected.value.forEach((item) => {
     const element = rows.value.find((row) => row.OrderNumber === item.OrderNumber)
     if (!element) return
-    const calculated = available - item.BalanceDue
+    const calculated = available - item.Due
 
     if (calculated >= 0 || isInf) {
-      element.amountApplied = element.BalanceDue
-      available -= element.BalanceDue
+      element.amountApplied = element.Due
+      available -= element.Due
     } else {
       element.amountApplied = available
       available = 0
@@ -752,7 +752,7 @@ const isValidForm = () => {
   if (sel.sum > totalDue.value) return false
 
   const found = sel.filtered.find(
-    (item) => Number(item.amountApplied) <= 0 || Number(item.amountApplied) > item.BalanceDue,
+    (item) => Number(item.amountApplied) <= 0 || Number(item.amountApplied) > item.Due,
   )
   if (found) return false
 

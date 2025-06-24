@@ -75,7 +75,7 @@ export const useBasicSettingsService = () => {
         }
       })
     },
-    uploadFile: async (file: File, extraOptions?: ExtraOptionsInterface): Promise<ApiCallResponseInterface<{fileName: string, url: string}>> => {
+    uploadFile: async (file: File, extraOptions?: ExtraOptionsInterface): Promise<ApiCallResponseInterface<{ fileName: string, url: string }>> => {
 
       const nextUrl = `/upload-file-to-welcome-page-content`;
       const url = `${baseUrl}${nextUrl}`;
@@ -101,6 +101,15 @@ export const useBasicSettingsService = () => {
       return await apiCall({
         url,
         extraOptions
+      })
+    },
+    deleteFile: async (name: string, extraOptions?: ExtraOptionsInterface): Promise<ApiCallResponseInterface<unknown>> => {
+      const nextUrl = `/delete-welcome-page-uploaded-file/${name}`;
+      const url = `${baseUrl}${nextUrl}`;
+      return await apiCall({
+        url,
+        extraOptions,
+        method: 'DELETE'
       })
     },
   }

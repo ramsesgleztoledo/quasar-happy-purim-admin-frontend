@@ -7,9 +7,9 @@
   <div class="row">
     <div class="col-12">
       <p style="color: #595959">
-        We highly recommend using the editor below or using the html editor to create your Welcome Page. If you choose to
-        paste from Microsoft Word or any other word processing software, please be sure to click the
-        Clean Word Format button on the toolbar below.
+        We highly recommend using the editor below or using the html editor to create your Welcome
+        Page. If you choose to paste from Microsoft Word or any other word processing software,
+        please be sure to click the Clean Word Format button on the toolbar below.
       </p>
     </div>
   </div>
@@ -38,6 +38,7 @@
 
       <!-- :tokens="tokensForEdit" -->
       <EditorCustom
+        show-uploader
         v-if="listView === 1"
         :height="isFullScreen ? '90%' : '390px'"
         v-model="editor"
