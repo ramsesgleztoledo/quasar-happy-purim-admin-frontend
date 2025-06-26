@@ -45,6 +45,7 @@ export interface MemberInterface {
 
 
 export interface MemberDataInterface {
+  memberGuid: string;
   memberId: number;
   title: string;
   firstName: string;

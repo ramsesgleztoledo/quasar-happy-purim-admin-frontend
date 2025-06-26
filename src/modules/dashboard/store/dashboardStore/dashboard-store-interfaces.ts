@@ -16,4 +16,5 @@ export interface DashboardStateInterface {
   orderItems: OrderItemsInterface[];
   memberSummary: MemberSummaryInterface | NoneType;
   membersLogged: MembersLoggedInterface | NoneType;
+  showCreateOrderByCode: boolean
 }

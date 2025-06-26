@@ -18,25 +18,25 @@
       <div class="row q-gutter-sm q-mb-sm">
         <q-input
           outlined
-          v-model="(realForm.rangeStart as FormField).value as string"
+          v-model="realForm.rangeStart.value"
           lazy-rules
-          :rules="[lazyRules.required()]"
+          :rules="[lazyRules.required(), lazyRules.greaterThan(0, true)]"
           label="Range Start"
           type="number"
         />
         <q-input
           outlined
-          v-model="(realForm.rangeEnd as FormField).value as string"
+          v-model="realForm.rangeEnd.value"
           lazy-rules
-          :rules="[lazyRules.required()]"
+          :rules="[lazyRules.required(), lazyRules.greaterThan(0, true)]"
           label="Range End"
           type="number"
         />
         <q-input
           outlined
-          v-model="(realForm.basketSize as FormField).value as string"
+          v-model="realForm.basketSize.value"
           lazy-rules
-          :rules="[lazyRules.required()]"
+          :rules="[lazyRules.required(), lazyRules.greaterThan(0, true)]"
           label="Basket Size"
         />
         <q-btn
@@ -44,11 +44,7 @@
           style="background: var(--happypurim); color: white; height: 42px"
           icon="add"
           label="Add new item"
-          @click="
-            () => {
-              // console.log('editor value', { dateValue, timeValue })
-            }
-          "
+          @click="onAddBasketSize"
         />
       </div>
       <div class="row q-mt-sm" :style="{ height: isFullScreen ? '85%' : '600px' }">
@@ -57,7 +53,7 @@
             style="height: 100%"
             flat
             bordered
-            :rows="rows"
+            :rows="advancedSettingsState.basketSize"
             :columns="columns"
             row-key="name"
             class="table-sticky-header-column-table"
@@ -74,7 +70,7 @@
                   {{ props.row.basketSize }}
                 </q-td>
                 <q-td key="lastUpdate" :props="props">
-                  {{ convertToUSDate(props.row.lastUpdate) }}
+                  {{ convertToUSDate(props.row.lastUpdated) }}
                 </q-td>
 
                 <q-td key="edit" :props="props">
@@ -83,7 +79,7 @@
                     icon="delete"
                     style="background: var(--happypurim); color: white"
                     label="delete"
-                    @click="() => console.log(props.row.id)"
+                    @click="() => deleteTab3BasketSize(props.row.id)"
                   />
                 </q-td>
               </q-tr>
@@ -97,20 +93,26 @@
 
 <script setup lang="ts">
 import type { QTableColumn } from 'quasar'
-import type { FormField } from 'src/composables'
 import { lazyRules, useForm, validations } from 'src/composables'
 import { convertToUSDate } from 'src/helpers'
+import { useAdvancedSettings } from 'src/modules/dashboard/composables/useAdvancedSettings'
+import type {
+  Tab3BasketSizeFormInterface,
+  Tab3BasketSizeInterface,
+} from 'src/modules/dashboard/interfaces/advanced-settings.interfaces'
 import { ref } from 'vue'
 
-const { realForm, isValidForm } = useForm({
-  rangeStart: { value: '', validations: [validations.required] },
-  rangeEnd: { value: '', validations: [validations.required] },
-  basketSize: { value: '', validations: [validations.required] },
+const { advancedSettingsState, createTab3BasketSize, deleteTab3BasketSize } = useAdvancedSettings()
+
+const { realForm, isValidForm, getFormValue, resetForm } = useForm({
+  rangeStart: { value: '', validations: [validations.required, validations.greaterThan(0, true)] },
+  rangeEnd: { value: '', validations: [validations.required, validations.greaterThan(0, true)] },
+  basketSize: { value: '', validations: [validations.required, validations.greaterThan(0, true)] },
 })
 
 const isFullScreen = ref<boolean>(false)
 
-const columns = ref<QTableColumn[]>([
+const columns = ref<QTableColumn<Tab3BasketSizeInterface>[]>([
   {
     name: 'rangeStart',
     required: true,
@@ -138,8 +140,8 @@ const columns = ref<QTableColumn[]>([
     required: true,
     label: 'Last Update',
     align: 'left',
-    field: 'lastUpdate',
-    format: (processed: string) => convertToUSDate(processed),
+    field: 'lastUpdated',
+    format: (date: string) => convertToUSDate(date),
     sortable: true,
   },
   {
@@ -150,85 +152,11 @@ const columns = ref<QTableColumn[]>([
   },
 ])
 
-const rows = ref([
-  {
-    rangeStart: 33,
-    rangeEnd: 333,
-    basketSize: 'Card only',
-    lastUpdate: new Date(),
-    id: 1,
-  },
-  {
-    rangeStart: 33,
-    rangeEnd: 333,
-    basketSize: 'Card only',
-    lastUpdate: new Date(),
-    id: 1,
-  },
-  {
-    rangeStart: 33,
-    rangeEnd: 333,
-    basketSize: 'Card only',
-    lastUpdate: new Date(),
-    id: 1,
-  },
-  {
-    rangeStart: 33,
-    rangeEnd: 333,
-    basketSize: 'Card only',
-    lastUpdate: new Date(),
-    id: 1,
-  },
-  {
-    rangeStart: 33,
-    rangeEnd: 333,
-    basketSize: 'Card only',
-    lastUpdate: new Date(),
-    id: 1,
-  },
-  {
-    rangeStart: 33,
-    rangeEnd: 333,
-    basketSize: 'Card only',
-    lastUpdate: new Date(),
-    id: 1,
-  },
-  {
-    rangeStart: 33,
-    rangeEnd: 333,
-    basketSize: 'Card only',
-    lastUpdate: new Date(),
-    id: 1,
-  },
-  {
-    rangeStart: 33,
-    rangeEnd: 333,
-    basketSize: 'Card only',
-    lastUpdate: new Date(),
-    id: 1,
-  },
-  {
-    rangeStart: 33,
-    rangeEnd: 333,
-    basketSize: 'Card only',
-    lastUpdate: new Date(),
-    id: 1,
-  },
-  {
-    rangeStart: 33,
-    rangeEnd: 333,
-    basketSize: 'Card only',
-    lastUpdate: new Date(),
-    id: 1,
-  },
-  {
-    rangeStart: 33,
-    rangeEnd: 333,
-    basketSize: 'Card only',
-    lastUpdate: new Date(),
-    id: 1,
-  },
-])
+const onAddBasketSize = async () => {
+  const data = getFormValue() as unknown as Tab3BasketSizeFormInterface
+  await createTab3BasketSize(data)
+  resetForm()
+}
 </script>
 
 <style scoped lang="scss">

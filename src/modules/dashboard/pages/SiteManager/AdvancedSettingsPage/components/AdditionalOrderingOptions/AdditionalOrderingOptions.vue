@@ -1,7 +1,11 @@
 <template>
   <div class="row q-pa-sm q-mb-sm">
     <div class="col-12">
-      <ExpanCustom v-model="solicitDotationFlag" title="Solicit Donations for Charity">
+      <ExpanCustom
+        @update:model-value="onUpdateSolicitDotation"
+        v-model="solicitDotationFlag"
+        title="Solicit Donations for Charity"
+      >
         <template v-slot:body>
           <div class="row">
             <div class="col-12">
@@ -32,7 +36,11 @@
   </div>
   <div class="row q-pa-sm q-mb-sm">
     <div class="col-12">
-      <ExpanCustom v-model="sellGiftFlag" title="Sell Gift Baskets for Personal Use">
+      <ExpanCustom
+        @update:model-value="onUpdateSellGift"
+        v-model="sellGiftFlag"
+        title="Sell Gift Baskets for Personal Use"
+      >
         <template v-slot:body>
           <div class="row">
             <div class="col-12">
@@ -79,6 +87,7 @@
   <div class="row q-pa-sm q-mb-sm">
     <div class="col-12">
       <ExpanCustom
+        @update:model-value="onUpdateAllowMembers"
         v-model="allowMembersFlag"
         title="Allow Members to Send to Others Outside the List"
       >
@@ -127,7 +136,11 @@
   </div>
   <div class="row q-pa-sm q-mb-sm">
     <div class="col-12">
-      <ExpanCustom v-model="sellAdditionalFlag" title="Sell Additional Items">
+      <ExpanCustom
+        @update:model-value="onUpdateSellAdditional"
+        v-model="sellAdditionalFlag"
+        title="Sell Additional Items"
+      >
         <template v-slot:body>
           <div class="row q-mb-sm">
             <div class="col-12 q-mb-sm">
@@ -157,8 +170,7 @@
                   <div class="row AdditionalOrderingOptions-additional-profile-desc-row">
                     <div class="col-12">
                       <div class="row">
-                        <div class="col-12 justify-content-space-between">
-                          <p>Additional Profile Questions/Options</p>
+                        <div class="col-12 justify-content-end">
                           <q-btn
                             flat
                             round
@@ -166,6 +178,21 @@
                             :icon="isFullScreen ? 'fullscreen_exit' : 'fullscreen'"
                             @click="isFullScreen = !isFullScreen"
                           />
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="col-5 q-pa-sm d-flex">
+                          <div class="row" style="width: 100%">
+                            <div class="col-12 q-pl-lg">
+                              <b>Description</b>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col-2 q-pa-sm">
+                          <b>Price</b>
+                        </div>
+                        <div class="col-2 q-pa-sm">
+                          <b>Sort Order</b>
                         </div>
                       </div>
                       <div class="row">
@@ -262,7 +289,16 @@
                     icon="save"
                     label="Save"
                     :disable="areOrderItemsValid()"
-                    @click="onSellAdditionalItems"
+                    @click="
+                      () =>
+                        updateAdditionalOrderingItems({
+                          content: {
+                            enabled: sellAdditionalFlag,
+                            message: sellAdditionalText,
+                          },
+                          items: sellAdditionalItems,
+                        })
+                    "
                   />
                 </div>
               </div>
@@ -282,7 +318,7 @@ import { lazyRules, useForm, validations } from 'src/composables'
 import { useAdvancedSettings } from 'src/modules/dashboard/composables/useAdvancedSettings'
 import type { Tab2AdditionalItemInterface } from 'src/modules/dashboard/interfaces/advanced-settings.interfaces'
 import { useUI } from 'src/modules/UI/composables'
-import { onMounted, ref, watch } from 'vue'
+import { onMounted, ref } from 'vue'
 
 const {
   advancedSettingsState,
@@ -343,33 +379,41 @@ const resetAllowMembers = () => {
 }
 const resetSellAdditional = () => {
   sellAdditionalFlag.value = advancedSettingsState.value.additionalOrderingItem.enabled
-  allowMembersText.value = advancedSettingsState.value.additionalOrderingItem.text
+  sellAdditionalText.value = advancedSettingsState.value.additionalOrderingItem.message
   sellAdditionalItems.value = advancedSettingsState.value.additionalOrderingItem.items
 }
 
-watch(solicitDotationFlag, () => {
-  if (!solicitDotationFlag.value)
-    updateDonationContent({
-      active: solicitDotationFlag.value,
-      message: solicitDotationText.value,
-    })
-})
-watch(sellGiftFlag, () => {
-  if (!sellGiftFlag.value)
-    updateAddon({
-      enabled: sellGiftFlag.value,
-      text: sellGiftText.value,
-      priceEach: Number(sellGiftPrice.value),
-    })
-})
-watch(allowMembersFlag, () => {
-  if (!allowMembersFlag.value)
-    updateSendOut({
-      enabled: allowMembersFlag.value,
-      message: allowMembersText.value,
-      priceEach: Number(allowMembersPrice.value),
-    })
-})
+const onUpdateSolicitDotation = (value: boolean) => {
+  updateDonationContent({
+    active: value,
+    message: solicitDotationText.value,
+  })
+}
+
+const onUpdateSellGift = (value: boolean) => {
+  updateAddon({
+    enabled: value,
+    text: sellGiftText.value,
+    priceEach: Number(sellGiftPrice.value),
+  })
+}
+const onUpdateAllowMembers = (value: boolean) => {
+  updateSendOut({
+    enabled: value,
+    message: allowMembersText.value,
+    priceEach: Number(allowMembersPrice.value),
+  })
+}
+
+const onUpdateSellAdditional = (value: boolean) => {
+  updateAdditionalOrderingItems({
+    content: {
+      enabled: value,
+      message: sellAdditionalText.value,
+    },
+    items: sellAdditionalItems.value,
+  })
+}
 
 onMounted(() => {
   resetDonations()
@@ -401,10 +445,6 @@ const areOrderItemsValid = () => {
   )
 
   return !!found
-}
-
-const onSellAdditionalItems = () => {
-  updateAdditionalOrderingItems(sellAdditionalItems.value).catch(console.error)
 }
 </script>
 

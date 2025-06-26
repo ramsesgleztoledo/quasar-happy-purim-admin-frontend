@@ -17,31 +17,39 @@
               <div class="row q-mt-lg q-mb-sm">
                 <div class="col-6 q-pr-sm q-pl-sm">
                   <q-input
-                    v-model="(realForm.fromName as FormField).value as string"
+                    v-model="realForm.fromName.value"
                     outlined
                     label="From Name"
                     lazy-rules
                     :rules="[lazyRules.required()]"
-                    disable
                   />
                 </div>
                 <div class="col-6 q-pr-sm q-pl-sm">
                   <q-input
-                    v-model="(realForm.fromEmail as FormField).value as string"
+                    v-model="realForm.fromEmail.value"
                     outlined
                     label="From Email"
                     lazy-rules
                     :rules="[lazyRules.required(), lazyRules.isEmail()]"
-                    disable
                   />
                 </div>
               </div>
               <div class="row q-mb-sm">
-                <div class="col-4 q-pr-sm q-pl-sm">
+                <div class="col-6 q-pr-sm q-pl-sm">
                   <q-input
-                    v-model="(realForm.subject as FormField).value as string"
+                    v-model="realForm.subject.value"
                     outlined
                     label="Subject"
+                    lazy-rules
+                    :rules="[lazyRules.required()]"
+                  />
+                </div>
+                <div class="col-6 q-pr-sm q-pl-sm">
+                  <q-input
+                    disable
+                    v-model="realForm.toEmail.value"
+                    outlined
+                    label="To Email"
                     lazy-rules
                     :rules="[lazyRules.required()]"
                   />
@@ -78,7 +86,6 @@
 </template>
 
 <script setup lang="ts">
-import type { FormField } from 'src/composables'
 import { lazyRules, useForm, validations } from 'src/composables'
 import EditorCustom from 'src/components/EditorCustom/EditorCustom.vue'
 import { onMounted, ref } from 'vue'
@@ -154,7 +161,7 @@ onMounted(() => {
       fromName: res.fromName,
       fromEmail: res.fromEmail,
       subject: res.subject,
-      toEmail: `ramsesgleztoledo@gmail.com`,
+      toEmail: res.toEmail,
     })
     emailContent.value = res.body
   })

@@ -7,7 +7,7 @@ export const useTransaction = () => {
 
 
   const { getTransactions, getDonations, downloadCharityCSV, getReciprocityCharges,
-    downloadReciprocityChargesCSV } = useTransactionService()
+    downloadReciprocityChargesCSV, getTransactionsDetailsByTransactionId } = useTransactionService()
   const { downloadFile } = useUI()
 
   return {
@@ -48,6 +48,16 @@ export const useTransaction = () => {
     async downloadReciprocityChargesCSV() {
       await downloadFile(downloadReciprocityChargesCSV, 'csv', 'reciprocity-charge')
     },
-    
+    async getTransactionsDetailsByTransactionId(id: number) {
+      const resp = await getTransactionsDetailsByTransactionId(id, {
+        useCache: true,
+        loading: {
+          message: `Loading transaction detail for ${id}`
+        }
+      })
+
+      return resp.ok ? resp.data : undefined
+    },
+
   }
 };

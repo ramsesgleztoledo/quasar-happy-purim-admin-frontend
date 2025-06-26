@@ -1,6 +1,6 @@
 import { useApiCall } from "src/services/apiCall";
 import type { ApiCallResponseInterface, ExtraOptionsInterface } from "src/services/api-interfaces";
-import type { DonationInterface, ReciprocityChargeInterface, TransactionsInterface } from "../interfaces/transaction-interfaces";
+import type { DonationInterface, ReciprocityChargeInterface, TransactionDetailsInterface, TransactionsInterface } from "../interfaces/transaction-interfaces";
 
 
 
@@ -52,6 +52,14 @@ export const useTransactionService = () => {
         url,
         extraOptions,
         responseType: 'text'
+      })
+    },
+    getTransactionsDetailsByTransactionId: async (id: number, extraOptions?: ExtraOptionsInterface): Promise<ApiCallResponseInterface<TransactionDetailsInterface>> => {
+      const nextUrl = `/${id}/full-transaction-info`;
+      const url = `${baseUrl}${nextUrl}`;
+      return await apiCall({
+        url,
+        extraOptions
       })
     },
 

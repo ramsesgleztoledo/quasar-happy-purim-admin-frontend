@@ -30,7 +30,7 @@
         'item-width-200': !isMobile,
       }"
     >
-      <q-input v-model="search" outlined label="Search">
+      <q-input disable v-model="search" outlined label="Search">
         <template v-slot:append>
           <q-icon name="search" />
         </template>
@@ -56,8 +56,12 @@
         <label>
           <b>Promotions</b>
         </label>
-        <div v-for="(item, index) in SendTo" :key="index" class="row">
-          <q-checkbox v-model="item.value" :label="item.label" />
+        <div v-for="item in memberOrderState.promotions" :key="item.id" class="row">
+          <q-checkbox
+            @update:model-value="(value) => addOrRemovePromotion(value, item)"
+            v-model="item.selected"
+            :label="item.displayText"
+          />
         </div>
       </div>
     </div>
@@ -84,11 +88,12 @@
         flat
         bordered
         ref="tableRef"
-        :rows="rows"
+        :rows="memberOrderState.memberList"
         :columns="columns"
         row-key="id"
         selection="multiple"
         v-model:selected="selected"
+        :table-row-style-fn="rowStyleFn"
       >
         <template v-slot:top="props">
           <div class="q-table__title" style="padding: 2px">People</div>
@@ -127,10 +132,13 @@
 import type { QTableColumn } from 'quasar'
 import { convertWithCommas } from 'src/helpers'
 import { useUI } from 'src/modules/UI/composables'
-import { ref } from 'vue'
+import { ref, watch } from 'vue'
 import CreateOrderLegend from '../CreateOrderLegend/CreateOrderLegend.vue'
+import { useMemberOrder } from 'src/modules/dashboard/composables/useMemberOrder'
+import type { OrderMemberListInterface } from 'src/modules/dashboard/interfaces/memberOrder-interfaces'
 
 const { isMobile } = useUI()
+const { memberOrderState, addOrRemovePromotion } = useMemberOrder()
 
 const search = ref('')
 const types = ref({ value: 0, label: 'Show All' })
@@ -140,18 +148,6 @@ const options = ref([
   { value: false, label: 'Reciprocity' },
   { value: false, label: 'Hide Paid Orders' },
 ])
-const SendTo = ref([
-  { value: false, label: 'Send to All Board for $50' },
-  { value: false, label: 'Send to Everyone for $180' },
-  { value: false, label: 'Send to all Parents for $150' },
-  { value: false, label: 'All Staff for $150' },
-])
-
-interface OrderItemInterface {
-  id: number
-  name: string
-  amount: number
-}
 
 const columns = ref<QTableColumn[]>([
   {
@@ -159,33 +155,39 @@ const columns = ref<QTableColumn[]>([
     required: true,
     label: 'Name',
     align: 'left',
-    field: 'name',
+    field: 'firstName',
     sortable: true,
+    format: (name: string, row) => `${row?.lastName}, ${name}`,
   },
   {
     name: 'amount',
     required: true,
     label: 'Amount',
     align: 'left',
-    field: 'amount',
+    field: 'price',
     format: (amount: number) => `$${convertWithCommas(amount)}`,
     sortable: true,
   },
 ])
-const rows = ref<OrderItemInterface[]>([
-  {
-    id: 1,
-    name: 'Cohen  Uri',
-    amount: 3,
-  },
-  {
-    id: 2,
-    name: 'Cohen  Uri & 2',
-    amount: 3,
-  },
-])
 
-const selected = ref([])
+const selected = ref<OrderMemberListInterface[]>([])
+
+watch(
+  memberOrderState.value.memberList,
+  () => {
+    selected.value = memberOrderState.value.memberList.filter((member) => member.selected)
+  },
+  {
+    immediate: true,
+  },
+)
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const rowStyleFn = (row: any) => {
+  console.log('aplying styles')
+
+  return row.calories % 2 === 0 ? 'color:#ccc' : 'color:#fff'
+}
 </script>
 
 <style scoped lang="scss"></style>

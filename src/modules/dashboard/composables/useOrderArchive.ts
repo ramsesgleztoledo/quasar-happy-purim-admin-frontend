@@ -1,15 +1,14 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
+
 
 import { computed } from "vue";
 import { useOrderArchiveStore } from "../store/orderArchiveStore/orderArchiveStore";
 import { useOrderArchiveService } from "../services/order.service";
-import { useQuasar } from "quasar";
+
 
 
 export const useOrderArchive = () => {
 
   const $oStore = useOrderArchiveStore()
-  const $q = useQuasar()
   const { getOrdersArchive, getOrderReceiptByOrderId, getItemTableByItemId } = useOrderArchiveService()
 
 
@@ -35,26 +34,16 @@ export const useOrderArchive = () => {
     },
     async getOrdersAllOrderDetails(orderId: number) {
 
-      $q.loading.show({
-        message: 'Loading order details ...',
-        spinnerColor: '#ef6982',
-        messageColor: '#ef6982',
-      })
+      const
+        resp
+          = await getOrderReceiptByOrderId(orderId, {
+            useCache: true,
+            loading: {
+              message: 'Loading order details ...',
+            }
+          });
+      $oStore.setSelectedOrderReceipt(resp.ok ? resp.data : undefined)
 
-      const promises: Promise<any>[] = [
-        getOrderReceiptByOrderId(orderId, {
-          useCache: true
-        })
-      ]
-
-      const [
-        orderReceipt
-      ]: any = await Promise.all(promises)
-
-      $oStore.setSelectedOrderReceipt(orderReceipt)
-
-
-      $q.loading.hide()
     },
 
 

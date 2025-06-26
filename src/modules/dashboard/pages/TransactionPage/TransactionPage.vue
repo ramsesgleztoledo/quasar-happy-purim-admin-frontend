@@ -9,7 +9,7 @@
 
     <div class="row q-mb-md">
       <div class="col-12 d-flex justify-content-end">
-        <q-input outlined v-model="searchText" label="Search">
+        <q-input disable outlined v-model="searchText" label="Search">
           <template v-slot:append>
             <q-icon name="search" />
           </template>
@@ -53,7 +53,7 @@
                     :label="col.value"
                     :to="{
                       name: 'dashboard-transactionDetailsPage',
-                      params: { transactionId: props.row.invoiceNum },
+                      params: { transactionID: props.row.invoiceNum },
                     }"
                   />
 

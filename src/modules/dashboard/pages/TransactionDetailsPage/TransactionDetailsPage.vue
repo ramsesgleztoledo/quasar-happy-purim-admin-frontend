@@ -8,7 +8,7 @@
     </div>
     <div class="row">
       <div class="col-12">
-        <TransactionComponent />
+        <TransactionComponent :transaction-details="transactionDetails" />
       </div>
     </div>
   </div>
@@ -19,20 +19,27 @@ import { onMounted, ref } from 'vue'
 
 import { useRoute } from 'vue-router'
 import TransactionComponent from './components/TransactionComponent/TransactionComponent.vue'
-// import { useOrderArchive } from 'src/modules/dashboard/composables/useOrderArchive'
+import { useTransaction } from '../../composables/useTransaction'
+import type { TransactionDetailsInterface } from '../../interfaces/transaction-interfaces'
 
-// const { getOrdersAllOrderDetails } = useOrderArchive()
+const { getTransactionsDetailsByTransactionId } = useTransaction()
+
 const $route = useRoute()
 const isLoading = ref<boolean>(true)
+
+const transactionDetails = ref<TransactionDetailsInterface | undefined>(undefined)
 
 onMounted(async () => {
   const transactionID = $route.params.transactionID
   console.log(transactionID)
 
-  isLoading.value = false
-  // getOrdersAllOrderDetails(Number(orderId)).finally(() => {
-  //   isLoading.value = false
-  // })
+  getTransactionsDetailsByTransactionId(Number(transactionID))
+    .then((resp) => {
+      transactionDetails.value = resp
+    })
+    .finally(() => {
+      isLoading.value = false
+    })
 })
 </script>
 

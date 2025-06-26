@@ -20,6 +20,7 @@ const initialState: DashboardStateInterface = {
   orderItems: [],
   memberSummary: undefined,
   membersLogged: undefined,
+  showCreateOrderByCode: false,
 }
 
 export const useDashboardStore = defineStore('dashBoardStore', {

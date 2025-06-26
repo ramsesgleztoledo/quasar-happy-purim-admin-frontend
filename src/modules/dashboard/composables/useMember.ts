@@ -12,6 +12,7 @@ import { useUI } from "src/modules/UI/composables";
 import { useRouter } from "vue-router";
 
 
+
 export const useMember = () => {
 
 
@@ -46,6 +47,8 @@ export const useMember = () => {
 
   } = useMemberService()
 
+
+
   const { getCategoriesByMemberId } = useCategoryService()
 
   // to return
@@ -71,28 +74,6 @@ export const useMember = () => {
       messageColor: '#ef6982',
     })
 
-
-
-    const promises: [
-      any,
-      any,
-      any,
-      any,
-      any,
-      any,
-      any,
-      any,
-    ] = [
-        getMemberById(memberId),
-        getHiddenByMemberId(memberId),
-        getReciprocityByMemberId(memberId),
-        getCategoriesByMemberId(memberId),
-        getIsPendingDeletionByMemberId(memberId),
-        getAlternativeAddressByMemberId(memberId),
-        getTransactionsByMemberId(memberId),
-        getMemberDonateBasketOptionByMemberId(memberId),
-      ]
-
     try {
 
       const [
@@ -104,6 +85,7 @@ export const useMember = () => {
         alternativeAddress,
         memberTransactions,
         memberDonateBasketOption,
+
       ]: [
           ApiCallResponseInterface<MemberDataInterface>,
           ApiCallResponseInterface<MemberHiddenInterface>,
@@ -113,7 +95,19 @@ export const useMember = () => {
           ApiCallResponseInterface<AlternativeMemberAddress>,
           ApiCallResponseInterface<MemberTransactionInterface[]>,
           ApiCallResponseInterface<MemberDonateBasketOptionInterface>
-        ] = await Promise.all(promises)
+
+        ] = await Promise.all([
+          getMemberById(memberId),
+          getHiddenByMemberId(memberId),
+          getReciprocityByMemberId(memberId),
+          getCategoriesByMemberId(memberId),
+          getIsPendingDeletionByMemberId(memberId),
+          getAlternativeAddressByMemberId(memberId),
+          getTransactionsByMemberId(memberId),
+          getMemberDonateBasketOptionByMemberId(memberId),
+
+        ]
+        )
 
 
       $mStore.setSelectedMember(member.ok ? member.data : undefined)

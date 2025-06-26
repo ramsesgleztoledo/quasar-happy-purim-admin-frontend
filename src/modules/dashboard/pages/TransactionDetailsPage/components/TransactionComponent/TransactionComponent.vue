@@ -1,10 +1,17 @@
 <template>
   <div class="row">
     <div class="col-12 justify-end d-flex">
-      <q-btn label="Print Receipt" @click="printReceipt" color="primary" icon="print" />
+      <q-btn
+        :disable="!transactionDetails"
+        label="Print Receipt"
+        @click="printReceipt"
+        color="primary"
+        icon="print"
+      />
     </div>
   </div>
-  <div id="print-receipt-id" ref="printArea">
+
+  <div v-if="!!transactionDetails" id="print-receipt-id" ref="printArea">
     <div class="row">
       <div class="col-12">
         <p class="text-h5">
@@ -17,9 +24,9 @@
       <div class="col-6">
         <div class="row">
           <div class="col-6">
-            <b> Transaction #: </b>
+            <b> Invoice #: </b>
           </div>
-          <div class="col-6">123</div>
+          <div class="col-6">{{ transactionDetails.paymentInfo.tranId }}</div>
         </div>
       </div>
       <div class="col-6">
@@ -27,7 +34,7 @@
           <div class="col-6">
             <b> Method of Payment: </b>
           </div>
-          <div class="col-6">paypal</div>
+          <div class="col-6">{{ transactionDetails.paymentInfo.method }}</div>
         </div>
       </div>
     </div>
@@ -37,15 +44,18 @@
           <div class="col-6">
             <b> Sold to: </b>
           </div>
-          <div class="col-6">pepe</div>
+          <div class="col-6">
+            {{ transactionDetails.summary.sendingFromName }},
+            {{ transactionDetails.summary.sendingFromAddress }}
+          </div>
         </div>
       </div>
-      <div class="col-6" v-if="false">
+      <div class="col-6">
         <div class="row">
           <div class="col-6">
-            <b> Last 4 digits on Card: </b>
+            <b> Payment info: </b>
           </div>
-          <div class="col-6">4544</div>
+          <div class="col-6">{{ transactionDetails?.paymentInfo.last4OrCheckNo }}</div>
         </div>
       </div>
     </div>
@@ -56,7 +66,7 @@
           <div class="col-6">
             <b> Approval #: </b>
           </div>
-          <div class="col-6">XXDC</div>
+          <div class="col-6">{{ transactionDetails.paymentInfo.approvalCode }}</div>
         </div>
       </div>
     </div>
@@ -71,8 +81,9 @@
       </div>
     </div>
     <hr style="margin: 0px" />
-    <div class="row q-mb-sm" v-for="(people, i) in [1, 1, 11, , 1, 1]" :key="i">
-      <div class="col-12">{{ people }}</div>
+    <div class="row q-mb-sm" v-for="(people, i) in transactionDetails.recipients" :key="i">
+      <div class="col-6">{{ people.sendingTo }}</div>
+      <div class="col-6">${{ convertWithCommas(people.price || 0) }}</div>
     </div>
     <hr />
     <div class="row q-mb-sm">
@@ -82,19 +93,19 @@
           <div class="col-6">
             <b>Total Recipients: </b>
           </div>
-          <div class="col-6">33</div>
+          <div class="col-6">{{ transactionDetails.recipients.length }}</div>
         </div>
       </div>
     </div>
 
     <hr />
-    <div class="row q-mb-sm" v-for="(item, i) in [1, 1, 1, 1]" :key="i">
-      <div class="col-2">{{ item }}</div>
-      <div class="col-4">{{ item }}</div>
+    <div class="row q-mb-sm" v-for="(item, i) in transactionDetails.additionalOrderItems" :key="i">
+      <div class="col-2">{{ item.quantity }}</div>
+      <div class="col-4">{{ item.itemName }}</div>
       <div class="col-6">
         <div class="row">
           <div class="col-6"></div>
-          <div class="col-6">${{ convertWithCommas(0) }}</div>
+          <div class="col-6">${{ convertWithCommas(item.price || 0) }}</div>
         </div>
       </div>
     </div>
@@ -106,7 +117,9 @@
           <div class="col-6">
             <b>Settlement Amount: </b>
           </div>
-          <div class="col-6">${{ convertWithCommas(0) }}</div>
+          <div class="col-6">
+            ${{ convertWithCommas(transactionDetails.paymentInfo.charge || 0) }}
+          </div>
         </div>
       </div>
     </div>
@@ -116,8 +129,15 @@
 <script setup lang="ts">
 import { convertWithCommas } from 'src/helpers'
 import { printHelper } from 'src/helpers/printHelper'
+import type { TransactionDetailsInterface } from 'src/modules/dashboard/interfaces/transaction-interfaces'
 
 import { ref } from 'vue'
+
+interface TransactionComponentPropsInterface {
+  transactionDetails: TransactionDetailsInterface | undefined
+}
+
+defineProps<TransactionComponentPropsInterface>()
 
 const printArea = ref<HTMLElement | null | undefined>(null)
 

@@ -2,6 +2,7 @@
 import { defineStore, acceptHMRUpdate } from 'pinia';
 import type { orderArchiveStateInterface } from './orderArchive-store-interfaces';
 import type { ItemDetailsInterface, OrderArchiveInterface, OrderReceiptInterface } from '../../interfaces/order-interfaces';
+import type { NoneType } from '../../services/service-interfaces';
 
 
 const initialState: orderArchiveStateInterface = {
@@ -30,7 +31,7 @@ export const useOrderArchiveStore = defineStore('orderArchiveStore', {
     setSelectedOrder(order: OrderArchiveInterface) {
       this.selectedOrder = order;
     },
-    setSelectedOrderReceipt(orderReceipt: OrderReceiptInterface) {
+    setSelectedOrderReceipt(orderReceipt: OrderReceiptInterface | NoneType) {
       this.selectedOrderReceipt = orderReceipt;
     },
   }

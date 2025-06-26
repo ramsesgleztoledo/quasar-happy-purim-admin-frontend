@@ -7,7 +7,7 @@
         'col-12': isMobile,
       }"
     >
-      <q-input outlined v-model="searchText" label="Search">
+      <q-input disable outlined v-model="searchText" label="Search">
         <template v-slot:append>
           <q-icon name="search" />
         </template>
@@ -55,7 +55,6 @@
 </template>
 
 <script setup lang="ts">
-
 import type { QTableColumn } from 'quasar'
 import { convertToUSDate } from 'src/helpers/convertToUSDate'
 import { ref } from 'vue'

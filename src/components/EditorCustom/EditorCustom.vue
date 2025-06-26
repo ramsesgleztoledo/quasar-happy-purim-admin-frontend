@@ -401,9 +401,10 @@ const newFiles = ref<File[]>([])
 const { getFiles, uploadFiles, deleteFile } = useBasicSettings()
 
 onMounted(() => {
-  getFiles().then((res) => {
-    files.value = res
-  })
+  if ($props.showUploader)
+    getFiles().then((res) => {
+      files.value = res
+    })
 })
 
 const onUploadMoreFiles = async () => {

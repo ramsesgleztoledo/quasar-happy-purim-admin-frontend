@@ -11,15 +11,15 @@
         <q-btn-toggle v-model="pageView" spread no-caps :options="pageOption" />
       </div>
     </div>
-    <template v-if="pageView === '1'">
+    <div v-show="pageView === '1'">
       <ProfileOptions />
-    </template>
-    <template v-if="pageView === '2'">
+    </div>
+    <div v-show="pageView === '2'">
       <AdditionalOrderingOptions />
-    </template>
-    <template v-if="pageView === '3'">
+    </div>
+    <div v-show="pageView === '3'">
       <BasketSizes />
-    </template>
+    </div>
     <template v-if="pageView === '4'">
       <AdditionalReceiptText />
     </template>

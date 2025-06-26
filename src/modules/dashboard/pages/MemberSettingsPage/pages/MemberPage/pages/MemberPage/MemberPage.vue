@@ -59,7 +59,7 @@
                     />
                   </q-item-section>
                 </q-item>
-                <q-item clickable v-close-popup>
+                <q-item clickable v-close-popup v-if="dashboardState.showCreateOrderByCode">
                   <q-item-section>
                     <q-btn
                       icon="add"
@@ -165,6 +165,7 @@
               class="q-mr-sm q-mt-sm"
             />
             <q-btn
+              v-if="dashboardState.showCreateOrderByCode"
               outline
               icon="add"
               label="CREATE ORDER BY CODE"
@@ -672,6 +673,7 @@ import type {
   MemberUpdateAllDataForm,
   MemberUpdateFormInterface,
 } from 'src/modules/dashboard/interfaces/member-interfaces'
+import { useDashboard } from 'src/modules/dashboard/composables/useDashboard'
 
 interface CheckboxItemInterface {
   value: boolean
@@ -682,6 +684,7 @@ interface CheckboxItemInterface {
 const $route = useRoute()
 const $router = useRouter()
 const $q = useQuasar()
+const { dashboardState } = useDashboard()
 const { copyToClipboard, isMobile } = useUI()
 const { memberState, deleteMemberById_Co, updateMember_Co, clearMemberCart_Co } = useMember()
 

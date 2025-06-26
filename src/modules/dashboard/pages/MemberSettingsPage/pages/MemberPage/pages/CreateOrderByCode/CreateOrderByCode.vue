@@ -16,7 +16,7 @@
   </div>
 
   <div class="row q-mt-md">
-    <q-input v-model="search" outlined label="Code Number" />
+    <q-input disable v-model="search" outlined label="Code Number" />
     <q-btn
       class="q-ml-sm"
       style="background: var(--happypurim); color: white"

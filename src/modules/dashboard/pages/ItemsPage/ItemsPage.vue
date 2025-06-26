@@ -22,9 +22,9 @@
         @onRowClick="
           ({ row }) => {
             $router.push({
-              name: 'OrderArchivePage-orderDetails',
+              name: 'dashboard-transactionDetailsPage',
               params: {
-                orderId: row.orderNum,
+                transactionID: row.orderNum,
               },
             })
           }

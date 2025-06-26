@@ -8,7 +8,7 @@
   <div class="row">
     <div class="col-12">
       <div class="row">
-        <q-input outlined v-model="searchText" label="Search">
+        <q-input disable outlined v-model="searchText" label="Search">
           <template v-slot:append>
             <q-icon name="search" />
           </template>

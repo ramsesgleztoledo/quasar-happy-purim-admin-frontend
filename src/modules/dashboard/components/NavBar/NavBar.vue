@@ -34,7 +34,7 @@
               </p>
             </div>
             <div class="col-3">
-              <q-input v-if="!isMobile" color="grey-3" outlined v-model="search" label="Search">
+              <q-input disable v-if="!isMobile" color="grey-3" outlined v-model="search" label="Search">
                 <template v-slot:append>
                   <q-icon name="search" />
                 </template>

@@ -1,56 +1,109 @@
 <template>
   <div class="row q-pa-sm q-mb-sm">
     <div class="col-12">
-      <ExpanCustom v-model="additionalReceiptTextFlag" title="Additional Receipt Text">
-        <template v-slot:body>
-          <div class="row">
-            <div class="col-12">
-              <p>
-                The text you insert below will appear at the bottom of the email receipts sent to
-                your members:
-              </p>
+      <q-expansion-item
+        v-model="additionalReceiptTextFlag"
+        label="Additional Receipt Text"
+        class="ExpanCustom-exp-container"
+      >
+        <q-card>
+          <q-card-section>
+            <div class="row">
+              <div class="col-12">
+                <p>
+                  The text you insert below will appear at the bottom of the email receipts sent to
+                  your members:
+                </p>
+              </div>
             </div>
-          </div>
-          <div class="row q-mb-sm">
-            <div class="col-12">
-              <EditorCustom v-model="editor" />
+            <div class="row q-mb-sm">
+              <div class="col-12">
+                <EditorCustom v-model="additionalReceiptTextValue" />
+              </div>
             </div>
-          </div>
-          <div class="row">
-            <div class="col-12 justify-content-end">
-              <q-btn
-                style="background: white; color: var(--happypurim)"
-                icon="save"
-                label="update"
-                @click="
-                  () => {
-                    // console.log('editor value', { dateValue, timeValue })
-                  }
-                "
-              />
+            <div class="row">
+              <div class="col-12 justify-content-end">
+                <q-btn
+                  style="background: white; color: var(--happypurim)"
+                  icon="save"
+                  label="save"
+                  @click="
+                    () => {
+                      updateTab4AdditionalReceiptText(additionalReceiptTextValue)
+                    }
+                  "
+                />
+              </div>
             </div>
-          </div>
-        </template>
-      </ExpanCustom>
+          </q-card-section>
+        </q-card>
+      </q-expansion-item>
     </div>
   </div>
   <div class="row q-pa-sm q-mb-sm">
     <div class="col-12">
-      <ExpanCustom v-model="invoiceTextFlag" title="Invoice Text">
-        <template v-slot:body> </template>
-      </ExpanCustom>
+      <q-expansion-item
+        v-model="invoiceTextFlag"
+        label="Additional Receipt Text"
+        class="ExpanCustom-exp-container"
+      >
+        <q-card>
+          <q-card-section>
+            <div class="row">
+              <div class="col-12">
+                <p>
+                  The text you insert below will appear at the bottom of the invoices you send to
+                  your members:
+                </p>
+              </div>
+            </div>
+            <div class="row q-mb-sm">
+              <div class="col-12">
+                <EditorCustom v-model="invoiceTextValue" />
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-12 justify-content-end">
+                <q-btn
+                  style="background: white; color: var(--happypurim)"
+                  icon="save"
+                  label="save"
+                  @click="
+                    () => {
+                      updateTab4InvoiceText(invoiceTextValue)
+                    }
+                  "
+                />
+              </div>
+            </div>
+          </q-card-section>
+        </q-card>
+      </q-expansion-item>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
 import EditorCustom from 'src/components/EditorCustom/EditorCustom.vue'
-import ExpanCustom from 'src/components/ExpanCustom/ExpanCustom.vue'
-import { ref } from 'vue'
+import { useAdvancedSettings } from 'src/modules/dashboard/composables/useAdvancedSettings'
+import { onMounted, ref } from 'vue'
+const { advancedSettingsState, updateTab4AdditionalReceiptText, updateTab4InvoiceText } =
+  useAdvancedSettings()
 
-const additionalReceiptTextFlag = ref(false)
-const invoiceTextFlag = ref(false)
-const editor = ref('')
+const additionalReceiptTextFlag = ref(true)
+const additionalReceiptTextValue = ref('')
+
+const invoiceTextFlag = ref(true)
+const invoiceTextValue = ref('')
+
+const resetData = () => {
+  additionalReceiptTextValue.value = advancedSettingsState.value.receiptText
+  invoiceTextValue.value = advancedSettingsState.value.invoiceText
+}
+
+onMounted(() => {
+  resetData()
+})
 </script>
 
 <style scoped lang="scss">
