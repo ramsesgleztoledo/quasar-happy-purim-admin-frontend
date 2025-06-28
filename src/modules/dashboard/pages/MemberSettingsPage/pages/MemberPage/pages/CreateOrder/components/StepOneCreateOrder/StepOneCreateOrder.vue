@@ -48,17 +48,26 @@
     >
       <div class="CreateOrderPage-options">
         <label><b> Options </b> </label>
-        <div v-for="(item, index) in options" :key="index" class="row">
-          <q-checkbox v-model="item.value" :label="item.label" />
+
+        <!-- <div class="row">
+          <q-checkbox  v-model="reciprocity" label="Reciprocity" />
+        </div> -->
+        <div class="row">
+          <q-checkbox
+            @update:model-value="onHidePaidOrdersUpdated"
+            v-model="hidePaidOrders"
+            label="Hide Paid Orders"
+          />
         </div>
       </div>
-      <div class="CreateOrderPage-send-to">
+      <div class="CreateOrderPage-send-to" v-if="memberOrderState.orgSettings?.displayPromotions">
         <label>
           <b>Promotions</b>
         </label>
-        <div v-for="item in memberOrderState.promotions" :key="item.id" class="row">
+        <div v-for="item in promotions" :key="item.id" class="row">
           <q-checkbox
-            @update:model-value="(value) => addOrRemovePromotion(value, item)"
+            :disable="checkDisabledPromotion(item)"
+            @update:model-value="(value) => onAddOrRemovePromotion(value, item)"
             v-model="item.selected"
             :label="item.displayText"
           />
@@ -88,12 +97,16 @@
         flat
         bordered
         ref="tableRef"
-        :rows="memberOrderState.memberList"
+        :rows="rows"
         :columns="columns"
         row-key="id"
         selection="multiple"
-        v-model:selected="selected"
-        :table-row-style-fn="rowStyleFn"
+        v-model:selected="$moStore.membersSelected"
+        :tableRowStyleFn="tableRowStyleFn"
+        @selection="onSelectAll"
+        :pagination="{
+          rowsPerPage: 0,
+        }"
       >
         <template v-slot:top="props">
           <div class="q-table__title" style="padding: 2px">People</div>
@@ -115,6 +128,8 @@
 
         <template v-slot:body-selection="scope">
           <q-checkbox
+            v-if="!scope.row.paid"
+            :disable="scope.row.paid"
             :model-value="scope.selected"
             @update:model-value="
               (val, evt) => {
@@ -135,19 +150,27 @@ import { useUI } from 'src/modules/UI/composables'
 import { ref, watch } from 'vue'
 import CreateOrderLegend from '../CreateOrderLegend/CreateOrderLegend.vue'
 import { useMemberOrder } from 'src/modules/dashboard/composables/useMemberOrder'
-import type { OrderMemberListInterface } from 'src/modules/dashboard/interfaces/memberOrder-interfaces'
+import type {
+  OrderMemberListInterface,
+  OrderPromotionInterface,
+} from 'src/modules/dashboard/interfaces/memberOrder-interfaces'
+import type { StepOneCreateOrderInterface } from '../../interfaces'
+import { useMemberOrderStore } from 'src/modules/dashboard/store/memberOrderStore/memberOrderStore'
+import { getMembersByPromotion } from 'src/modules/dashboard/helpers/getMembersByPromotion'
 
 const { isMobile } = useUI()
-const { memberOrderState, addOrRemovePromotion } = useMemberOrder()
+const {
+  memberOrderState,
+  // addOrRemovePromotion
+} = useMemberOrder()
+const $moStore = useMemberOrderStore()
 
 const search = ref('')
 const types = ref({ value: 0, label: 'Show All' })
 const typesOptions = ref([{ value: 0, label: 'Show All' }])
 
-const options = ref([
-  { value: false, label: 'Reciprocity' },
-  { value: false, label: 'Hide Paid Orders' },
-])
+// const reciprocity = ref(false)
+const hidePaidOrders = ref(false)
 
 const columns = ref<QTableColumn[]>([
   {
@@ -170,24 +193,127 @@ const columns = ref<QTableColumn[]>([
   },
 ])
 
-const selected = ref<OrderMemberListInterface[]>([])
+const rows = ref<OrderMemberListInterface[]>([])
+// const selected = ref<OrderMemberListInterface[]>([])
+
+const promotions = ref<OrderPromotionInterface[]>([])
 
 watch(
-  memberOrderState.value.memberList,
+  () => memberOrderState.value.memberList,
   () => {
-    selected.value = memberOrderState.value.memberList.filter((member) => member.selected)
+    rows.value = memberOrderState.value.memberList.map((member) => ({ ...member }))
+    $moStore.membersSelected = rows.value.filter((member) => member.selected && !member.paid)
+  },
+  {
+    immediate: true,
+  },
+)
+watch(
+  () => memberOrderState.value.promotions,
+  () => {
+    promotions.value = memberOrderState.value.promotions.map((promotion) => ({ ...promotion }))
   },
   {
     immediate: true,
   },
 )
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-const rowStyleFn = (row: any) => {
-  console.log('aplying styles')
+const tableRowStyleFn = (row: OrderMemberListInterface) => {
+  let color = ''
 
-  return row.calories % 2 === 0 ? 'color:#ccc' : 'color:#fff'
+  if (row.iSentLastYear) color = '#9acd32'
+  if (row.reciprocal === 'Yes') color = '#ffc702'
+  if (row.sentToMeLastYear) color = '#86ceeb'
+  if (row.paid) color = '#fa6666'
+
+  return `background-color: ${color}`
 }
+
+const onSelectAll = () => {
+  setTimeout(() => {
+    $moStore.membersSelected = $moStore.membersSelected
+      .filter((item) => !item.paid)
+      .map((item) => ({ ...item, selected: true }))
+  }, 200)
+}
+
+const onAddOrRemovePromotion = (value: boolean, item: OrderPromotionInterface) => {
+  const list = getMembersByPromotion(item.categories, rows.value)
+
+  const selectedId = new Set($moStore.membersSelected.map((member) => member.id))
+
+  if (value) {
+    for (const item of list) {
+      if (!selectedId.has(item.id)) {
+        $moStore.membersSelected.push(item)
+        selectedId.add(item.id)
+      }
+    }
+  } else
+    $moStore.membersSelected = getMembersByPromotion(
+      item.categories,
+      $moStore.membersSelected,
+      true,
+    )
+}
+
+const onHidePaidOrdersUpdated = (value: boolean) => {
+  rows.value = [
+    ...memberOrderState.value.memberList.filter((member) => (value ? !member.paid : true)),
+  ]
+}
+
+const getPromotionChanges = () => {
+  const promotionChanges: OrderPromotionInterface[] = []
+  const promotionState = memberOrderState.value.promotions
+  for (let i = 0; i < promotionState.length; i++) {
+    if (promotionState[i]?.selected !== promotions.value[i]?.selected) {
+      promotionChanges.push(promotions.value[i]!)
+    }
+  }
+  return promotionChanges
+}
+
+// const getMembers = () => {
+//   const membersState = memberOrderState.value.memberList.filter((member) => !member.paid)
+
+//   const membersAdd: OrderMemberListInterface[] = []
+//   const membersDelete: OrderMemberListInterface[] = []
+
+//   for (let i = 0; i < membersState.length; i++) {
+//     const found = !!$moStore.membersSelected.find((member) => member.id === membersState[i]!.id)
+
+//     if (membersState[i]!.selected) if (!found) membersDelete.push(membersState[i]!)
+
+//     if (!membersState[i]!.selected) if (found) membersAdd.push(membersState[i]!)
+//   }
+//   return { membersAdd, membersDelete }
+// }
+
+const saveChanges = () => {
+  const promotions = getPromotionChanges()
+  return {
+    promotions,
+    membersAdd: $moStore.membersSelected,
+  }
+}
+
+const checkDisabledPromotion = (promotion: OrderPromotionInterface) => {
+  const found = promotions.value.find((pro) => {
+    const same = pro.id !== promotion.id && !!pro.selected
+
+    const proCat = pro.categories.split(',') || []
+    const promotionCat = promotion.categories.split(',') || []
+    const include = promotionCat.some((item) => proCat.includes(item))
+    return same && !include
+  })
+
+  return !!found
+}
+
+defineExpose<StepOneCreateOrderInterface>({
+  saveChanges,
+})
 </script>
 
 <style scoped lang="scss"></style>

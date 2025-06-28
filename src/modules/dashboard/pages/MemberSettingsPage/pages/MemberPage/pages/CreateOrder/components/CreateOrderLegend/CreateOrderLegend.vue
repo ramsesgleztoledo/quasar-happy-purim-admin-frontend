@@ -11,11 +11,11 @@
     <div class="CreateOrderLegend-square" style="background-color: #86ceeb"></div>
     <p>I <b>Received</b> from Last Year</p>
   </div>
-  <!-- <div class="row q-mb-sm">
-    <div class="CreateOrderLegend-square-red-check"></div>
-    <p><b>Red</b> check Orders Already Placed</p>
-  </div> -->
-
+  <div class="row q-mb-sm">
+    <!-- <div class="CreateOrderLegend-square-red-check"></div> -->
+    <div class="CreateOrderLegend-square" style="background-color: #fa6666"></div>
+    <p>Orders Already Placed</p>
+  </div>
 </template>
 
 <script setup lang="ts"></script>

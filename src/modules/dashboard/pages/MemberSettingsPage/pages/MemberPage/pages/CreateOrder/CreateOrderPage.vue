@@ -1,4 +1,5 @@
 <template>
+  <q-inner-loading :showing="!isReady" label="Loading orders ..." />
   <div v-if="isReady">
     <div class="CreateOrderPage-container">
       <div class="CreateOrderPage-top">
@@ -23,7 +24,7 @@
         <div class="row">
           <div class="col-12">
             <div v-show="step === 1">
-              <StepOneCreateOrder />
+              <StepOneCreateOrder ref="stepOneCreateOrderRef" />
             </div>
             <div v-show="step > 1">
               <div class="row">
@@ -67,14 +68,14 @@
               style="color: #990000; border-color: #990000"
               @click="cancelOrderDialogFlag = true"
             />
-            <q-btn class="q-mr-sm" label="SAVE FOR LATER" />
+            <q-btn class="q-mr-sm" label="SAVE FOR LATER" @click="saveForLater" />
             <q-btn v-if="step > 1" class="q-mr-sm" label="BACK" @click="step--" />
             <q-btn
               v-if="step === 1"
               class="q-mr-sm"
               style="background: var(--happypurim); color: white"
               label="NEXT"
-              @click="step++"
+              @click="onNext"
             />
             <q-btn
               v-if="step === 2"
@@ -133,20 +134,55 @@ import StepTwoCreateOrder from './components/StepTwoCreateOrder/StepTwoCreateOrd
 import StepThreeCreateOrder from './components/StepThreeCreateOrder/StepThreeCreateOrder.vue'
 import CartComponent from './components/CartComponent/CartComponent.vue'
 import { useMemberOrder } from 'src/modules/dashboard/composables/useMemberOrder'
+import type { StepOneCreateOrderInterface } from './interfaces'
+import { useRouter } from 'vue-router'
+
+const $router = useRouter()
 const { isMobile } = useUI()
 const { memberState } = useMember()
-const { getInitialData } = useMemberOrder()
+const {
+  getInitialData,
+  updateCart,
+  setUpdatedPromotions
+} = useMemberOrder()
+
 const cancelOrderDialogFlag = ref(false)
 const addReciprocityDialogFlag = ref(false)
 const step = ref(1)
 
 const isReady = ref(false)
+const stepOneCreateOrderRef = ref<StepOneCreateOrderInterface | undefined>(undefined)
 
 onMounted(() => {
-  getInitialData().finally(
-    () => (isReady.value = true),
-  )
+  getInitialData()
+    .then(() => {
+      isReady.value = true
+    })
+    .catch(console.error)
 })
+
+const saveForLater = async () => {
+  await saveStepOne()
+
+  $router.push({
+    name: 'MemberLayout',
+    params: {
+      memberId: memberState.value.selectedMember?.memberId,
+    },
+  })
+}
+
+const saveStepOne = async () => {
+  const result = stepOneCreateOrderRef.value?.saveChanges()
+  if (!result) return
+  setUpdatedPromotions(result.promotions)
+  await updateCart(result)
+}
+
+const onNext = async () => {
+  await saveStepOne()
+  step.value++
+}
 </script>
 
 <style scoped lang="scss">

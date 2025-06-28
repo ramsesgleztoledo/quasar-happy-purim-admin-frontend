@@ -61,3 +61,64 @@ export interface MemberOrderItemsInterface {
   quantity: number;
   sessionId: string;
 }
+export interface AddRemoveMemberFormInterface {
+  receiver: number;
+  tempcode: string;
+}
+
+export interface MemberOrderOrgSettingInterface {
+  displayChildren: boolean;
+  displayLastYearsOrders: boolean;
+  processOwn: boolean;
+  payLaterOption: boolean;
+  payLaterText: string;
+  excludeSendToAll: boolean;
+  receiptText: string;
+  showShippingInstructions: boolean;
+  showShippingInstructionsTitle: string;
+  displayLastYearsOrderIntro: boolean;
+  overrideMailFromAddress: boolean;
+  alternateDeliveryAddress: boolean;
+  alternateDeliveryAddressPrompt: string;
+  donateBasketOption: boolean;
+  donateBasketOptionText: string;
+  displayMisc2: boolean;
+  currency: string;
+  payPal: boolean;
+  paypalUserName: string;
+  displayPromotions: boolean;
+  displayPromotionsScreen: boolean;
+  reviewReciprocityCharges: boolean;
+  promotionBtnDisplayText: string;
+  displayNameLimit: number;
+  symbol: string;
+  creditCardPercent: number;
+  perTransactionFee: number;
+  feeActive: boolean;
+  feeRequired: boolean;
+  feeDesc: string;
+  feeTitle: string;
+  feeText: string;
+}
+
+
+
+export interface MemberAdditionalCharityOptionsInterface {
+  id: number;
+  message: string;
+}
+
+
+export interface MemberCharityOptionInterface {
+  id: number;
+  description: string;
+  displayOrder: number;
+}
+
+export type CharityType = MemberCharityOptionInterface & {
+  value: number
+}
+
+export type ExtendedPromotionType = MemberOrderItemsInterface & {
+  memberList: OrderMemberListInterface[]
+}

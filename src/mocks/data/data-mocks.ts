@@ -44,4 +44,11 @@ export const loginAccounts: LoginAccountInterface[] = [
     token: "CTYUiSZN1GeZIvmJx8sd50NkPTizYuOR81SlmJwZZsKeTVKufZUEYcEL9LTgyNVW02kJXnIhnEaozAekzLdjbg==",
     url: 'http://localhost:9000/#/authenticate?token=CTYUiSZN1GeZIvmJx8sd50NkPTizYuOR81SlmJwZZsKeTVKufZUEYcEL9LTgyNVW02kJXnIhnEaozAekzLdjbg=='
   },
+  {
+    id: -1,
+    name: 'Demo Synagogue 2',
+    guid: 'E336934F-73FE-47D8-ABEA-E1507A02D6D7',
+    token: "tdlArHFb9T4EFeBJbMxi1iQcAH7bDuXXczajNZWAdZactIPyQzPL5PS9KKnW4jkMe/rP5mGT85AEk9ii/AgPOw==",
+    url: 'http://localhost:9000/#/authenticate?token=tdlArHFb9T4EFeBJbMxi1iQcAH7bDuXXczajNZWAdZactIPyQzPL5PS9KKnW4jkMe/rP5mGT85AEk9ii/AgPOw=='
+  },
 ]
