@@ -33,7 +33,7 @@ const background = computed<string>(() => {
     case 'info':
       return '#E6EFFF'
     case 'error':
-      return '#FEF6F5'
+      return '#ffaca1'
     case 'warning':
       return '#FFF9E5'
     default:

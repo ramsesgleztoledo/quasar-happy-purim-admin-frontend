@@ -107,6 +107,9 @@
       <div class="row q-mt-sm" :style="{ height: isFullScreen ? '85%' : '400px' }">
         <div class="col-12">
           <q-table
+            :pagination="{
+              rowsPerPage: 0,
+            }"
             style="height: 100%"
             flat
             bordered

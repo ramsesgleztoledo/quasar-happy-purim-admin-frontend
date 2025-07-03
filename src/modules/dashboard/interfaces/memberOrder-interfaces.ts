@@ -99,6 +99,9 @@ export interface MemberOrderOrgSettingInterface {
   feeDesc: string;
   feeTitle: string;
   feeText: string;
+  // sSendout: boolean;
+  // sSendoutprice: number;
+  // sSendoutText: string
 }
 
 
@@ -121,4 +124,176 @@ export type CharityType = MemberCharityOptionInterface & {
 
 export type ExtendedPromotionType = MemberOrderItemsInterface & {
   memberList: OrderMemberListInterface[]
+}
+
+
+export interface CustomShippingOptionInterface {
+  id: number;
+  description: string;
+  price: number;
+  sortOrder: number;
+  maxQuantity: number;
+  hasAttributes: boolean;
+  shippingOptionGuid?: string,
+  clientId?: number,
+  deleted?: boolean,
+  dateAdded?: Date,
+  lastUpdated?: Date,
+}
+
+
+
+export interface CustomShippingOptionAttributeInterface {
+  id: number;
+  shippingOptionAttributeGuid: string;
+  shippingOptionId: number;
+  name: string;
+  required: boolean;
+  price: number;
+  description: string;
+  promptText: string;
+  imageURL: string;
+}
+
+
+export type CustomShippingOptionAttributeType = CustomShippingOptionAttributeInterface & {
+  value: string | number;
+
+  type: "text"
+  | "password"
+  | "textarea"
+  | "email"
+  | "search"
+  | "tel"
+  | "file"
+  | "number"
+  | "url"
+  | "time"
+  | "date"
+  | "datetime-local"
+  | undefined;
+
+  selected: boolean;
+};
+
+export interface CustomShippingItemFieldsInterface {
+  shippingItemId: number;
+  shippingItemGuid: string;
+  recipient: string;
+  address: string;
+  address2: string;
+  city: string;
+  state: string;
+  zip: string;
+  country: string;
+  message: string;
+  memberId: number;
+  dateAdded: Date;
+  shippingOptionId: number;
+  email: string;
+  phoneNumber: string;
+  glutenFree: boolean;
+  lastUpdated: Date;
+  // attributes: AttributeCustomShippingItemInterface[];
+}
+export interface CustomShippingItemResponseInterface extends CustomShippingItemFieldsInterface {
+  attributes: "";
+}
+export interface CustomShippingItemInterface extends CustomShippingItemFieldsInterface {
+  attributes: AttributeCustomShippingItemInterface[];
+}
+
+
+export interface CustomShippingItemFormInterface {
+  recipient: string;
+  address: string;
+  address2: string;
+  city: string;
+  state: string;
+  zip: string;
+  message: string;
+  shippingOptionId: number;
+  email: string;
+  phoneNumber: string;
+  glutenFree: boolean;
+  attributes: string;
+}
+
+export interface AttributeCustomShippingItemInterface {
+  id: number;
+  shippingOptionAttributeGuid: string;
+  shippingOptionId: number;
+  name: string;
+  dataType: string;
+  required: boolean;
+  price: number;
+  deleted: boolean;
+  dateAdded: Date;
+  lastUpdated: Date;
+  description: string;
+  promptText: string;
+  imageURL: string;
+  value: string;
+  selected?: boolean;
+}
+
+
+export interface UpdateShippingItemFormInterface {
+  shippingItemGuid: string;
+  recipient: string;
+  address: string;
+  address2: string;
+  city: string;
+  state: string;
+  zip: string;
+  message: string;
+  shippingOptionId: number;
+  email: string;
+  phoneNumber: string;
+  glutenFree: boolean;
+  attributes: string;
+}
+
+
+export interface AdditionalOrderOptionInterface {
+  id: number;
+  description: string;
+  price: number;
+  sortOrder: number;
+  maxQuantity: number;
+  value?: number
+}
+
+
+export interface DiscountInterface {
+  discountId: number;
+  name: string;
+  description: string;
+  couponCode: string;
+  couponCodeRequired: boolean;
+  validUntil: Date;
+  neverExpires: boolean;
+  discountPercent: number;
+  excludeCharity: boolean;
+}
+
+
+export interface PaymentMethodTypeInterface {
+  methodId: number;
+  methodCode: string;
+  methodDescription: string;
+}
+
+export interface PaymentFormInterface {
+  firstName: string;
+  lastName: string;
+  date: string;
+  code: string;
+  number: string;
+  address: string;
+  address2: string;
+  city: string;
+  state: string;
+  zip: string;
+  phone: string;
 }

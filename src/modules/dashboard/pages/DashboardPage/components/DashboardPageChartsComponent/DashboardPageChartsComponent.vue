@@ -1,5 +1,5 @@
 <template>
-  <div
+  <!-- <div
     class="q-pa-sm"
     :class="{
       'col-3': !isMobile,
@@ -25,9 +25,9 @@
     }"
   >
     <WidgetChart title="ACTIVE USERS" typeChart="bar" />
-  </div>
+  </div> -->
   <div
-    class="q-pa-sm"
+    class="q-pa-sm col-12"
     :class="{
       'col-3': !isMobile,
       'col-12': isMobile,

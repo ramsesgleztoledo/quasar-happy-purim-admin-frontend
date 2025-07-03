@@ -1,11 +1,10 @@
-
-
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { computed } from "vue";
 import { useMemberOrderStore } from "../store/memberOrderStore/memberOrderStore";
 import { usePromotionService } from "../services/promotion.service";
 import { useMemberListService } from "../services/memberList.service";
 import { useOrderItemService } from "../services/orderItems.service";
-import type { CharityType, MemberOrderItemsInterface, OrderMemberListInterface, OrderPromotionInterface } from "../interfaces/memberOrder-interfaces";
+import type { CharityType, CustomShippingItemFormInterface, CustomShippingItemResponseInterface, CustomShippingOptionAttributeType, MemberOrderItemsInterface, OrderMemberListInterface, OrderPromotionInterface, PaymentFormInterface, UpdateShippingItemFormInterface } from "../interfaces/memberOrder-interfaces";
 import { useQuasar } from "quasar";
 import { useAuth } from "src/modules/auth/composables/useAuth";
 import { useMember } from "./useMember";
@@ -13,12 +12,21 @@ import { useShaliachService } from "../services/shaliach.service";
 import { useOrgSettingsService } from "../services/orgSettings.service";
 import { useCharityService } from "../services/charity.service";
 import { useUI } from "src/modules/UI/composables";
+import { useCustomShippingOptionsService } from '../services/customShippingOptions.service';
+import { useShippingItemsService } from "../services/shippingItems.service";
+import { useAdvancedSettingsService } from "../services/advanced-settings.service";
+import { useOrderOptionsService } from "../services/OrderOptions.service";
+import { useDiscountsService } from "../services/Discounts.service";
+import { usePaymentMethodsService } from "../services/paymentMethods.service";
+import type { FormComposition } from "src/composables/useForm/interfaces";
+import { useRouter } from "vue-router";
 
 
 
 
 export const useMemberOrder = () => {
 
+  const $router = useRouter()
   const $moStore = useMemberOrderStore()
   const { getPromotionsByMemberGuid } = usePromotionService()
   const { getMemberListMemberGuid } = useMemberListService()
@@ -30,12 +38,24 @@ export const useMemberOrder = () => {
   const { getOrganizationSettings } = useOrgSettingsService()
   const { getAdditionalCharityOptions, getCharityOptions } = useCharityService()
   const { showToast } = useUI()
+  const { getCustomShippingOptions, getAttributesByCustomShippingOptionId } = useCustomShippingOptionsService()
+  const { getCustomShippingItem, addCustomShippingItem, updateCustomShippingItem, deleteCustomShippingItem } = useShippingItemsService()
+  const { getAdditionalOrderOptions } = useOrderOptionsService()
+  const { getSendOut, getAddon, getOrderItems } = useAdvancedSettingsService()
+  const { getDiscounts } = useDiscountsService()
+  const { getPaymentMethods } = usePaymentMethodsService()
+
+  const mGuid = computed(() => memberState.value.selectedMember?.memberGuid || '')
+  const memberId = computed(() => memberState.value.selectedMember?.memberId || 0)
+  const tokenSession = computed(() => authState.value.token?.token || "")
+
+
   /**========================================================================
    *                           methods
    *========================================================================**/
 
   const addOrRemoveItem = async (isAdd: boolean, data: MemberOrderItemsInterface, showLoading?: boolean) => {
-    const memberGuid = memberState.value.selectedMember?.memberGuid || ''
+
 
     if (showLoading)
       $q.loading.show({
@@ -47,7 +67,7 @@ export const useMemberOrder = () => {
     const resp = await addOrRemoveOrderItemsByMemberGuid({
       data,
       isAdd,
-      memberGuid,
+      memberGuid: mGuid.value,
     },
 
     )
@@ -70,23 +90,38 @@ export const useMemberOrder = () => {
 
   };
 
+  const setCustomShippingItems = (data: CustomShippingItemResponseInterface[]) => {
+
+    $moStore.setCustomShippingItems(data.map(item => ({
+      ...item,
+      attributes: JSON.parse(item.attributes) || []
+    })) || [])
+  };
+
+
 
 
   return {
     memberOrderState: computed(() => $moStore.$state),
+    orderTotal: computed(() => $moStore.getTotalCost),
 
     async getInitialData() {
 
-
-      const mGuid = memberState.value.selectedMember?.memberGuid || ''
-
       const resp = await Promise.all([
-        getPromotionsByMemberGuid(mGuid),
-        getMemberListMemberGuid(mGuid),
-        getOrderItemsByMemberGuid(mGuid),
-        getOrganizationSettings(mGuid),
+        getPromotionsByMemberGuid(mGuid.value),
+        getMemberListMemberGuid(mGuid.value),
+        getOrderItemsByMemberGuid(mGuid.value),
+        getOrganizationSettings(mGuid.value),
         getAdditionalCharityOptions(),
         getCharityOptions(),
+        getCustomShippingOptions(),
+        getCustomShippingItem(mGuid.value),
+        getSendOut(),
+        getAddon(),
+        getOrderItems(),
+        getAdditionalOrderOptions(mGuid.value),
+        getDiscounts(),
+        getPaymentMethods(mGuid.value),
       ])
 
       if (resp.find(resp => !resp.ok)) return
@@ -101,12 +136,28 @@ export const useMemberOrder = () => {
       ) || []
 
       $moStore.$patch({
-        memberList: resp[1].data,
+        memberList: {
+          copy: resp[1].data,
+          original: resp[1].data,
+        },
         orderItems: resp[2].data,
         promotions,
         orgSettings: resp[3].data[0],
         additionalCharityOptions: resp[4].data,
         charityOptions: resp[5].data,
+        customShippingOptions: resp[6].data,
+        customShippingItems:
+          resp[7].data.map(item => ({
+            ...item,
+            attributes: JSON.parse(item.attributes) || []
+          })),
+        // resp[7].data
+        sendOutSettings: resp[8].data,
+        addonSettings: resp[9].data,
+        additionalOrderItemsSettings: resp[10].data,
+        additionalOrderOptions: resp[11].data,
+        discounts: resp[12].data,
+        paymentMethodTypes: resp[13].data
       })
     },
     addOrRemoveItem,
@@ -117,8 +168,8 @@ export const useMemberOrder = () => {
         itemId: item.itemId,
         message: "",
         price: item.price,
-        quantity: item.quantity,
-        sessionId: authState.value.token?.token || "",
+        quantity: item.quantity ? item.quantity : 1,
+        sessionId: tokenSession.value,
         shipTo: ""
       }
 
@@ -133,23 +184,23 @@ export const useMemberOrder = () => {
       // membersDelete: OrderMemberListInterface[];
     }) {
 
-      const memberGuid = memberState.value.selectedMember?.memberGuid || ''
-      const memberId = memberState.value.selectedMember?.memberId || 0
 
-      let respAdd = undefined;
+
+
+
       // let respDelete = undefined;
       let respPromotions = undefined
 
-      if (data.membersAdd.length)
-        respAdd = await addMember({
-          memberGuid,
-          memberId
-        },
-          [...data.membersAdd.map(member => ({
-            receiver: member.id,
-            tempcode: `${memberGuid}+${member.id}`
-          }))]
-        )
+
+      const respAdd = await addMember({
+        memberGuid: mGuid.value,
+        memberId: memberId.value
+      },
+        [...data.membersAdd.map(member => ({
+          receiver: member.id,
+          tempcode: `${mGuid.value}+${member.id}`
+        }))]
+      )
 
       // if (data.membersDelete.length)
       //   respDelete = await removeMember({
@@ -170,8 +221,8 @@ export const useMemberOrder = () => {
               itemId: item.itemId,
               message: "",
               price: item.price,
-              quantity: item.quantity,
-              sessionId: authState.value.token?.token || "",
+              quantity: item.quantity ? item.quantity : 1,
+              sessionId: tokenSession.value,
               shipTo: ""
             })),
 
@@ -206,8 +257,8 @@ export const useMemberOrder = () => {
     },
 
     async getOrderItemsByMemberGuid() {
-      const mGuid = memberState.value.selectedMember?.memberGuid || ''
-      const resp = await getOrderItemsByMemberGuid(mGuid, {
+
+      const resp = await getOrderItemsByMemberGuid(mGuid.value, {
         loading: {
           message: 'loading order items...'
         }
@@ -224,7 +275,7 @@ export const useMemberOrder = () => {
         price: charity.value,
         quantity: 1,
         shipTo: "",
-        sessionId: authState.value.token?.token || "",
+        sessionId: tokenSession.value,
       }
       await addOrRemoveItem(isAdd, data)
     },
@@ -242,17 +293,13 @@ export const useMemberOrder = () => {
 
 
     async removeMemberFromCart(member: OrderMemberListInterface) {
-
-      const memberGuid = memberState.value.selectedMember?.memberGuid || ''
-      const memberId = memberState.value.selectedMember?.memberId || 0
-
       await removeMember({
-        memberGuid,
-        memberId
+        memberGuid: mGuid.value,
+        memberId: memberId.value
       },
         [{
           receiver: member.id,
-          tempcode: `${memberGuid}+${member.id}`
+          tempcode: `${mGuid.value}+${member.id}`
         }],
         {
           loading: {
@@ -263,6 +310,124 @@ export const useMemberOrder = () => {
 
     },
 
+    setMemberListCopy(members: OrderMemberListInterface[]) {
+      $moStore.setMemberListCopy(members)
+    },
 
+    async getAttributesByCustomShippingOptionId(id: number): Promise<CustomShippingOptionAttributeType[]> {
+      const attributes = await getAttributesByCustomShippingOptionId(id, mGuid.value, {
+        loading: {
+          message: `Loading custom shipping option attributes ...`
+        }
+      })
+
+      return attributes.ok ? attributes.data.map(item => ({
+        ...item,
+        value: "",
+        type: 'text',
+        selected: false,
+      })) : []
+    },
+    async addCustomShippingItem(data: CustomShippingItemFormInterface) {
+      const resp = await addCustomShippingItem(mGuid.value, data, {
+        loading: {
+          message: `adding custom shipping item ...`
+        }
+      })
+      if (resp.ok)
+        setCustomShippingItems(resp.data)
+    },
+    async updateCustomShippingItem(data: UpdateShippingItemFormInterface) {
+      const resp = await updateCustomShippingItem(mGuid.value, data, {
+        loading: {
+          message: `editing custom shipping item ...`
+        }
+      })
+      if (resp.ok)
+        setCustomShippingItems(resp.data)
+
+    },
+    async deleteCustomShippingItem(data: UpdateShippingItemFormInterface) {
+      const resp = await deleteCustomShippingItem(mGuid.value, data, {
+        loading: {
+          message: `deleting custom shipping item ...`
+        }
+      })
+      if (resp.ok)
+        $moStore.setCustomShippingItems($moStore.customShippingItems.filter(item => item.shippingOptionId !== data.shippingOptionId))
+
+    },
+    async placeOrder() {
+      if ($moStore.IsPaymentFormInvalid) return
+
+
+      const emailTo = $moStore.paymentForm.email || "";
+
+      const paymentType = $moStore.paymentForm.paymentType
+      let data: any = {
+        paymentType: "",
+        paymentMethod: "",
+        firstName: "",
+        lastName: "",
+        creditCardNumber: "",
+        cardCode: "",
+        cardExpirationMonth: "",
+        cardExpirationYear: "",
+        billAddress1: "",
+        billAddress2: "",
+        billCity: "",
+        billState: "",
+        billZip: "",
+        phone: "",
+        specialInstructions: "",
+        reciprocity: false,
+        emailTo,
+        tempCode: tokenSession.value,
+        total: $moStore.getCartData?.totalBefore || 0,
+        discountName: $moStore.getCartData?.discount?.name || "",
+        discountPrice: $moStore.getCartData?.discount?.value,
+
+      }
+
+
+      switch (paymentType) {
+        case 2: {
+          data.paymentMethod = "BillMe";
+          break;
+        }
+
+        default: {
+          const form: FormComposition<PaymentFormInterface> | undefined = $moStore.paymentForm.form
+          if (!form) return
+          const formData = form.getFormValue()
+          const date = formData.date?.split('/')
+
+          data = {
+            ...data,
+            ...formData,
+            cardExpirationMonth: date![0] || "",
+            cardExpirationYear: date![1] || "",
+          }
+          break;
+        }
+      }
+
+
+      const resp = 'invalid credit card'
+
+      showToast(true, `Order placed, an email was sent to ${emailTo}`, resp)
+
+
+      $moStore.resetPaymentForm()
+
+      $router.push({
+        name: 'MemberLayout',
+        params: {
+          memberId: memberId.value
+        }
+      })
+
+
+    },
   }
 };

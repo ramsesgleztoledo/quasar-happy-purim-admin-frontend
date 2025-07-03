@@ -4,7 +4,7 @@ import { useMemberStore } from "../store/memberStore/memberStore";
 import { useMemberService } from "../services/member.service";
 import { useQuasar } from "quasar";
 import { useCategoryService } from "../services/category.service";
-import type { AlternativeMemberAddress, EmailLoginCodeInfoInterface, MemberAddFormInterface, MemberDataInterface, MemberDonateBasketOptionInterface, MemberHiddenInterface, MemberTransactionInterface, MemberUpdateAllDataForm, PendingDeletionInterface } from "../interfaces/member-interfaces";
+import type { AlternativeMemberAddress, EmailLoginCodeInfoInterface, MemberAddFormInterface, MemberDataInterface, MemberDonateBasketOptionInterface, MemberHiddenInterface, MemberProfileQuestionInterface, MemberTransactionInterface, MemberUpdateAllDataForm, PendingDeletionInterface } from "../interfaces/member-interfaces";
 import type { MemberReciprocityInterface } from '../interfaces/member-interfaces';
 import type { MemberCategoryInterface } from "../interfaces/category-interfaces";
 import type { ApiCallResponseInterface } from "src/services/api-interfaces";
@@ -42,7 +42,8 @@ export const useMember = () => {
     updateMemberByMemberId,
     updateHiddenByMemberId,
     updateMemberDonateBasketOptionByMemberId,
-    updateAlternativeAddressByMemberId,
+    getProfileQuestions,
+    // updateAlternativeAddressByMemberId,
     addMember,
 
   } = useMemberService()
@@ -85,6 +86,7 @@ export const useMember = () => {
         alternativeAddress,
         memberTransactions,
         memberDonateBasketOption,
+        profileQuestions
 
       ]: [
           ApiCallResponseInterface<MemberDataInterface>,
@@ -94,7 +96,8 @@ export const useMember = () => {
           ApiCallResponseInterface<PendingDeletionInterface>,
           ApiCallResponseInterface<AlternativeMemberAddress>,
           ApiCallResponseInterface<MemberTransactionInterface[]>,
-          ApiCallResponseInterface<MemberDonateBasketOptionInterface>
+          ApiCallResponseInterface<MemberDonateBasketOptionInterface>,
+          ApiCallResponseInterface<MemberProfileQuestionInterface[]>,
 
         ] = await Promise.all([
           getMemberById(memberId),
@@ -105,13 +108,14 @@ export const useMember = () => {
           getAlternativeAddressByMemberId(memberId),
           getTransactionsByMemberId(memberId),
           getMemberDonateBasketOptionByMemberId(memberId),
-
+          getProfileQuestions(memberId)
         ]
         )
 
 
       $mStore.setSelectedMember(member.ok ? member.data : undefined)
       $mStore.setMemberCategories(categories.ok ? categories.data : [])
+      $mStore.setProfileQuestions(profileQuestions.ok ? profileQuestions.data : [])
       $mStore.setMemberAlternativeAddress(alternativeAddress.ok ? alternativeAddress.data : undefined)
       $mStore.setMemberTransactions(memberTransactions.ok ? memberTransactions.data : [])
       $mStore.setMemberDonateBasketOption(memberDonateBasketOption.ok ? memberDonateBasketOption.data : undefined)
@@ -173,12 +177,14 @@ export const useMember = () => {
       messageColor: '#ef6982',
     })
 
-    const [resp1, resp2, resp3, resp4]: [
-      ApiCallResponseInterface<unknown>,
-      ApiCallResponseInterface<unknown>,
-      ApiCallResponseInterface<unknown>,
-      ApiCallResponseInterface<unknown>,
-    ] =
+    const [resp1, resp2, resp3,
+      // resp4
+    ]: [
+        ApiCallResponseInterface<unknown>,
+        ApiCallResponseInterface<unknown>,
+        ApiCallResponseInterface<unknown>,
+        // ApiCallResponseInterface<unknown>,
+      ] =
 
       await Promise.all([updateReciprocityByMemberId(memberId, data.reciprocity, {
         dontRedirect: true
@@ -189,9 +195,9 @@ export const useMember = () => {
       updateHiddenByMemberId(memberId, data.hidden, {
         dontRedirect: true
       }),
-      updateAlternativeAddressByMemberId(memberId, data.altAddressData, {
-        dontRedirect: true
-      })
+        // updateAlternativeAddressByMemberId(memberId, data.altAddressData, {
+        //   dontRedirect: true
+        // })
 
       ])
 
@@ -203,7 +209,9 @@ export const useMember = () => {
 
 
 
-    if (!resp1.ok || !resp2.ok || !resp3.ok || !resp4.ok || (resp5 !== undefined && !resp5.ok))
+    if (!resp1.ok || !resp2.ok || !resp3.ok
+      // || !resp4.ok
+      || (resp5 !== undefined && !resp5.ok))
 
       $q.notify({
         color: 'red',

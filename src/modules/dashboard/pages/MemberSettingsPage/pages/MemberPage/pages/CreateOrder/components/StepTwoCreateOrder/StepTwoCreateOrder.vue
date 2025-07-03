@@ -1,14 +1,69 @@
 <template>
   <div class="row">
-    <div class="col-12 q-pa-sm">
+    <div class="col-12">
+      <!--! =============================== additional basket  =============================-->
+      <div v-if="memberOrderState.addonSettings.enabled" class="row StepTwoCreateOrder-donations">
+        <div class="col-12">
+          <div class="row q-pa-sm q-mb-sm">
+            <div class="col-12 q-pa-sm">
+              <div class="row text-h6 q-mb-sm" style="color: var(--happypurim)">
+                Additional Gift Basket(s) for Personal Use
+              </div>
+            </div>
+          </div>
+
+          <div class="row q-mb-sm">
+            <div class="col-12 q-pa-sm q-item-bordered">
+              <div class="row q-mb-sm">
+                <div v-html="memberOrderState.addonSettings.message"></div>
+              </div>
+              <div class="row justify-content-space-between">
+                <b class="q-pa-sm" style="color: var(--happypurim)"> Additional Baskets</b>
+                <div class="row">
+                  <q-input
+                    type="number"
+                    v-model="additionalBasketsPersonal"
+                    outlined
+                    label="quantity"
+                    lazy-rules
+                    :rules="[lazyRules.greaterThan(0, false)]"
+                  />
+                  <q-btn
+                    :disable="
+                      !!additionalBasketForPersonalUse ||
+                      !additionalBasketsPersonal ||
+                      Number(additionalBasketsPersonal) <= 0
+                    "
+                    @click="addAdditionalBasket"
+                    class="q-mr-sm q-ml-md"
+                    style="background: var(--happypurim); color: white; max-height: 10px"
+                    label="Add"
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-12">
+              <q-separator />
+            </div>
+          </div>
+        </div>
+        <q-separator />
+      </div>
+      <!--=============================== end additional basket =============================-->
+
+      <!--! =============================== donations =============================-->
       <div
         v-if="memberOrderState.orgSettings?.donateBasketOption"
         class="row StepTwoCreateOrder-donations"
       >
         <div class="col-12">
           <div class="row q-pa-sm q-mb-sm">
-            <div class="col-12 q-pa-sm q-item-bordered">
-              <div class="row text-h6 q-mb-sm">Donation To Charity</div>
+            <div class="col-12 q-pa-sm ß">
+              <div class="row text-h6 q-mb-sm" style="color: var(--happypurim)">
+                Donation To Charity
+              </div>
               <div
                 class="row"
                 v-for="option in memberOrderState.additionalCharityOptions"
@@ -18,51 +73,161 @@
               </div>
             </div>
           </div>
-          <q-separator />
-          <div v-for="charity in charities" :key="charity.id">
-            <div class="row q-pa-sm q-mb-sm">
-              <div class="col-12 q-pa-sm q-item-bordered">
-                <div class="row q-mb-sm">
-                  <b>
-                    {{ charity.description }}
-                  </b>
-                </div>
-                <div class="row justify-content-space-between">
-                  <b class="q-pa-sm" style="color: var(--happypurim)"> I would like to donate</b>
-                  <div class="row">
-                    <q-input
-                      type="number"
-                      v-model="charity.value"
-                      outlined
-                      label="amount"
-                      lazy-rules
-                      :rules="[lazyRules.greaterThan(0, false)]"
-                    />
-                    <q-btn
-                      :disable="donationDisable(charity)"
-                      @click="() => donate(charity)"
-                      class="q-mr-sm q-ml-md"
-                      style="background: var(--happypurim); color: white; max-height: 10px"
-                      label="Add"
-                    />
+
+          <template v-if="!charities.length">
+            <div class="row q-pa-sm justify-content-space-between q-mt-sm q-item-bordered">
+              <b class="q-pa-sm" style="color: var(--happypurim)"> I would like to donate</b>
+              <div class="row">
+                <q-input
+                  type="number"
+                  v-model="donationAmount"
+                  outlined
+                  label="amount"
+                  lazy-rules
+                  :rules="[lazyRules.greaterThan(0, false)]"
+                />
+                <q-btn
+                  :disable="!!donationUse || !donationAmount || Number(donationAmount) <= 0"
+                  @click="addDonation"
+                  class="q-mr-sm q-ml-md"
+                  style="background: var(--happypurim); color: white; max-height: 10px"
+                  label="Add"
+                />
+              </div>
+            </div>
+          </template>
+          <template v-else>
+            <div v-for="charity in charities" :key="charity.id">
+              <div class="row q-mb-sm">
+                <div class="col-12 q-pa-sm q-item-bordered">
+                  <div class="row q-mb-sm">
+                    <b>
+                      {{ charity.description }}
+                    </b>
+                  </div>
+                  <div class="row justify-content-space-between">
+                    <b class="q-pa-sm" style="color: var(--happypurim)"> I would like to donate</b>
+                    <div class="row">
+                      <q-input
+                        type="number"
+                        v-model="charity.value"
+                        outlined
+                        label="amount"
+                        lazy-rules
+                        :rules="[lazyRules.greaterThan(0, false)]"
+                      />
+                      <q-btn
+                        :disable="donationDisable(charity)"
+                        @click="() => donate(charity)"
+                        class="q-mr-sm q-ml-md"
+                        style="background: var(--happypurim); color: white; max-height: 10px"
+                        label="Add"
+                      />
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
-            <div class="row">
-              <div class="col-12">
-                <q-separator />
-              </div>
+          </template>
+          <div class="row q-mb-sm q-mt-sm">
+            <div class="col-12">
+              <q-separator />
             </div>
           </div>
         </div>
         <q-separator />
       </div>
-      <div class="row q-pa-sm q-mb-sm">
-        <div class="col-12 q-pa-sm q-item-bordered">
-          <CustomShippingBasket />
+      <!--=============================== end donations =============================-->
+
+      <!--! =============================== additional items  =============================-->
+      <div
+        v-if="
+          memberOrderState.additionalOrderItemsSettings.enabled &&
+          memberOrderState.additionalOrderOptions.length
+        "
+        class="row StepTwoCreateOrder-donations"
+      >
+        <div class="col-12">
+          <div class="row q-pa-sm q-mb-sm">
+            <div class="col-12 q-pa-sm">
+              <div class="row text-h6 q-mb-sm" style="color: var(--happypurim)">
+                Additional Items
+              </div>
+            </div>
+          </div>
+
+          <div class="row q-mb-sm">
+            <div class="col-12 q-pa-sm q-item-bordered">
+              <div class="row q-mb-sm">
+                <div v-html="memberOrderState.additionalOrderItemsSettings.message"></div>
+              </div>
+              <div
+                v-for="(aItem, index) in memberOrderState.additionalOrderOptions"
+                :key="index"
+                class="q-mb-md row justify-content-space-between"
+              >
+                <b class="q-pa-sm" style="color: var(--happypurim)"> {{ aItem.description }}</b>
+                <div class="row">
+                  <q-input
+                    type="number"
+                    v-model="aItem.value"
+                    outlined
+                    label="quantity"
+                    lazy-rules
+                    :rules="[
+                      lazyRules.required(),
+                      lazyRules.greaterThan(0, false),
+                      ...(aItem.maxQuantity ? [lazyRules.lowerThan(aItem.maxQuantity, true)] : []),
+                    ]"
+                    :hint="`$${convertWithCommas(aItem.price || 0)} ea. (${aItem.maxQuantity ? aItem.maxQuantity + ' max' : ''})`"
+                  />
+
+                  <q-btn
+                    :disable="isAdditionalItemDisable(aItem).value"
+                    @click="() => addAdditionalItem(aItem)"
+                    class="q-mr-sm q-ml-md"
+                    style="background: var(--happypurim); color: white; max-height: 10px"
+                    label="Add"
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-12">
+              <q-separator />
+            </div>
+          </div>
+        </div>
+        <q-separator />
+      </div>
+      <!--=============================== end additional items =============================-->
+
+      <!--! =============================== custom shipping items =============================-->
+      <div v-if="memberOrderState.sendOutSettings.enabled">
+        <div class="row q-pa-sm q-mb-sm">
+          <div class="col-12 q-pa-sm">
+            <div class="row text-h6 q-mb-sm" style="color: var(--happypurim)">Shipping Baskets</div>
+            <div
+              class="row"
+              v-for="option in memberOrderState.additionalCharityOptions"
+              :key="option.id"
+            >
+              <div v-html="memberOrderState.sendOutSettings.message"></div>
+            </div>
+          </div>
+        </div>
+        <div class="row q-mb-sm">
+          <div class="col-12 q-item-bordered q-pa-sm">
+            <div class="row">
+              <div class="col-12">
+                <CustomShippingBasket />
+              </div>
+            </div>
+          </div>
         </div>
       </div>
+      <!--=============================== end custom shipping items =============================-->
     </div>
   </div>
 </template>
@@ -70,11 +235,24 @@
 <script setup lang="ts">
 import { lazyRules } from 'src/composables'
 
-import { ref, watch } from 'vue'
+import { computed, ref, watch } from 'vue'
 import CustomShippingBasket from './components/CustomShippingBasket/CustomShippingBasket.vue'
 import { useMemberOrder } from 'src/modules/dashboard/composables/useMemberOrder'
-import type { CharityType } from 'src/modules/dashboard/interfaces/memberOrder-interfaces'
-const { memberOrderState, addOrRemoveDonation } = useMemberOrder()
+import type {
+  AdditionalOrderOptionInterface,
+  CharityType,
+  MemberOrderItemsInterface,
+} from 'src/modules/dashboard/interfaces/memberOrder-interfaces'
+import { useQuasar } from 'quasar'
+import type { authStateInterface } from 'src/modules/auth/store/auth-store-interfaces'
+import { convertWithCommas } from 'src/helpers'
+
+const { memberOrderState, addOrRemoveDonation, addOrRemoveItem } = useMemberOrder()
+
+const additionalBasketsPersonal = ref(0)
+const donationAmount = ref(0)
+
+const $q = useQuasar()
 
 const charities = ref<CharityType[]>([])
 
@@ -101,6 +279,71 @@ watch(
   },
   { immediate: true },
 )
+
+const addAdditionalBasket = async () => {
+  const authState: authStateInterface | null = $q.localStorage.getItem('authState')
+  const data: MemberOrderItemsInterface = {
+    description: `Addition Gift Basket(s) for Personal Use`,
+    itemId: -1,
+    message: '',
+    price: memberOrderState.value.addonSettings.price,
+    quantity: additionalBasketsPersonal.value,
+    sessionId: authState?.token?.token || '',
+    shipTo: '',
+  }
+
+  await addOrRemoveItem(true, data, true)
+}
+const addDonation = async () => {
+  const authState: authStateInterface | null = $q.localStorage.getItem('authState')
+  const data: MemberOrderItemsInterface = {
+    description: `Donation To Charity`,
+    itemId: 0,
+    message: '',
+    price: donationAmount.value,
+    quantity: 1,
+    sessionId: authState?.token?.token || '',
+    shipTo: '',
+  }
+
+  await addOrRemoveItem(true, data, true)
+}
+
+const additionalBasketForPersonalUse = computed(() =>
+  memberOrderState.value.orderItems.find((item) => item.itemId === -1),
+)
+const donationUse = computed(() =>
+  memberOrderState.value.orderItems.find((item) => item.itemId === 0),
+)
+
+const isAdditionalItemDisable = (item: AdditionalOrderOptionInterface) =>
+  computed(() => {
+    if (!item.value) return true
+    const value = Number(item.value)
+    if (value <= 0) return true
+    if (item.maxQuantity && value > item.maxQuantity) return true
+
+    const found = memberOrderState.value.orderItems.find(
+      (itemAux) => itemAux.itemId === 5 && itemAux.description === item.description,
+    )
+    return !!found
+  })
+
+const addAdditionalItem = async (item: AdditionalOrderOptionInterface) => {
+  const authState: authStateInterface | null = $q.localStorage.getItem('authState')
+
+  const data: MemberOrderItemsInterface = {
+    description: item.description,
+    itemId: 5,
+    message: '',
+    price: item.price,
+    quantity: item.value || 1,
+    sessionId: authState?.token?.token || '',
+    shipTo: '',
+  }
+
+  await addOrRemoveItem(true, data, true)
+}
 </script>
 
 <style scoped lang="scss">

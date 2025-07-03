@@ -28,6 +28,9 @@
   <div class="row">
     <div class="col-12 q-pa-lg" style="height: 460px">
       <q-table
+        :pagination="{
+          rowsPerPage: 0,
+        }"
         style="height: 100%"
         class="table-sticky-header-column-table"
         flat

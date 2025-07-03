@@ -161,6 +161,10 @@
                 icon="fullscreen"
                 icon-color="#ef6982"
               />
+              <InfoAlert
+                type="error"
+                text="don't do more than one item with the same description"
+              />
               <div
                 class="row q-pa-sm q-mb-sm AdditionalOrderingOptions-additional-profile"
                 :class="{ fullscreen: isFullScreen }"

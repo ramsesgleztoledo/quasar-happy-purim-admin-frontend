@@ -1,6 +1,6 @@
 import type { ApiCallResponseInterface, ExtraOptionsInterface } from "../../../services/api-interfaces";
 import { useApiCall } from "../../../services/apiCall";
-import type { AlternativeMemberAddress, BasketReceivedInterface, EmailLoginCodeInfoInterface, MemberAddFormInterface, MemberAddResponseInterface, MemberAlternativeAddressDataInterface, MemberDataInterface, MemberDonateBasketOptionInterface, MemberHiddenInterface, MemberInterface, MemberPersonalBasketInterface, MemberReciprocityInterface, MembersLoggedInterface, MemberTransactionInterface, MemberUpdateFormInterface, PendingDeletionInterface } from "../interfaces/member-interfaces";
+import type { AlternativeMemberAddress, BasketReceivedInterface, EmailLoginCodeInfoInterface, MemberAddFormInterface, MemberAddResponseInterface, MemberAlternativeAddressDataInterface, MemberDataInterface, MemberDonateBasketOptionInterface, MemberHiddenInterface, MemberInterface, MemberPersonalBasketInterface, MemberProfileQuestionInterface, MemberReciprocityInterface, MembersLoggedInterface, MemberTransactionInterface, MemberUpdateFormInterface, PendingDeletionInterface } from "../interfaces/member-interfaces";
 
 
 
@@ -222,6 +222,23 @@ export const useMemberService = () => {
         extraOptions,
         method: 'POST',
         data
+      })
+    },
+
+    getProfileQuestions: async (memberId: number, extraOptions?: ExtraOptionsInterface): Promise<ApiCallResponseInterface<MemberProfileQuestionInterface[]>> => {
+      const nextUrl = `/${memberId}/options`;
+      const url = `${baseUrl}${nextUrl}`;
+      return await apiCall({
+        url,
+        extraOptions,
+      })
+    },
+    updateProfileQuestions: async (memberId: number, extraOptions?: ExtraOptionsInterface): Promise<ApiCallResponseInterface<unknown>> => {
+      const nextUrl = `/${memberId}/options`;
+      const url = `${baseUrl}${nextUrl}`;
+      return await apiCall({
+        url,
+        extraOptions,
       })
     },
 

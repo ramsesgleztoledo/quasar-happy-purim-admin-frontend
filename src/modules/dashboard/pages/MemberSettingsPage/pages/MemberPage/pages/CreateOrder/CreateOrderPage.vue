@@ -1,7 +1,7 @@
 <template>
   <q-inner-loading :showing="!isReady" label="Loading orders ..." />
   <div v-if="isReady">
-    <div class="CreateOrderPage-container">
+    <div ref="createOrderPageContainerRef" class="CreateOrderPage-container">
       <div class="CreateOrderPage-top">
         <div class="row">
           <div class="col-12 top-title-col">
@@ -13,9 +13,11 @@
           <div class="col-12 top-title-col">
             <!-- eslint-disable-next-line no-irregular-whitespace -->
             <p class="CreateOrderPage-title-3">
-              {{ memberState.selectedMember?.lastName }},
-              {{ memberState.selectedMember?.firstName }} -
-              <b>0 baskets selected.</b>
+              <b>
+                {{ memberState.selectedMember?.lastName }},
+                {{ memberState.selectedMember?.firstName }}
+                <!-- - 0 baskets selected. -->
+              </b>
             </p>
           </div>
         </div>
@@ -27,13 +29,13 @@
               <StepOneCreateOrder ref="stepOneCreateOrderRef" />
             </div>
             <div v-show="step > 1">
-              <div class="row">
+              <div class="row q-mt-sm">
                 <div
                   :class="{
                     'col-6': !isMobile,
                     'col-12': isMobile,
                   }"
-                  class="CreateOrderPage-left-container q-pa-sm"
+                  class="CreateOrderPage-left-container"
                 >
                   <StepTwoCreateOrder v-show="step === 2" />
                   <StepThreeCreateOrder v-show="step === 3" />
@@ -69,7 +71,17 @@
               @click="cancelOrderDialogFlag = true"
             />
             <q-btn class="q-mr-sm" label="SAVE FOR LATER" @click="saveForLater" />
-            <q-btn v-if="step > 1" class="q-mr-sm" label="BACK" @click="step--" />
+            <q-btn
+              v-if="step > 1"
+              class="q-mr-sm"
+              label="BACK"
+              @click="
+                () => {
+                  step--
+                  goToTop(createOrderPageContainerRef)
+                }
+              "
+            />
             <q-btn
               v-if="step === 1"
               class="q-mr-sm"
@@ -78,17 +90,20 @@
               @click="onNext"
             />
             <q-btn
+              :disable="!orderTotal"
               v-if="step === 2"
               class="q-mr-sm"
               style="background: var(--happypurim); color: white"
               label="CONTINUE TO PAYMENT"
-              @click="addReciprocityDialogFlag = true"
+              @click="continueToPayment"
             />
             <q-btn
               v-if="step === 3"
+              :disable="$moStore.IsPaymentFormInvalid"
               class="q-mr-sm"
               style="background: var(--happypurim); color: white"
               label="PLACE ORDER"
+              @click="placeOrder"
             />
           </div>
         </div>
@@ -111,6 +126,7 @@
       @on-finish="
         (value) => {
           step++
+          goToTop(createOrderPageContainerRef)
         }
       "
       dont-show-icon
@@ -136,15 +152,14 @@ import CartComponent from './components/CartComponent/CartComponent.vue'
 import { useMemberOrder } from 'src/modules/dashboard/composables/useMemberOrder'
 import type { StepOneCreateOrderInterface } from './interfaces'
 import { useRouter } from 'vue-router'
+import { useMemberOrderStore } from 'src/modules/dashboard/store/memberOrderStore/memberOrderStore'
 
 const $router = useRouter()
-const { isMobile } = useUI()
+const $moStore = useMemberOrderStore()
+const { isMobile, goToTop } = useUI()
 const { memberState } = useMember()
-const {
-  getInitialData,
-  updateCart,
-  setUpdatedPromotions
-} = useMemberOrder()
+const { getInitialData, updateCart, setUpdatedPromotions, orderTotal, placeOrder } =
+  useMemberOrder()
 
 const cancelOrderDialogFlag = ref(false)
 const addReciprocityDialogFlag = ref(false)
@@ -153,6 +168,7 @@ const step = ref(1)
 const isReady = ref(false)
 const stepOneCreateOrderRef = ref<StepOneCreateOrderInterface | undefined>(undefined)
 
+const createOrderPageContainerRef = ref<HTMLDivElement | undefined>(undefined)
 onMounted(() => {
   getInitialData()
     .then(() => {
@@ -163,7 +179,6 @@ onMounted(() => {
 
 const saveForLater = async () => {
   await saveStepOne()
-
   $router.push({
     name: 'MemberLayout',
     params: {
@@ -182,6 +197,13 @@ const saveStepOne = async () => {
 const onNext = async () => {
   await saveStepOne()
   step.value++
+  goToTop(createOrderPageContainerRef.value)
+}
+
+const continueToPayment = () => {
+  // addReciprocityDialogFlag.value = true
+  step.value++
+  goToTop(createOrderPageContainerRef.value)
 }
 </script>
 

@@ -14,7 +14,7 @@
         @click="isFullScreen = !isFullScreen"
       />
     </div>
-    <div class="row WidgetChart-first-row">
+    <div v-if="showRange" class="row WidgetChart-first-row">
       <p>{{ title }}</p>
       <q-select
         v-model="range"
@@ -135,7 +135,7 @@ const $props = withDefaults(defineProps<WidgetCharPropsInterface>(), {
 })
 
 const isFullScreen = ref<boolean>(false)
-const range = ref('Monthly')
+const range = ref('Daily')
 const rangeOptions = ref(['Monthly', 'Yearly', 'Weekly', 'Daily'])
 
 const groupByTimePeriods = (data: DataItemInterface): GroupedDataInterface[] => {
@@ -224,11 +224,11 @@ const onRangeTypeChanged = () => {
       charData.value = getDataBy($props.data, 'byWeek')
 
       break
-    case 'Daily':
-      charData.value = getDataBy($props.data, 'byDay')
+    case 'Monthly':
+      charData.value = getDataBy($props.data, 'byMonth')
       break
     default:
-      charData.value = getDataBy($props.data, 'byMonth')
+      charData.value = getDataBy($props.data, 'byDay')
       break
   }
 }

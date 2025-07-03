@@ -9,6 +9,9 @@
       :columns="columns"
       :row-key="rowKey"
       style="height: 100%"
+      :pagination="{
+        rowsPerPage: 20,
+      }"
       @row-click="
         (evt: Event, row: any, index: number) =>
           $emit('onRowClick', {

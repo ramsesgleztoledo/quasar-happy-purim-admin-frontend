@@ -217,7 +217,7 @@ export interface MemberUpdateAllDataForm {
   reciprocity: boolean;
   hidden: boolean;
   memberData: MemberUpdateFormInterface;
-  altAddressData: MemberAlternativeAddressDataInterface;
+  // altAddressData: MemberAlternativeAddressDataInterface;
 }
 
 
@@ -252,3 +252,10 @@ export interface MemberAddResponseInterface {
   memberId: number
 }
 
+
+
+export interface MemberProfileQuestionInterface {
+  optionName: string;
+  optionId: number;
+  isChecked: boolean;
+}

@@ -34,22 +34,70 @@
       />
     </div>
   </div>
+  <div class="q-pa-md">
+    <div class="row RecentOrders-container" :class="{ fullscreen: isFullScreen }">
+      <div class="col-12">
+        <div class="row">
+          <div class="col-12 justify-content-end">
+            <q-btn
+              flat
+              round
+              color="primary"
+              :icon="isFullScreen ? 'fullscreen_exit' : 'fullscreen'"
+              @click="isFullScreen = !isFullScreen"
+            />
+          </div>
+        </div>
+        <q-table
+          title="Members List"
+          :style="{ height: isFullScreen ? '800px' : '630px' }"
+          class="table-sticky-header-column-table"
+          flat
+          bordered
+          ref="tableRef"
+          :rows="memberState.members"
+          :columns="columns"
+          row-key="id"
+          styles="height: 360px"
+          :pagination="{
+            rowsPerPage: 20,
+          }"
+          @row-click="
+            (evt: Event, row: MemberInterface, index: number) => {
+              console.log('row ', { row })
 
-  <div class="row q-mt-md" style="height: 100%">
-    <div class="col-12">
-      <TableCustom
-        class-name="table-sticky-header-column-table table-cursor-pinter-custom"
-        styles="height: 628px"
-        :rows="memberState.members"
-        :columns="columns"
-        row-key="id"
-        title="Members List"
-        @on-row-click="
-          (data) => {
-            goToMember(data.row.m_id)
-          }
-        "
-      />
+              goToMember(row.m_id)
+            }
+          "
+        >
+          <template v-slot:body="props">
+            <q-tr
+              @click="
+                () => {
+                  goToMember(props.row.m_id)
+                }
+              "
+              :props="props"
+            >
+              <q-td v-for="col in props.cols" :key="col.name" :props="props">
+                <div v-if="col.name === 'm_hidden'">
+                  <q-icon
+                    v-if="props.row.m_hidden"
+                    color="primary"
+                    size="large"
+                    name="visibility_off"
+                  />
+                  <!-- <q-icon v-else color="primary" size="large" name="visibility" /> -->
+                </div>
+
+                <p v-else>
+                  {{ col.value }}
+                </p>
+              </q-td>
+            </q-tr>
+          </template>
+        </q-table>
+      </div>
     </div>
   </div>
 </template>
@@ -58,7 +106,6 @@
 import type { QTableColumn } from 'quasar'
 import { convertToUSDate } from 'src/helpers/convertToUSDate'
 import { ref } from 'vue'
-import TableCustom from 'src/components/TableCustom/TableCustom.vue'
 import { useRouter } from 'vue-router'
 import { useUI } from 'src/modules/UI/composables'
 import type { MemberInterface } from '../../interfaces/member-interfaces'
@@ -67,6 +114,8 @@ import { useMember } from '../../composables/useMember'
 const { isMobile } = useUI()
 const $router = useRouter()
 const { memberState } = useMember()
+
+const isFullScreen = ref(false)
 
 const goToMember = (memberId: number) => {
   $router.push({
@@ -78,6 +127,14 @@ const goToMember = (memberId: number) => {
 }
 
 const columns: QTableColumn<MemberInterface>[] = [
+  {
+    name: 'm_hidden',
+    required: true,
+    label: '',
+    align: 'left',
+    field: 'm_hidden',
+    sortable: true,
+  },
   {
     name: 'lastName',
     required: true,

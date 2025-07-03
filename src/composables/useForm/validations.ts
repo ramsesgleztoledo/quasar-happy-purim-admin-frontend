@@ -8,6 +8,29 @@ export default {
       return { required: `${value}` };
     }
   },
+  //* valid card date
+
+  isValidDate: ({ value }: { value: string }) => {
+    try {
+      if (!value) return null;
+      if (value.length !== 7) return { inValidDateFormat: value }
+
+      const year = Number(value.slice(-4))
+      const month = Number(value.slice(0, 2)) - 1
+
+      if (month < 0 || month > 11) return { incorrectMonth: month }
+
+      const currentDay = new Date().getTime()
+      const date = new Date(year, month).getTime()
+
+      if (currentDay > date) return { expiredCard: date }
+      return null
+    } catch {
+
+      return { incorrectDate: value }
+    }
+  },
+
   //* minCharacters
   minCharacters:
     (min: number) =>

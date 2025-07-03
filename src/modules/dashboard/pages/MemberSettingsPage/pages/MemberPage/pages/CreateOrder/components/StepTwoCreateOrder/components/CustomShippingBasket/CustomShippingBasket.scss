@@ -1,5 +1,5 @@
 .basket-img-container {
-  height: 150px;
+  height: 230px;
   cursor: pointer;
 }
 :hover.basket-img-container {
@@ -10,8 +10,21 @@
   border: solid 1px $happypurim;
 }
 
-
-.basket-img-row-container{
-  max-height: 200px;
+.basket-img-row-container {
+  max-height: 800px;
   overflow: auto;
+}
+
+.CustomShippingBasket-personalization {
+  display: flex;
+  justify-content: center;
+  font-size: 26px;
+  font-weight: 600;
+  color: $happypurim;
+}
+
+.CustomShippingBasket-text {
+  color: var(--happypurim);
+  font-size: 18px;
+  font-weight: 600;
 }

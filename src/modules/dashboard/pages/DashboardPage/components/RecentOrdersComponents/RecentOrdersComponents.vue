@@ -24,6 +24,9 @@
           :columns="columns"
           row-key="id"
           styles="height: 360px"
+          :pagination="{
+          rowsPerPage: 0,
+        }"
         >
           <template v-slot:body="props">
             <q-tr :props="props">

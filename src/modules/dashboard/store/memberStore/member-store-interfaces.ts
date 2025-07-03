@@ -1,5 +1,5 @@
 import type { MemberCategoryInterface } from "../../interfaces/category-interfaces";
-import type { AlternativeMemberAddress, MemberDataInterface, MemberDonateBasketOptionInterface, MemberInterface, MemberOptionsInterface, MemberTransactionInterface } from "../../interfaces/member-interfaces";
+import type { AlternativeMemberAddress, MemberDataInterface, MemberDonateBasketOptionInterface, MemberInterface, MemberOptionsInterface, MemberProfileQuestionInterface, MemberTransactionInterface } from "../../interfaces/member-interfaces";
 import type { NoneType } from "../../services/service-interfaces";
 
 
@@ -12,6 +12,7 @@ export interface MemberStateInterface {
   memberAlternativeAddress: AlternativeMemberAddress | NoneType;
   memberTransactions: MemberTransactionInterface[];
   memberDonateBasketOption: MemberDonateBasketOptionInterface | NoneType;
+  profileQuestions: MemberProfileQuestionInterface[]
 }
 
 

@@ -33,6 +33,9 @@
         </div>
       </div>
       <q-table
+        :pagination="{
+          rowsPerPage: 0,
+        }"
         :style="{ height: isFullScreen ? '800px' : '400px' }"
         class="table-sticky-header-column-table"
         flat

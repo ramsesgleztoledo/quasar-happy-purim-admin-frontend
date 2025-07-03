@@ -13,38 +13,72 @@
     <div class="col-2"></div>
   </div>
   <div class="CartItems-container">
-    <!-- Charities -->
-    <div v-if="charities.length" class="row q-pa-sm">
+    <!-- custom shipping items -->
+    <div v-if="memberOrderState.customShippingItems.length" class="row q-pa-sm">
       <div class="col-12">
         <div class="row">
           <div class="col-12">
             <div class="row">
               <div class="col-12 justify-content-center" style="color: orange">
-                <b> Charities </b>
+                <b> Gift Baskets to be Shipped </b>
               </div>
             </div>
             <q-separator color="orange" inset />
           </div>
         </div>
-        <div class="row q-pa-sm q-mb-sm" v-for="(item, i) in charities" :key="i">
+        <div class="row q-pa-sm q-mb-sm">
           <div class="col-12">
             <div class="row q-mb-sm">
               <div class="col-2">
-                <div class="CartItems-text">1</div>
+                <div class="CartItems-text">{{ memberOrderState.customShippingItems.length }}</div>
               </div>
               <div class="col-5">
-                <div class="CartItems-text">{{ item.description }}</div>
+                <div class="CartItems-text">Gift Baskets</div>
               </div>
               <div class="col-3">
                 <div class="CartItems-text">
-                  <b> ${{ convertWithCommas(item.value || 0) }} </b>
+                  <b> ${{ convertWithCommas($moStore.getCustomShippingItemsTotal) }} </b>
+                </div>
+              </div>
+            </div>
+
+            <q-separator />
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- additional items -->
+    <div v-if="addiTionalItems.length" class="row q-pa-sm">
+      <div class="col-12">
+        <div class="row">
+          <div class="col-12">
+            <div class="row">
+              <div class="col-12 justify-content-center" style="color: orange">
+                <b> Additional Items </b>
+              </div>
+            </div>
+            <q-separator color="orange" inset />
+          </div>
+        </div>
+        <div v-for="(aItem, index) in addiTionalItems" :key="index" class="row q-pa-sm q-mb-sm">
+          <div class="col-12">
+            <div class="row q-mb-sm">
+              <div class="col-2">
+                <div class="CartItems-text">{{ aItem.quantity }}</div>
+              </div>
+              <div class="col-5">
+                <div class="CartItems-text">{{ aItem.description }}</div>
+              </div>
+              <div class="col-3">
+                <div class="CartItems-text">
+                  <b> ${{ convertWithCommas(aItem.price * aItem.quantity || 0) }} </b>
                 </div>
               </div>
 
               <div class="col-2">
                 <div class="row">
                   <q-icon
-                    @click="() => removeDonate(item)"
+                    @click="() => addOrRemoveItem(false, aItem, true)"
                     class="CartItems-icon"
                     name="close"
                     style="color: red"
@@ -56,6 +90,140 @@
             <q-separator />
           </div>
         </div>
+      </div>
+    </div>
+    <!-- additional basket -->
+    <div v-if="additionalBasketForPersonalUse" class="row q-pa-sm">
+      <div class="col-12">
+        <div class="row">
+          <div class="col-12">
+            <div class="row">
+              <div class="col-12 justify-content-center" style="color: orange">
+                <b> Additional baskets </b>
+              </div>
+            </div>
+            <q-separator color="orange" inset />
+          </div>
+        </div>
+        <div class="row q-pa-sm q-mb-sm">
+          <div class="col-12">
+            <div class="row q-mb-sm">
+              <div class="col-2">
+                <div class="CartItems-text">{{ additionalBasketForPersonalUse.quantity }}</div>
+              </div>
+              <div class="col-5">
+                <div class="CartItems-text">{{ additionalBasketForPersonalUse.description }}</div>
+              </div>
+              <div class="col-3">
+                <div class="CartItems-text">
+                  <b>
+                    ${{
+                      convertWithCommas(
+                        additionalBasketForPersonalUse.price *
+                          additionalBasketForPersonalUse.quantity || 0,
+                      )
+                    }}
+                  </b>
+                </div>
+              </div>
+
+              <div class="col-2">
+                <div class="row">
+                  <q-icon
+                    @click="() => addOrRemoveItem(false, additionalBasketForPersonalUse!, true)"
+                    class="CartItems-icon"
+                    name="close"
+                    style="color: red"
+                  />
+                </div>
+              </div>
+            </div>
+
+            <q-separator />
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Charities -->
+    <div
+      v-if="$moStore.getDonations?.charities?.length || $moStore.getDonations?.donationUse"
+      class="row q-pa-sm"
+    >
+      <div class="col-12">
+        <div class="row">
+          <div class="col-12">
+            <div class="row">
+              <div class="col-12 justify-content-center" style="color: orange">
+                <b> Charities </b>
+              </div>
+            </div>
+            <q-separator color="orange" inset />
+          </div>
+        </div>
+        <div v-if="$moStore.getDonations?.donationUse" class="row q-pa-sm q-mb-sm">
+          <div class="col-12">
+            <div class="row q-mb-sm">
+              <div class="col-2">
+                <div class="CartItems-text">1</div>
+              </div>
+              <div class="col-5">
+                <div class="CartItems-text">
+                  {{ $moStore.getDonations.donationUse.description }}
+                </div>
+              </div>
+              <div class="col-3">
+                <div class="CartItems-text">
+                  <b> ${{ convertWithCommas($moStore.getDonations?.donationUse.price || 0) }} </b>
+                </div>
+              </div>
+
+              <div class="col-2">
+                <div class="row">
+                  <q-icon
+                    @click="() => addOrRemoveItem(false, $moStore.getDonations.donationUse!, true)"
+                    class="CartItems-icon"
+                    name="close"
+                    style="color: red"
+                  />
+                </div>
+              </div>
+            </div>
+
+            <q-separator />
+          </div>
+        </div>
+        <template v-if="$moStore.getDonations?.charities.length">
+          <div class="row q-pa-sm q-mb-sm" v-for="(item, i) in $moStore.getDonations?.charities" :key="i">
+            <div class="col-12">
+              <div class="row q-mb-sm">
+                <div class="col-2">
+                  <div class="CartItems-text">1</div>
+                </div>
+                <div class="col-5">
+                  <div class="CartItems-text">{{ item.description }}</div>
+                </div>
+                <div class="col-3">
+                  <div class="CartItems-text">
+                    <b> ${{ convertWithCommas(item.value || 0) }} </b>
+                  </div>
+                </div>
+
+                <div class="col-2">
+                  <div class="row">
+                    <q-icon
+                      @click="() => removeDonate(item)"
+                      class="CartItems-icon"
+                      name="close"
+                      style="color: red"
+                    />
+                  </div>
+                </div>
+              </div>
+
+              <q-separator />
+            </div>
+          </div>
+        </template>
       </div>
     </div>
     <!-- Promotions -->
@@ -202,8 +370,8 @@ const promotions = computed(() => {
       promotionsAux.push({
         ...item,
         memberList: getMembersByPromotion(
-          promoFound.promotion!.categories,
-          memberOrderState.value.memberList,
+          promoFound.promotion!.joinCategories,
+          memberOrderState.value.memberList.original,
         ),
       })
     }
@@ -265,22 +433,13 @@ const membersSelected = computed<OrderMemberListInterface[]>(() => {
   return members
 })
 
-const charities = computed<CharityType[]>(() => {
-  const charitiesState = memberOrderState.value.charityOptions
-  const orderItems = memberOrderState.value.orderItems
-  const resp: CharityType[] = []
+const additionalBasketForPersonalUse = computed(() =>
+  memberOrderState.value.orderItems.find((item) => item.itemId === -1),
+)
 
-  for (let i = 0; i < charitiesState.length; i++) {
-    const found = orderItems.find((item) => item.itemId === charitiesState[i]!.id)
-    if (found)
-      resp.push({
-        ...charitiesState[i]!,
-        value: found.price,
-      })
-  }
-
-  return resp
-})
+const addiTionalItems = computed(() =>
+  memberOrderState.value.orderItems.filter((item) => item.itemId === 5),
+)
 </script>
 
 <style scoped lang="scss">

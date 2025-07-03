@@ -447,7 +447,7 @@
               />
             </div>
           </div>
-          <div v-if="memberState.memberAlternativeAddress?.showAlternateDelivery">
+          <!-- <div v-if="memberState.memberAlternativeAddress?.showAlternateDelivery">
             <div class="row q-mt-md">
               <div class="col-12">
                 <q-checkbox
@@ -516,7 +516,7 @@
                 </div>
               </div>
             </div>
-          </div>
+          </div> -->
           <div class="row q-mt-md">
             <div
               class="q-pl-sm q-pr-sm q-mb-md"
@@ -540,11 +540,12 @@
                 'col-6': !isMobile,
                 'col-12': isMobile,
               }"
+              v-if="profileQuestions.length"
             >
               <div class="border-container">
                 <label>Profile Questions</label>
                 <div class="q-mt-md">
-                  <div v-for="(item, index) in customOptions" :key="index" class="row q-mb-sm">
+                  <div v-for="(item, index) in profileQuestions" :key="index" class="row q-mb-sm">
                     <q-checkbox v-model="item.value" :label="item.label" />
                   </div>
                 </div>
@@ -559,7 +560,7 @@
                 'col-12': isMobile,
               }"
             >
-              <div class="border-container">
+              <div v-if="otherOptions.length" class="border-container">
                 <label>Other Options</label>
                 <div class="q-mt-md">
                   <div v-for="(item, index) in otherOptions" :key="index" class="row q-mb-sm">
@@ -569,7 +570,7 @@
               </div>
             </div>
           </div>
-          <div class="row q-mt-md">
+          <div v-if="categories.length" class="row q-mt-md">
             <div class="col-12 q-pl-sm q-pr-sm">
               <div class="border-container">
                 <label> Select Categories</label>
@@ -669,7 +670,7 @@ import { useMember } from 'src/modules/dashboard/composables/useMember'
 import { useRoute, useRouter } from 'vue-router'
 import { useQuasar } from 'quasar'
 import type {
-  MemberAlternativeAddressDataInterface,
+  // MemberAlternativeAddressDataInterface,
   MemberUpdateAllDataForm,
   MemberUpdateFormInterface,
 } from 'src/modules/dashboard/interfaces/member-interfaces'
@@ -692,7 +693,7 @@ const currentMemberPage = ref<number>(1)
 const paginationCustomRef = ref()
 const isReady = ref<boolean>(false)
 
-const altAddress = ref<boolean>(false)
+// const altAddress = ref<boolean>(false)
 const recordPaymentDialogFlag = ref<boolean>(false)
 const emailLoginCodeDialogFlag = ref<boolean>(false)
 const deleteMemberDialogFlag = ref<boolean>(false)
@@ -703,7 +704,7 @@ const categories = ref<CheckboxItemInterface[]>([])
 const options = ref<CheckboxItemInterface[]>([])
 const otherOptions = ref<CheckboxItemInterface[]>([])
 
-const customOptions = ref<CheckboxItemInterface[]>([])
+const profileQuestions = ref<CheckboxItemInterface[]>([])
 
 const { realForm, resetForm, getFormValue, isValidForm } = useForm({
   title: { value: '', validations: [] },
@@ -738,24 +739,25 @@ const { realForm, resetForm, getFormValue, isValidForm } = useForm({
   notes: { value: '', validations: [] },
   route: { value: '', validations: [validations.required] },
 })
-const {
-  realForm: altAddressForm,
-  isValidForm: isValidAltAddressForm,
-  getFormValue: getAltAddressFormValue,
-} = useForm({
-  name: { value: '', validations: [validations.required] },
-  address: { value: '', validations: [validations.required] },
-  address2: { value: '', validations: [] },
-  city: { value: '', validations: [validations.required] },
-  state: { value: '', validations: [validations.required] },
-  zip: {
-    value: '',
-    validations: [validations.required, validations.minCharacters(5), validations.maxCharacters(5)],
-  },
-})
+// const {
+//   realForm: altAddressForm,
+//   isValidForm: isValidAltAddressForm,
+//   getFormValue: getAltAddressFormValue,
+// } = useForm({
+//   name: { value: '', validations: [validations.required] },
+//   address: { value: '', validations: [validations.required] },
+//   address2: { value: '', validations: [] },
+//   city: { value: '', validations: [validations.required] },
+//   state: { value: '', validations: [validations.required] },
+//   zip: {
+//     value: '',
+//     validations: [validations.required, validations.minCharacters(5), validations.maxCharacters(5)],
+//   },
+// })
 
 const areValidForms = () => {
-  return isValidForm() && (!altAddress.value || (altAddress.value && isValidAltAddressForm()))
+  return isValidForm()
+  // && (!altAddress.value || (altAddress.value && isValidAltAddressForm()))
 }
 
 const onPageChange = (page: number) => {
@@ -833,6 +835,13 @@ const resetAllForm = (showNotify: boolean = false) => {
       label: cat.categoryName,
     })),
   ]
+  profileQuestions.value = [
+    ...memberState.value.profileQuestions.map((proQ) => ({
+      id: proQ.optionId,
+      value: proQ.isChecked,
+      label: proQ.optionName,
+    })),
+  ]
 
   if (memberState.value.memberDonateBasketOption?.visible)
     otherOptions.value = [
@@ -863,17 +872,17 @@ const onUpdateMember = async () => {
     ...getFormValue(),
     category: categories.value.filter((cat) => cat.value).map((cat) => cat.id),
   }
-  const altAddressData = {
-    ...getAltAddressFormValue(),
-    useAlternateDelivery: altAddress.value,
-  }
+  // const altAddressData = {
+  //   ...getAltAddressFormValue(),
+  //   useAlternateDelivery: altAddress.value,
+  // }
 
   const data: MemberUpdateAllDataForm = {
     reciprocity: !!options.value[0]?.value,
     hidden: !!options.value[1]?.value,
     memberData: memberData as unknown as MemberUpdateFormInterface,
     donate: otherOptions.value.length ? otherOptions.value[0]!.value : undefined,
-    altAddressData: altAddressData as unknown as MemberAlternativeAddressDataInterface,
+    // altAddressData: altAddressData as unknown as MemberAlternativeAddressDataInterface,
   }
 
   console.log({ data, id })

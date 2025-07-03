@@ -54,11 +54,18 @@ export const useUI = () => {
 
 
   const updateIsMobile = () => {
-    if (window.innerWidth <= 1200)
+
+    if (window.innerWidth <= 1200) {
+      if (isMobile.value) return
       isMobile.value = true
+    }
     else {
+      if (!isMobile.value) return
       isMobile.value = false
-      $uiStore.setSideMenuValue(true)
+      $uiStore.setSideMenuValue(false)
+      setTimeout(() => {
+        $uiStore.setSideMenuValue(true)
+      }, 300)
     }
   };
 
@@ -152,6 +159,11 @@ export const useUI = () => {
           message: errorMsg,
         })
       }
+    },
+
+    goToTop(element: HTMLElement | undefined, behavior?: ScrollBehavior) {
+      if (!element) return
+      element.scrollIntoView({ behavior: behavior ? behavior : 'smooth', block: 'start' })
     }
 
   };

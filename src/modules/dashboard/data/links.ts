@@ -40,13 +40,13 @@ export const linksData: LinksDataInterface[] = [
     ],
   },
   {
-    title: 'Members Settings',
+    title: 'Members List',
     icon: 'group',
     name: 'MembersSettingsPage',
     routeClass: ['MembersSettingsPage', 'MembersSettingsPage-home'],
   },
   {
-    title: 'Site Manager',
+    title: 'Site Settings',
     icon: 'display_settings',
     name: 'dashboard-SiteManagerPage',
 
@@ -190,7 +190,7 @@ export const routeInfo: routeDataInterface[] = [
 
   {
 
-    title: 'Members Settings',
+    title: 'Members List',
     icon: 'group',
     name: 'MembersSettingsPage',
 
@@ -219,7 +219,7 @@ export const routeInfo: routeDataInterface[] = [
 
   {
 
-    title: 'Site Manager',
+    title: 'Site Settings',
     icon: 'display_settings',
     name: 'dashboard-SiteManagerPage',
 

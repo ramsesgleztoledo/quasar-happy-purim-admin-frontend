@@ -1,7 +1,7 @@
 
 import { defineStore, acceptHMRUpdate } from 'pinia';
 import type { MemberStateInterface } from './member-store-interfaces';
-import type { AlternativeMemberAddress, MemberDataInterface, MemberDonateBasketOptionInterface, MemberOptionsInterface, MemberTransactionInterface } from '../../interfaces/member-interfaces';
+import type { AlternativeMemberAddress, MemberDataInterface, MemberDonateBasketOptionInterface, MemberOptionsInterface, MemberProfileQuestionInterface, MemberTransactionInterface } from '../../interfaces/member-interfaces';
 import type { NoneType } from '../../services/service-interfaces';
 import type { MemberCategoryInterface } from '../../interfaces/category-interfaces';
 
@@ -21,6 +21,7 @@ const initialState: MemberStateInterface = {
   memberAlternativeAddress: undefined,
   memberTransactions: [],
   memberDonateBasketOption: undefined,
+  profileQuestions: []
 }
 
 export const useMemberStore = defineStore('memberStore', {
@@ -56,6 +57,9 @@ export const useMemberStore = defineStore('memberStore', {
     },
     setHidden(hidden: boolean) {
       this.memberOptions.hidden = hidden
+    },
+    setProfileQuestions(profileQuestions: MemberProfileQuestionInterface[]) {
+      this.profileQuestions = profileQuestions
     },
   }
 });

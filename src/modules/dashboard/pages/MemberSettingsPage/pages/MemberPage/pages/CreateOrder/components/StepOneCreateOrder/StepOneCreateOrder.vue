@@ -66,7 +66,7 @@
         </label>
         <div v-for="item in promotions" :key="item.id" class="row">
           <q-checkbox
-            :disable="checkDisabledPromotion(item)"
+            :disable="checkDisabled(item).value"
             @update:model-value="(value) => onAddOrRemovePromotion(value, item)"
             v-model="item.selected"
             :label="item.displayText"
@@ -97,7 +97,7 @@
         flat
         bordered
         ref="tableRef"
-        :rows="rows"
+        :rows="memberOrderState.memberList.copy"
         :columns="columns"
         row-key="id"
         selection="multiple"
@@ -147,7 +147,7 @@
 import type { QTableColumn } from 'quasar'
 import { convertWithCommas } from 'src/helpers'
 import { useUI } from 'src/modules/UI/composables'
-import { ref, watch } from 'vue'
+import { computed, ref, watch } from 'vue'
 import CreateOrderLegend from '../CreateOrderLegend/CreateOrderLegend.vue'
 import { useMemberOrder } from 'src/modules/dashboard/composables/useMemberOrder'
 import type {
@@ -157,10 +157,12 @@ import type {
 import type { StepOneCreateOrderInterface } from '../../interfaces'
 import { useMemberOrderStore } from 'src/modules/dashboard/store/memberOrderStore/memberOrderStore'
 import { getMembersByPromotion } from 'src/modules/dashboard/helpers/getMembersByPromotion'
+import { checkDisabledPromotionHelper } from '../../helpers/member-order-helpers'
 
 const { isMobile } = useUI()
 const {
   memberOrderState,
+  setMemberListCopy,
   // addOrRemovePromotion
 } = useMemberOrder()
 const $moStore = useMemberOrderStore()
@@ -193,7 +195,7 @@ const columns = ref<QTableColumn[]>([
   },
 ])
 
-const rows = ref<OrderMemberListInterface[]>([])
+// const rows = ref<OrderMemberListInterface[]>([])
 // const selected = ref<OrderMemberListInterface[]>([])
 
 const promotions = ref<OrderPromotionInterface[]>([])
@@ -201,8 +203,9 @@ const promotions = ref<OrderPromotionInterface[]>([])
 watch(
   () => memberOrderState.value.memberList,
   () => {
-    rows.value = memberOrderState.value.memberList.map((member) => ({ ...member }))
-    $moStore.membersSelected = rows.value.filter((member) => member.selected && !member.paid)
+    $moStore.membersSelected = memberOrderState.value.memberList.copy.filter(
+      (member) => member.selected && !member.paid,
+    )
   },
   {
     immediate: true,
@@ -238,7 +241,7 @@ const onSelectAll = () => {
 }
 
 const onAddOrRemovePromotion = (value: boolean, item: OrderPromotionInterface) => {
-  const list = getMembersByPromotion(item.categories, rows.value)
+  const list = getMembersByPromotion(item.joinCategories, memberOrderState.value.memberList.copy)
 
   const selectedId = new Set($moStore.membersSelected.map((member) => member.id))
 
@@ -251,16 +254,16 @@ const onAddOrRemovePromotion = (value: boolean, item: OrderPromotionInterface) =
     }
   } else
     $moStore.membersSelected = getMembersByPromotion(
-      item.categories,
+      item.joinCategories,
       $moStore.membersSelected,
       true,
     )
 }
 
 const onHidePaidOrdersUpdated = (value: boolean) => {
-  rows.value = [
-    ...memberOrderState.value.memberList.filter((member) => (value ? !member.paid : true)),
-  ]
+  setMemberListCopy([
+    ...memberOrderState.value.memberList.original.filter((member) => (value ? !member.paid : true)),
+  ])
 }
 
 const getPromotionChanges = () => {
@@ -298,18 +301,8 @@ const saveChanges = () => {
   }
 }
 
-const checkDisabledPromotion = (promotion: OrderPromotionInterface) => {
-  const found = promotions.value.find((pro) => {
-    const same = pro.id !== promotion.id && !!pro.selected
-
-    const proCat = pro.categories.split(',') || []
-    const promotionCat = promotion.categories.split(',') || []
-    const include = promotionCat.some((item) => proCat.includes(item))
-    return same && !include
-  })
-
-  return !!found
-}
+const checkDisabled = (promotion: OrderPromotionInterface) =>
+  computed(() => checkDisabledPromotionHelper(promotion, promotions.value))
 
 defineExpose<StepOneCreateOrderInterface>({
   saveChanges,

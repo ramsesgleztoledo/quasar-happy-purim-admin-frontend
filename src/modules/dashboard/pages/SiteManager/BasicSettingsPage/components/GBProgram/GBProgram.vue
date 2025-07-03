@@ -123,12 +123,12 @@
     </div>
   </div>
   <div class="row">
-    <div class="col-12 GBProgram-btn-container justify-content-space-between">
-      <q-btn
+    <div class="col-12 GBProgram-btn-container justify-content-end">
+      <!-- <q-btn
         flat
         style="background: white; color: var(--happypurim)"
         label="Advanced Pricing Options"
-      />
+      /> -->
       <q-btn
         :disable="!isValidData"
         style="background: white; color: var(--happypurim)"
