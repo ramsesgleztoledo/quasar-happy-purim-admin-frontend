@@ -882,6 +882,7 @@ const onUpdateMember = async () => {
     hidden: !!options.value[1]?.value,
     memberData: memberData as unknown as MemberUpdateFormInterface,
     donate: otherOptions.value.length ? otherOptions.value[0]!.value : undefined,
+    profileQuestions: profileQuestions.value
     // altAddressData: altAddressData as unknown as MemberAlternativeAddressDataInterface,
   }
 

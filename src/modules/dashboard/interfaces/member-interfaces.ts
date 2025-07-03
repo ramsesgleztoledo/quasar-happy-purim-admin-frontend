@@ -217,6 +217,11 @@ export interface MemberUpdateAllDataForm {
   reciprocity: boolean;
   hidden: boolean;
   memberData: MemberUpdateFormInterface;
+  profileQuestions: {
+    value: boolean
+    label: string
+    id: number
+  }[]
   // altAddressData: MemberAlternativeAddressDataInterface;
 }
 

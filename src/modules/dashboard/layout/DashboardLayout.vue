@@ -84,6 +84,4 @@ const loadData = async () => {
 }
 </script>
 
-<style lang="scss" scoped>
-@import './DashboardLayout.scss';
-</style>
+<style lang="scss" scoped src="./DashboardLayout.scss" />
