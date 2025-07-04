@@ -25,8 +25,8 @@ export const useDashboard = () => {
     async loadStartedData() {
       $q.loading.show({
         message: 'Loading ...',
-        spinnerColor: '#ef6982',
-        messageColor: '#ef6982',
+        spinnerColor: '#f36b09',
+        messageColor: '#f36b09',
       })
 
       const [

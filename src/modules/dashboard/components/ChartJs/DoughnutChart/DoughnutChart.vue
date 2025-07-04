@@ -47,7 +47,7 @@ const chartData = ref({
     {
       label: $props.title,
       data: $props.charData?.map((va) => va.quantity) || [],
-      backgroundColor: $props.charData?.map((va) => (va.color ? va.color : '#ef6982')) || [],
+      backgroundColor: $props.charData?.map((va) => (va.color ? va.color : '#ef6f36b09982')) || [],
     },
   ],
 })
@@ -77,7 +77,7 @@ const option = ref<ECBasicOption>({
           value: va.quantity,
           name: va.label,
           itemStyle: {
-            color: va.color ? va.color : '#ef6982',
+            color: va.color ? va.color : '#f36b09',
           },
         })) || [],
       label: {

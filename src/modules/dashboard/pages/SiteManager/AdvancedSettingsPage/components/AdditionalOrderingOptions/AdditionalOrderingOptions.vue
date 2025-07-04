@@ -159,7 +159,7 @@
                 type="info"
                 :text="infoAlertText"
                 icon="fullscreen"
-                icon-color="#ef6982"
+                icon-color="#f36b09"
               />
               <InfoAlert
                 type="error"

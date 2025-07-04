@@ -1,10 +1,10 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
+
 import { computed } from "vue";
 import { useMemberOrderStore } from "../store/memberOrderStore/memberOrderStore";
 import { usePromotionService } from "../services/promotion.service";
 import { useMemberListService } from "../services/memberList.service";
 import { useOrderItemService } from "../services/orderItems.service";
-import type { CharityType, CustomShippingItemFormInterface, CustomShippingItemResponseInterface, CustomShippingOptionAttributeType, MemberOrderItemsInterface, OrderMemberListInterface, OrderPromotionInterface, PaymentFormInterface, UpdateShippingItemFormInterface } from "../interfaces/memberOrder-interfaces";
+import type { CharityType, CustomShippingItemFormInterface, CustomShippingItemResponseInterface, CustomShippingOptionAttributeType, MemberCreateOrderFormInterface, MemberOrderItemsInterface, OrderMemberListInterface, OrderPromotionInterface, PaymentFormInterface, UpdateShippingItemFormInterface } from "../interfaces/memberOrder-interfaces";
 import { useQuasar } from "quasar";
 import { useAuth } from "src/modules/auth/composables/useAuth";
 import { useMember } from "./useMember";
@@ -20,6 +20,7 @@ import { useDiscountsService } from "../services/Discounts.service";
 import { usePaymentMethodsService } from "../services/paymentMethods.service";
 import type { FormComposition } from "src/composables/useForm/interfaces";
 import { useRouter } from "vue-router";
+import { useProcessOrderService } from "../services/processOrder.service";
 
 
 
@@ -44,6 +45,7 @@ export const useMemberOrder = () => {
   const { getSendOut, getAddon, getOrderItems } = useAdvancedSettingsService()
   const { getDiscounts } = useDiscountsService()
   const { getPaymentMethods } = usePaymentMethodsService()
+  const { placeOrder } = useProcessOrderService()
 
   const mGuid = computed(() => memberState.value.selectedMember?.memberGuid || '')
   const memberId = computed(() => memberState.value.selectedMember?.memberId || 0)
@@ -60,8 +62,8 @@ export const useMemberOrder = () => {
     if (showLoading)
       $q.loading.show({
         message: 'Loading ...',
-        spinnerColor: '#ef6982',
-        messageColor: '#ef6982',
+        spinnerColor: '#f36b09',
+        messageColor: '#f36b09',
       })
 
     const resp = await addOrRemoveOrderItemsByMemberGuid({
@@ -364,7 +366,7 @@ export const useMemberOrder = () => {
       const emailTo = $moStore.paymentForm.email || "";
 
       const paymentType = $moStore.paymentForm.paymentType
-      let data: any = {
+      let data: MemberCreateOrderFormInterface = {
         paymentType: "",
         paymentMethod: "",
         firstName: "",
@@ -379,19 +381,20 @@ export const useMemberOrder = () => {
         billState: "",
         billZip: "",
         phone: "",
-        specialInstructions: "",
+        specialInstructions: false,
         reciprocity: false,
         emailTo,
         tempCode: tokenSession.value,
         total: $moStore.getCartData?.totalBefore || 0,
         discountName: $moStore.getCartData?.discount?.name || "",
-        discountPrice: $moStore.getCartData?.discount?.value,
+        discountPrice: $moStore.getCartData?.discount?.value || 0,
 
       }
 
 
+
       switch (paymentType) {
-        case 2: {
+        case 3: {
           data.paymentMethod = "BillMe";
           break;
         }
@@ -407,25 +410,36 @@ export const useMemberOrder = () => {
             ...formData,
             cardExpirationMonth: date![0] || "",
             cardExpirationYear: date![1] || "",
-          }
+          } as unknown as MemberCreateOrderFormInterface
           break;
         }
       }
 
 
-      const resp = 'invalid credit card'
-
-      showToast(true, `Order placed, an email was sent to ${emailTo}`, resp)
-
-
-      $moStore.resetPaymentForm()
-
-      $router.push({
-        name: 'MemberLayout',
-        params: {
-          memberId: memberId.value
+      const resp = await placeOrder({
+        memberGuid: mGuid.value,
+        memberId: memberId.value
+      }, data, {
+        dontRedirect: true,
+        loading: {
+          message: `Placing order ...`
         }
       })
+
+
+      // const isSuccess = resp.ok && resp.data.toLowerCase().includes('success')
+
+      showToast(resp.ok, `Order placed, an email was sent to ${emailTo}`, resp.data ? `${resp.data}` : 'something went wrong placing the order, please try again later')
+
+      if (resp.ok) {
+        $moStore.resetPaymentForm()
+        $router.push({
+          name: 'MemberLayout',
+          params: {
+            memberId: memberId.value
+          }
+        })
+      }
 
 
     },

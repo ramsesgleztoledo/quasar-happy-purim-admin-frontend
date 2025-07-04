@@ -32,7 +32,9 @@
     <q-footer reveal elevated>
       <q-toolbar style="min-height: 5px !important">
         <p class="d-flex justify-content-end w-full q-pa-sm" style="margin: 0px">
-          2025 Happy Purim LLC, ALl Rights Reserved. | HappyPurim Admin Panel (v{{ version }})
+          2025 Happy Rosh Hashanah LLC, ALl Rights Reserved. | HappyRoshHashanah Admin Panel (v{{
+            version
+          }})
         </p>
       </q-toolbar>
     </q-footer>

@@ -63,7 +63,7 @@ const option = ref<ECBasicOption>({
           value: va.quantity,
           name: va.label,
           itemStyle: {
-            color: va.color ? va.color : '#ef6982',
+            color: va.color ? va.color : '#f36b09',
           },
         })) || [],
 

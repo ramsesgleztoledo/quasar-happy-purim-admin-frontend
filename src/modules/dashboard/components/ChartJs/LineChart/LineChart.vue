@@ -67,7 +67,7 @@ watch(
               value: va.quantity,
               name: va.label,
               itemStyle: {
-                color: va.color ? va.color : '#ef6982',
+                color: va.color ? va.color : '#f36b09',
               },
             })) || [],
           label: {
@@ -77,7 +77,7 @@ watch(
             show: false,
           },
           lineStyle: {
-            color: data.color ? data.color : '#ef6982',
+            color: data.color ? data.color : '#f36b09',
           },
           areaStyle: $props.showAreaStyle ? { color: data.color } : undefined,
         })) || []),

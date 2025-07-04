@@ -122,8 +122,8 @@ export const useApiCall = () => {
       if (extraOptions?.loading) {
         $q.loading.show({
           message: extraOptions?.loading.message ? extraOptions?.loading.message : 'Loading ...',
-          spinnerColor: extraOptions?.loading.spinnerColor ? extraOptions?.loading.spinnerColor : '#ef6982',
-          messageColor: extraOptions?.loading.messageColor ? extraOptions?.loading.messageColor : '#ef6982',
+          spinnerColor: extraOptions?.loading.spinnerColor ? extraOptions?.loading.spinnerColor : '#f36b09',
+          messageColor: extraOptions?.loading.messageColor ? extraOptions?.loading.messageColor : '#f36b09',
         })
       }
 

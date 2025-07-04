@@ -56,8 +56,8 @@ export const useAdvancedSettings = () => {
 
       $q.loading.show({
         message: 'Loading advanced settings...',
-        spinnerColor: '#ef6982',
-        messageColor: '#ef6982',
+        spinnerColor: '#f36b09',
+        messageColor: '#f36b09',
       })
 
 
@@ -321,8 +321,8 @@ export const useAdvancedSettings = () => {
     }) {
       $q.loading.show({
         message: 'updating sell additional items...',
-        spinnerColor: '#ef6982',
-        messageColor: '#ef6982',
+        spinnerColor: '#f36b09',
+        messageColor: '#f36b09',
       })
 
       const resp

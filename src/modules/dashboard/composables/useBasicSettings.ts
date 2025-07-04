@@ -25,8 +25,8 @@ export const useBasicSettings = () => {
 
       $q.loading.show({
         message: 'Loading settings...',
-        spinnerColor: '#ef6982',
-        messageColor: '#ef6982',
+        spinnerColor: '#f36b09',
+        messageColor: '#f36b09',
       })
 
 
@@ -160,8 +160,8 @@ export const useBasicSettings = () => {
 
       $q.loading.show({
         message: 'uploading files...',
-        spinnerColor: '#ef6982',
-        messageColor: '#ef6982',
+        spinnerColor: '#f36b09',
+        messageColor: '#f36b09',
       })
 
       const promises = await Promise.all(files.map(file => uploadFile(file, {

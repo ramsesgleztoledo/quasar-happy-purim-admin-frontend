@@ -66,7 +66,7 @@
           <b> Transaction Details: </b>
         </div>
       </div>
-      <div class="row q-pa-sm" style="background-color: #ef698287 !important">
+      <div class="row q-pa-sm" style="background-color: #f36b09 !important">
         <div class="col">
           <b> Sending To: </b>
         </div>

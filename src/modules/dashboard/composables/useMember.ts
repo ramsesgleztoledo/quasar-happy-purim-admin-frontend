@@ -71,8 +71,8 @@ export const useMember = () => {
 
     $q.loading.show({
       message: `loading member data ${memberId}...`,
-      spinnerColor: '#ef6982',
-      messageColor: '#ef6982',
+      spinnerColor: '#f36b09',
+      messageColor: '#f36b09',
     })
 
     try {
@@ -173,8 +173,8 @@ export const useMember = () => {
 
     $q.loading.show({
       message: `Updating member data ${memberId}...`,
-      spinnerColor: '#ef6982',
-      messageColor: '#ef6982',
+      spinnerColor: '#f36b09',
+      messageColor: '#f36b09',
     })
 
     const [resp1, resp2, resp3,
@@ -236,8 +236,8 @@ export const useMember = () => {
     try {
       $q.loading.show({
         message: `Clearing member's cart ${memberId}...`,
-        spinnerColor: '#ef6982',
-        messageColor: '#ef6982',
+        spinnerColor: '#f36b09',
+        messageColor: '#f36b09',
       })
       await clearCartByMemberId(memberId)
 

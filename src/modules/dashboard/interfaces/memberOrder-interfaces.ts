@@ -297,3 +297,30 @@ export interface PaymentFormInterface {
   zip: string;
   phone: string;
 }
+
+
+export interface MemberCreateOrderFormInterface {
+  paymentType: string;
+  paymentMethod: string;
+  firstName: string;
+  lastName: string;
+  creditCardNumber: string;
+  cardCode: string;
+  cardExpirationMonth: string;
+  cardExpirationYear: string;
+  billAddress1: string;
+  billAddress2: string;
+  billCity: string;
+  billState: string;
+  billZip: string;
+  phone: string;
+  specialInstructions: boolean;
+  reciprocity: boolean;
+  emailTo: string;
+  tempCode: string;
+  total: number;
+  discountName: string;
+  discountPrice: number;
+}
+
+
