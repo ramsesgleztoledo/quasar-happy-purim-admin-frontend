@@ -10,7 +10,7 @@
     <div class="col-12 d-flex justify-content-end">
       <q-btn
         :disable="exportDisabled"
-        label="Export to CSV"
+        label="Export to Excel"
         color="primary"
         icon="import_export"
         @click="onExportToExcel"
@@ -18,24 +18,71 @@
       />
     </div>
   </div>
+  <div class="q-pa-md">
+    <div class="row RecentOrders-container" :class="{ fullscreen: isFullScreen }">
+      <div class="col-12">
+        <div class="row">
+          <div class="col-12 justify-content-end">
+            <q-btn
+              flat
+              round
+              color="primary"
+              :icon="isFullScreen ? 'fullscreen_exit' : 'fullscreen'"
+              @click="isFullScreen = !isFullScreen"
+            />
+          </div>
+        </div>
+        <q-table
+          :style="{ height: isFullScreen ? '800px' : '628px' }"
+          class="table-sticky-header-column-table"
+          flat
+          bordered
+          ref="tableRef"
+          :rows="baskets"
+          :columns="columns"
+          row-key="id"
+          styles="height: 360px"
+          :pagination="{
+            rowsPerPage: 0,
+          }"
+        >
+          <template v-slot:body="props">
+            <q-tr :props="props">
+              <q-td v-for="col in props.cols" :key="col.name" :props="props">
+                <q-btn
+                  v-if="col.name === 'edit'"
+                  icon="edit"
+                  flat
+                  color="primary"
+                  @click="
+                    () => {
+                      basketEdit = { ...props.row }
+                      ediBasketDialogFlag = true
+                    }
+                  "
+                />
+                <q-btn
+                  v-else-if="col.name === 'transactionID'"
+                  flat
+                  color="primary"
+                  :label="col.value"
+                  :to="{
+                    name: 'dashboard-transactionDetailsPage',
+                    params: { transactionID: props.row.transactionID },
+                  }"
+                />
 
-  <div class="row">
-    <div class="col-12">
-      <TableCustom
-        class-name="table-sticky-header-column-table table-cursor-pinter-custom"
-        styles="height: 628px"
-        :rows="baskets"
-        :columns="columns"
-        row-key="id"
-        @onRowClick="
-          ({ row }) => {
-            basketEdit = { ...row }
-            ediBasketDialogFlag = true
-          }
-        "
-      />
+                <div v-else>
+                  {{ col.value }}
+                </div>
+              </q-td>
+            </q-tr>
+          </template>
+        </q-table>
+      </div>
     </div>
   </div>
+
   <q-dialog ref="dialogEditBasketToBeShippedComponentRef" v-model="ediBasketDialogFlag" persistent>
     <EditBasketToBeShippedComponent
       @onValueUpdated="onValueUpdated"
@@ -48,7 +95,6 @@
 <script setup lang="ts">
 import type { QDialog, QTableColumn } from 'quasar'
 import { onMounted, ref } from 'vue'
-import TableCustom from 'src/components/TableCustom/TableCustom.vue'
 import { useShipment } from '../../composables/useShipment'
 import type {
   BasketToBeShippedInterface,
@@ -57,7 +103,16 @@ import type {
 import { convertToUSDate } from 'src/helpers'
 import EditBasketToBeShippedComponent from './components/EditBasketToBeShippedComponent/EditBasketToBeShippedComponent.vue'
 
+const isFullScreen = ref(false)
+
 const columns: QTableColumn<BasketToBeShippedInterface>[] = [
+  {
+    field: 'transactionID',
+    name: 'edit',
+    label: '',
+    required: true,
+    align: 'left',
+  },
   {
     field: 'transactionID',
     name: 'transactionID',

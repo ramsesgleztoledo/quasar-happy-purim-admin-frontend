@@ -8,8 +8,13 @@
     <div id="print-receipt-id" ref="printArea">
       <div class="row">
         <div class="col-12">
+          <p class="text-h5"><b> Order Receipt: </b></p>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-12 justify-content-end">
           <p class="text-h5">
-            <b> Order Receipt </b>
+            <b>{{ $aStore.$state.shul?.shulName }} </b>
           </p>
         </div>
       </div>
@@ -105,7 +110,7 @@
         <div class="col-6">
           <div class="row">
             <div class="col-6"></div>
-            <div class="col-6">${{ convertWithCommas(item.quantity || 0) }}</div>
+            <div class="col-6">${{ convertWithCommas(item.totalPrice || 0) }}</div>
           </div>
         </div>
       </div>
@@ -139,19 +144,20 @@
 
 <script setup lang="ts">
 import { convertWithCommas } from 'src/helpers'
-import { printHelper } from 'src/helpers/printHelper'
+import { printElement } from 'src/helpers/printHelper'
+import { useAuthStore } from 'src/modules/auth/store/auth.store'
 import { useOrderArchive } from 'src/modules/dashboard/composables/useOrderArchive'
-
 import { computed, ref } from 'vue'
 
 const { ordersArchiveState } = useOrderArchive()
+const $aStore = useAuthStore()
 
 const receipt = computed(() => ordersArchiveState.value.selectedOrderReceipt)
 
 const printArea = ref<HTMLElement | null | undefined>(null)
 
 const printReceipt = () => {
-  printHelper(printArea.value)
+  printElement('print-receipt-id')
 }
 </script>
 

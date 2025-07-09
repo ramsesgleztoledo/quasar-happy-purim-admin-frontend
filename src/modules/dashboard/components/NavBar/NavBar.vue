@@ -21,7 +21,7 @@
           class="dashboard-layout-title"
         >
           <div class="row">
-            <div class="col-2 dashboard-happypurim-logo user-select-none">
+            <div class="col     dashboard-happypurim-logo user-select-none">
               <p
                 @click="
                   () =>
@@ -34,7 +34,7 @@
                 HappyRoshHashanah.com
               </p>
             </div>
-            <div class="col-3">
+            <div class="col">
               <q-input
                 disable
                 v-if="!isMobile"

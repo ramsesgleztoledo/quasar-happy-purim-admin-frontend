@@ -211,7 +211,7 @@ const getDataBy = (data: DataItemInterface, type: DataType) => {
   }))
 }
 
-const charData = ref(getDataBy($props.data, 'byMonth'))
+const charData = ref(getDataBy($props.data, 'byDay'))
 
 const onRangeTypeChanged = () => {
   console.log('changing range')

@@ -42,7 +42,7 @@
       icon="group_add"
       :first-p="`${convertWithCommas(participationRate.today)}%`"
       second-p="Participation Rate"
-      :third-p="`${convertWithCommas(participationRate.yesterday)}%`"
+      :third-p="`${convertWithCommas(participationRate.yesterday)}% from yesterday`"
       icon-color="#BF83FF"
       background-color="#F3E8FF"
     />

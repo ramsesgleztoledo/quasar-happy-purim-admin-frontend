@@ -7,7 +7,7 @@
           backgroundColor: index % 2 === 0 ? '#F6F6F6' : 'white',
         }"
       >
-        <p>{{ item.label }}</p>
+        <div v-html="item.label" class="displayItemContainer" />
 
         <p
           @click="() => onItemCLicked(item)"
@@ -43,6 +43,8 @@
 <script setup lang="ts">
 import { useRouter } from 'vue-router'
 import type { ItemBasketInterface } from '../../interfaces/item-interfaces'
+import { onMounted } from 'vue'
+import { backendRoutes } from '../../data/backend-routes-redirection'
 
 interface DisplayItemPropsInterface {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -60,6 +62,37 @@ const onItemCLicked = (item: ItemBasketInterface) => {
   if (!item.redirectTo) return
   return $router.push(item.redirectTo)
 }
+
+const handleClick = (href: string | null) => {
+  if (!href) return
+
+  const to = href.split('.')
+  if (!to.length) return
+  const link = to[0]!
+
+  const name = backendRoutes[link]
+  if (!name) return
+  return $router.push({ name })
+}
+
+onMounted(() => {
+  const divs = document.querySelectorAll<HTMLElement>('div.displayItemContainer')
+
+  divs.forEach((div) => {
+    const links = div.querySelectorAll<HTMLAnchorElement>('a')
+
+    links.forEach((link) => {
+      const href = link.getAttribute('href')
+      link.removeAttribute('href')
+      link.style.color = '#3c5ce0'
+      link.style.cursor = 'pointer'
+      link.addEventListener('click', (event) => {
+        event.preventDefault()
+        handleClick(href)
+      })
+    })
+  })
+})
 </script>
 
 <style scoped lang="scss">

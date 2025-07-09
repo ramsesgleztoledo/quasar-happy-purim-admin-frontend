@@ -51,4 +51,11 @@ export const loginAccounts: LoginAccountInterface[] = [
     token: "tdlArHFb9T4EFeBJbMxi1iQcAH7bDuXXczajNZWAdZactIPyQzPL5PS9KKnW4jkMe/rP5mGT85AEk9ii/AgPOw==",
     url: 'http://localhost:9000/#/authenticate?token=tdlArHFb9T4EFeBJbMxi1iQcAH7bDuXXczajNZWAdZactIPyQzPL5PS9KKnW4jkMe/rP5mGT85AEk9ii/AgPOw=='
   },
+  {
+    id: -2,
+    name: 'custom',
+    guid: '4DBC0623-10FC-419A-A780-5200B3D7E9F4',
+    token: "fXDvYsO0IOTkXgQgI5B9ENDSKYSezQNSTjSC8/OcEsD0wqcV+0WFmJBLuM7myAO4LFK719ZHrmQLn4OzZefaSg==",
+    url: 'http://localhost:9000/#/authenticate?token=fXDvYsO0IOTkXgQgI5B9ENDSKYSezQNSTjSC8/OcEsD0wqcV+0WFmJBLuM7myAO4LFK719ZHrmQLn4OzZefaSg=='
+  },
 ]

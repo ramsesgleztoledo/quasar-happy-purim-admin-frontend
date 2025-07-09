@@ -10,14 +10,12 @@
     <div class="row q-mb-md">
       <div class="col-12 d-flex justify-content-space-between">
         <div class="text-h6">
-          {{ dashboardState.membersLogged.totalOrdered }}/{{
-            dashboardState.membersLogged.totalCount
-          }}
-          <b> have placed orders </b>
+          Of the {{ dashboardState.membersLogged.rows.length }} who have logged on.
+          {{ dashboardState.membersLogged.totalOrdered }} have placed orders.
         </div>
         <q-btn
           :disable="exportDisabled"
-          label="Export to CSV"
+          label="Export to Excel"
           color="primary"
           icon="import_export"
           @click="onExportToExcel"
@@ -34,6 +32,16 @@
           :rows="dashboardState.membersLogged.rows"
           :columns="columns"
           row-key="orderNum"
+          @onRowClick="
+            ({ row }: any) => {
+              $router.push({
+                name: 'MemberLayout',
+                params: {
+                  memberId: row.memberID,
+                },
+              })
+            }
+          "
         />
       </div>
     </div>

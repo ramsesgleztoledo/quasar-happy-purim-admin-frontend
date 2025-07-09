@@ -10,7 +10,7 @@
     <div class="col-12 d-flex justify-content-end">
       <q-btn
         :disable="exportDisabled"
-        label="Export to CSV"
+        label="Export to Excel"
         color="primary"
         icon="import_export"
         @click="onExportToExcel"

@@ -40,7 +40,7 @@ export const linksData: LinksDataInterface[] = [
     ],
   },
   {
-    title: 'Members List',
+    title: 'Member List',
     icon: 'group',
     name: 'MembersSettingsPage',
     routeClass: ['MembersSettingsPage', 'MembersSettingsPage-home'],
@@ -128,7 +128,10 @@ export const routeInfo: routeDataInterface[] = [
     icon: 'inventory',
     name: 'dashboard-itemDetailsPage',
     params: ['itemId'],
-    titleParam: (value?: routeParamInterface) => `Item - ${value?.itemId}`
+    titleParam: (
+      // value?: routeParamInterface
+    ) => `Item`
+    //  - ${value?.itemId}`
   },
   {
 
@@ -164,7 +167,10 @@ export const routeInfo: routeDataInterface[] = [
     icon: 'receipt',
     name: 'dashboard-transactionDetailsPage',
     params: ['transactionID'],
-    titleParam: (value?: routeParamInterface) => `Transaction - ${value?.transactionID}`
+    titleParam: (
+      // value?: routeParamInterface
+    ) => `Transaction`
+    // - ${value?.transactionID}`
   },
   {
 
@@ -190,14 +196,14 @@ export const routeInfo: routeDataInterface[] = [
 
   {
 
-    title: 'Members List',
+    title: 'Member List',
     icon: 'group',
     name: 'MembersSettingsPage',
 
   },
   {
 
-    title: 'Members List',
+    title: 'Member List',
     icon: 'group',
     name: 'MembersSettingsPage-home',
 
@@ -258,7 +264,10 @@ export const routeInfo: routeDataInterface[] = [
     icon: 'archive',
     name: 'OrderArchivePage-orderDetails',
     params: ['orderId'],
-    titleParam: (value?: routeParamInterface) => `order - ${value?.orderId}`
+    titleParam: (
+      // value?: routeParamInterface
+    ) => `order`
+    // - ${value?.orderId}`
   },
   {
 
@@ -279,7 +288,10 @@ export const routeInfo: routeDataInterface[] = [
     icon: 'email',
     name: 'MailMergeReportsPage-MailMergePage',
     params: ['reportId'],
-    titleParam: (value?: routeParamInterface) => `Campaign - ${value?.reportId}`
+    titleParam: (
+      // value?: routeParamInterface
+    ) => `Campaign`
+    // - ${value?.reportId}`
   },
   {
 
@@ -308,14 +320,20 @@ export const routeInfo: routeDataInterface[] = [
     icon: 'query_stats',
     name: 'EmailStatsPage-campaign',
     params: ['campaignId'],
-    titleParam: (value?: routeParamInterface) => `Campaign - ${value?.campaignId}`
+    titleParam: (
+      // value?: routeParamInterface
+    ) => `Campaign`
+    //  - ${value?.campaignId}`
   },
   {
     title: 'Member',
     icon: 'person',
     name: 'MemberLayout',
     params: ['memberId'],
-    titleParam: (value?: routeParamInterface) => `Member - ${value?.memberId}`
+    titleParam: (
+      // value?: routeParamInterface
+    ) => `Member`
+    //  - ${value?.memberId}`
   },
   {
     title: 'Member Data',

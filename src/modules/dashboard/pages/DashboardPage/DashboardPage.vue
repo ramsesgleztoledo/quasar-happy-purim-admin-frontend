@@ -136,12 +136,12 @@ const prepareClickEvents = () => {
   //! redirect to dashboard-SiteManagerPage when click in click here
   document.addEventListener('click', (event) => {
     const target = event.target as HTMLElement
-    if (
-      target &&
-      (target.id === 'fundraiserClosedHTML' || target.id === 'fundraiserReciprocityHTML')
-    ) {
-      $router.push({ name: 'dashboard-SiteManagerPage' })
-    }
+
+    if (!target) return
+
+    if (target.id === 'fundraiserClosedHTML') $router.push({ name: 'dashboard-SiteManagerPage' })
+    if (target.id === 'fundraiserReciprocityHTML')
+      $router.push({ name: 'dashboard-reciprocityChargePage' })
   })
 }
 

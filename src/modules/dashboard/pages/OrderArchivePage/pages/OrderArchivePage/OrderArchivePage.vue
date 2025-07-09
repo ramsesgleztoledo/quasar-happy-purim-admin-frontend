@@ -22,7 +22,6 @@
             :rows="ordersArchiveState.orders"
             :columns="columns"
             row-key="id"
-            title="Archived"
             @onRowClick="
               ({ row }) => {
                 $router.push({

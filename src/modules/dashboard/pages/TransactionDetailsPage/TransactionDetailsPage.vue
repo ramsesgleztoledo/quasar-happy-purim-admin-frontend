@@ -31,7 +31,6 @@ const transactionDetails = ref<TransactionDetailsInterface | undefined>(undefine
 
 onMounted(async () => {
   const transactionID = $route.params.transactionID
-  console.log(transactionID)
 
   getTransactionsDetailsByTransactionId(Number(transactionID))
     .then((resp) => {

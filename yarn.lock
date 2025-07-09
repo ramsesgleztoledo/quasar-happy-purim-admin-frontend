@@ -3233,6 +3233,11 @@ jackspeak@^3.1.2:
   optionalDependencies:
     "@pkgjs/parseargs" "^0.11.0"
 
+jquery@>=1.11:
+  version "3.7.1"
+  resolved "https://registry.yarnpkg.com/jquery/-/jquery-3.7.1.tgz#083ef98927c9a6a74d05a6af02806566d16274de"
+  integrity sha512-m4avr8yL8kmFN8psrbFFFmB/If14iN5o9nw/NgnnM+kybDJpRsAynV2BsfpTYrTRysYUdADVD7CkUUizgkpLfg==
+
 js-tokens@^4.0.0:
   version "4.0.0"
   resolved "https://registry.npmjs.org/js-tokens/-/js-tokens-4.0.0.tgz"
@@ -3680,6 +3685,11 @@ open@^8.4.0:
     is-docker "^2.1.1"
     is-wsl "^2.2.0"
 
+opencollective-postinstall@^2.0.2:
+  version "2.0.3"
+  resolved "https://registry.yarnpkg.com/opencollective-postinstall/-/opencollective-postinstall-2.0.3.tgz#7a0fff978f6dbfa4d006238fbac98ed4198c3259"
+  integrity sha512-8AV/sCtuzUeTo8gQK5qDZzARrulB3egtLzFgteqB2tcT4Mw7B8Kt7JcDHmltjz6FOAHsvTevk70gZEbhM4ZS9Q==
+
 optionator@^0.9.3:
   version "0.9.4"
   resolved "https://registry.npmjs.org/optionator/-/optionator-0.9.4.tgz"
@@ -3918,6 +3928,14 @@ print-js@^1.6.0:
   version "1.6.0"
   resolved "https://registry.yarnpkg.com/print-js/-/print-js-1.6.0.tgz#692b046cf31992b46afa6c6d8a9db1c69d431d1f"
   integrity sha512-BfnOIzSKbqGRtO4o0rnj/K3681BSd2QUrsIZy/+WdCIugjIswjmx3lDEZpXB2ruGf9d4b3YNINri81+J0FsBWg==
+
+print-this@^2.0.0:
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/print-this/-/print-this-2.0.0.tgz#2047248869245b271ba29d679a3af76a70219fae"
+  integrity sha512-/v1/tXs4BQGpEF7OYKe05h4xiQR09Q4HgASL28pngx6aedCQaB1OlHs8t9RDVgUayXHDWHG9V5EBjPlXb46k4w==
+  dependencies:
+    jquery ">=1.11"
+    opencollective-postinstall "^2.0.2"
 
 process-nextick-args@~2.0.0:
   version "2.0.1"

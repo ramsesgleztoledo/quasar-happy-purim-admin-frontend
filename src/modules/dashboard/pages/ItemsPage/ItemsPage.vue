@@ -7,7 +7,7 @@
   </div>
   <div v-if="!!description" class="row q-mb-md">
     <div class="col-12 text-h5">
-      <b> " {{ description }} " </b>
+      <b> {{ description }} </b>
     </div>
   </div>
   <div class="row">

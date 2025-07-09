@@ -77,9 +77,9 @@ const totalsRaised = computed<TotalsRaisedInterface[]>(() => [
     caption: 'Global',
     number: `$${convertWithCommas(dStore.totalsRaised?.totalReciprocity || 0)}`,
     color: 'var(--c-color3)',
-    redirect: {
-      name: 'dashboard-reciprocityChargePage',
-    },
+    // redirect: {
+    //   name: 'dashboard-reciprocityChargePage',
+    // },
   },
 ])
 

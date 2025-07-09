@@ -281,7 +281,7 @@ export const useMember = () => {
     return resp.ok ? resp.data : []
   };
   const downloadBasketReceived_Co = async (): Promise<any> => {
-    await downloadFile(downloadBasketReceived, 'csv', 'baskets-to-delivery')
+    await downloadFile(downloadBasketReceived, 'csv', 'baskets-to-deliver')
   };
   const getMemberPersonalBasket_Co = async () => {
     const resp = await getMemberPersonalBasket({

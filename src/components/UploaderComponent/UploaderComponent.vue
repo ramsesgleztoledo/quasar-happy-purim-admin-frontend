@@ -85,10 +85,6 @@ const files = ref<FileItem[]>($props.fileModel)
 const isDragging = ref<boolean>(false)
 const $emit = defineEmits(['update:fileModel'])
 
-watch(files, (newFiles) => {
-  $emit('update:fileModel', newFiles)
-})
-
 // Handle file drop
 const handleDrop = (event: DragEvent): void => {
   isDragging.value = false
@@ -111,6 +107,10 @@ const onFileClick = () => {
     fileInput.value.$el.click()
   }
 }
+watch(files, (value) => {
+  if (Array.isArray(value)) $emit('update:fileModel', value)
+  else files.value = [value]
+})
 </script>
 
 <style scoped lang="scss">

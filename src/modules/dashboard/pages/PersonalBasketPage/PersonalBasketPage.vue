@@ -11,7 +11,7 @@
       <q-btn disable label="Email Merge" color="primary" icon="mail" class="q-mr-sm" />
       <q-btn
         :disable="exportDisabled"
-        label="Export to CSV"
+        label="Export to Excel"
         color="primary"
         icon="import_export"
         @click="onExportToExcel"

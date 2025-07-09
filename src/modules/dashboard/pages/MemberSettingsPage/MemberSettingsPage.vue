@@ -27,7 +27,6 @@
         :to="{ name: 'MembersSettingsPage-AddMemberPage' }"
       />
       <q-btn
-        disable
         outline
         label="UPLOAD MEMBER LIST"
         :to="{ name: 'MembersSettingsPage-MemberListLayout' }"
@@ -49,7 +48,7 @@
           </div>
         </div>
         <q-table
-          title="Members List"
+          title="Member List"
           :style="{ height: isFullScreen ? '800px' : '630px' }"
           class="table-sticky-header-column-table"
           flat
