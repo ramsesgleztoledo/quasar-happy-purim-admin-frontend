@@ -1,7 +1,7 @@
 import { useApiCall } from "src/services/apiCall";
 import type { ApiCallResponseInterface, ExtraOptionsInterface } from "src/services/api-interfaces";
 import { AxiosHeaders } from "axios";
-import type { DataSummaryResponseInterface, FieldOptionInterface, ProcessAndMatchResponseInterface, UpdateAndValidateFormInterface, UploadFileResponseInterface } from "../interfaces/upload-list.interfaces";
+import type { BackupUploadFormInterface, DataSummaryResponseInterface, DestinationKeyInterface, DetailedKeyInterface, FieldOptionInterface, ProcessAndMatchResponseInterface, UpdateAndValidateFormInterface, UploadFileResponseInterface } from "../interfaces/upload-list.interfaces";
 
 
 
@@ -74,7 +74,7 @@ export const useUploadListService = () => {
       })
     },
 
-    checkMatchSrcDestKey: async (data: { sourceKey: string; destinationKey: string; }, extraOptions?: ExtraOptionsInterface): Promise<ApiCallResponseInterface<unknown>> => {
+    checkMatchSrcDestKey: async (data: { sourceKey: string; destinationKey: string; }, extraOptions?: ExtraOptionsInterface): Promise<ApiCallResponseInterface<{ success: false, message: string }>> => {
       const nextUrl = `/check-match-src-dest-key`;
       const url = `${baseUrl}${nextUrl}`;
 
@@ -97,7 +97,7 @@ export const useUploadListService = () => {
         data
       })
     },
-    
+
     compareDataGetSummary: async (extraOptions?: ExtraOptionsInterface): Promise<ApiCallResponseInterface<DataSummaryResponseInterface>> => {
       const nextUrl = `/compare-data-get-summary`;
       const url = `${baseUrl}${nextUrl}`;
@@ -110,7 +110,36 @@ export const useUploadListService = () => {
     },
 
 
+    getDestinationKeys: async (extraOptions?: ExtraOptionsInterface): Promise<ApiCallResponseInterface<DestinationKeyInterface[]>> => {
+      const nextUrl = `/destination-keys`;
+      const url = `${baseUrl}${nextUrl}`;
+      return await apiCall({
+        url,
+        extraOptions
+      })
+    },
 
+
+    backupAndUpload: async (data: BackupUploadFormInterface, extraOptions?: ExtraOptionsInterface): Promise<ApiCallResponseInterface<unknown>> => {
+      const nextUrl = `/backup-and-process-data`;
+      const url = `${baseUrl}${nextUrl}`;
+
+      return await apiCall({
+        url,
+        extraOptions,
+        method: 'POST',
+        data,
+      })
+    },
+    getDetailedChanges: async (memberKey: string, extraOptions?: ExtraOptionsInterface): Promise<ApiCallResponseInterface<DetailedKeyInterface[]>> => {
+      const nextUrl = `/get-detailed-changes?memberKey=${memberKey}`;
+      const url = `${baseUrl}${nextUrl}`;
+      return await apiCall({
+        url,
+        extraOptions,
+        method: 'POST',
+      })
+    },
 
 
 

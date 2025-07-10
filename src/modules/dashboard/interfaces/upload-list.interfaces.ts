@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 export interface UploadFileResponseInterface {
   originalFileName: string;
   savedFileName: string;
@@ -62,4 +63,40 @@ export interface DataSummaryRowInterface {
 export interface RowDataInterface {
   rowKey: string;
   cellValues: string[];
+}
+
+
+export interface DestinationKeyInterface {
+  fieldName: string;
+  memberID: string;
+}
+
+
+export interface BackupUploadFormInterface {
+  file: FileInfoFormInterface;
+  dicts: DictsInfoFormInterface;
+}
+
+export interface DictsInfoFormInterface {
+  deleteMembers: MemberRecordInterface;
+  updateMembers: MemberRecordInterface;
+  addMembers: MemberRecordInterface;
+  unchangedMembers: MemberRecordInterface;
+}
+
+export interface MemberRecordInterface {
+  [key: string]: Record<string, any>;
+}
+
+export interface FileInfoFormInterface {
+  filePath: string;
+  fileName: string;
+}
+
+
+export interface DetailedKeyInterface {
+  fieldName: string;
+  oldValue:  string;
+  newValue:  string;
+  isUpdated: boolean;
 }

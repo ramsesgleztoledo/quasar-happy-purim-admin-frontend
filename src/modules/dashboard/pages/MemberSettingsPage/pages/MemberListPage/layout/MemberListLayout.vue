@@ -42,6 +42,7 @@
           <UploaderComponent
             description="By following these instructions, you should be able to upload a new member list to [System Name] efficiently and accurately. If you have any questions or need further assistance, please contact us"
             v-model:file-model="fileModel"
+            accept="xlsx"
           />
         </template>
 
@@ -96,6 +97,10 @@
                   </h6>
                 </div>
 
+                <div v-if="!step_three_resp.success" class="row q-ma-sm" style="color: red">
+                  {{ step_three_resp.message }}
+                </div>
+
                 <div class="row">
                   <div class="col-12">
                     <div class="row q-mb-md" v-for="item in matchedFields" :key="item.matchedMapID">
@@ -137,6 +142,9 @@
                   Identify the id Field you would like to use as your PrimaryKey
                 </h6>
               </div>
+              <div v-if="!step_four_resp.success" class="row q-ma-sm" style="color: red">
+                {{ step_four_resp.message }}
+              </div>
 
               <div class="row">
                 <div class="col-12">
@@ -152,7 +160,7 @@
                     <div class="col-6 q-pa-sm">
                       <q-select
                         v-model="destinationField"
-                        :options="fieldOptions.map((item) => item.fieldName)"
+                        :options="destinationKeys.map((item) => item.fieldName)"
                         label="Destination Field"
                         filled
                       />
@@ -196,7 +204,7 @@
 
         <!-- STEP 6 preview changes-->
         <template v-if="step === 6">
-          <PreviewNewMemberList />
+          <PreviewNewMemberList ref="previewNewMemberList" />
         </template>
 
         <template v-if="step === 7">
@@ -300,7 +308,7 @@
             class="q-mr-sm loading-btn"
             style="background: var(--happypurim); color: white"
             label="continue & Upload List "
-            @click="step++"
+            @click="onContinueAndUpload"
           />
         </template>
 
@@ -325,11 +333,19 @@ import UploaderComponent from 'src/components/UploaderComponent/UploaderComponen
 import { useUI } from 'src/modules/UI/composables'
 import { useUploadList } from 'src/modules/dashboard/composables/useUploadList'
 import type {
+  BackupUploadFormInterface,
+  DestinationKeyInterface,
   FieldOptionInterface,
+  MemberRecordInterface,
   ProcessAndMatchResponseInterface,
   UploadFileResponseInterface,
 } from 'src/modules/dashboard/interfaces/upload-list.interfaces'
 import PreviewNewMemberList from './components/PreviewNewMemberList.vue'
+
+interface StepResponseInterface {
+  success: boolean
+  message: string
+}
 
 const { isMobile } = useUI()
 const {
@@ -339,6 +355,8 @@ const {
   updateAndValidate,
   checkMatchSrcDestKey,
   saveSelectionOptions,
+  getDestinationKeys,
+  backupAndUpload,
 } = useUploadList()
 
 const loading = ref(false)
@@ -431,27 +449,44 @@ const step_two_reset_data = () => {
   sheet.value = ''
 }
 
+const step_three_resp = ref<StepResponseInterface>({
+  success: true,
+  message: '',
+})
+
 const step_three = async () => {
   loading.value = true
-  await updateAndValidate(
-    matchedFields.value.map((item) => ({
-      isChecked: item.oldValue,
-      newFieldName: item.value.fieldName,
-      oldFieldName: item.importField,
-    })),
-  )
+
+  step_three_resp.value = (
+    await updateAndValidate(
+      matchedFields.value.map((item) => ({
+        isChecked: item.oldValue,
+        newFieldName: item.value.fieldName,
+        oldFieldName: item.importField,
+      })),
+    )
+  ).data as unknown as StepResponseInterface
   loading.value = false
-  step.value++
+  if (step_three_resp.value.success) step.value++
 }
+
+const step_four_resp = ref<StepResponseInterface>({
+  success: true,
+  message: '',
+})
 
 const step_four = async () => {
   loading.value = true
-  await checkMatchSrcDestKey({
-    destinationKey: destinationField.value,
-    sourceKey: sourceField.value,
-  })
+  step_four_resp.value = (
+    await checkMatchSrcDestKey({
+      destinationKey: destinationField.value,
+      sourceKey: sourceField.value,
+    })
+  ).data
+
   loading.value = false
-  step.value++
+
+  if (step_four_resp.value.success) step.value++
 }
 
 const step_five = async () => {
@@ -461,10 +496,35 @@ const step_five = async () => {
   step.value++
 }
 
-onMounted(() => {
-  getFieldOptions().then((resp) => {
-    fieldOptions.value = resp
-  })
+const destinationKeys = ref<DestinationKeyInterface[]>([])
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const previewNewMemberList = ref<any>(undefined)
+
+const onContinueAndUpload = async () => {
+  if (!previewNewMemberList.value) return
+
+  const dicts = previewNewMemberList.value.onSave() as unknown as {
+    updateMembers: MemberRecordInterface
+    addMembers: MemberRecordInterface
+    deleteMembers: MemberRecordInterface
+    unchangedMembers: MemberRecordInterface
+  }
+
+  const data: BackupUploadFormInterface = {
+    file: {
+      filePath: step_one_data.value?.filePath.replace(/\\/g, '/') || '',
+      fileName: step_one_data.value?.originalFileName || '',
+    },
+    dicts,
+  }
+  await backupAndUpload(data)
+}
+
+onMounted(async () => {
+  const resp = await Promise.all([getFieldOptions(), getDestinationKeys()])
+  fieldOptions.value = resp[0]
+  destinationKeys.value = resp[1]
 })
 </script>
 

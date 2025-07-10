@@ -1,13 +1,37 @@
 import { useUploadListService } from "../services/uploadList.service";
-import type { UpdateAndValidateFormInterface } from "../interfaces/upload-list.interfaces";
+import type { BackupUploadFormInterface, UpdateAndValidateFormInterface } from "../interfaces/upload-list.interfaces";
 
 
 export const useUploadList = () => {
 
-  const { uploadMemberList, processAndMatch, getFieldOptions, updateAndValidate, checkMatchSrcDestKey, saveSelectionOptions, compareDataGetSummary } = useUploadListService()
+  const { uploadMemberList, processAndMatch, getFieldOptions, updateAndValidate, checkMatchSrcDestKey, saveSelectionOptions, compareDataGetSummary, getDestinationKeys, backupAndUpload, getDetailedChanges } = useUploadListService()
+
+
+  const getDetailedChanges_co = async (key: string, showLoading?: boolean) => {
+    let data = {}
+    if (showLoading)
+      data = {
+        loading: {
+          message: 'loading'
+        }
+      }
+    const resp = await getDetailedChanges(key, {
+      ...data
+    })
+    return resp.ok ? resp.data : []
+  };
 
 
   return {
+    async getDestinationKeys() {
+      const resp = await getDestinationKeys({
+        loading: {
+          message: 'loading ...'
+        }
+      })
+
+      return resp.ok ? resp.data : []
+    },
     async uploadMemberList(file: File) {
       const resp = await uploadMemberList(file, {
         dontRedirect: true
@@ -21,7 +45,7 @@ export const useUploadList = () => {
         dontRedirect: true
       })
 
-      return resp.ok ? resp.data : undefined
+      return resp.ok ? resp.data : resp.data
     },
 
     async getFieldOptions() {
@@ -47,10 +71,13 @@ export const useUploadList = () => {
       destinationKey: string;
     }) {
 
-      await checkMatchSrcDestKey({
+      const resp = await checkMatchSrcDestKey({
         destinationKey: data.destinationKey,
         sourceKey: data.sourceKey
       })
+
+      return resp
+
     },
     async saveSelectionOptions(data: { add: boolean, update: boolean, delete: boolean }) {
       await saveSelectionOptions({
@@ -63,7 +90,22 @@ export const useUploadList = () => {
     async compareDataGetSummary() {
       const resp = await compareDataGetSummary()
       return resp.ok ? resp.data : undefined
-    }
+    },
+
+    async backupAndUpload(data: BackupUploadFormInterface) {
+
+      const resp = await backupAndUpload(data, {
+        loading: {
+          message: 'Uploading data'
+        }
+      })
+
+
+      return resp.ok
+
+    },
+
+    getDetailedChanges_co
 
   }
 };

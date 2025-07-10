@@ -8,6 +8,7 @@
       :rows="rows"
       :columns="columns"
       :row-key="rowKey"
+      :table-row-style-fn="tableRowStyleFn"
       style="height: 100%"
       :pagination="{
         rowsPerPage: 20,
@@ -50,6 +51,8 @@ interface TablePropsInterface {
   styles?: string
   rowKey: string
   title?: string
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  tableRowStyleFn?: ((row: any) => string) | undefined
 }
 
 defineProps<TablePropsInterface>()

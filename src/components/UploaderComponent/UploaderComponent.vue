@@ -18,6 +18,7 @@
         <p v-if="files.length === 0">Drag and drop files here or Browse files</p>
 
         <q-file
+          @rejected="rejected"
           :accept="accept"
           v-model="files"
           label="Select file(s)"
@@ -58,10 +59,13 @@
 </template>
 
 <script setup lang="ts">
-import { QFile } from 'quasar'
+import type { QRejectedEntry } from 'quasar'
+import { QFile, useQuasar } from 'quasar'
 import { ref, watch } from 'vue'
 
 const fileInput = ref<QFile | undefined>(undefined)
+
+const $q = useQuasar()
 
 interface UploaderPropsInterface {
   fileModel: File[]
@@ -111,6 +115,15 @@ watch(files, (value) => {
   if (Array.isArray(value)) $emit('update:fileModel', value)
   else files.value = [value]
 })
+
+const rejected = (rejectedEntries: QRejectedEntry[]) => {
+  {
+    $q.notify({
+      type: 'negative',
+      message: `${rejectedEntries.length} file(s) did not pass validation constraints ${$props.accept ? `, only these extensions are allowed ( ${$props.accept} )` : ''}`,
+    })
+  }
+}
 </script>
 
 <style scoped lang="scss">

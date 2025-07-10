@@ -40,3 +40,7 @@ export interface ApiCallResponseInterface<T> {
   ok: boolean;
   data: T
 }
+
+// export type ApiCallResponseInterface<T, E = unknown> =
+//   | { code: number; ok: true; data: T }
+//   | { code: number; ok: false; data: E };
