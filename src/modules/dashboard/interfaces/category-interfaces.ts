@@ -1,5 +1,10 @@
 export interface MemberCategoryInterface {
-  categoryId:   number;
+  categoryId: number;
   categoryName: string;
-  selected:     boolean;
+  selected: boolean;
+}
+
+export interface ShulCategoryInterface {
+  categoryID: number;
+  categoryName: string;
 }

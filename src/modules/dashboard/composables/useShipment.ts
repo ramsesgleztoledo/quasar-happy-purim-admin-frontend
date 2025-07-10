@@ -24,7 +24,10 @@ export const useShipment = () => {
 
     },
     async downloadBasketsToBeShippedCSV() {
-      await downloadFile(downloadBasketsToBeShippedCSV, 'csv', 'baskets-to-be-shipped')
+      await downloadFile(downloadBasketsToBeShippedCSV, {
+        fileType: 'csv',
+        fileName: 'baskets-to-be-shipped'
+      })
     },
     async UpdateBasketsToBeShipped(data: BasketToBeShippedUpdateInterface) {
       const resp = await UpdateBasketsToBeShipped(data, {

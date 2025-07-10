@@ -282,7 +282,7 @@ const onAddCustomShippingOption = async () => {
 
   const id = $props.prop_customsShippingItem?.shippingItemId || undefined
   if (!id) {
-    await addCustomShippingItem(data)
+    await addCustomShippingItem({ ...data, shippingOptionId: -1 })
     resetForm()
     customShippingSelected.value = undefined
     customShippingSelectedAttributes.value = []

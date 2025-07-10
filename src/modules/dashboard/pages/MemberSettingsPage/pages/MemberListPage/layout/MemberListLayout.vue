@@ -436,8 +436,8 @@ const step_three = async () => {
   await updateAndValidate(
     matchedFields.value.map((item) => ({
       isChecked: item.oldValue,
-      newFieldName: item.importField,
-      oldFieldName: item.value.fieldName,
+      newFieldName: item.value.fieldName,
+      oldFieldName: item.importField,
     })),
   )
   loading.value = false

@@ -109,7 +109,11 @@ export const useUI = () => {
     isDev: computed(() => process.env.NODE_ENV === 'development'),
     version: computed(() => process.env.VERSION || ''),
 
-    async downloadFile(endPoint: downloadEndPointType, fileType: FileType, fileName?: string) {
+    async downloadFile(endPoint: downloadEndPointType, data: {
+      fileType: FileType,
+      fileName?: string,
+      extension?: string
+    }) {
 
       const response = await endPoint({
         dontRedirect: true,
@@ -129,9 +133,13 @@ export const useUI = () => {
       const file = response.data
 
       const date = new Date().getTime()
-      const name = `${fileName ? `${fileName + '-'}` : ''}${date}.csv`
+      const name = `${data.fileName ? `${data.fileName + '-'}` : ''}${date}.${data.extension ? data.extension : 'csv'}`
 
-      generateDownload(file, name, fileType)
+      generateDownload({
+        file,
+        fileName: name,
+        type: data.fileType
+      })
 
       $q.notify({
         color: 'blue',

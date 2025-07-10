@@ -3,24 +3,32 @@
     <q-card>
       <div class="row dialog-header custom-dialog-header-container">
         <div class="col-12">
-          <p>Select Template</p>
+          <p>Select a Template</p>
         </div>
       </div>
 
-      <div class="custom-dialog-body-container q-pa-lg">
+      <div v-if="templates.length" class="custom-dialog-body-container q-pa-lg">
         <q-item v-for="(template, i) in templates" :key="i" class="q-item-bordered q-mb-sm">
           <q-item-section>
-            <q-item-label>{{ template.title }}</q-item-label>
-            <q-item-label caption lines="2">{{ template.caption }}</q-item-label>
+            <q-item-label>{{ template.name }}</q-item-label>
+            <!-- <q-item-label caption lines="2">{{ template }}</q-item-label> -->
           </q-item-section>
           <q-item-section side>
             <div class="row">
-              <q-btn class="q-mr-sm" padding="3px" color="primary" icon="delete" />
-              <q-btn padding="3px" color="primary" icon="check" label="Select" />
+              <!-- <q-btn class="q-mr-sm" padding="3px" color="primary" icon="delete" /> -->
+              <q-btn
+                padding="3px"
+                color="primary"
+                icon="check"
+                label="Select"
+                @click="() => $emit('onSelectTemplate', template.content)"
+                v-close-popup
+              />
             </div>
           </q-item-section>
         </q-item>
       </div>
+      <div v-else class="q-ma-md q-pa-md">No templates to show...</div>
       <q-card-actions class="custom-dialog-footer-container" align="right">
         <q-btn
           outline
@@ -34,13 +42,15 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref } from 'vue'
+import type { MailMergeTemplateInterface } from 'src/modules/dashboard/interfaces/mail-merge.interface'
+import { computed } from 'vue'
 
 interface ScheduleSendPropsInterface {
   modelValue: boolean
+  templates: MailMergeTemplateInterface[]
 }
 
-const $emit = defineEmits(['update:modelValue'])
+const $emit = defineEmits(['update:modelValue', 'onSelectTemplate'])
 
 const $props = defineProps<ScheduleSendPropsInterface>()
 
@@ -48,18 +58,6 @@ const show = computed({
   get: () => $props.modelValue,
   set: (val) => $emit('update:modelValue', val),
 })
-
-const templates = ref([
-  { title: 'Initial Email for 2021', caption: 'Jane Cohen- 12/30/2020 12:37:12 PM' },
-  { title: 'Initial Email for 2021', caption: 'Jane Cohen- 12/30/2020 12:37:12 PM' },
-  { title: 'Initial Email for 2021', caption: 'Jane Cohen- 12/30/2020 12:37:12 PM' },
-  { title: 'Initial Email for 2021', caption: 'Jane Cohen- 12/30/2020 12:37:12 PM' },
-  { title: 'Initial Email for 2021', caption: 'Jane Cohen- 12/30/2020 12:37:12 PM' },
-  { title: 'Initial Email for 2021', caption: 'Jane Cohen- 12/30/2020 12:37:12 PM' },
-  { title: 'Initial Email for 2021', caption: 'Jane Cohen- 12/30/2020 12:37:12 PM' },
-  { title: 'Initial Email for 2021', caption: 'Jane Cohen- 12/30/2020 12:37:12 PM' },
-  { title: 'Initial Email for 2021', caption: 'Jane Cohen- 12/30/2020 12:37:12 PM' },
-])
 </script>
 
 <style scoped lang="scss">

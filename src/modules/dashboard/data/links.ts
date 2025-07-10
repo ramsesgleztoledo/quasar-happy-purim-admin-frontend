@@ -284,13 +284,31 @@ export const routeInfo: routeDataInterface[] = [
   },
   {
 
+    title: 'Report',
+    icon: 'report',
+    name: 'MailMergeReportsPage-MailMergePageLayout',
+
+  },
+  {
+
     title: 'Mail Merge & Reports',
     icon: 'email',
     name: 'MailMergeReportsPage-MailMergePage',
     params: ['reportId'],
     titleParam: (
       // value?: routeParamInterface
-    ) => `Campaign`
+    ) => `Email & Print`
+    // - ${value?.reportId}`
+  },
+  {
+
+    title: 'Mail Merge & Reports',
+    icon: 'email',
+    name: 'MailMergeReportsPage-ViewReport',
+    params: ['reportId'],
+    titleParam: (
+      // value?: routeParamInterface
+    ) => `View`
     // - ${value?.reportId}`
   },
   {

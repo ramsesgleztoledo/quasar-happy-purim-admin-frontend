@@ -7,7 +7,7 @@
   tr th {
     position: sticky;
     /* higher than z-index for td below */
-    z-index: 2;
+    z-index: 9;
     /* bg color is important; just specify one */
     background: $happypurim;
     color: white;
@@ -18,12 +18,12 @@
     /* height of all previous header rows */
     top: 48px;
     /* highest z-index */
-    z-index: 3;
+    z-index: 9;
   }
 
   thead tr:first-child th {
     top: 0;
-    z-index: 1;
+    z-index: 9;
   }
 
   tr:first-child th:first-child {

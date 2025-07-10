@@ -7,21 +7,28 @@
         </div>
       </div>
 
-      <div class="custom-dialog-body-container q-pa-lg">
-        <q-item v-for="(template, i) in templates" :key="i" class="q-item-bordered q-mb-sm">
-          <q-item-section>
-            <div class="SelectImages-container"></div>
-          </q-item-section>
-          <q-item-section>
-            <q-item-label>{{ template.title }}</q-item-label>
-          </q-item-section>
-          <q-item-section side>
-            <div class="row">
-              <q-btn padding="3px" color="primary" icon="check" label="Select" />
-            </div>
-          </q-item-section>
-        </q-item>
+      <div v-if="$rStore.$state.images.length" class="custom-dialog-body-container q-pa-lg">
+        <div class="row">
+          <div
+            :class="{
+              'col-4': !isMobile,
+              'col-12': isMobile,
+            }"
+            class="col-4 q-pa-md img-col-container"
+            v-for="img in $rStore.$state.images"
+            :key="img"
+          >
+            <img
+              :src="img"
+              alt="no img..."
+              style="width: 100%; height: 200px"
+              v-close-popup
+              @click="() => $emit('onSelectImg', img)"
+            />
+          </div>
+        </div>
       </div>
+      <div v-else class="q-pa-lg q-ma-lg">No images to show...</div>
       <q-card-actions class="custom-dialog-footer-container" align="right">
         <q-btn
           outline
@@ -35,13 +42,18 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref } from 'vue'
+import { useReportStore } from 'src/modules/dashboard/store/ReportStore/reportStore'
+import { useUI } from 'src/modules/UI/composables'
+import { computed } from 'vue'
+
+const $rStore = useReportStore()
+const { isMobile } = useUI()
 
 interface ScheduleSendPropsInterface {
   modelValue: boolean
 }
 
-const $emit = defineEmits(['update:modelValue'])
+const $emit = defineEmits(['update:modelValue', 'onSelectImg'])
 
 const $props = defineProps<ScheduleSendPropsInterface>()
 
@@ -49,18 +61,6 @@ const show = computed({
   get: () => $props.modelValue,
   set: (val) => $emit('update:modelValue', val),
 })
-
-const templates = ref([
-  { title: 'Initial Email for 2021', caption: 'Jane Cohen- 12/30/2020 12:37:12 PM' },
-  { title: 'Initial Email for 2021', caption: 'Jane Cohen- 12/30/2020 12:37:12 PM' },
-  { title: 'Initial Email for 2021', caption: 'Jane Cohen- 12/30/2020 12:37:12 PM' },
-  { title: 'Initial Email for 2021', caption: 'Jane Cohen- 12/30/2020 12:37:12 PM' },
-  { title: 'Initial Email for 2021', caption: 'Jane Cohen- 12/30/2020 12:37:12 PM' },
-  { title: 'Initial Email for 2021', caption: 'Jane Cohen- 12/30/2020 12:37:12 PM' },
-  { title: 'Initial Email for 2021', caption: 'Jane Cohen- 12/30/2020 12:37:12 PM' },
-  { title: 'Initial Email for 2021', caption: 'Jane Cohen- 12/30/2020 12:37:12 PM' },
-  { title: 'Initial Email for 2021', caption: 'Jane Cohen- 12/30/2020 12:37:12 PM' },
-])
 </script>
 
 <style scoped lang="scss">

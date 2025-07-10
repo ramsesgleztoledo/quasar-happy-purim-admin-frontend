@@ -126,14 +126,35 @@ export const dashboardRoutes: RouteRecordRaw[] = [
             path: '',
             name: 'MailMergeReportsPage-MailMergeReportsPage',
             component: () =>
-              import(/* webpackChunkName: "MailMergeReportsPage-MailMergeReportsPage" */ "../pages/MailMergeReportsPage/pages/MailMergeReportsPage/MailMergeReportsPage.vue"),
+              import(/* webpackChunkName: "MailMergeReportsPage-MailMergeReportsPage" */ "../pages/MailMergeReportsPage/layout/MailMergeReportsPage/MailMergeReportsPage.vue"),
           },
+
           {
             path: ':reportId',
-            name: 'MailMergeReportsPage-MailMergePage',
+            name: 'MailMergeReportsPage-MailMergePageLayout',
             component: () =>
-              import(/* webpackChunkName: "MailMergeReportsPage-MailMergePage" */ "../pages/MailMergeReportsPage/pages/MailMergePage/MailMergePage.vue"),
+              import(/* webpackChunkName: "MailMergeReportsPage-MailMergePage" */ "../pages/MailMergeReportsPage/pages/layout/MailMergeLayout.vue"),
+            redirect: {
+              name: 'MailMergeReportsPage-ViewReport',
+            },
+            children: [
+              {
+                path: '',
+                name: 'MailMergeReportsPage-ViewReport',
+                component: () =>
+                  import(/* webpackChunkName: "MailMergeReportsPage-MailMergePage" */ "../pages/MailMergeReportsPage/pages/ViewReport/ViewReport.vue"),
+              },
+              {
+                path: 'email',
+                name: 'MailMergeReportsPage-MailMergePage',
+                component: () =>
+                  import(/* webpackChunkName: "MailMergeReportsPage-MailMergePage" */ "../pages/MailMergeReportsPage/pages/MailMergePage/MailMergePage.vue"),
+              },
+
+            ]
           },
+
+
         ]
       }
       ,

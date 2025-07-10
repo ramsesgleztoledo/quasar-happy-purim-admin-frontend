@@ -35,7 +35,7 @@ hr {
 }
 
 .dropdown-selected-in-route {
-  background-color: #ef698287;
+  background-color: var(--happypurim-light);
 }
 
 .q-spinner-mat {
@@ -279,6 +279,7 @@ hr {
 }
 .custom-dialog-body-container {
   overflow: auto;
+  max-height: 500px;
 }
 .custom-dialog-footer-container {
   box-shadow: 0px 1px 8px -3px black !important;
@@ -288,6 +289,7 @@ hr {
   background-color: white;
 }
 
+.white-container,
 .table-white-container {
   background-color: white;
   overflow: auto;

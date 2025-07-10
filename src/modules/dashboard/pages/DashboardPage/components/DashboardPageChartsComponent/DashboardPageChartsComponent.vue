@@ -51,7 +51,7 @@ const orderTotalGraph = computed<DataItemInterface>(() => ({
   dates: [...dStore.orderTotalGraph.map((item) => `${item.date}`)],
   data: [
     {
-      label: 'Total Raised',
+      label: 'Daily Total',
       color: '#3cd856',
       data: [...dStore.orderTotalGraph.map((item) => item.totalRaised)],
     },

@@ -269,7 +269,10 @@ export const useMember = () => {
     }
   };
   const downloadMembersLogged_Co = async (): Promise<any> => {
-    await downloadFile(downloadMembersLogged, 'csv', 'members-logged')
+    await downloadFile(downloadMembersLogged, {
+      fileType: 'csv',
+      fileName: 'members-logged'
+    })
   };
   const getBasketReceived_Co = async () => {
     const resp = await getBasketReceived({
@@ -281,7 +284,10 @@ export const useMember = () => {
     return resp.ok ? resp.data : []
   };
   const downloadBasketReceived_Co = async (): Promise<any> => {
-    await downloadFile(downloadBasketReceived, 'csv', 'baskets-to-deliver')
+    await downloadFile(downloadBasketReceived, {
+      fileType: 'csv',
+      fileName: 'baskets-to-deliver'
+    })
   };
   const getMemberPersonalBasket_Co = async () => {
     const resp = await getMemberPersonalBasket({
@@ -293,7 +299,10 @@ export const useMember = () => {
     return resp.ok ? resp.data : []
   };
   const downloadMemberPersonalBasketCSV_Co = async (): Promise<any> => {
-    await downloadFile(downloadMemberPersonalBasketCSV, 'csv', 'personal-baskets')
+    await downloadFile(downloadMemberPersonalBasketCSV, {
+      fileType: 'csv',
+      fileName: 'personal-baskets'
+    })
   };
   const addMember_Co = async (data: MemberAddFormInterface) => {
     const resp = await addMember(data, {

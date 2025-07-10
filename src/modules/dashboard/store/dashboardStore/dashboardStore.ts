@@ -21,6 +21,7 @@ const initialState: DashboardStateInterface = {
   memberSummary: undefined,
   membersLogged: undefined,
   showCreateOrderByCode: false,
+  categories: []
 }
 
 export const useDashboardStore = defineStore('dashBoardStore', {

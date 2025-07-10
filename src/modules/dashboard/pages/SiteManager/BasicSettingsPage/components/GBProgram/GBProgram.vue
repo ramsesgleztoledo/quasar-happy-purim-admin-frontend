@@ -63,6 +63,7 @@
       }"
     >
       <q-input
+        readonly
         v-model="dateValue"
         outlined
         mask="date"
@@ -92,6 +93,7 @@
     >
       <q-input
         outlined
+        readonly
         v-model="timeValue"
         label="Time"
         mask="##:## a.a"

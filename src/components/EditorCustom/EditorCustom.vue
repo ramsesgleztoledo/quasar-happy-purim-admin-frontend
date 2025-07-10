@@ -240,7 +240,7 @@
           class="q-mr-sm q-mt-sm"
           style="background: var(--happypurim); color: white"
           label="Insert"
-          @click="insertFile"
+          @click="insertFile()"
           v-close-popup
           :disable="!selectedFile"
         />
@@ -341,6 +341,14 @@ const add = (name: string) => {
   )
   edit.focus()
 }
+const addTokenText = (name: string) => {
+  if (!editorRef.value) return
+  const edit = editorRef.value
+  tokenRef.value?.hide()
+  edit.caret.restore()
+  edit.runCmd('insertHTML', `&nbsp;{{${name}}} &nbsp;`)
+  edit.focus()
+}
 const addHTML = (value: string) => {
   if (!editorRef.value) return
   const edit = editorRef.value
@@ -374,7 +382,13 @@ const onFileSelected = (item: unknown) => {
   selectedFile.value = item
 }
 
-const insertFile = () => {
+const insertFile = (
+  file?: string,
+  prop?: {
+    width: string
+    height: string
+  },
+) => {
   if (!editorRef.value) return
   const edit = editorRef.value
   tokenRef.value?.hide()
@@ -385,15 +399,15 @@ const insertFile = () => {
 <div
   class="editable-div">
   <img
-    src="https://encrypted-tbn1.gstatic.com/images?q=tbn:ANd9GcSEDXTwqQdVDG_Olz2iNmsW2IQ-vmMTrHIREyAYPJCANU-ZYo1-419gGAJjKB1X4IWf5QzjPbvlhRDnBsrskqbp-B8JgWfXi8fZQuZW4pE"
-    style="width: 100%; height: 100%; pointer-events: none;"
+    src="${file}"
+    style="width: ${prop?.width ? prop.width : '100%'}; height: ${prop?.height ? prop.height : '100%'}; pointer-events: none;"
   />
     &nbsp;`,
   )
   edit.focus()
 }
 
-defineExpose({ add, addHTML })
+defineExpose({ add, addHTML, addTokenText, insertFile })
 
 const files = ref<string[]>([])
 const newFiles = ref<File[]>([])

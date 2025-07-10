@@ -1,8 +1,16 @@
-
 .SelectImages-container {
   background-color: var(--happypurim);
   width: 40px;
   height: 40px;
   border-radius: 10px;
   box-shadow: 2px 3px 3px 0px #968e8e7d;
+}
+
+.img-col-container {
+  cursor: pointer;
+}
+
+:hover.img-col-container {
+  border: solid var(--happypurim) 2px;
+  border-radius: 10px;
 }

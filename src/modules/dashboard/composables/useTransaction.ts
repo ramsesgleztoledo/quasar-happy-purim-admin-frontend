@@ -34,7 +34,10 @@ export const useTransaction = () => {
 
     },
     async downloadCharityCSV() {
-      await downloadFile(downloadCharityCSV, 'csv', 'charity-breakdown')
+      await downloadFile(downloadCharityCSV, {
+        fileType: 'csv',
+        fileName: 'charity-breakdown'
+      })
     },
     async getReciprocityCharges() {
       const resp = await getReciprocityCharges({
@@ -46,7 +49,10 @@ export const useTransaction = () => {
 
     },
     async downloadReciprocityChargesCSV() {
-      await downloadFile(downloadReciprocityChargesCSV, 'csv', 'reciprocity-charge')
+      await downloadFile(downloadReciprocityChargesCSV, {
+        fileType: 'csv',
+        fileName: 'reciprocity-charge'
+      })
     },
     async getTransactionsDetailsByTransactionId(id: number) {
       const resp = await getTransactionsDetailsByTransactionId(id, {

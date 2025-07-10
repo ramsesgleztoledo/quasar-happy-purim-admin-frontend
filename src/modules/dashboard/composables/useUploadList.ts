@@ -1,6 +1,7 @@
 import { useUploadListService } from "../services/uploadList.service";
 import type { UpdateAndValidateFormInterface } from "../interfaces/upload-list.interfaces";
 
+
 export const useUploadList = () => {
 
   const { uploadMemberList, processAndMatch, getFieldOptions, updateAndValidate, checkMatchSrcDestKey, saveSelectionOptions, compareDataGetSummary } = useUploadListService()
@@ -32,7 +33,14 @@ export const useUploadList = () => {
       return resp.ok ? resp.data : []
     },
     async updateAndValidate(data: UpdateAndValidateFormInterface[]) {
-      await updateAndValidate(data)
+      const resp = await updateAndValidate(data, {
+        dontRedirect: true
+      })
+
+      return {
+        ok: resp.ok,
+        data: resp.data
+      }
     },
     async checkMatchSrcDestKey(data: {
       sourceKey: string;
