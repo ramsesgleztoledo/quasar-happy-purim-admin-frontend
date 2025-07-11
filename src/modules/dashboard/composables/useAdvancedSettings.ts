@@ -310,38 +310,39 @@ export const useAdvancedSettings = () => {
         }
       })
       showToast(resp.ok,
-        'new item deleted',
-        'something went wrong deleting a new item'
+        'item deleted',
+        'something went wrong deleting an item'
       )
       return resp.ok
     },
-    async updateAdditionalOrderingItems(data: {
-      items: Tab2AdditionalItemInterface[],
+    async updateAdditionalOrderingItems(
       content: OrderItemSettingsInterface
-    }) {
-      $q.loading.show({
-        message: 'updating sell additional items...',
-        spinnerColor: '#f36b09',
-        messageColor: '#f36b09',
+    ) {
+      const resp = await updateOrderItems(content, {
+        loading: {
+          message: 'updating sell additional items...'
+        }
       })
-
-      const resp
-        = await Promise.all(
-          [updateOrderItems(data.content), ...data.items.map(item => updateAdditionalOrderingItem(item.id, {
-            description: item.description,
-            price: item.price,
-            sortOrder: item.sortOrder
-          }))]
-        )
-
-      $q.loading.hide()
-      const error = resp.find(re => !re.ok)
-
-      showToast(!error,
+      showToast(resp.ok,
         'sell additional items updated',
         'something went wrong updating sell additional items'
       )
+    },
 
+    async updateAdditionalOrderingItem(item: Tab2AdditionalItemInterface) {
+      const resp = await updateAdditionalOrderingItem(item.id, {
+        description: item.description,
+        price: item.price,
+        sortOrder: item.sortOrder
+      }, {
+        loading: {
+          message: 'updating item'
+        }
+      })
+      showToast(resp.ok,
+        'item updated',
+        'something went wrong updating the item'
+      )
 
     },
 

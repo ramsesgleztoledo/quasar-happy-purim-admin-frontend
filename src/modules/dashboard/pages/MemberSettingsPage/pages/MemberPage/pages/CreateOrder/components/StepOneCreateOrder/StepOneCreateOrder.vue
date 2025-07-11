@@ -39,13 +39,7 @@
   </div>
 
   <div class="row">
-    <div
-      class="q-pa-lg"
-      :class="{
-        'col-3': !isMobile,
-        'col-12': isMobile,
-      }"
-    >
+    <div class="q-pa-lg col-12">
       <div class="CreateOrderPage-options">
         <label><b> Options </b> </label>
 
@@ -60,7 +54,10 @@
           />
         </div>
       </div>
-      <div class="CreateOrderPage-send-to" v-if="memberOrderState.orgSettings?.displayPromotions">
+      <div
+        class="CreateOrderPage-send-to"
+        v-if="memberOrderState.orgSettings?.displayPromotions && promotions.length"
+      >
         <label>
           <b>Promotions</b>
         </label>
@@ -74,42 +71,67 @@
         </div>
       </div>
     </div>
-    <div
-      class="q-pa-lg"
-      :class="{
-        'col-3': !isMobile,
-        'col-12': isMobile,
-      }"
-    >
+  </div>
+  <div class="row">
+    <div class="col-12">
       <CreateOrderLegend />
     </div>
-    <div
-      class="q-pa-lg"
-      style="height: 460px"
-      :class="{
-        'col-6': !isMobile,
-        'col-12': isMobile,
-      }"
-    >
-      <q-table
-        style="height: 100%"
-        class="table-sticky-header-column-table"
-        flat
-        bordered
-        ref="tableRef"
-        :rows="memberOrderState.memberList.copy"
-        :columns="columns"
-        row-key="id"
-        selection="multiple"
-        v-model:selected="$moStore.membersSelected"
-        :tableRowStyleFn="tableRowStyleFn"
-        @selection="onSelectAll"
-        :pagination="{
-          rowsPerPage: 0,
-        }"
-      >
-        <template v-slot:top="props">
-          <div class="q-table__title" style="padding: 2px">People</div>
+  </div>
+
+  <div class="row">
+    <div class="col-12">
+      <div class="row table-white-container" :class="{ fullscreen: isFullScreen }">
+        <div class="col-12">
+          <div
+            class="row"
+            style="position: sticky; top: 0px; z-index: 1000; background-color: white"
+          >
+            <div class="col-12">
+              <div class="row">
+                <div class="col-12 justify-content-end">
+                  <q-btn
+                    flat
+                    round
+                    color="primary"
+                    :icon="isFullScreen ? 'fullscreen_exit' : 'fullscreen'"
+                    @click="isFullScreen = !isFullScreen"
+                  />
+                </div>
+              </div>
+              <div class="row q-pa-sm" style="background-color: var(--happypurim)">
+                <div class="col-12"></div>
+                <h6 style="margin: 0px">
+                  Members ({{ memberOrderState.membersSelected.length }}/{{
+                    memberOrderState.memberList.copy.length
+                  }})
+                </h6>
+              </div>
+            </div>
+          </div>
+          <q-table
+            card-class="bg-primary text-white"
+            grid
+            style="background-color: white"
+            :style="{ maxHeight: isFullScreen ? '' : '800px' }"
+            class="table-sticky-header-column-table"
+            flat
+            bordered
+            ref="tableRef"
+            :rows="memberOrderState.memberList.copy"
+            :columns="columns"
+            row-key="id"
+            selection="multiple"
+            v-model:selected="$moStore.membersSelected"
+            :tableRowStyleFn="tableRowStyleFn"
+            @selection="onSelectAll"
+            :pagination="{
+              rowsPerPage: 0,
+            }"
+          >
+            <!-- <template v-slot:top="props">
+          <div class="q-table__title" style="padding: 2px">
+            <b> Members: </b>
+          </div>
 
           <q-space />
 
@@ -121,8 +143,9 @@
             @click="props.toggleFullscreen"
             class="q-ml-md"
           />
-        </template>
-        <template v-slot:header-selection="scope">
+        </template> -->
+
+            <!-- <template v-slot:header-selection="scope">
           <q-checkbox v-model="scope.selected" />
         </template>
 
@@ -137,8 +160,50 @@
               }
             "
           />
-        </template>
-      </q-table>
+        </template> -->
+            <template v-slot:item="props">
+              <div class="q-pa-sm col-xs-12 col-sm-6 col-md-4">
+                <q-card flat bordered>
+                  <q-card-section
+                    class="text-center"
+                    style="min-height: 70px"
+                    :style="tableRowStyleFn(props.row)"
+                  >
+                    <div class="row" style="align-items: center">
+                      <q-checkbox
+                        class="q-mr-sm"
+                        v-if="!props.row.paid"
+                        :disable="props.row.paid"
+                        :model-value="props.selected"
+                        @update:model-value="
+                          (val, evt) => {
+                            ;(Object as any)
+                              .getOwnPropertyDescriptor(props, 'selected')
+                              .set(val, evt)
+                          }
+                        "
+                      />
+                      <div>
+                        <b>
+                          {{
+                            `${props.row.lastName}, ${props.row.firstName} ${props.row.sLastName ? `& ${props.row.sLastName}, ${props.row.sFirstName}` : ''}`
+                          }}
+                        </b>
+                      </div>
+                    </div>
+                  </q-card-section>
+                  <q-separator />
+                  <q-card-section class="flex justify-content-end">
+                    <div>
+                      <b> ${{ convertWithCommas(props.row.price || $moStore.getSPrice) }} </b>
+                    </div>
+                  </q-card-section>
+                </q-card>
+              </div>
+            </template>
+          </q-table>
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -167,6 +232,8 @@ const {
 } = useMemberOrder()
 const $moStore = useMemberOrderStore()
 
+const isFullScreen = ref(false)
+
 const search = ref('')
 const types = ref({ value: 0, label: 'Show All' })
 const typesOptions = ref([{ value: 0, label: 'Show All' }])
@@ -174,7 +241,7 @@ const typesOptions = ref([{ value: 0, label: 'Show All' }])
 // const reciprocity = ref(false)
 const hidePaidOrders = ref(false)
 
-const columns = ref<QTableColumn[]>([
+const columns = ref<QTableColumn<OrderMemberListInterface>[]>([
   {
     name: 'name',
     required: true,
@@ -182,7 +249,8 @@ const columns = ref<QTableColumn[]>([
     align: 'left',
     field: 'firstName',
     sortable: true,
-    format: (name: string, row) => `${row?.lastName}, ${name}`,
+    format: (name: string, row) =>
+      `${row.lastName}, ${row.firstName} ${row.sLastName ? `& ${row.sLastName}, ${row.sFirstName}` : ''}`,
   },
   {
     name: 'amount',
@@ -190,7 +258,7 @@ const columns = ref<QTableColumn[]>([
     label: 'Amount',
     align: 'left',
     field: 'price',
-    format: (amount: number) => `$${convertWithCommas(amount)}`,
+    format: (amount: number) => `$${convertWithCommas(amount || $moStore.getSPrice)}`,
     sortable: true,
   },
 ])

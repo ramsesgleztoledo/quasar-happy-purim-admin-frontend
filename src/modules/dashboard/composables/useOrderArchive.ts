@@ -19,7 +19,7 @@ export const useOrderArchive = () => {
     async getOrdersArchive() {
       const orders = await getOrdersArchive({
         loading: {
-          message: 'loading orders...'
+          message: 'loading...'
         }
       })
       $oStore.setOrders(orders.ok ? orders.data : []);
@@ -39,7 +39,7 @@ export const useOrderArchive = () => {
           = await getOrderReceiptByOrderId(orderId, {
             useCache: true,
             loading: {
-              message: 'Loading order details ...',
+              message: 'Loading...',
             }
           });
       $oStore.setSelectedOrderReceipt(resp.ok ? resp.data : undefined)

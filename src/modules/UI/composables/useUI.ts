@@ -106,7 +106,9 @@ export const useUI = () => {
     reloadPage,
     goBack,
     goForward,
-    isDev: computed(() => process.env.NODE_ENV === 'development'),
+    isDev: computed(() => true
+      //  process.env.NODE_ENV === 'development'
+    ),
     version: computed(() => process.env.VERSION || ''),
 
     async downloadFile(endPoint: downloadEndPointType, data: {

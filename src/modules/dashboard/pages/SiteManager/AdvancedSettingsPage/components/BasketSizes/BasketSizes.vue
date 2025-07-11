@@ -36,7 +36,7 @@
           outlined
           v-model="realForm.basketSize.value"
           lazy-rules
-          :rules="[lazyRules.required(), lazyRules.greaterThan(0, true)]"
+          :rules="[lazyRules.required()]"
           label="Basket Size"
         />
         <q-btn
@@ -110,7 +110,7 @@ const { advancedSettingsState, createTab3BasketSize, deleteTab3BasketSize } = us
 const { realForm, isValidForm, getFormValue, resetForm } = useForm({
   rangeStart: { value: '', validations: [validations.required, validations.greaterThan(0, true)] },
   rangeEnd: { value: '', validations: [validations.required, validations.greaterThan(0, true)] },
-  basketSize: { value: '', validations: [validations.required, validations.greaterThan(0, true)] },
+  basketSize: { value: '', validations: [validations.required] },
 })
 
 const isFullScreen = ref<boolean>(false)

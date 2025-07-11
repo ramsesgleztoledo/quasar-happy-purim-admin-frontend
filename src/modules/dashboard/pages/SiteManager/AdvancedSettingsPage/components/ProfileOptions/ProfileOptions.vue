@@ -101,7 +101,7 @@
           style="background: white; color: var(--happypurim)"
           icon="add"
           label="add new options"
-          :disable="rowEdit?.optId === -1"
+          :disable="rowEdit?.optId === -1 || !!rows.find((it) => it.optId === -1)"
         />
       </div>
       <div class="row q-mt-sm" :style="{ height: isFullScreen ? '85%' : '400px' }">

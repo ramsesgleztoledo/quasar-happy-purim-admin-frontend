@@ -3,7 +3,7 @@
     <div class="col-12">
       <q-expansion-item
         v-model="additionalReceiptTextFlag"
-        label="Additional Receipt Text"
+        label="Additional Receipt Text:"
         class="ExpanCustom-exp-container"
       >
         <q-card>
@@ -44,7 +44,7 @@
     <div class="col-12">
       <q-expansion-item
         v-model="invoiceTextFlag"
-        label="Additional Receipt Text"
+        label="Invoice Text:"
         class="ExpanCustom-exp-container"
       >
         <q-card>

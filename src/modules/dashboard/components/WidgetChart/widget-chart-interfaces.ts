@@ -3,7 +3,7 @@ export interface WidgetCharPropsInterface {
   title: string
   preFix?: string
   subFix?: string
-  data?: DataItemInterface,
+  data: DataItemInterface,
   showRange?: boolean
 }
 export interface DataItemInterface {

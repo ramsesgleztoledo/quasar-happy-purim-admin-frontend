@@ -2,6 +2,7 @@ import { useUI } from "src/modules/UI/composables";
 import { useReportsService } from "../services/report.service";
 import { useReportStore } from "../store/ReportStore/reportStore";
 import type { RecipientDataFormInterface, ReportDataInterface } from "../interfaces/report.interface";
+import { useQuasar } from "quasar";
 
 export const useReport = () => {
 
@@ -10,10 +11,15 @@ export const useReport = () => {
   } = useReportsService()
   const $rStore = useReportStore()
   const { downloadFile } = useUI()
-
+  const $q = useQuasar()
 
   return {
     async getReportList() {
+      $q.loading.show({
+        message: 'Loading...',
+        spinnerColor: '#f36b09',
+        messageColor: '#f36b09',
+      })
       const resp = await Promise.all([
         getReportList(),
         getCustomReports()
@@ -32,6 +38,7 @@ export const useReport = () => {
           isCustom: true
         })) : [],
       })
+      $q.loading.hide()
     },
 
     async downloadReportExcelByReportId(report: ReportDataInterface) {

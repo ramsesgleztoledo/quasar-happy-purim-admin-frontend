@@ -193,7 +193,11 @@
           </div>
         </div>
         <template v-if="$moStore.getDonations?.charities.length">
-          <div class="row q-pa-sm q-mb-sm" v-for="(item, i) in $moStore.getDonations?.charities" :key="i">
+          <div
+            class="row q-pa-sm q-mb-sm"
+            v-for="(item, i) in $moStore.getDonations?.charities"
+            :key="i"
+          >
             <div class="col-12">
               <div class="row q-mb-sm">
                 <div class="col-2">
@@ -427,7 +431,7 @@ const membersSelected = computed<OrderMemberListInterface[]>(() => {
         break
       }
     }
-    if (!found) members.push(me)
+    if (!found) members.push({ ...me, price: me.price || $moStore.getSPrice })
   }
 
   return members

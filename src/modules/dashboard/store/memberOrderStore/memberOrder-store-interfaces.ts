@@ -2,7 +2,7 @@
 
 
 import type { OrderItemSettingsInterface, Tab2AddonInterface } from "../../interfaces/advanced-settings.interfaces";
-import type { AdditionalOrderOptionInterface, CustomShippingItemInterface, CustomShippingOptionInterface, DiscountInterface, MemberAdditionalCharityOptionsInterface, MemberCharityOptionInterface, MemberOrderItemsInterface, MemberOrderOrgSettingInterface, OrderMemberListInterface, OrderPromotionInterface, PaymentMethodTypeInterface } from "../../interfaces/memberOrder-interfaces";
+import type { AdditionalOrderOptionInterface, CustomShippingItemInterface, CustomShippingOptionInterface, DiscountInterface, MemberAdditionalCharityOptionsInterface, MemberCharityOptionInterface, MemberOrderItemsInterface, MemberOrderOrgSettingInterface, OrderMemberListInterface, OrderPromotionInterface, PaymentMethodTypeInterface, ShulSettingInterface } from "../../interfaces/memberOrder-interfaces";
 import type { NoneType } from "../../services/service-interfaces";
 
 
@@ -33,4 +33,5 @@ export interface MemberOrderStateInterface {
     email: string
     paymentType: number
   };
+  shulSetting: ShulSettingInterface | NoneType
 }

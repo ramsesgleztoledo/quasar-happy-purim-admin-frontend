@@ -23,7 +23,13 @@
             <q-item-label caption> {{ item.description }} </q-item-label></q-item-section
           >
           <q-item-section side>
-            <q-btn color="primary" flat icon="download" padding="none" />
+            <q-btn
+              @click="downloadNameLabels(item.id)"
+              color="primary"
+              flat
+              icon="download"
+              padding="none"
+            />
           </q-item-section>
         </q-item>
       </div>
@@ -36,7 +42,7 @@ import { onMounted, ref } from 'vue'
 import type { LabelOptionInterface } from '../../interfaces/label-ordersheet.interface'
 import { useLabelsAndOrdersheet } from '../../composables/useLabelsAndOrdersheet'
 
-const { getLabelOption } = useLabelsAndOrdersheet()
+const { getLabelOption, downloadNameLabels } = useLabelsAndOrdersheet()
 
 const labels = ref<LabelOptionInterface[]>([])
 const isReady = ref<boolean>(false)

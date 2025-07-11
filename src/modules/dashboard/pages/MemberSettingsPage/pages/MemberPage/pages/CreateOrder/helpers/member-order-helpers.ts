@@ -1,5 +1,6 @@
 import { getMembersByPromotion } from "src/modules/dashboard/helpers/getMembersByPromotion"
 import type { CustomShippingItemInterface, CustomShippingOptionInterface, ExtendedPromotionType, MemberOrderItemsInterface, OrderMemberListInterface, OrderPromotionInterface } from "src/modules/dashboard/interfaces/memberOrder-interfaces"
+import type { MemberOrderStateInterface } from "src/modules/dashboard/store/memberOrderStore/memberOrder-store-interfaces"
 
 export const getPromotionsHelper = (memberList: OrderMemberListInterface[], orderItems: MemberOrderItemsInterface[], promotions: OrderPromotionInterface[]) => {
   const promotionsAux: ExtendedPromotionType[] = []
@@ -33,20 +34,15 @@ export const checkIfPromotionHelper = (item: MemberOrderItemsInterface, promotio
 }
 
 
-export const getMembersSelectedHelper = (data: {
-  membersList: OrderMemberListInterface[],
-  membersSelected: OrderMemberListInterface[],
-  orderItems: MemberOrderItemsInterface[],
-  promotions: OrderPromotionInterface[]
-}) => {
+export const getMembersSelectedHelper = (state: MemberOrderStateInterface) => {
 
   const members: OrderMemberListInterface[] = []
 
-  const promotionsAux = getPromotionsHelper(data.membersList, data.orderItems, data.promotions)
+  const promotionsAux = getPromotionsHelper(state.memberList.original, state.orderItems, state.promotions)
 
 
-  for (let i = 0; i < data.membersSelected.length; i++) {
-    const me = data.membersSelected[i]!
+  for (let i = 0; i < state.membersSelected.length; i++) {
+    const me = state.membersSelected[i]!
     let found = false
 
     for (let j = 0; j < promotionsAux.length; j++) {
@@ -56,7 +52,7 @@ export const getMembersSelectedHelper = (data: {
         break
       }
     }
-    if (!found) members.push(me)
+    if (!found) members.push({ ...me, price: me.price ? me.price : state.shulSetting?.sPerperson || 0 })
   }
 
   return members

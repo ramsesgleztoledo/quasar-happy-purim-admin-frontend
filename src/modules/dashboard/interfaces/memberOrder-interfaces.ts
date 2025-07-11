@@ -323,4 +323,46 @@ export interface MemberCreateOrderFormInterface {
   discountPrice: number;
 }
 
+export interface ShulSettingInterface {
+  id: number;
+  sName: string;
+  sAddress1: string;
+  sAddress2: string;
+  sCity: string;
+  sState: string;
+  sZip: string;
+  sPhone: string;
+  sFax: string;
+  sContact: string;
+  sEmail: string;
+  sImage: string;
+  sLasttime: Date;
+  sPerperson: number;
+  sMaximum: number;
+  sProcesspayments: boolean;
+  sReciprocity: boolean;
+  sMembershipfee: number;
+  sFrontpage: string;
+  sReceiptpage: string;
+  sSendout: boolean;
+  sSendoutprice: number;
+  sAddon: boolean;
+  sAddonprice: number;
+  sAddOnText: string;
+  sSendoutText: string;
+  sDisplayaddress: boolean;
+  sUrl: string;
+  sCheckall: boolean;
+  sCards: boolean;
+  sCardsprice: number;
+  sCardstext: string;
+  sShiplocal: boolean;
+  sShiplocalprice: number;
+  sShiplocaltext: string;
+  sMembershiptext: string;
+  sEcheck: boolean;
+  sCardsdescription: string;
+  sShowmessagebox: boolean;
+  sReciprocityprice: number;
+}
 

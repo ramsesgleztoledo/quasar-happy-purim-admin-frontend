@@ -165,122 +165,136 @@
                 type="error"
                 text="don't do more than one item with the same description"
               />
+
               <div
-                class="row q-pa-sm q-mb-sm AdditionalOrderingOptions-additional-profile"
+                class="row q-pa-sm ProfileOptions-table-content"
                 :class="{ fullscreen: isFullScreen }"
-                :style="{ height: isFullScreen ? '100%' : '400px' }"
               >
                 <div class="col-12">
-                  <div class="row AdditionalOrderingOptions-additional-profile-desc-row">
+                  <div class="row q-mb-sm justify-content-end">
+                    <q-btn
+                      flat
+                      round
+                      color="primary"
+                      :icon="isFullScreen ? 'fullscreen_exit' : 'fullscreen'"
+                      @click="isFullScreen = !isFullScreen"
+                    />
+                  </div>
+                  <div class="row">
+                    <q-btn
+                      @click="onAddNewItem"
+                      style="background: white; color: var(--happypurim)"
+                      icon="add"
+                      label="add new item"
+                      :disable="
+                        rowEdit?.id === -1 || !!sellAdditionalItems.find((it) => it.id === -1)
+                      "
+                    />
+                  </div>
+                  <div class="row q-mt-sm" :style="{ height: isFullScreen ? '85%' : '400px' }">
                     <div class="col-12">
-                      <div class="row">
-                        <div class="col-12 justify-content-end">
-                          <q-btn
-                            flat
-                            round
-                            color="primary"
-                            :icon="isFullScreen ? 'fullscreen_exit' : 'fullscreen'"
-                            @click="isFullScreen = !isFullScreen"
-                          />
-                        </div>
-                      </div>
-                      <div class="row">
-                        <div class="col-5 q-pa-sm d-flex">
-                          <div class="row" style="width: 100%">
-                            <div class="col-12 q-pl-lg">
-                              <b>Description</b>
-                            </div>
-                          </div>
-                        </div>
-                        <div class="col-2 q-pa-sm">
-                          <b>Price</b>
-                        </div>
-                        <div class="col-2 q-pa-sm">
-                          <b>Sort Order</b>
-                        </div>
-                      </div>
-                      <div class="row">
-                        <div class="col-5 q-pa-sm d-flex">
-                          <b class="q-pa-sm"> # </b>
-                          <div class="row" style="width: 100%">
-                            <div class="col-12">
+                      <q-table
+                        :pagination="{
+                          rowsPerPage: 0,
+                        }"
+                        style="height: 100%"
+                        flat
+                        bordered
+                        :rows="sellAdditionalItems"
+                        :columns="columns"
+                        row-key="name"
+                        class="table-sticky-header-column-table"
+                      >
+                        <template v-slot:body="props">
+                          <q-tr :props="props" v-if="rowEdit?.id !== props.row.id">
+                            <q-td key="description" :props="props">
+                              <div>
+                                {{ props.row.description }}
+                              </div>
+                            </q-td>
+
+                            <q-td key="price" :props="props">
+                              <div>${{ convertWithCommas(Number(props.row.price) || 0) }}</div>
+                            </q-td>
+                            <q-td key="sortOrder" :props="props">
+                              <q-badge color="primary">
+                                {{ props.row.sortOrder }}
+                              </q-badge>
+                            </q-td>
+                            <q-td key="edit" :props="props">
+                              <q-btn
+                                v-if="rowEdit?.id !== props.row.id"
+                                flat
+                                style="background: var(--happypurim); color: white"
+                                label="Edit"
+                                @click="() => (rowEdit = { ...props.row })"
+                              />
+                            </q-td>
+                          </q-tr>
+
+                          <q-tr :props="props" v-else>
+                            <q-td key="description" :props="props">
                               <q-input
-                                v-model="realForm.description.value"
+                                label="Description *"
+                                v-model="rowEdit!.description"
                                 outlined
+                                lazy-rules
                                 :rules="[lazyRules.required()]"
                               />
-                            </div>
-                          </div>
-                        </div>
-                        <div class="col-2 q-pa-sm">
-                          <q-input
-                            v-model="realForm.price.value"
-                            outlined
-                            :rules="[lazyRules.required(), lazyRules.greaterThan(0, false)]"
-                            prefix="$"
-                          />
-                        </div>
-                        <div class="col-2 q-pa-sm">
-                          <q-input
-                            v-model="realForm.sortOrder.value"
-                            outlined
-                            :rules="[lazyRules.required(), lazyRules.greaterThan(0, true)]"
-                          />
-                        </div>
-                        <div class="col-3 q-pa-sm justify-content-center">
-                          <q-btn
-                            style="background: var(--happypurim); color: white"
-                            icon="add"
-                            label="Add new item"
-                            @click="addNewItem"
-                            :disable="!isValidForm()"
-                          />
-                        </div>
-                      </div>
-                    </div>
-                    <div class="separator-bottom q-mb-sm"></div>
-                  </div>
-                  <!--=============================== here =============================-->
+                            </q-td>
 
-                  <div class="row" v-for="(item, i) in sellAdditionalItems" :key="item.id">
-                    <div class="col-5 q-pa-sm d-flex">
-                      <b class="q-pa-sm"> {{ i + 1 }} </b>
-                      <div class="row" style="width: 100%">
-                        <div class="col-12">
-                          <q-input
-                            :rules="[lazyRules.required()]"
-                            v-model="item.description"
-                            outlined
-                          />
-                        </div>
-                      </div>
-                    </div>
-                    <div class="col-2 q-pa-sm">
-                      <q-input
-                        :rules="[lazyRules.required(), lazyRules.greaterThan(0, false)]"
-                        v-model="item.price"
-                        outlined
-                        type="number"
-                        prefix="$"
-                      />
-                    </div>
-                    <div class="col-2 q-pa-sm">
-                      <q-input
-                        :rules="[lazyRules.required(), lazyRules.greaterThan(0, true)]"
-                        v-model="item.sortOrder"
-                        outlined
-                        type="number"
-                      />
-                    </div>
-                    <div class="col-3 q-pa-sm justify-content-center">
-                      <q-btn
-                        icon="delete"
-                        @click="
-                          () => {
-                            onDeleteItem(item.id)
-                          }
-                        "
-                      />
+                            <q-td key="price" :props="props">
+                              <q-input
+                                label="Price"
+                                v-model="rowEdit!.price"
+                                outlined
+                                lazy-rules
+                                type="number"
+                                :rules="[lazyRules.required(), lazyRules.greaterThan(0, false)]"
+                              />
+                            </q-td>
+                            <q-td key="sortOrder" :props="props">
+                              <q-input
+                                label="Sort Order"
+                                v-model="rowEdit!.sortOrder"
+                                outlined
+                                lazy-rules
+                                type="number"
+                                :rules="[lazyRules.required(), lazyRules.greaterThan(0, true)]"
+                              />
+                            </q-td>
+                            <q-td key="edit" :props="props">
+                              <div class="row justify-content-end">
+                                <q-btn
+                                  class="q-mr-sm"
+                                  dense
+                                  color="primary"
+                                  size="sm"
+                                  icon="save"
+                                  :disable="!isRowEditValid()"
+                                  @click="addNewItem"
+                                />
+                                <q-btn
+                                  v-if="rowEdit?.id !== -1"
+                                  class="q-mr-sm"
+                                  dense
+                                  style="background-color: red; color: white"
+                                  size="sm"
+                                  icon="delete"
+                                  @click="onDeleteItem"
+                                />
+                                <q-btn
+                                  class="q-mr-sm"
+                                  dense
+                                  size="sm"
+                                  icon="close"
+                                  @click="onClose"
+                                />
+                              </div>
+                            </q-td>
+                          </q-tr>
+                        </template>
+                      </q-table>
                     </div>
                   </div>
                 </div>
@@ -292,15 +306,11 @@
                     style="background: white; color: var(--happypurim)"
                     icon="save"
                     label="Save"
-                    :disable="areOrderItemsValid()"
                     @click="
                       () =>
                         updateAdditionalOrderingItems({
-                          content: {
-                            enabled: sellAdditionalFlag,
-                            message: sellAdditionalText,
-                          },
-                          items: sellAdditionalItems,
+                          enabled: sellAdditionalFlag,
+                          message: sellAdditionalText,
                         })
                     "
                   />
@@ -315,10 +325,12 @@
 </template>
 
 <script setup lang="ts">
+import type { QTableColumn } from 'quasar'
 import EditorCustom from 'src/components/EditorCustom/EditorCustom.vue'
 import ExpanCustom from 'src/components/ExpanCustom/ExpanCustom.vue'
 import InfoAlert from 'src/components/InfoAlert/InfoAlert.vue'
-import { lazyRules, useForm, validations } from 'src/composables'
+import { lazyRules } from 'src/composables'
+import { convertWithCommas } from 'src/helpers'
 import { useAdvancedSettings } from 'src/modules/dashboard/composables/useAdvancedSettings'
 import type { Tab2AdditionalItemInterface } from 'src/modules/dashboard/interfaces/advanced-settings.interfaces'
 import { useUI } from 'src/modules/UI/composables'
@@ -332,6 +344,7 @@ const {
   addAdditionalOrderingItems,
   deleteAdditionalOrderingItems,
   updateAdditionalOrderingItems,
+  updateAdditionalOrderingItem,
 } = useAdvancedSettings()
 
 const { isMobile } = useUI()
@@ -360,12 +373,6 @@ const sellAdditionalItems = ref<Tab2AdditionalItemInterface[]>([])
  *               Additional Profile Questions/Options
  *=============================================**/
 const isFullScreen = ref<boolean>(false)
-
-const { realForm, isValidForm, getFormValue, resetForm } = useForm({
-  description: { value: '', validations: [validations.required] },
-  price: { value: 0, validations: [validations.required, validations.greaterThan(0)] },
-  sortOrder: { value: 0, validations: [validations.required, validations.greaterThan(0, true)] },
-})
 
 const resetDonations = () => {
   solicitDotationFlag.value = advancedSettingsState.value.charitySettings.active
@@ -411,11 +418,8 @@ const onUpdateAllowMembers = (value: boolean) => {
 
 const onUpdateSellAdditional = (value: boolean) => {
   updateAdditionalOrderingItems({
-    content: {
-      enabled: value,
-      message: sellAdditionalText.value,
-    },
-    items: sellAdditionalItems.value,
+    enabled: value,
+    message: sellAdditionalText.value,
   })
 }
 
@@ -427,31 +431,100 @@ onMounted(() => {
 })
 
 const addNewItem = async () => {
-  const item = getFormValue() as unknown as Tab2AdditionalItemInterface
-  const resp = await addAdditionalOrderingItems(item)
-  sellAdditionalItems.value = [...resp, ...sellAdditionalItems.value]
-  resetForm()
+  const data = rowEdit.value
+  if (!data) return
+  if (data.id === -1) {
+    const resp = await addAdditionalOrderingItems(rowEdit.value!)
+    sellAdditionalItems.value.shift()
+    sellAdditionalItems.value = [...resp, ...sellAdditionalItems.value]
+  } else {
+    updateAdditionalOrderingItem(data)
+    sellAdditionalItems.value = sellAdditionalItems.value.map((da) => {
+      if (da.id === data.id) return data
+      return da
+    })
+  }
+
+  rowEdit.value = undefined
 }
 
-const onDeleteItem = async (id: number) => {
+const onDeleteItem = async () => {
+  const id = rowEdit.value?.id
+  if (!id) return
+
   const resp = await deleteAdditionalOrderingItems(id)
   if (resp) sellAdditionalItems.value = sellAdditionalItems.value.filter((item) => item.id !== id)
+  rowEdit.value = undefined
 }
 
-const areOrderItemsValid = () => {
-  const found = sellAdditionalItems.value.find(
-    (item) =>
-      !item.description ||
-      !item.price ||
-      !item.sortOrder ||
-      Number(item.price) <= 0 ||
-      Number(item.sortOrder) < 0,
-  )
+const rowEdit = ref<Tab2AdditionalItemInterface | undefined>(undefined)
 
-  return !!found
+const isRowEditValid = () => {
+  const data = rowEdit.value
+
+  if (!data) return false
+  if (
+    !data.description ||
+    !data.price ||
+    data.sortOrder === undefined ||
+    data.sortOrder === null ||
+    `${data.sortOrder}` == '' ||
+    Number(data.price) <= 0 ||
+    Number(data.sortOrder) < 0
+  )
+    return false
+
+  return true
+}
+
+const onClose = () => {
+  if (rowEdit.value?.id === -1) sellAdditionalItems.value.shift()
+  rowEdit.value = undefined
+}
+
+const columns = ref<QTableColumn<Tab2AdditionalItemInterface>[]>([
+  {
+    name: 'description',
+    required: true,
+    label: 'Description',
+    align: 'left',
+    field: 'description',
+    sortable: true,
+  },
+  {
+    name: 'price',
+    required: true,
+    label: 'Price',
+    align: 'center',
+    field: 'price',
+  },
+  {
+    name: 'sortOrder',
+    required: true,
+    label: 'Sort Order',
+    align: 'center',
+    field: 'sortOrder',
+  },
+  {
+    name: 'edit',
+    required: true,
+    label: '',
+    field: 'id',
+  },
+])
+
+const onAddNewItem = () => {
+  const value = {
+    id: -1,
+    clientId: -1,
+    description: '',
+    price: 0,
+    sortOrder: 0,
+  }
+
+  rowEdit.value = value
+  sellAdditionalItems.value = [value, ...sellAdditionalItems.value]
 }
 </script>
 
-<style scoped lang="scss">
-@import './AdditionalOrderingOptions';
-</style>
+<style scoped lang="scss" src="./AdditionalOrderingOptions.scss" />

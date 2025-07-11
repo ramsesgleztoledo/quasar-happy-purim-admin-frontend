@@ -1,7 +1,7 @@
 
 import { defineStore, acceptHMRUpdate } from 'pinia';
 import type { MemberOrderStateInterface } from './memberOrder-store-interfaces';
-import type { OrderMemberListInterface, OrderPromotionInterface, MemberOrderItemsInterface, MemberOrderOrgSettingInterface, MemberAdditionalCharityOptionsInterface, MemberCharityOptionInterface, CustomShippingOptionInterface, CustomShippingItemInterface, AdditionalOrderOptionInterface, DiscountInterface, PaymentMethodTypeInterface, } from '../../interfaces/memberOrder-interfaces';
+import type { OrderMemberListInterface, OrderPromotionInterface, MemberOrderItemsInterface, MemberOrderOrgSettingInterface, MemberAdditionalCharityOptionsInterface, MemberCharityOptionInterface, CustomShippingOptionInterface, CustomShippingItemInterface, AdditionalOrderOptionInterface, DiscountInterface, PaymentMethodTypeInterface, ShulSettingInterface, } from '../../interfaces/memberOrder-interfaces';
 import type { NoneType } from '../../services/service-interfaces';
 import type { OrderItemSettingsInterface, Tab2AddonInterface } from '../../interfaces/advanced-settings.interfaces';
 import { s_cartData, s_customShippingItemsTotal, s_donations, s_fee, s_isPaymentFormInvalid, s_orderTotal } from './services';
@@ -43,7 +43,8 @@ const initialState: MemberOrderStateInterface = {
     form: undefined,
     email: "",
     paymentType: 1
-  }
+  },
+  shulSetting: undefined
 }
 
 export const useMemberOrderStore = defineStore('memberOrderStore', {
@@ -65,8 +66,9 @@ export const useMemberOrderStore = defineStore('memberOrderStore', {
 
     IsPaymentFormInvalid: (state: MemberOrderStateInterface) => s_isPaymentFormInvalid(state),
 
-    getCartData: (state: MemberOrderStateInterface) => s_cartData(state)
+    getCartData: (state: MemberOrderStateInterface) => s_cartData(state),
 
+    getSPrice: (state: MemberOrderStateInterface) => state.shulSetting?.sPerperson || 0
   },
 
   actions: {
@@ -134,7 +136,10 @@ export const useMemberOrderStore = defineStore('memberOrderStore', {
         email: "",
         paymentType: 1
       }
-    }
+    },
+    setShulSetting(shulSetting: ShulSettingInterface | NoneType) {
+      this.shulSetting = shulSetting
+    },
 
   }
 });

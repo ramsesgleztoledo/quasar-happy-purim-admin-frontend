@@ -4,12 +4,7 @@ import { getCustomShippingItemsTotalHelper, getMembersSelectedHelper } from "src
 import type { FormComposition } from "src/composables/useForm/interfaces"
 
 export const s_orderTotal = (state: MemberOrderStateInterface) => {
-  const memberSel = getMembersSelectedHelper({
-    membersList: state.memberList.original,
-    membersSelected: state.membersSelected,
-    orderItems: state.orderItems,
-    promotions: state.promotions,
-  })
+  const memberSel = getMembersSelectedHelper(state)
 
   const totalMembers = memberSel.reduce((pre, cur) =>
     pre + (cur.price || 0)
@@ -101,16 +96,22 @@ export const s_cartData = (state: MemberOrderStateInterface) => {
    *=============================================**/
   const percent = fees?.creditCardFee || 0
   const fee = ((totalBefore - discountValue) * percent) / 100
+  // fee per person
+  let feePerperson = 0
+  if (state.shulSetting?.sMembershipfee)
+    feePerperson = state.membersSelected.length * state.shulSetting?.sMembershipfee
+
   /**============================================
    *               Total
    *=============================================**/
   const perTransactionFee = fees?.perTransactionFee || 0
-  const finalTotal = totalBefore - discountValue + fee + perTransactionFee;
+  const finalTotal = totalBefore - discountValue + fee + feePerperson + perTransactionFee;
 
   return {
     totalBefore,
     discount,
     fee,
+    feePerperson,
     finalTotal,
   }
 }

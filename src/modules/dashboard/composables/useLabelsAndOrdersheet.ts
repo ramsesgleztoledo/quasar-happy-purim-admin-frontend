@@ -1,9 +1,13 @@
+import { useUI } from "src/modules/UI/composables";
 import { useLabelsAndOrdersheetService } from "../services/labelsAndOrdersheet.service";
 
 export const useLabelsAndOrdersheet = () => {
 
-  const { getLabelOption } = useLabelsAndOrdersheetService()
-
+  const { getLabelOption, downloadOrderSheet,
+    downloadOrderSheetByCategory,
+    downloadNameLabels,
+    downloadMailingLabels, } = useLabelsAndOrdersheetService()
+  const { downloadFile } = useUI()
 
   return {
     async getLabelOption() {
@@ -14,5 +18,72 @@ export const useLabelsAndOrdersheet = () => {
       })
       return resp.ok ? resp.data : []
     },
+
+    async downloadNameLabels(id: number) {
+
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      let fetch: any = undefined
+      let name = ''
+
+      switch (id) {
+        case 1:
+          fetch = downloadOrderSheet
+          name = 'Order-Sheet'
+          break;
+        case 2:
+          fetch = downloadOrderSheetByCategory
+          name = 'Order-Sheet-By-Category'
+          break;
+        case 3:
+          fetch = downloadNameLabels
+          name = 'Name-Labels'
+          break;
+        default:
+          fetch = downloadMailingLabels
+          name = 'Mailing-Labels'
+          break;
+      }
+
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const docData: any = {
+        fileType: 'doc',
+        fileName: name,
+        extension: 'docx'
+      }
+
+      if (id != 4)
+        await downloadFile(async () => await fetch({
+          dontRedirect: true,
+          loading: {
+            message: 'Downloading'
+          }
+        }), {
+          ...docData
+        })
+      else {
+        await downloadFile(async () => await fetch('Regular', {
+          dontRedirect: true,
+          loading: {
+            message: 'Downloading'
+          }
+        }), {
+          ...docData,
+          fileName: docData.fileName + '-Regular'
+        })
+        await downloadFile(async () => await fetch('Alternate', {
+          dontRedirect: true,
+          loading: {
+            message: 'Downloading'
+          }
+        }), {
+          ...docData,
+          fileName: docData.fileName + '-Alternate'
+        })
+
+      }
+
+
+    }
+
   }
 };

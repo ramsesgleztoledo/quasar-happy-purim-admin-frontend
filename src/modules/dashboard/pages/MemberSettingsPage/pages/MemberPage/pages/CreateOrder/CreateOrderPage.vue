@@ -1,5 +1,5 @@
 <template>
-  <q-inner-loading :showing="!isReady" label="Loading orders ..." />
+  <q-inner-loading :showing="!isReady" label="Loading..." />
   <div v-if="isReady">
     <div ref="createOrderPageContainerRef" class="CreateOrderPage-container">
       <div class="CreateOrderPage-top">
@@ -35,7 +35,7 @@
                     'col-6': !isMobile,
                     'col-12': isMobile,
                   }"
-                  class="CreateOrderPage-left-container"
+                  class="CreateOrderPage-left-container q-pa-sm"
                 >
                   <StepTwoCreateOrder v-show="step === 2" />
                   <StepThreeCreateOrder v-show="step === 3" />

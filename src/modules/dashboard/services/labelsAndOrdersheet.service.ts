@@ -19,6 +19,51 @@ export const useLabelsAndOrdersheetService = () => {
       })
     },
 
+    downloadOrderSheet: async (extraOptions?: ExtraOptionsInterface): Promise<ApiCallResponseInterface<unknown>> => {
+
+      const nextUrl = `/OrderSheet`;
+      const url = `${baseUrl}${nextUrl}`;
+
+      return await apiCall({
+        url,
+        extraOptions,
+        responseType: 'arraybuffer',
+      })
+    },
+    downloadOrderSheetByCategory: async (extraOptions?: ExtraOptionsInterface): Promise<ApiCallResponseInterface<unknown>> => {
+
+      const nextUrl = `/OrderSheetByCategory`;
+      const url = `${baseUrl}${nextUrl}`;
+
+      return await apiCall({
+        url,
+        extraOptions,
+        responseType: 'arraybuffer',
+      })
+    },
+    downloadNameLabels: async (extraOptions?: ExtraOptionsInterface): Promise<ApiCallResponseInterface<unknown>> => {
+
+      const nextUrl = `/NameLabels`;
+      const url = `${baseUrl}${nextUrl}`;
+
+      return await apiCall({
+        url,
+        extraOptions,
+        responseType: 'arraybuffer',
+      })
+    },
+    downloadMailingLabels: async (labelType: 'Regular' | 'Alternate', extraOptions?: ExtraOptionsInterface): Promise<ApiCallResponseInterface<unknown>> => {
+
+      const nextUrl = `/MailingLabels?labelType=${labelType}`;
+      const url = `${baseUrl}${nextUrl}`;
+
+      return await apiCall({
+        url,
+        extraOptions,
+        responseType: 'arraybuffer',
+      })
+    },
+
   }
 
 

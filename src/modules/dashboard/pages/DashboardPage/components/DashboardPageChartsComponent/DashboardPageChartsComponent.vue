@@ -33,7 +33,7 @@
       'col-12': isMobile,
     }"
   >
-    <WidgetChart title="ALL TIME ORDERS" typeChart="line" :data="orderTotalGraph" />
+    <WidgetChart preFix="$" title="ALL TIME ORDERS" typeChart="line" :data="orderTotalGraph" />
   </div>
 </template>
 

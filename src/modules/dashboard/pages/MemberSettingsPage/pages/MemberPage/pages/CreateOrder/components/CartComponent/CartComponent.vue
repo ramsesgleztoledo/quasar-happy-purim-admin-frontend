@@ -81,6 +81,19 @@
 
           <div>$ +{{ convertWithCommas($moStore.getFee?.perTransactionFee) }}</div>
         </div>
+        <div
+          v-if="data.feePerperson"
+          class="row w-full justify-content-space-between q-mb-sm d-flex"
+          style="color: var(--happypurim)"
+        >
+          <div class="row cursor-pointer">
+            <div class="q-mr-sm">
+              <b> Fee per person </b>
+            </div>
+          </div>
+
+          <div>$ +{{ convertWithCommas(data.feePerperson) }}</div>
+        </div>
       </div>
 
       <q-separator class="q-mb-sm" />

@@ -55,12 +55,7 @@ const $moStore = useMemberOrderStore()
 const { removeMemberFromCart } = useMemberOrder()
 
 const membersSelected = computed<OrderMemberListInterface[]>(() =>
-  getMembersSelectedHelper({
-    membersList: $moStore.memberList.original,
-    membersSelected: $moStore.membersSelected,
-    orderItems: $moStore.orderItems,
-    promotions: $moStore.promotions,
-  }),
+  getMembersSelectedHelper($moStore.$state),
 )
 
 const onDeleteMember = async (member: OrderMemberListInterface) => {

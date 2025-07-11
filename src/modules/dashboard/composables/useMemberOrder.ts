@@ -21,6 +21,7 @@ import { usePaymentMethodsService } from "../services/paymentMethods.service";
 import type { FormComposition } from "src/composables/useForm/interfaces";
 import { useRouter } from "vue-router";
 import { useProcessOrderService } from "../services/processOrder.service";
+import { useShulService } from "../services/Shul.service";
 
 
 
@@ -46,6 +47,7 @@ export const useMemberOrder = () => {
   const { getDiscounts } = useDiscountsService()
   const { getPaymentMethods } = usePaymentMethodsService()
   const { placeOrder } = useProcessOrderService()
+  const { getShulSettings } = useShulService()
 
   const mGuid = computed(() => memberState.value.selectedMember?.memberGuid || '')
   const memberId = computed(() => memberState.value.selectedMember?.memberId || 0)
@@ -124,6 +126,7 @@ export const useMemberOrder = () => {
         getAdditionalOrderOptions(mGuid.value),
         getDiscounts(),
         getPaymentMethods(mGuid.value),
+        getShulSettings(mGuid.value),
       ])
 
       if (resp.find(resp => !resp.ok)) return
@@ -159,7 +162,8 @@ export const useMemberOrder = () => {
         additionalOrderItemsSettings: resp[10].data,
         additionalOrderOptions: resp[11].data,
         discounts: resp[12].data,
-        paymentMethodTypes: resp[13].data
+        paymentMethodTypes: resp[13].data,
+        shulSetting: resp[14].data
       })
     },
     addOrRemoveItem,

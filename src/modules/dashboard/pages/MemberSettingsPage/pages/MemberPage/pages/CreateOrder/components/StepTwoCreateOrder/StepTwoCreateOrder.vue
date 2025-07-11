@@ -29,11 +29,7 @@
                     :rules="[lazyRules.greaterThan(0, false)]"
                   />
                   <q-btn
-                    :disable="
-                      !!additionalBasketForPersonalUse ||
-                      !additionalBasketsPersonal ||
-                      Number(additionalBasketsPersonal) <= 0
-                    "
+                    :disable="!additionalBasketsPersonal || Number(additionalBasketsPersonal) <= 0"
                     @click="addAdditionalBasket"
                     class="q-mr-sm q-ml-md"
                     style="background: var(--happypurim); color: white; max-height: 10px"
@@ -55,7 +51,7 @@
 
       <!--! =============================== donations =============================-->
       <div
-        v-if="memberOrderState.orgSettings?.donateBasketOption"
+        v-if="charities.length || memberOrderState.additionalCharityOptions.length"
         class="row StepTwoCreateOrder-donations"
       >
         <div class="col-12">
@@ -87,7 +83,7 @@
                   :rules="[lazyRules.greaterThan(0, false)]"
                 />
                 <q-btn
-                  :disable="!!donationUse || !donationAmount || Number(donationAmount) <= 0"
+                  :disable="!donationAmount || Number(donationAmount) <= 0"
                   @click="addDonation"
                   class="q-mr-sm q-ml-md"
                   style="background: var(--happypurim); color: white; max-height: 10px"
@@ -256,16 +252,22 @@ const $q = useQuasar()
 
 const charities = ref<CharityType[]>([])
 
+const itemAlreadyAdded = () => {
+  $q.notify({
+    color: 'blue',
+    textColor: 'black',
+    icon: 'error',
+    message: `You already Added this item, please remove it before adding a different amount`,
+  })
+}
+
 const donationDisable = (charity: CharityType) => {
-  return (
-    charity.value === undefined ||
-    charity.value === null ||
-    Number(charity.value) <= 0 ||
-    !!memberOrderState.value.orderItems.find((oi) => oi.itemId === charity.id)
-  )
+  return charity.value === undefined || charity.value === null || Number(charity.value) <= 0
 }
 
 const donate = async (charity: CharityType) => {
+  if (memberOrderState.value.orderItems.find((oi) => oi.itemId === charity.id))
+    return itemAlreadyAdded()
   await addOrRemoveDonation(true, charity)
 }
 
@@ -281,6 +283,7 @@ watch(
 )
 
 const addAdditionalBasket = async () => {
+  if (additionalBasketForPersonalUse.value) return itemAlreadyAdded()
   const authState: authStateInterface | null = $q.localStorage.getItem('authState')
   const data: MemberOrderItemsInterface = {
     description: `Addition Gift Basket(s) for Personal Use`,
@@ -295,6 +298,8 @@ const addAdditionalBasket = async () => {
   await addOrRemoveItem(true, data, true)
 }
 const addDonation = async () => {
+  if (donationUse.value) return itemAlreadyAdded()
+
   const authState: authStateInterface | null = $q.localStorage.getItem('authState')
   const data: MemberOrderItemsInterface = {
     description: `Donation To Charity`,
@@ -323,13 +328,17 @@ const isAdditionalItemDisable = (item: AdditionalOrderOptionInterface) =>
     if (value <= 0) return true
     if (item.maxQuantity && value > item.maxQuantity) return true
 
-    const found = memberOrderState.value.orderItems.find(
-      (itemAux) => itemAux.itemId === 5 && itemAux.description === item.description,
-    )
-    return !!found
+    return false
   })
 
 const addAdditionalItem = async (item: AdditionalOrderOptionInterface) => {
+  if (
+    memberOrderState.value.orderItems.find(
+      (itemAux) => itemAux.itemId === 5 && itemAux.description === item.description,
+    )
+  )
+    return itemAlreadyAdded()
+
   const authState: authStateInterface | null = $q.localStorage.getItem('authState')
 
   const data: MemberOrderItemsInterface = {
