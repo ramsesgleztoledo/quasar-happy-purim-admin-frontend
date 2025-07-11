@@ -163,7 +163,7 @@
         </template> -->
             <template v-slot:item="props">
               <div class="q-pa-sm col-xs-12 col-sm-6 col-md-4">
-                <q-card flat bordered>
+                <q-card bordered>
                   <q-card-section
                     class="text-center"
                     style="min-height: 70px"
