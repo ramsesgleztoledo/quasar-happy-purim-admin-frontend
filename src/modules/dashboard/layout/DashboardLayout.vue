@@ -8,6 +8,9 @@
     </q-header>
     <!-- Side menu -->
     <q-drawer v-model="$uiStore.sideMenuValue" show-if-above bordered>
+      <div v-if="isMobile" class="row justify-content-end q-pa-sm">
+        <q-btn flat round color="primary" icon="logout" @click="logOut(true)" />
+      </div>
       <q-list>
         <q-item-label header style="margin-bottom: 60px"> </q-item-label>
 
@@ -52,7 +55,9 @@ import { useUI } from 'src/modules/UI/composables'
 import { useUIStore } from 'src/modules/UI/store/ui-store'
 import { useRouter } from 'vue-router'
 import { useDashboard } from '../composables/useDashboard'
+import { useAuth } from 'src/modules/auth/composables/useAuth'
 
+const { logOut } = useAuth()
 const $uiStore = useUIStore()
 const $router = useRouter()
 const { isMobile, version } = useUI()

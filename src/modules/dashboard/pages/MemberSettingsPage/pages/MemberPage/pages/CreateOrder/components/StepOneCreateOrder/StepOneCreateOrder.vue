@@ -12,14 +12,33 @@
       class="q-mr-md q-mb-md"
       :class="{
         'col-12': isMobile,
-        'item-width-200': !isMobile,
+        'item-width-300': !isMobile,
       }"
     >
       <q-select
+        :class="{ 'item-width-300': !isMobile }"
         v-model="types"
         outlined
-        :options="typesOptions"
-        label="Show"
+        multiple
+        :options="$dStore.categories"
+        label="Filter by categories"
+        option-label="categoryName"
+        option-value="categoryID"
+      />
+    </div>
+    <div
+      class="q-mr-md q-mb-md"
+      :class="{
+        'col-12': isMobile,
+        'item-width-300': !isMobile,
+      }"
+    >
+      <q-select
+        v-model="orderHistory"
+        outlined
+        multiple
+        :options="ordersHistory"
+        label="Filter by order history"
         option-label="label"
         option-value="value"
       />
@@ -27,10 +46,10 @@
     <div
       :class="{
         'col-12': isMobile,
-        'item-width-200': !isMobile,
+        'item-width-300': !isMobile,
       }"
     >
-      <q-input disable v-model="search" outlined label="Search">
+      <q-input v-model="search" outlined label="Search">
         <template v-slot:append>
           <q-icon name="search" />
         </template>
@@ -102,7 +121,7 @@
                 <div class="col-12"></div>
                 <h6 style="margin: 0px">
                   Members ({{ memberOrderState.membersSelected.length }}/{{
-                    memberOrderState.memberList.copy.length
+                    memberOrderState.memberList.original.length
                   }})
                 </h6>
               </div>
@@ -117,58 +136,27 @@
             flat
             bordered
             ref="tableRef"
-            :rows="memberOrderState.memberList.copy"
+            :rows
             :columns="columns"
             row-key="id"
             selection="multiple"
             v-model:selected="$moStore.membersSelected"
-            :tableRowStyleFn="tableRowStyleFn"
             @selection="onSelectAll"
             :pagination="{
               rowsPerPage: 0,
             }"
           >
-            <!-- <template v-slot:top="props">
-          <div class="q-table__title" style="padding: 2px">
-            <b> Members: </b>
-          </div>
-
-          <q-space />
-
-          <q-btn
-            flat
-            round
-            dense
-            :icon="props.inFullscreen ? 'fullscreen_exit' : 'fullscreen'"
-            @click="props.toggleFullscreen"
-            class="q-ml-md"
-          />
-        </template> -->
-
-            <!-- <template v-slot:header-selection="scope">
-          <q-checkbox v-model="scope.selected" />
-        </template>
-
-        <template v-slot:body-selection="scope">
-          <q-checkbox
-            v-if="!scope.row.paid"
-            :disable="scope.row.paid"
-            :model-value="scope.selected"
-            @update:model-value="
-              (val, evt) => {
-                ;(Object as any).getOwnPropertyDescriptor(scope, 'selected').set(val, evt)
-              }
-            "
-          />
-        </template> -->
             <template v-slot:item="props">
               <div class="q-pa-sm col-xs-12 col-sm-6 col-md-4">
                 <q-card bordered>
                   <q-card-section
                     class="text-center"
-                    style="min-height: 70px"
-                    :style="tableRowStyleFn(props.row)"
+                    style="min-height: 70px; padding: 0px; display: flex"
                   >
+                    <RowStyle :row="props.row"/>
+                  </q-card-section>
+                  <q-separator />
+                  <q-card-section>
                     <div class="row" style="align-items: center">
                       <q-checkbox
                         class="q-mr-sm"
@@ -183,7 +171,7 @@
                           }
                         "
                       />
-                      <div>
+                      <div style="background-color:">
                         <b>
                           {{
                             `${props.row.lastName}, ${props.row.firstName} ${props.row.sLastName ? `& ${props.row.sLastName}, ${props.row.sFirstName}` : ''}`
@@ -223,6 +211,9 @@ import type { StepOneCreateOrderInterface } from '../../interfaces'
 import { useMemberOrderStore } from 'src/modules/dashboard/store/memberOrderStore/memberOrderStore'
 import { getMembersByPromotion } from 'src/modules/dashboard/helpers/getMembersByPromotion'
 import { checkDisabledPromotionHelper } from '../../helpers/member-order-helpers'
+import { useDashboardStore } from 'src/modules/dashboard/store/dashboardStore/dashboardStore'
+import type { ShulCategoryInterface } from 'src/modules/dashboard/interfaces/category-interfaces'
+import RowStyle from './components/RowStyle.vue'
 
 const { isMobile } = useUI()
 const {
@@ -231,12 +222,19 @@ const {
   // addOrRemovePromotion
 } = useMemberOrder()
 const $moStore = useMemberOrderStore()
+const $dStore = useDashboardStore()
 
 const isFullScreen = ref(false)
 
 const search = ref('')
-const types = ref({ value: 0, label: 'Show All' })
-const typesOptions = ref([{ value: 0, label: 'Show All' }])
+const types = ref<ShulCategoryInterface[]>([])
+
+const orderHistory = ref<{ value: number; label: string }[]>([])
+const ordersHistory = ref([
+  { value: 1, label: 'People I sent the last year' },
+  { value: 2, label: 'People I reciprocated to last year' },
+  { value: 3, label: 'People I received from last year' },
+])
 
 // const reciprocity = ref(false)
 const hidePaidOrders = ref(false)
@@ -262,6 +260,42 @@ const columns = ref<QTableColumn<OrderMemberListInterface>[]>([
     sortable: true,
   },
 ])
+
+const rows = computed(() =>
+  memberOrderState.value.memberList.copy.filter((item) => {
+    const se = JSON.stringify(item).toLowerCase().includes(search.value.toLowerCase())
+    if (!se) return false
+
+    const orderHArray = orderHistory.value || []
+
+    for (let i = 0; i < orderHArray.length; i++) {
+      const key = orderHArray[i]!.value
+      let valid = true
+      switch (key) {
+        case 1:
+          if (!item.iSentLastYear) valid = false
+          break
+        case 2:
+          if (item.reciprocal == 'No') valid = false
+          break
+
+        default:
+          if (!item.sentToMeLastYear) valid = false
+          break
+      }
+      if (!valid) return false
+    }
+
+    const typesArray = types.value || []
+
+    for (let i = 0; i < typesArray.length; i++) {
+      const cat = typesArray[i]!.categoryName
+      if (!item.memberCategories.includes(cat)) return false
+    }
+
+    return true
+  }),
+)
 
 // const rows = ref<OrderMemberListInterface[]>([])
 // const selected = ref<OrderMemberListInterface[]>([])
@@ -289,16 +323,16 @@ watch(
   },
 )
 
-const tableRowStyleFn = (row: OrderMemberListInterface) => {
-  let color = ''
+// const tableRowStyleFn = (row: OrderMemberListInterface) => {
+//   let color = ''
 
-  if (row.iSentLastYear) color = '#9acd32'
-  if (row.reciprocal === 'Yes') color = '#ffc702'
-  if (row.sentToMeLastYear) color = '#86ceeb'
-  if (row.paid) color = '#fa6666'
+//   if (row.iSentLastYear) color = '#9acd32'
+//   if (row.reciprocal === 'Yes') color = '#ffc702'
+//   if (row.sentToMeLastYear) color = '#86ceeb'
+//   if (row.paid) color = '#fa6666'
 
-  return `background-color: ${color}`
-}
+//   return `background-color: ${color}`
+// }
 
 const onSelectAll = () => {
   setTimeout(() => {

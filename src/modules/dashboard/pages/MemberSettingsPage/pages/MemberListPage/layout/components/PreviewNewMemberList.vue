@@ -361,7 +361,9 @@ onMounted(() => {
 const reduceArrayToObject = (arr: any[]) => {
   return arr.reduce(
     (acc, member) => {
-      acc[member.id] = member
+      const memberAux = { ...member }
+      delete memberAux.id
+      acc[member.id] = memberAux
       return acc
     },
     {} as Record<string, (typeof pendingUpdateData.value)[number]>,

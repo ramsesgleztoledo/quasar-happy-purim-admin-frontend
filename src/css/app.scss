@@ -342,3 +342,21 @@ hr {
 .loading-btn .q-spinner-mat {
   color: white;
 }
+
+.hp-logo {
+  color: var(--happypurim);
+  font-weight: 800;
+  font-family: cursive;
+  margin: 0px;
+  margin-right: 10px;
+}
+
+.item-width-300 {
+  width: 300px;
+}
+
+.search-select-container {
+  i {
+    display: none !important;
+  }
+}

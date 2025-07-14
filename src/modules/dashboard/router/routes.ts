@@ -185,6 +185,28 @@ export const dashboardRoutes: RouteRecordRaw[] = [
           },
         ]
 
+      },
+     {
+        path: 'user-management',
+        name: 'dashboard-UserManagement',
+        component: () =>
+          import(/* webpackChunkName: "dashboard-UserManagement" */ "../pages/UserManagementPage/layout/UserManagementLayout.vue"),
+
+        // redirect: { name: 'OrderArchivePage-orders' },
+        // children: [
+        //   {
+        //     path: '',
+        //     name: 'OrderArchivePage-orders',
+        //     component: () =>
+        //       import(/* webpackChunkName: "dashboard-OrderArchivePage" */ "../pages/OrderArchivePage/pages/OrderArchivePage/OrderArchivePage.vue"),
+        //   },
+        //   {
+        //     path: ':orderId',
+        //     name: 'OrderArchivePage-orderDetails',
+        //     component: () =>
+        //       import(/* webpackChunkName: "dashboard-OrderArchivePage" */ "../pages/OrderArchivePage/pages/OrderDetailPage/OrderDetailPage.vue"),
+        //   },
+        // ]
       }
 
     ]

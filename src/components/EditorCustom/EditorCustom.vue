@@ -20,6 +20,14 @@
           fullscreenClass = !fullscreenClass
         },
       },
+      clear_all: {
+        tip: 'Clear All',
+        icon: 'close',
+        label: 'Clear',
+        handler: () => {
+          $emit('update:modelValue', '')
+        },
+      },
     }"
     toolbar-bg="primary"
     toolbar-text-color="white"
@@ -36,7 +44,7 @@
         'removeFormat',
       ],
       ['undo', 'redo'],
-      ['token', 'insert', 'hr', 'link', 'custom_btn', showUploader ? 'upload' : ''],
+      ['token', 'insert', 'stringTokens', 'hr', 'link', 'custom_btn', showUploader ? 'upload' : ''],
       [
         {
           label: $q.lang.editor.formatting,
@@ -69,8 +77,8 @@
             'verdana',
           ],
         },
-        'removeFormat',
       ],
+      ['clear_all'],
       ['fullscreenClass'],
     ]"
     :fonts="{
@@ -108,6 +116,31 @@
               <q-icon v-if="token.icon" :name="token.icon" />
             </q-item-section>
             <q-item-section>{{ token.label }}</q-item-section>
+          </q-item>
+        </q-list>
+      </q-btn-dropdown>
+    </template>
+    <template v-if="!!stringTokens" v-slot:stringTokens>
+      <q-btn-dropdown
+        dense
+        no-caps
+        ref="stringTokenRef"
+        no-wrap
+        unelevated
+        color="white"
+        text-color="primary"
+        label="Insert Token"
+        size="sm"
+      >
+        <q-list dense>
+          <q-item
+            v-for="(token, i) in stringTokens"
+            :key="i"
+            tag="label"
+            clickable
+            @click="addTokenText(token)"
+          >
+            <q-item-section>{{ token }}</q-item-section>
           </q-item>
         </q-list>
       </q-btn-dropdown>
@@ -303,6 +336,7 @@ interface EditorCustomPropsInterface {
   modelValue: string
   height?: string
   tokens?: { name: string; label: string; icon?: string }[]
+  stringTokens?: string[] | undefined
   attacher?: { name: string; label: string; icon?: string; value: string }[]
   showUploader?: boolean
 }
@@ -325,6 +359,7 @@ const text = computed({
   set: (val) => $emit('update:modelValue', val),
 })
 const tokenRef = ref<QBtnDropdown | undefined>(undefined)
+const stringTokenRef = ref<QBtnDropdown | undefined>(undefined)
 const attacherRef = ref<QBtnDropdown | undefined>(undefined)
 const editorRef = ref<QEditor | undefined>(undefined)
 // Emit the updated value when the internal state changes
@@ -344,7 +379,7 @@ const add = (name: string) => {
 const addTokenText = (name: string) => {
   if (!editorRef.value) return
   const edit = editorRef.value
-  tokenRef.value?.hide()
+  stringTokenRef.value?.hide()
   edit.caret.restore()
   edit.runCmd('insertHTML', `&nbsp;{{${name}}} &nbsp;`)
   edit.focus()

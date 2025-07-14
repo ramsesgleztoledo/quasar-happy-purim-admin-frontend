@@ -7,7 +7,7 @@
         'col-12': isMobile,
       }"
     >
-      <q-input disable outlined v-model="searchText" label="Search">
+      <q-input outlined v-model="searchText" label="Search">
         <template v-slot:append>
           <q-icon name="search" />
         </template>
@@ -54,7 +54,7 @@
           flat
           bordered
           ref="tableRef"
-          :rows="memberState.members"
+          :rows
           :columns="columns"
           row-key="id"
           styles="height: 360px"
@@ -104,7 +104,7 @@
 <script setup lang="ts">
 import type { QTableColumn } from 'quasar'
 import { convertToUSDate } from 'src/helpers/convertToUSDate'
-import { ref } from 'vue'
+import { computed, ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { useUI } from 'src/modules/UI/composables'
 import type { MemberInterface } from '../../interfaces/member-interfaces'
@@ -114,6 +114,9 @@ const { isMobile } = useUI()
 const $router = useRouter()
 const { memberState } = useMember()
 
+const rows = computed(() =>
+  memberState.value.members.filter((item) => JSON.stringify(item).toLowerCase().includes(searchText.value.toLowerCase())),
+)
 const isFullScreen = ref(false)
 
 const goToMember = (memberId: number) => {

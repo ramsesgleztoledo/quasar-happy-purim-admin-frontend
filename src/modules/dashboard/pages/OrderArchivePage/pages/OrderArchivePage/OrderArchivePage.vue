@@ -8,7 +8,7 @@
   <div class="row">
     <div class="col-12">
       <div class="row">
-        <q-input disable outlined v-model="searchText" label="Search">
+        <q-input outlined v-model="searchText" label="Search">
           <template v-slot:append>
             <q-icon name="search" />
           </template>
@@ -19,11 +19,11 @@
           <TableCustom
             class-name="table-sticky-header-column-table table-cursor-pinter-custom"
             styles="height: 628px"
-            :rows="ordersArchiveState.orders"
+            :rows
             :columns="columns"
             row-key="id"
             @onRowClick="
-              ({ row }) => {
+              ({ row }: any) => {
                 $router.push({
                   name: 'OrderArchivePage-orderDetails',
                   params: {
@@ -40,7 +40,7 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, ref } from 'vue'
+import { computed, onMounted, ref } from 'vue'
 
 import type { QTableColumn } from 'quasar'
 import { convertToUSDate, convertWithCommas } from 'src/helpers'
@@ -50,6 +50,12 @@ import { useOrderArchive } from '../../../../composables/useOrderArchive'
 const { getOrdersArchive, ordersArchiveState } = useOrderArchive()
 
 const searchText = ref('')
+
+const rows = computed(() =>
+  ordersArchiveState.value.orders.filter((item) =>
+    JSON.stringify(item).toLowerCase().includes(searchText.value.toLowerCase()),
+  ),
+)
 
 onMounted(() => {
   getOrdersArchive()

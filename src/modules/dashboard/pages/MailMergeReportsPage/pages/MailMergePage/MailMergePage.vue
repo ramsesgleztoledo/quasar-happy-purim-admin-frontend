@@ -35,7 +35,7 @@
                     style="min-width: 200px"
                     v-model="realForm.sendTo.value"
                     outlined
-                    :options="['Primary Email', 'Alternate Email']"
+                    :options="['Primary', 'Primary & Alternate options']"
                     label="Send To *"
                     lazy-rules
                     :rules="[lazyRules.required()]"
@@ -119,12 +119,15 @@
                   </div>
                 </div>
 
-                <template v-if="!isMobile">
+                <div >
                   <div class="row">
-                    <div class="col-10 q-pa-sm">
-                      <EditorCustom v-model="email" height="750px" ref="editorRef" />
+                    <div class="col-10 q-pa-sm" :class="{
+                      'col-10' : !isMobile,
+                      'col-12' : isMobile,
+                    }">
+                      <EditorCustom v-model="email" height="750px" ref="editorRef" :stringTokens=" isMobile ? tokens : undefined"/>
                     </div>
-                    <div class="col-2 q-pa-sm ComposeEmail-tokens-container">
+                    <div v-if="!isMobile" class="col-2 q-pa-sm ComposeEmail-tokens-container">
                       <div class="row q-mb-sm">
                         <div class="col-12 separator-bottom">
                           <p style="margin: 5px">Select Mail Merge Fields</p>
@@ -149,10 +152,8 @@
                       </div>
                     </div>
                   </div>
-                </template>
-                <template v-else>
-                  <EditorCustom v-model="email" height="500px" />
-                </template>
+                </div>
+
 
                 <!--=============================== Dialogs =============================-->
 
@@ -524,17 +525,17 @@ const templates = ref<MailMergeTemplateInterface[]>([])
 
 
 const { realForm, resetForm, isValidForm, getFormValue } = useForm({
-  sendTo: { value: 'Primary Email', validations: [validations.required] },
+  sendTo: { value: 'Primary', validations: [validations.required] },
   fullName: { value: '', validations: [validations.required] },
   email: { value: '', validations: [validations.required, validations.isEmail] },
   emailSubject: { value: '', validations: [validations.required] },
 })
 
 const onSelectTemplate = (content: string) => {
-  email.value += ` ${content}`
+  email.value = ` ${content}`
 }
 const onSelectDraft = (draft: DraftInterface) => {
-  email.value += ` ${draft.documentContent}`
+  email.value = ` ${draft.documentContent}`
 }
 
 const onSaveDraft = async (form: { name: string; description: string }) => {
@@ -663,7 +664,7 @@ onMounted(() => {
 
     // setting form
     resetForm({
-      sendTo: 'Primary Email',
+      sendTo: 'Primary',
       fullName: resp.form.fullName,
       email: resp.form.email,
     })

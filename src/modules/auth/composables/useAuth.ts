@@ -10,15 +10,25 @@ import { useAuthService } from "../service/auth.service";
 import type { AuthJWTInterface } from "../interfaces/auth.interfaces";
 import { useOrderArchiveStore } from "src/modules/dashboard/store/orderArchiveStore/orderArchiveStore";
 import { useMemberStore } from "src/modules/dashboard/store/memberStore/memberStore";
+import { useUserAdminStore } from "src/modules/dashboard/store/adminUserStore/adminUserStore";
+import { useAdvancedSettingsStore } from "src/modules/dashboard/store/advanceSettingsStore/advancedSettingsStore";
+import { useBasicSettingsStore } from "src/modules/dashboard/store/basicSettingsStore/basicSettingsStore";
+import { useMemberOrderStore } from "src/modules/dashboard/store/memberOrderStore/memberOrderStore";
+import { useReportStore } from "src/modules/dashboard/store/ReportStore/reportStore";
 
 export const useAuth = () => {
 
   //* stores
-  const $aStore = useAuthStore()
+  const $auStore = useUserAdminStore()
+  const $asStore = useAdvancedSettingsStore()
+  const $bsStore = useBasicSettingsStore()
   const $dStore = useDashboardStore()
   const $eStore = useEmailStore()
-  const $oStore = useOrderArchiveStore()
+  const $moStore = useMemberOrderStore()
   const $mStore = useMemberStore()
+  const $oStore = useOrderArchiveStore()
+  const $rStore = useReportStore()
+  const $aStore = useAuthStore()
 
   const { login: authLogin } = useAuthService()
 
@@ -28,14 +38,23 @@ export const useAuth = () => {
 
   const authState = computed(() => $aStore.$state);
 
-  const logOut = () => {
+  const logOut = (goToLogin?: boolean) => {
     $q.localStorage.clear()
-    $aStore.$reset()
+    $auStore.$reset()
+    $asStore.$reset()
+    $bsStore.$reset()
     $dStore.$reset()
     $eStore.$reset()
-    $oStore.$reset()
+    $moStore.$reset()
     $mStore.$reset()
-    return $router.push({ name: '401' })
+    $oStore.$reset()
+    $rStore.$reset()
+    $aStore.$reset()
+
+    if (goToLogin)
+      return $router.push({ name: 'authPage' })
+    else
+      return $router.push({ name: '401' })
   }
   const prepareTokenTime = (exp: number) => {
     const triggerTime = (exp - 600) * 1000; // 600 secs = 10 mins

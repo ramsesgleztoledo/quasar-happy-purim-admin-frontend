@@ -140,6 +140,15 @@ export const useUploadListService = () => {
         method: 'POST',
       })
     },
+    revertChanges: async (extraOptions?: ExtraOptionsInterface): Promise<ApiCallResponseInterface<unknown>> => {
+      const nextUrl = `/revert-changes`;
+      const url = `${baseUrl}${nextUrl}`;
+      return await apiCall({
+        url,
+        extraOptions,
+        method: 'POST',
+      })
+    },
 
 
 

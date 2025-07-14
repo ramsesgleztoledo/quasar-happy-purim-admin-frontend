@@ -21,7 +21,7 @@
           class="dashboard-layout-title"
         >
           <div class="row">
-            <div class="col     dashboard-happypurim-logo user-select-none">
+            <div class="col dashboard-happypurim-logo user-select-none">
               <p
                 @click="
                   () =>
@@ -34,33 +34,26 @@
                 HappyRoshHashanah.com
               </p>
             </div>
-            <div class="col">
-              <q-input
-                disable
-                v-if="!isMobile"
-                color="grey-3"
-                outlined
-                v-model="search"
-                label="Search"
-              >
-                <template v-slot:append>
-                  <q-icon name="search" />
-                </template>
-              </q-input>
+            <div class="col" v-if="!isMobile">
+              <SearchComponent />
             </div>
           </div>
         </q-toolbar-title>
         <div>
           <div v-if="!isMobile" class="dashboard-layout-right-info">
-            <div class="row">
-              <div class="col-12">{{ $aStore.$state.shul?.shulName }}</div>
-            </div>
-            <div class="row">
-              <div class="col-12 dashboard-user-info">
-                {{ $aStore.$state.user?.firstName }} {{ $aStore.$state.user?.lastName }}
+            <div class="q-mr-sm">
+              <div class="row">
+                <div class="col-12">{{ $aStore.$state.shul?.shulName }}</div>
+              </div>
+              <div class="row">
+                <div class="col-12 dashboard-user-info">
+                  {{ $aStore.$state.user?.firstName }} {{ $aStore.$state.user?.lastName }}
+                </div>
               </div>
             </div>
+            <q-btn flat round color="primary" icon="logout" @click="logOut(true)" />
           </div>
+
           <div v-else class="dashboard-search-icon-mobile">
             <q-icon name="search" @click="isSearchMobile = true" />
           </div>
@@ -68,7 +61,8 @@
       </template>
       <div v-else class="row search-mobile-container">
         <div class="col-10">
-          <q-input
+          <SearchComponent v-if="isMobile && isSearchMobile" />
+          <!-- <q-input
             autofocus
             color="grey-3"
             outlined
@@ -79,7 +73,7 @@
             <template v-slot:append>
               <q-icon name="search" />
             </template>
-          </q-input>
+          </q-input> -->
         </div>
         <div class="col-2">
           <q-icon
@@ -99,15 +93,18 @@
 </template>
 
 <script setup lang="ts">
+import { useAuth } from 'src/modules/auth/composables/useAuth'
 import { useAuthStore } from 'src/modules/auth/store/auth.store'
 import { useUI } from 'src/modules/UI/composables'
 import { useUIStore } from 'src/modules/UI/store/ui-store'
 import { ref } from 'vue'
+import SearchComponent from './components/SearchComponent.vue'
 
 const $uiStore = useUIStore()
 const $aStore = useAuthStore()
 
 const { isMobile, goBack, goForward } = useUI()
+const { logOut } = useAuth()
 
 const search = ref<string>('')
 const isSearchMobile = ref<boolean>(false)

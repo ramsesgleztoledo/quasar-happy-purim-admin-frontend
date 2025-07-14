@@ -1,10 +1,20 @@
 <template>
-  <div class="fullscreen bg-blue text-white text-center q-pa-md flex flex-center">
+  <div class="fullscreen bg-primary text-white text-center q-pa-md flex flex-center">
     <div>
       <div style="font-size: 30vh">401</div>
 
       <div class="text-h2" style="opacity: 0.4">Unauthorized</div>
 
+      <q-btn
+        v-if="isDev"
+        class="q-mt-xl q-ma-sm"
+        color="white"
+        text-color="black"
+        unelevated
+        to="/authenticate"
+        label="Login"
+        no-caps
+      />
       <q-btn
         v-if="isDev"
         class="q-mt-xl q-ma-sm"

@@ -12,12 +12,12 @@ export interface LinksDataInterface {
 
 const linksDataDev: LinksDataInterface[] = [];
 
-if (process.env.NODE_ENV === 'development')
-  linksDataDev.push({
-    title: 'go to Accounts (dev)',
-    icon: 'person',
-    name: 'accountPage',
-  })
+// if (process.env.NODE_ENV === 'development')
+linksDataDev.push({
+  title: 'go to Accounts (dev)',
+  icon: 'person',
+  name: 'accountPage',
+})
 
 
 export const linksData: LinksDataInterface[] = [
@@ -92,6 +92,12 @@ export const linksData: LinksDataInterface[] = [
     icon: 'query_stats',
     name: 'dashboard-EmailStatsPage',
     routeClass: ['dashboard-EmailStatsPage', 'EmailStatsPage-Email'],
+  },
+  {
+    title: 'User Management',
+    icon: 'person',
+    name: 'dashboard-UserManagement',
+    // routeClass: ['dashboard-EmailStatsPage', 'EmailStatsPage-Email'],
   },
   ...linksDataDev
 ]
@@ -377,5 +383,10 @@ export const routeInfo: routeDataInterface[] = [
     title: 'Upload Member List',
     icon: 'upload',
     name: 'MembersSettingsPage-MemberListLayout',
+  },
+  {
+    title: 'User Management',
+    icon: 'person',
+    name: 'dashboard-UserManagement',
   },
 ]

@@ -1,10 +1,12 @@
 import { useUploadListService } from "../services/uploadList.service";
 import type { BackupUploadFormInterface, UpdateAndValidateFormInterface } from "../interfaces/upload-list.interfaces";
+import { useUI } from "src/modules/UI/composables";
 
 
 export const useUploadList = () => {
 
-  const { uploadMemberList, processAndMatch, getFieldOptions, updateAndValidate, checkMatchSrcDestKey, saveSelectionOptions, compareDataGetSummary, getDestinationKeys, backupAndUpload, getDetailedChanges } = useUploadListService()
+  const { uploadMemberList, processAndMatch, getFieldOptions, updateAndValidate, checkMatchSrcDestKey, saveSelectionOptions, compareDataGetSummary, getDestinationKeys, backupAndUpload, getDetailedChanges, revertChanges } = useUploadListService()
+  const { showToast } = useUI()
 
 
   const getDetailedChanges_co = async (key: string, showLoading?: boolean) => {
@@ -100,7 +102,18 @@ export const useUploadList = () => {
         }
       })
 
+      showToast(resp.ok, 'data uploaded', 'something went wrong uploading the data')
+      return resp.ok
 
+    },
+    async revertChanges() {
+
+      const resp = await revertChanges({
+        loading: {
+          message: 'Loading...'
+        }
+      })
+      showToast(resp.ok, 'Data reverted', 'something went wrong reverting the data')
       return resp.ok
 
     },

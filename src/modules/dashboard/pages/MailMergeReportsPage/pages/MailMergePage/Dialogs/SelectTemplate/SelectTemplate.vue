@@ -7,7 +7,11 @@
         </div>
       </div>
 
-      <div v-if="templates.length" class="custom-dialog-body-container q-pa-lg">
+      <div
+        v-if="templates.length"
+        class="custom-dialog-body-container q-pa-lg"
+        style="min-width: 50vw"
+      >
         <q-item v-for="(template, i) in templates" :key="i" class="q-item-bordered q-mb-sm">
           <q-item-section>
             <q-item-label>{{ template.name }}</q-item-label>

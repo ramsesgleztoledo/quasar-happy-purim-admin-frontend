@@ -8,7 +8,7 @@
   <div class="row">
     <div class="col-12">
       <div class="row">
-        <q-input disable outlined v-model="searchText" label="Search">
+        <q-input outlined v-model="searchText" label="Search">
           <template v-slot:append>
             <q-icon name="search" />
           </template>
@@ -19,12 +19,12 @@
           <TableCustom
             class-name="table-sticky-header-column-table table-cursor-pinter-custom"
             styles="height: 628px"
-            :rows="emailState.campaigns"
+            :rows
             :columns="columns"
             row-key="id"
             title="Campaigns"
             @onRowClick="
-              ({ row }) => {
+              ({ row }: any) => {
                 $router.push({
                   name: 'EmailStatsPage-campaign',
                   params: {
@@ -41,7 +41,7 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, ref } from 'vue'
+import { computed, onMounted, ref } from 'vue'
 
 import type { QTableColumn } from 'quasar'
 import { convertToUSDate } from 'src/helpers'
@@ -51,6 +51,12 @@ import { useEmail } from 'src/modules/dashboard/composables/useEmail'
 const { getEmails, emailState } = useEmail()
 
 const searchText = ref('')
+
+const rows = computed(() =>
+  emailState.value.campaigns.filter((item) =>
+    JSON.stringify(item).toLowerCase().includes(searchText.value.toLowerCase()),
+  ),
+)
 
 onMounted(() => {
   getEmails()

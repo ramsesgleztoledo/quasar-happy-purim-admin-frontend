@@ -28,7 +28,7 @@
         :columns="columns"
         row-key="id"
         @onRowClick="
-          ({ row }) => {
+          ({ row }: any) => {
             $router.push({
               name: 'dashboard-transactionDetailsPage',
               params: {

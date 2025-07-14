@@ -214,21 +214,19 @@
                 <div class="row">
                   <p><b>Upload Completed !</b></p>
                 </div>
-                <div class="row">
-                  <p><b>16 </b> Members updated</p>
-                </div>
-                <div class="row">
-                  <p><b>16 </b> Members added</p>
-                </div>
-                <div class="row">
-                  <p><b>16 </b> Members deleted</p>
-                </div>
-                <div class="row">
-                  <p><b>16 </b> Members did not change</p>
+                <div class="row" v-for="item in dictsRef" :key="item.label">
+                  <p>
+                    <b>{{ item.quantity }} </b> {{ item.label }}
+                  </p>
                 </div>
                 <div class="row q-mt-md">
                   <div class="col-12 justify-content-end">
-                    <q-btn color="primary" icon="history" label="Revert Changes" />
+                    <q-btn
+                      @click="() => revertBack"
+                      color="primary"
+                      icon="history"
+                      label="Revert Changes"
+                    />
                   </div>
                 </div>
               </div>
@@ -341,11 +339,15 @@ import type {
   UploadFileResponseInterface,
 } from 'src/modules/dashboard/interfaces/upload-list.interfaces'
 import PreviewNewMemberList from './components/PreviewNewMemberList.vue'
+import { QBtn } from 'quasar'
+import { useRouter } from 'vue-router'
 
 interface StepResponseInterface {
   success: boolean
   message: string
 }
+
+const $router = useRouter()
 
 const { isMobile } = useUI()
 const {
@@ -357,6 +359,7 @@ const {
   saveSelectionOptions,
   getDestinationKeys,
   backupAndUpload,
+  revertChanges,
 } = useUploadList()
 
 const loading = ref(false)
@@ -501,6 +504,8 @@ const destinationKeys = ref<DestinationKeyInterface[]>([])
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const previewNewMemberList = ref<any>(undefined)
 
+const dictsRef = ref<{ label: string; quantity: number }[]>([])
+
 const onContinueAndUpload = async () => {
   if (!previewNewMemberList.value) return
 
@@ -511,6 +516,13 @@ const onContinueAndUpload = async () => {
     unchangedMembers: MemberRecordInterface
   }
 
+  dictsRef.value = [
+    { label: 'Members updated', quantity: Object.keys(dicts.updateMembers).length },
+    { label: 'Members added', quantity: Object.keys(dicts.addMembers).length },
+    { label: 'Members deleted', quantity: Object.keys(dicts.deleteMembers).length },
+    { label: 'Members did not change', quantity: Object.keys(dicts.unchangedMembers).length },
+  ]
+
   const data: BackupUploadFormInterface = {
     file: {
       filePath: step_one_data.value?.filePath.replace(/\\/g, '/') || '',
@@ -518,7 +530,19 @@ const onContinueAndUpload = async () => {
     },
     dicts,
   }
-  await backupAndUpload(data)
+  const resp = await backupAndUpload(data)
+  if (resp) {
+    step.value++
+  }
+}
+
+const revertBack = async () => {
+  const reps = await revertChanges()
+  if (reps) {
+    $router.push({
+      name: 'DashboardLayout',
+    })
+  }
 }
 
 onMounted(async () => {

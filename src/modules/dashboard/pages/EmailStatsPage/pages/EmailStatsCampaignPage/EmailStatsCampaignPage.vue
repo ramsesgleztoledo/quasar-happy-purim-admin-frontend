@@ -64,7 +64,7 @@
           'q-mt-sm': isMobile,
         }"
       >
-        <q-input disable outlined v-model="searchText" label="Search">
+        <q-input outlined v-model="searchText" label="Search">
           <template v-slot:append>
             <q-icon name="search" />
           </template>
@@ -197,7 +197,9 @@ const tableData = computed(() => {
       data = emailState.value.selectedCampaign?.bounced || []
       break
   }
-  return data
+  return data.filter((item) =>
+    JSON.stringify(item).toLowerCase().includes(searchText.value.toLowerCase()),
+  )
 })
 
 const columns: QTableColumn[] = [

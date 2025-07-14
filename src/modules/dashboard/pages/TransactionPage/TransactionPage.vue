@@ -9,7 +9,7 @@
 
     <div class="row q-mb-md">
       <div class="col-12 d-flex justify-content-end">
-        <q-input disable outlined v-model="searchText" label="Search">
+        <q-input outlined v-model="searchText" label="Search">
           <template v-slot:append>
             <q-icon name="search" />
           </template>
@@ -41,7 +41,7 @@
             flat
             bordered
             ref="tableRef"
-            :rows="transactions.transactions"
+            :rows
             :columns="columns"
             row-key="id"
             styles="height: 360px"
@@ -87,7 +87,7 @@
 <script setup lang="ts">
 import type { QTableColumn } from 'quasar'
 import { useDashboard } from '../../composables/useDashboard'
-import { onMounted, ref } from 'vue'
+import { computed, onMounted, ref } from 'vue'
 import { useTransaction } from '../../composables/useTransaction'
 import type {
   TransactionInterface,
@@ -157,6 +157,12 @@ const transactions = ref<TransactionsInterface>({
   count: 0,
   transactions: [],
 })
+
+const rows = computed(() =>
+  transactions.value.transactions.filter((item) =>
+    JSON.stringify(item).toLowerCase().includes(searchText.value.toLowerCase()),
+  ),
+)
 
 const searchText = ref<string>('')
 const isFullScreen = ref<boolean>(false)

@@ -7,7 +7,11 @@
         </div>
       </div>
 
-      <div v-if="drafts.length" class="custom-dialog-body-container q-pa-lg">
+      <div
+        v-if="drafts.length"
+        class="custom-dialog-body-container q-pa-lg"
+        style="min-width: 50vw"
+      >
         <q-item v-for="draft in drafts" :key="draft.draftId" class="q-item-bordered q-mb-sm">
           <q-item-section>
             <q-item-label>{{ draft.documentTitle }}</q-item-label>
