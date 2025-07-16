@@ -37,16 +37,10 @@ export const loginAccounts: LoginAccountInterface[] = [
     token: "tOAuRZqY9TgDNRldSnUHSNtgT3zvPc+wJpkrPuump1aRHCKf/LMWgVHqBIG8hxM/Ctn8SNjYY30/H0+KjH17Ig==",
     url: 'http://localhost:9000/#/authenticate?token=tOAuRZqY9TgDNRldSnUHSNtgT3zvPc+wJpkrPuump1aRHCKf/LMWgVHqBIG8hxM/Ctn8SNjYY30/H0+KjH17Ig=='
   },
-  {
-    id: 1,
-    name: 'Demo Synagogue',
-    guid: '05efb30b-b960-4bfe-a909-57660aef985a',
-    token: "CTYUiSZN1GeZIvmJx8sd50NkPTizYuOR81SlmJwZZsKeTVKufZUEYcEL9LTgyNVW02kJXnIhnEaozAekzLdjbg==",
-    url: 'http://localhost:9000/#/authenticate?token=CTYUiSZN1GeZIvmJx8sd50NkPTizYuOR81SlmJwZZsKeTVKufZUEYcEL9LTgyNVW02kJXnIhnEaozAekzLdjbg=='
-  },
+
   {
     id: -1,
-    name: 'Demo Synagogue 2',
+    name: 'Demo Synagogue',
     guid: 'E336934F-73FE-47D8-ABEA-E1507A02D6D7',
     token: "tdlArHFb9T4EFeBJbMxi1iQcAH7bDuXXczajNZWAdZactIPyQzPL5PS9KKnW4jkMe/rP5mGT85AEk9ii/AgPOw==",
     url: 'http://localhost:9000/#/authenticate?token=tdlArHFb9T4EFeBJbMxi1iQcAH7bDuXXczajNZWAdZactIPyQzPL5PS9KKnW4jkMe/rP5mGT85AEk9ii/AgPOw=='
@@ -57,5 +51,26 @@ export const loginAccounts: LoginAccountInterface[] = [
     guid: '4DBC0623-10FC-419A-A780-5200B3D7E9F4',
     token: "fXDvYsO0IOTkXgQgI5B9ENDSKYSezQNSTjSC8/OcEsD0wqcV+0WFmJBLuM7myAO4LFK719ZHrmQLn4OzZefaSg==",
     url: 'http://localhost:9000/#/authenticate?token=fXDvYsO0IOTkXgQgI5B9ENDSKYSezQNSTjSC8/OcEsD0wqcV+0WFmJBLuM7myAO4LFK719ZHrmQLn4OzZefaSg=='
+  },
+  {
+    id: 332,
+    name: 'Synagogue Adath Israel of Riverdale',
+    guid: '4DBC0623-10FC-419A-A780-5200B3D7E9F4',
+    token: "HltaNi20I5BMV9HpSm0892VKd1OuQ/QmSvfL67vnuih9U4Uv9wH1Qf4udyrjF9COMbDEPWSkGVwqZJbYMEXOkQ==",
+    url: 'http://localhost:9000/#/authenticate?token=HltaNi20I5BMV9HpSm0892VKd1OuQ/QmSvfL67vnuih9U4Uv9wH1Qf4udyrjF9COMbDEPWSkGVwqZJbYMEXOkQ=='
+  },
+  {
+    id: 665,
+    name: 'Congregation Shaarei Tefillah',
+    guid: '81EBBD69-C7B8-4C32-B399-133B0F7BE1A8',
+    token: "9W1b462q0PGyTh3nho+6vWEXGWEETCL3xlMHc0xIy1o/Ft7YokPWVDDs8YwLSoRFZcYFWk35M2YIly536e+6Pw==",
+    url: 'http://localhost:9000/#/authenticate?token=9W1b462q0PGyTh3nho+6vWEXGWEETCL3xlMHc0xIy1o/Ft7YokPWVDDs8YwLSoRFZcYFWk35M2YIly536e+6Pw=='
+  },
+  {
+    id: 352,
+    name: 'AMIT - Gayl Shechter',
+    guid: 'D4BAAF93-4464-47BC-A887-57893F92C03A',
+    token: "71iSSNJHcwDIr2OwkmrQ5Jw5iw3ze85xZnQLdHkJANrzkK1dvmXbiTEDpbxxIzK79asSxVvfqaDRRtUtZfZzaQ==",
+    url: 'http://localhost:9000/#/authenticate?token=71iSSNJHcwDIr2OwkmrQ5Jw5iw3ze85xZnQLdHkJANrzkK1dvmXbiTEDpbxxIzK79asSxVvfqaDRRtUtZfZzaQ=='
   },
 ]

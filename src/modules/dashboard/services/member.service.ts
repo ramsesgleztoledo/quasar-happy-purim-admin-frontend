@@ -1,6 +1,6 @@
 import type { ApiCallResponseInterface, ExtraOptionsInterface } from "../../../services/api-interfaces";
 import { useApiCall } from "../../../services/apiCall";
-import type { AlternativeMemberAddress, BasketReceivedInterface, EmailLoginCodeInfoInterface, MemberAddFormInterface, MemberAddResponseInterface, MemberAlternativeAddressDataInterface, MemberDataInterface, MemberDonateBasketOptionInterface, MemberHiddenInterface, MemberInterface, MemberPersonalBasketInterface, MemberProfileQuestionInterface, MemberReciprocityInterface, MembersLoggedInterface, MemberTransactionInterface, MemberUpdateFormInterface, PendingDeletionInterface } from "../interfaces/member-interfaces";
+import type { AlternativeMemberAddress, AlternativeMemberAddressFormInterface, BasketReceivedInterface, EmailLoginCodeInfoInterface, MemberAddFormInterface, MemberAddResponseInterface, MemberDataInterface, MemberDonateBasketOptionInterface, MemberHiddenInterface, MemberInterface, MemberPersonalBasketInterface, MemberProfileQuestionInterface, MemberReciprocityInterface, MembersLoggedInterface, MemberTransactionInterface, MemberUpdateFormInterface, PendingDeletionInterface } from "../interfaces/member-interfaces";
 
 
 
@@ -73,7 +73,7 @@ export const useMemberService = () => {
         extraOptions,
       })
     },
-    updateAlternativeAddressByMemberId: async (memberId: number, data: MemberAlternativeAddressDataInterface, extraOptions?: ExtraOptionsInterface): Promise<ApiCallResponseInterface<AlternativeMemberAddress>> => {
+    updateAlternativeAddressByMemberId: async (memberId: number, data: AlternativeMemberAddressFormInterface, extraOptions?: ExtraOptionsInterface): Promise<ApiCallResponseInterface<unknown>> => {
 
       const nextUrl = `/${memberId}/alternate-delivery`;
       const url = `${baseUrl}${nextUrl}`;
@@ -239,6 +239,24 @@ export const useMemberService = () => {
       return await apiCall({
         url,
         extraOptions,
+      })
+    },
+    resetMemberLoginCode: async (memberId: number, extraOptions?: ExtraOptionsInterface): Promise<ApiCallResponseInterface<{ loginCode: string, signOnLink: string }>> => {
+      const nextUrl = `/${memberId}/reset-login-code`;
+      const url = `${baseUrl}${nextUrl}`;
+      return await apiCall({
+        url,
+        extraOptions,
+        method: 'PUT'
+      })
+    },
+    emailReceiptByTransactionId: async (transaction: number, extraOptions?: ExtraOptionsInterface): Promise<ApiCallResponseInterface<boolean>> => {
+      const nextUrl = `/${transaction}/email-receipt`;
+      const url = `${baseUrl}${nextUrl}`;
+      return await apiCall({
+        url,
+        extraOptions,
+        method: 'POST'
       })
     },
 

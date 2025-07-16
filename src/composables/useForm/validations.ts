@@ -1,10 +1,18 @@
-
+/* eslint-disable @typescript-eslint/no-explicit-any */
 export default {
   //* required
   required: ({ value }: { value: string }) => {
     if (value !== undefined && value !== null && value !== '') {
       return null;
     } else {
+      return { required: `${value}` };
+    }
+  },
+  requiredTrue: ({ value }: { value: any }) => {
+    if (value == true) {
+      return null;
+    }
+    else {
       return { required: `${value}` };
     }
   },

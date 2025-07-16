@@ -209,7 +209,7 @@ export const routeInfo: routeDataInterface[] = [
   },
   {
 
-    title: 'Member List',
+    title: 'Members',
     icon: 'group',
     name: 'MembersSettingsPage-home',
 

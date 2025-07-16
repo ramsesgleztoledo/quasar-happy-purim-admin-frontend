@@ -2,6 +2,7 @@
 import type { Ref } from 'vue';
 import { ref } from 'vue';
 import type { AuxFormField, FormComposition, FormField, OptionalIfNotArray } from './interfaces';
+import validations from './validations';
 
 
 
@@ -99,9 +100,14 @@ const useForm = <T extends Record<string, any>>(form: {
     const id: number = Math.random() * Number(Math.pow(10, 18).toString().padStart(18, '0'));
     const value = mainElement.value;
 
+    const validationsArray = mainElement.validations || []
+    const required = !!mainElement.required
+
+
     const nextElement: FormField = {
+      required,
       type: mainElement.type || 'string',
-      validations: mainElement.validations || [],
+      validations: required ? [validations.required, ...validationsArray] : validationsArray,
       id: `${new Date().getTime()}${id}`,
       value
     };

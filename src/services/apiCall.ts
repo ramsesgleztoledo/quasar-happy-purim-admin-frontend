@@ -54,9 +54,9 @@ export const useApiCall = () => {
         return extraOptions?.dontRedirect ? null : $router.push({ name: '500' });
 
       case 403:
-        options.message = 'You have not permissions to check this informationc'
+        options.message = 'You have not permissions to check this information'
         $q.notify(options)
-        return $router.back()
+        return extraOptions?.goBackIn403 ? $router.back() : null
 
       default:
         options.message = 'Internal fronted error, please try again later'

@@ -56,6 +56,7 @@ export const useTransaction = () => {
     },
     async getTransactionsDetailsByTransactionId(id: number) {
       const resp = await getTransactionsDetailsByTransactionId(id, {
+        goBackIn403: true,
         useCache: true,
         loading: {
           message: `Loading transaction detail for ${id}`

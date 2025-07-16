@@ -92,8 +92,28 @@ export interface PendingDeletionInterface {
 }
 
 
+export interface AlternativeMemberAddressFormInterface {
+  name: string;
+  address: string;
+  address2: string;
+  city: string;
+  state: string;
+  zip: string;
+  useAlternateDelivery: boolean;
+}
+
+
 export interface AlternativeMemberAddress {
   showAlternateDelivery: boolean;
+  promptText: string;
+  isChecked: boolean;
+  altName: string;
+  altAddress1: string;
+  altAddress2: string;
+  altCity: string;
+  altState: string;
+  altZip: string;
+  showPanel: boolean;
 }
 
 export interface MemberTransactionInterface {
@@ -202,15 +222,6 @@ export interface MemberUpdateFormInterface {
 }
 
 
-export interface MemberAlternativeAddressDataInterface {
-  name: string,
-  address: string,
-  address2: string,
-  city: string,
-  state: string,
-  zip: string,
-  useAlternateDelivery: true
-}
 
 export interface MemberUpdateAllDataForm {
   donate?: boolean | undefined;
@@ -222,7 +233,7 @@ export interface MemberUpdateAllDataForm {
     label: string
     id: number
   }[]
-  // altAddressData: MemberAlternativeAddressDataInterface;
+  altAddressData: AlternativeMemberAddressFormInterface;
 }
 
 

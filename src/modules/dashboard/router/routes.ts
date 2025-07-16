@@ -121,12 +121,14 @@ export const dashboardRoutes: RouteRecordRaw[] = [
         path: 'mail-merge-reports',
         name: 'dashboard-MailMergeReportsPage',
         redirect: { name: 'MailMergeReportsPage-MailMergeReportsPage' },
+        component: () =>
+          import(/* webpackChunkName: "MailMergeReportsPage-MailMergeReportsPage" */ "../pages/MailMergeReportsPage/layout/ReportsLayout.vue"),
         children: [
           {
             path: '',
             name: 'MailMergeReportsPage-MailMergeReportsPage',
             component: () =>
-              import(/* webpackChunkName: "MailMergeReportsPage-MailMergeReportsPage" */ "../pages/MailMergeReportsPage/layout/MailMergeReportsPage/MailMergeReportsPage.vue"),
+              import(/* webpackChunkName: "MailMergeReportsPage-MailMergeReportsPage" */ "../pages/MailMergeReportsPage/MailMergeReportsPage/MailMergeReportsPage.vue"),
           },
 
           {
@@ -186,7 +188,7 @@ export const dashboardRoutes: RouteRecordRaw[] = [
         ]
 
       },
-     {
+      {
         path: 'user-management',
         name: 'dashboard-UserManagement',
         component: () =>

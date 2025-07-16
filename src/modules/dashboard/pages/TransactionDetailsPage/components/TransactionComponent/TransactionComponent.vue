@@ -16,12 +16,15 @@
       <div class="row">
         <div class="col-12">
           <p class="text-h5">
-            <b> Transaction Details </b>
+            <b> Transaction Details: </b>
           </p>
         </div>
       </div>
       <div class="row">
-        <div class="col-12 justify-content-end">
+        <div class="col-12 justify-content-space-between">
+          <p class="text-h5">
+            <b>{{ RECEIPT_NAME }} </b>
+          </p>
           <p class="text-h5">
             <b>{{ $aStore.$state.shul?.shulName }} </b>
           </p>
@@ -35,6 +38,14 @@
               <b> Invoice #: </b>
             </div>
             <div class="col-6">{{ transactionDetails.paymentInfo.tranId }}</div>
+          </div>
+          <div class="row">
+            <div class="col-6">
+              <b> Processed on: </b>
+            </div>
+            <div class="col-6">
+              {{ convertToUSDate(transactionDetails.paymentInfo.tranPostedDate) }}
+            </div>
           </div>
         </div>
         <div class="col-6">
@@ -140,11 +151,11 @@
 </template>
 
 <script setup lang="ts">
-import { convertWithCommas } from 'src/helpers'
+import { convertToUSDate, convertWithCommas } from 'src/helpers'
 import { printElement } from 'src/helpers/printHelper'
 import { useAuthStore } from 'src/modules/auth/store/auth.store'
 import type { TransactionDetailsInterface } from 'src/modules/dashboard/interfaces/transaction-interfaces'
-import { ref } from 'vue'
+import { computed, ref } from 'vue'
 
 const $aStore = useAuthStore()
 
@@ -159,6 +170,8 @@ const printArea = ref<HTMLElement | null | undefined>(null)
 const printReceipt = () => {
   printElement('transaction-detail-to-print-id')
 }
+
+const RECEIPT_NAME = computed(() => process.env.RECEIPT_NAME || '')
 </script>
 
 <style scoped lang="scss">

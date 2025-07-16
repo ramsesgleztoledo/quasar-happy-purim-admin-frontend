@@ -209,12 +209,12 @@ export const useAdvancedSettings = () => {
     async updateTab1AdditionalProfileQuestion(data: Tab1AdditionalProfileQuestionInterface) {
       const resp = await updateTab1AdditionalProfileQuestion(data, {
         loading: {
-          message: `updating question ${data.optId}...`,
+          message: `updating question ...`,
         }
       })
       showToast(resp.ok,
-        `question ${data.optId} updated`,
-        `something went wrong updating the question ${data.optId}`
+        `question updated`,
+        `something went wrong updating the question `
       )
 
       return resp.ok
@@ -362,16 +362,10 @@ export const useAdvancedSettings = () => {
         'new basket size added',
         'something went wrong adding a new basket size'
       )
-      if (resp.ok) {
-        const oldBasket = $asStore.$state.basketSize || []
-        const newBasket = resp.data.data || []
-
+      if (resp.ok)
         $asStore.setBasketSize(
-          [newBasket[newBasket.length - 1] as Tab3BasketSizeInterface, ...oldBasket]
-
+          resp.data.data || []
         )
-
-      }
     },
     async deleteTab3BasketSize(id: number) {
       const resp = await deleteTab3BasketSize(

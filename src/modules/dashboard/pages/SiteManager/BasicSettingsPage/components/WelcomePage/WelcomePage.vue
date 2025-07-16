@@ -37,21 +37,24 @@
       </div>
 
       <!-- :tokens="tokensForEdit" -->
-      <EditorCustom
-        show-uploader
-        v-if="listView === 1"
-        :height="isFullScreen ? '90%' : '390px'"
-        v-model="editor"
-      />
-      <CodeEditor
-        v-else
-        v-model="editor"
-        :lang="html"
-        :style="{
-          height: isFullScreen ? '90%' : '390px',
-          width: '100%',
-        }"
-      />
+      <div v-show="listView === 1">
+        <EditorCustom
+          ref="editorRef"
+          show-uploader
+          :height="isFullScreen ? '90%' : '390px'"
+          v-model="editor"
+        />
+      </div>
+      <div v-show="listView === 2">
+        <CodeEditor
+          v-model="editor"
+          :lang="html"
+          :style="{
+            height: isFullScreen ? '90%' : '390px',
+            width: '100%',
+          }"
+        />
+      </div>
     </div>
   </div>
 
@@ -70,14 +73,18 @@
 <script setup lang="ts">
 import CodeEditor from 'src/components/CodeEditor/CodeEditor.vue'
 import EditorCustom from 'src/components/EditorCustom/EditorCustom.vue'
-import { onMounted, ref } from 'vue'
+import { onMounted, ref, watch } from 'vue'
 import { html } from '@codemirror/lang-html'
 import { useBasicSettings } from 'src/modules/dashboard/composables/useBasicSettings'
 
-const { basicSettingsState, updateWelcomePage } = useBasicSettings()
+const {
+  basicSettingsState,
+  updateWelcomePage
+} = useBasicSettings()
 
 const isFullScreen = ref(false)
 const editor = ref('')
+const editorRef = ref<InstanceType<typeof EditorCustom> | null>(null)
 
 // const tokensForEdit = ref([
 //   { name: 'email', label: 'email', icon: 'email' },
@@ -96,8 +103,15 @@ onMounted(() => {
 })
 
 const onUpdate = async () => {
-  await updateWelcomePage(editor.value)
+  if (!editorRef.value) return
+  const content = editorRef.value.getEditorValue() || ''
+  await updateWelcomePage(content)
 }
+watch(listView, () => {
+  if (!editorRef.value) return
+  const content = editorRef.value.getEditorValue() || ''
+  editor.value = content
+})
 </script>
 
 <style scoped lang="scss">

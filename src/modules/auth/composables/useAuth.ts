@@ -71,13 +71,13 @@ export const useAuth = () => {
       clearTimeout(tokenTimeOut);
       tokenTimeOut = setTimeout(() => {
         console.log('======== token if going to expire, refreshing ========');
-        $q.notify({
-          color: 'green',
-          textColor: 'black',
-          icon: 'error',
-          message: 'token if going to expire, refreshing',
+        // $q.notify({
+        //   color: 'green',
+        //   textColor: 'black',
+        //   icon: 'error',
+        //   message: 'token if going to expire, refreshing',
 
-        })
+        // })
         return refreshToken()
       }, delay);
 

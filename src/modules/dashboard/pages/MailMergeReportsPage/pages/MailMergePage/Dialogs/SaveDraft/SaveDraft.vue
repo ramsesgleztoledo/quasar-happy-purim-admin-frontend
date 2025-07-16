@@ -1,14 +1,14 @@
 <template>
   <q-dialog v-model="show" persistent>
-    <q-card>
+    <q-card style="min-width: 50vw">
       <div class="row dialog-header custom-dialog-header-container">
         <div class="col-12">
           <p>Save Draft</p>
         </div>
       </div>
 
-      <div class="custom-dialog-body-container q-pa-lg" style="min-width: 80vw">
-        <div class="row q-mb-sm">
+      <div class="custom-dialog-body-container q-pa-lg">
+        <div class="row q-mb-sm" style="width: 100%">
           <div class="col-12">
             <q-input
               v-model="form.name"

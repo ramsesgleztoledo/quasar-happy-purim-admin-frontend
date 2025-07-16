@@ -38,6 +38,7 @@ export const useOrderArchive = () => {
         resp
           = await getOrderReceiptByOrderId(orderId, {
             useCache: true,
+            goBackIn403: true,
             loading: {
               message: 'Loading...',
             }

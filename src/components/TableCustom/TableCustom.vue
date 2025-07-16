@@ -11,15 +11,16 @@
       :table-row-style-fn="tableRowStyleFn"
       style="height: 100%"
       :pagination="{
-        rowsPerPage: 20,
+        rowsPerPage: rowsPerPage ? rowsPerPage : 0,
       }"
       @row-click="
-        (evt: Event, row: any, index: number) =>
-          $emit('onRowClick', {
+        (evt: Event, row: any, index: number) => {
+          $emit('onRowClicked', {
             evt,
             row,
             index,
           })
+        }
       "
     >
       <template v-slot:top="props">
@@ -51,9 +52,12 @@ interface TablePropsInterface {
   styles?: string
   rowKey: string
   title?: string
+  rowsPerPage?: number
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   tableRowStyleFn?: ((row: any) => string) | undefined
 }
+
+defineEmits(['onRowClicked'])
 
 defineProps<TablePropsInterface>()
 </script>

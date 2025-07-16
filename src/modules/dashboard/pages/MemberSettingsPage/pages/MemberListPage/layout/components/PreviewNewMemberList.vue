@@ -51,6 +51,7 @@
                 @click="() => onShowChanges(props.row.id)"
               />
               <q-btn
+                v-if="!(props.row.id as string).toLocaleLowerCase().startsWith('c_')"
                 @click="() => onKeepOldValue(props.row.id)"
                 size="sm"
                 color="primary"
@@ -268,7 +269,7 @@ const { compareDataGetSummary, getDetailedChanges_co } = useUploadList()
 
 const data = ref<DataSummaryResponseInterface | undefined>(undefined)
 const isReady = ref(false)
-const showSummary = ref(true)
+const showSummary = ref(false)
 const $q = useQuasar()
 
 const pageView = ref('1')
@@ -282,14 +283,16 @@ const pageOption = computed(() => [
 
 const columns = computed<QTableColumn[]>(() => {
   return (
-    data.value?.colHeaders.map((item) => ({
-      field: item,
-      name: item,
-      label: item,
-      required: true,
-      align: 'left',
-      sortable: true,
-    })) || []
+    data.value?.colHeaders
+      .filter((item) => item != 'MemberID')
+      .map((item) => ({
+        field: item,
+        name: item,
+        label: item,
+        required: true,
+        align: 'left',
+        sortable: true,
+      })) || []
   )
 })
 
@@ -353,6 +356,7 @@ const unchangedMembersData = computed(
 onMounted(() => {
   compareDataGetSummary().then((resp) => {
     data.value = resp
+    showSummary.value = true
     isReady.value = true
   })
 })
@@ -421,7 +425,7 @@ const detailRows = ref<DetailedKeyInterface[]>([])
 
 const onShowChanges = async (id: string) => {
   const resp = await getDetailedChanges_co(id, true)
-  detailRows.value = resp
+  detailRows.value = resp.filter((item) => item.fieldName != 'MemberID')
   detailChangesFlag.value = true
 }
 
@@ -451,7 +455,9 @@ const onKeepAllOldValue = async () => {
   })
 
   const resp = await Promise.all(
-    data.value.tables.updated.rows.map((row) => getDetailedChanges_co(row.rowKey, false)),
+    data.value.tables.updated.rows
+      .filter((item) => !item.rowKey.toLocaleLowerCase().startsWith('c_'))
+      .map((row) => getDetailedChanges_co(row.rowKey, false)),
   )
 
   data.value.tables.unchanged.rows = [

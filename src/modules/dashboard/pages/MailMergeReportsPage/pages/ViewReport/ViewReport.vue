@@ -1,6 +1,27 @@
 <template>
   <div v-if="report">
     <div class="row q-mb-sm">
+    <div
+      class="top-title-col"
+      :class="{
+        'col-4': !isMobile,
+        'col-12': isMobile,
+      }"
+    >
+      <p class="page-main-title">{{$rStore.getReportSelectedName}}</p>
+      <div class="separator-right q-mr-sm q-ml-sm"></div>
+
+    </div>
+    <div
+      class="top-title-col"
+      :class="{
+        'col-8': !isMobile,
+        'col-12': isMobile,
+      }"
+    ></div>
+  </div>
+  <div></div>
+    <div class="row q-mb-sm">
 <div class="col-12 justify-content-end">
 <q-btn class="q-mr-sm" color="primary"  icon="check" label="Email or Print" :to="{
  name: 'MailMergeReportsPage-MailMergePage',
@@ -41,9 +62,7 @@
 
 
     </div>
-<div class="row">
 
-</div>
 
     <div class="q-pa-md">
       <div class="row white-container" :class="{ fullscreen: isFullScreen }">
@@ -59,12 +78,18 @@
               />
             </div>
           </div>
+          <div class="row">
+            <h6>
+              {{`Sending To (${$rStore.$state.selectedRecipients.length}/
+              ${$rStore.$state.report?.members.length || 0})`}}
+            </h6>
+          </div>
           <q-table
+          v-if="report.members.length"
             :style="{ height: isFullScreen ? '800px' : '628px' }"
             class="table-sticky-header-column-table"
             flat:
             bordered
-            :title="`Sending To (${$rStore.$state.selectedRecipients.length})`"
             :rows="report.members"
             :columns="columns"
             row-key="ID"
@@ -74,6 +99,7 @@
               rowsPerPage: 0,
             }"
             :loading="isTableLoading"
+
           >
             <template v-slot:header="props">
               <q-tr :props="props">
@@ -119,6 +145,13 @@
               </q-tr>
             </template>
           </q-table>
+          <div v-else>
+            <div class="row ">
+           <h6>
+             Not data for this report...
+           </h6>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -130,19 +163,22 @@ import { useReport } from 'src/modules/dashboard/composables/useReport'
 import type {
   RecipientDataInterface,
 } from 'src/modules/dashboard/interfaces/report.interface'
-import { ref, watch } from 'vue'
+import {  ref, watch } from 'vue'
 import { useRoute } from 'vue-router'
 import InnerViewRow from './InnerViewRow.vue'
 import { useDashboardStore } from 'src/modules/dashboard/store/dashboardStore/dashboardStore'
 import { useReportStore } from 'src/modules/dashboard/store/ReportStore/reportStore'
 import type { NoneType } from 'src/modules/dashboard/services/service-interfaces'
 import { columns } from '../MailMergePage/data/columns'
+import { useUI } from 'src/modules/UI/composables'
+
 
 
 const { getViewReport } = useReport()
 const { reportId } = useRoute().params
 const $dStore = useDashboardStore()
 const $rStore = useReportStore()
+const {isMobile} = useUI()
 
 const isFullScreen = ref(false)
 const isTableLoading = ref(false)
@@ -169,6 +205,11 @@ const getInitialData = () => {
     isTableLoading.value = false
   })
 }
+
+
+
+
+
 
 watch(filter, () => {
   isTableLoading.value = true

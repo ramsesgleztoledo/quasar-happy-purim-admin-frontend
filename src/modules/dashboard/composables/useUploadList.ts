@@ -90,7 +90,11 @@ export const useUploadList = () => {
     },
 
     async compareDataGetSummary() {
-      const resp = await compareDataGetSummary()
+      const resp = await compareDataGetSummary({
+        loading: {
+          message: 'Loading'
+        }
+      })
       return resp.ok ? resp.data : undefined
     },
 

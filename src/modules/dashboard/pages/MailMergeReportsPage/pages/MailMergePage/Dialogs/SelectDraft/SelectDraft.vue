@@ -1,17 +1,13 @@
 <template>
   <q-dialog v-model="show" persistent>
-    <q-card>
+    <q-card v-if="isReady" style="min-width: 50vw">
       <div class="row dialog-header custom-dialog-header-container">
         <div class="col-12">
           <p>Select a Draft</p>
         </div>
       </div>
 
-      <div
-        v-if="drafts.length"
-        class="custom-dialog-body-container q-pa-lg"
-        style="min-width: 50vw"
-      >
+      <div v-if="drafts.length" class="custom-dialog-body-container q-pa-lg">
         <q-item v-for="draft in drafts" :key="draft.draftId" class="q-item-bordered q-mb-sm">
           <q-item-section>
             <q-item-label>{{ draft.documentTitle }}</q-item-label>
@@ -58,6 +54,7 @@ import { computed, ref, watch } from 'vue'
 interface ScheduleSendPropsInterface {
   modelValue: boolean
 }
+const isReady = ref(false)
 
 const $emit = defineEmits(['update:modelValue', 'onSelectDraft'])
 
@@ -81,6 +78,7 @@ watch(show, (val) => {
   if (!val) return
   getDrafts().then((resp) => {
     drafts.value = resp
+    isReady.value = true
   })
 })
 </script>

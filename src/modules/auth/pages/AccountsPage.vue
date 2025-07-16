@@ -9,7 +9,7 @@
         'col-12': isMobile,
       }"
     >
-      <q-card class="my-card">
+      <q-card class="my-card" style="height: 100%; display: flex; flex-direction: column">
         <q-card-section
           class="text-white"
           :class="{
@@ -29,7 +29,7 @@
 
         <q-separator />
 
-        <q-card-actions align="right">
+        <q-card-actions align="right" style="display: flex; align-items: flex-end; flex: 1">
           <q-btn flat @click="() => onLogin(account)">{{
             account.id.toString() === $aStore.$state.shul?.shulId ? 'go to Dashboard' : 'Login'
           }}</q-btn>

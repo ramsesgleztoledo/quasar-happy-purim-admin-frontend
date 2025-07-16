@@ -9,12 +9,14 @@ export interface AuxForm {
 export interface AuxFormField<T = string | number | object | boolean> {
   value: T | null | undefined | string,
   type?: 'string' | 'number' | 'object' | 'boolean' | 'array',
+  required?: boolean,
   validations?: ValidationFn[]
 }
 export interface FormField<T = string | number | object | boolean> {
   id: string,
   value: T,
   type: 'string' | 'number' | 'object' | 'boolean' | 'array',
+  required?: boolean,
   validations: ValidationFn[]
 }
 

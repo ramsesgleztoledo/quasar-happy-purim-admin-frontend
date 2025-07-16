@@ -7,7 +7,7 @@
         'col-12': isMobile,
       }"
     >
-      <p class="page-main-title">Mail Merge & Reports</p>
+      <p class="page-main-title">{{$rStore.getReportSelectedName}}</p>
       <div class="separator-right q-mr-sm q-ml-sm"></div>
     </div>
     <div
@@ -18,7 +18,7 @@
       }"
     ></div>
   </div>
-  <div class="row">
+  <div  v-if="$rStore.$state.report?.members?.length" class="row">
     <div class="col-12">
       <div style="display: flex; flex-direction: column; height: 80vh">
         <div class="row" style="flex: 1">
@@ -111,7 +111,7 @@
                         <q-btn
                           color="primary"
                           icon="save"
-                          label="save template"
+                          label="save draft"
                           @click="saveDialogFlag = true"
                         />
                       </div>
@@ -187,6 +187,7 @@
             </div>
           </div>
           <q-table
+
             :style="{ height: isFullScreen ? '800px' : '628px' }"
             class="table-sticky-header-column-table"
             flat:
@@ -246,6 +247,7 @@
               </q-tr>
             </template>
           </q-table>
+
         </div>
       </div>
     </div>
@@ -279,13 +281,14 @@
 
             <q-btn
               v-if="!preview"
+              :disable="!email"
               class="q-mr-sm"
               style="background: var(--happypurim); color: white"
               label="Generate PDF"
               @click="pdfTitleFlag = true"
             />
 
-       <q-btn-dropdown :disable="!isValidForm()" label="Send Email"
+       <q-btn-dropdown v-if="!preview" :disable="!isValidForm() || !email" label="Send Email"
        style="background: var(--happypurim); color: white"
        >
         <q-list>
@@ -310,6 +313,13 @@
       </div>
     </div>
   </div>
+   <div v-else>
+            <div class="row ">
+           <h6>
+             Not data for this report...
+           </h6>
+            </div>
+          </div>
   <!--=============================== dialogs =============================-->
 
   <!-- generate pdf -->
@@ -489,7 +499,9 @@ import { turnTimeAndDate } from 'src/helpers/turnTimeAndDate'
 const $router = useRouter()
 const $rStore = useReportStore()
 const { isMobile } = useUI()
-const { getData, generatePDF,sendNowEmail,addUnmergedEmailJobToTable } = useMailMerge()
+const { getData,
+  generatePDF,
+  sendNowEmail,addUnmergedEmailJobToTable } = useMailMerge()
 const { addDrafts } = useDraft()
 
 const preview = ref(false)
@@ -539,8 +551,11 @@ const onSelectDraft = (draft: DraftInterface) => {
 }
 
 const onSaveDraft = async (form: { name: string; description: string }) => {
+  if (!editorRef.value) return
+    const content = editorRef.value.getEditorValue() || ""
+
   const draft = {
-    body: email.value,
+    body: content,
     name: form.name,
     description: form.description,
     documentType: 'html',
@@ -554,15 +569,23 @@ const pdfTitle = ref('')
 const pdfTitleFlag = ref(false)
 
 const onGeneratePDF = async () => {
-  await generatePDF({
+
+  if (!editorRef.value) return
+    const content = editorRef.value.getEditorValue() || ""
+
+
+await generatePDF({
     title: pdfTitle.value,
-    content: email.value,
+    content: content,
     memberIds: $rStore.$state.selectedRecipients.map((re) => re.ID),
   })
+
+
 };
 
 
 watch(pdfTitleFlag, () => pdfTitle.value = '')
+
 
 
 const onSendNowEmail = async () => {
@@ -571,6 +594,9 @@ await onSendEmail(new Date())
 
 
 const onSendLaterEmail = async () => {
+if (!editorRef.value) return
+    const content = editorRef.value.getEditorValue() || ""
+
     const dateString = turnTimeAndDate({
     dateValue: dateValue.value,
     timeValue: timeValue.value,
@@ -579,12 +605,13 @@ const onSendLaterEmail = async () => {
   const date = new Date(dateString!)
 
   if(!regenerateBefore.value)
-await onSendEmail(date)
+await onSendEmail(date,true)
 
 else{
+
     const formData = getFormValue()
 const resp = await addUnmergedEmailJobToTable({
-  content: email.value,
+  content,
   date,
  form: {
         sendTo: formData.sendTo || "",
@@ -601,7 +628,9 @@ $router.push({
 };
 
 
-const onSendEmail = async (date: Date) => {
+const onSendEmail = async (date: Date,isSchedule?: boolean) => {
+  if (!editorRef.value) return
+    const content = editorRef.value.getEditorValue() || ""
   const formData = getFormValue()
 
 const data ={
@@ -611,11 +640,11 @@ const data ={
     email: formData.email || "",
     emailSubject: formData.emailSubject || "",
     },
-    content: email.value,
+    content,
     memberIds: $rStore.$state.selectedRecipients.map((re) => re.ID),
     date
 }
-const resp = await sendNowEmail(data)
+const resp = await sendNowEmail(data,isSchedule)
 
 if(resp)
 $router.push({

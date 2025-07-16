@@ -21,7 +21,24 @@ export const useReportStore = defineStore('reportStore', {
   }),
 
   getters: {
+    getReportSelectedName(state: reportStateInterface) {
 
+
+      const basic = state.basicReports.find(rp => rp.reportID == state.reportId)
+      if (basic)
+        return basic.name
+
+      const advanced = state.advancedReports.find(rp => rp.reportID == state.reportId)
+      if (advanced)
+        return advanced.name
+
+      const custom = state.customReports.find(rp => rp.reportID == state.reportId)
+      if (custom)
+        return custom.name
+
+      return "None-name"
+
+    }
   },
 
   actions: {

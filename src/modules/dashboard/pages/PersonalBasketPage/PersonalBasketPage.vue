@@ -8,7 +8,6 @@
 
   <div class="row q-mb-md">
     <div class="col-12 d-flex justify-content-end">
-      <q-btn disable label="Email Merge" color="primary" icon="mail" class="q-mr-sm" />
       <q-btn
         :disable="exportDisabled"
         label="Export to Excel"

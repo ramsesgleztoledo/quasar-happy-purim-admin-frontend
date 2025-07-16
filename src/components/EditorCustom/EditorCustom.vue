@@ -426,23 +426,30 @@ const insertFile = (
 ) => {
   if (!editorRef.value) return
   const edit = editorRef.value
-  tokenRef.value?.hide()
   edit.caret.restore()
   edit.runCmd(
     'insertHTML',
     `&nbsp;
 <div
-  class="editable-div">
+  class="editable-div" style="width: ${prop?.width ? prop.width : '200px'}; height: ${prop?.height ? prop.height : '200px'}">
   <img
     src="${file}"
-    style="width: ${prop?.width ? prop.width : '100%'}; height: ${prop?.height ? prop.height : '100%'}; pointer-events: none;"
+    style="width: 100%; height: 100%; pointer-events: none;"
   />
+  </div>
+
+
     &nbsp;`,
   )
   edit.focus()
 }
 
-defineExpose({ add, addHTML, addTokenText, insertFile })
+const getEditorValue = () => {
+  const contentEl = editorRef.value?.$el.querySelector('.q-editor__content') as HTMLElement
+  return contentEl?.innerHTML || ''
+}
+
+defineExpose({ add, addHTML, addTokenText, insertFile, getEditorValue })
 
 const files = ref<string[]>([])
 const newFiles = ref<File[]>([])

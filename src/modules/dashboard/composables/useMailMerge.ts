@@ -135,7 +135,7 @@ export const useMailMerge = () => {
       content: string;
       memberIds: number[];
       date: Date;
-    }) {
+    }, isSchedule?: boolean) {
 
       const recipients: MergedResultInterface[] = await getMergedContent({
         content: data.content,
@@ -158,8 +158,12 @@ export const useMailMerge = () => {
           message: 'Sending emails'
         }
       })
-      showToast(resp.ok, 'All emails were sent',
-        'something went wrong sending the emails')
+      if (!isSchedule)
+        showToast(resp.ok, 'All emails were sent',
+          'something went wrong sending the emails')
+      else
+        showToast(resp.ok, 'All emails were scheduled',
+          'something went wrong scheduling the emails')
 
       return resp.ok
 
@@ -188,6 +192,7 @@ export const useMailMerge = () => {
           message: 'Scheduling emails'
         }
       })
+
 
       showToast(resp.ok, 'All emails were scheduled',
         'something went wrong scheduling the emails')

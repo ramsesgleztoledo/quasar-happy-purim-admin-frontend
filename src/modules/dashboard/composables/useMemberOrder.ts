@@ -254,8 +254,8 @@ export const useMemberOrder = () => {
           validRespAdd &&
           // validRespDelete &&
           validRespPromotions,
-          'card update',
-          'something went wrong updating the invoice text'
+          'cart updated',
+          'something went wrong updating the cart'
         )
       }
 

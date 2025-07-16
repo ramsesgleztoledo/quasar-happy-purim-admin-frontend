@@ -27,13 +27,7 @@
       >
         <div class="row q-mt-md">
           <div class="col-6 q-pl-sm q-pr-sm">
-            <q-input
-              v-model="realForm.title.value"
-              outlined
-              label="Title *"
-              lazy-rules
-              :rules="[lazyRules.required()]"
-            />
+            <q-input v-model="realForm.title.value" outlined label="Title" />
           </div>
         </div>
         <div class="row q-mt-md">
@@ -56,34 +50,37 @@
             />
           </div>
         </div>
+
         <div class="row q-mt-md">
           <div class="col-6 q-pl-sm q-pr-sm">
+            <q-input v-model="realForm.spouse.value" outlined label="Spouse First Name" />
+          </div>
+          <div class="col-6 q-pl-sm q-pr-sm">
+            <q-input v-model="realForm.secondLastName.value" outlined label="Spouse Last Name" />
+          </div>
+        </div>
+        <div class="row q-mt-md">
+          <div class="col-12 q-pl-sm q-pr-sm">
             <q-input
-              v-model="realForm.spouseTitle.value"
+              v-model="realForm.displayName.value"
               outlined
-              label="Title *"
+              label="Display Name *"
               lazy-rules
               :rules="[lazyRules.required()]"
             />
           </div>
         </div>
-        <div class="row q-mt-md">
+        <!-- <div class="row q-mt-md">
           <div class="col-6 q-pl-sm q-pr-sm">
             <q-input v-model="realForm.spouseFirstName.value" outlined label="Spouse First Name" />
           </div>
           <div class="col-6 q-pl-sm q-pr-sm">
             <q-input v-model="realForm.spouseLastName.value" outlined label="Spouse Last Name" />
           </div>
-        </div>
+        </div> -->
         <div class="row q-mt-md">
           <div class="col-12 q-pl-sm q-pr-sm">
-            <q-input
-              v-model="realForm.address.value"
-              outlined
-              label="Address  *"
-              lazy-rules
-              :rules="[lazyRules.required()]"
-            />
+            <q-input v-model="realForm.address1.value" outlined label="Address" />
           </div>
         </div>
         <div class="row q-mt-md">
@@ -91,13 +88,7 @@
             <q-input v-model="realForm.address2.value" outlined label="Address 2" />
           </div>
           <div class="col-6 q-pl-sm q-pr-sm">
-            <q-input
-              v-model="realForm.city.value"
-              outlined
-              label="City  *"
-              lazy-rules
-              :rules="[lazyRules.required()]"
-            />
+            <q-input v-model="realForm.city.value" outlined label="City" />
           </div>
         </div>
         <div class="row q-mt-md">
@@ -106,20 +97,11 @@
               v-model="realForm.state.value"
               outlined
               :options="statesOptions"
-              label="State  *"
-              lazy-rules
-              :rules="[lazyRules.required()]"
+              label="State"
             />
           </div>
           <div class="col-6 q-pl-sm q-pr-sm">
-            <q-input
-              v-model="realForm.zip.value"
-              outlined
-              label="Zip Code  *"
-              mask="#####"
-              lazy-rules
-              :rules="[lazyRules.required()]"
-            />
+            <q-input v-model="realForm.zip.value" outlined label="Zip Code" mask="#####" />
           </div>
         </div>
         <div class="row q-mt-md">
@@ -127,10 +109,10 @@
             <q-input
               v-model="realForm.phone.value"
               outlined
-              label="Primary Telephone *"
+              label="Primary Telephone"
               mask="(###) - ### - ####"
               lazy-rules
-              :rules="[lazyRules.required()]"
+              :rules="[lazyRules.minCharacters(18), lazyRules.maxCharacters(18)]"
             />
           </div>
           <div class="col-6 q-pl-sm q-pr-sm">
@@ -139,6 +121,8 @@
               outlined
               label="Optional 2nd Telephone"
               mask="(###) - ### - ####"
+              lazy-rules
+              :rules="[lazyRules.minCharacters(18), lazyRules.maxCharacters(18)]"
             />
           </div>
         </div>
@@ -147,9 +131,9 @@
             <q-input
               v-model="realForm.email.value"
               outlined
-              label="Email Address *"
+              label="Email Address"
               lazy-rules
-              :rules="[lazyRules.required(), lazyRules.isEmail()]"
+              :rules="[lazyRules.isEmail()]"
               hint="Receipts will be sent here"
             />
           </div>
@@ -159,41 +143,46 @@
               outlined
               label="Optional 2nd Email Address"
               lazy-rules
-              :rules="[lazyRules.checkOnlyIfValue(validations.isEmail)]"
+              :rules="[lazyRules.isEmail()]"
             />
           </div>
         </div>
         <div class="row q-mt-md">
           <div class="col-6 q-pl-sm q-pr-sm">
-            <q-input v-model="realForm.misc.value" outlined label="Misc" />
-          </div>
-          <div class="col-6 q-pl-sm q-pr-sm">
-            <q-input v-model="realForm.misc2.value" outlined label="Misc 2" />
-          </div>
-        </div>
-        <div class="row q-mt-md">
-          <div class="col-12 q-pl-sm q-pr-sm">
             <q-input
-              v-model="realForm.displayAs.value"
+              v-model="realForm.misc.value"
               outlined
-              label="Display Name *"
+              label="Misc *"
+              @keypress="onlyDigits"
               lazy-rules
               :rules="[lazyRules.required()]"
             />
           </div>
-        </div>
-        <div class="row q-mt-md">
-          <div class="col-12 q-pl-sm q-pr-sm">
+          <div class="col-6 q-pl-sm q-pr-sm">
             <q-input
-              type="textarea"
-              v-model="realForm.foods.value"
+              v-model="realForm.misc2.value"
               outlined
-              label="Please specify any special food needs"
-              lazy-rules
-              :rules="[lazyRules.maxCharacters(255)]"
-              :hint="`${realForm.foods.value.length}/255 character limit`"
+              label="Misc 2"
+              @keypress="onlyDigits"
             />
           </div>
+        </div>
+        <div class="row q-mt-md">
+          <div class="col-6 q-pl-sm q-pr-sm">
+            <q-input v-model="realForm.route.value" outlined label="Route Code" />
+          </div>
+          <div class="col-6 q-pl-sm q-pr-sm">
+            <q-checkbox v-model="realForm.hidden.value" label="Hide this member" />
+          </div>
+        </div>
+
+        <div class="row q-mt-md">
+          <div class="col-12 q-pl-sm q-pr-sm">
+            <q-input type="textarea" v-model="realForm.children.value" outlined label="Children" />
+          </div>
+          <!-- lazy-rules
+            :rules="[lazyRules.required(), lazyRules.maxCharacters(255)]"
+            :hint="`${realForm.children.value.length}/255 character limit`" -->
         </div>
       </div>
       <!--=========================== END OF SECTION ===========================-->
@@ -207,20 +196,15 @@
       >
         <div class="row q-mt-md">
           <div class="col-12 q-pl-sm q-pr-sm">
-            <q-input v-model="realForm.salutation.value" outlined label="Salutation" lazy-rules />
+            <q-input v-model="realForm.salutation.value" outlined label="Salutation" />
           </div>
         </div>
         <div class="row q-mt-md">
           <div class="col-12 q-pl-sm q-pr-sm">
-            <q-input
-              type="textarea"
-              v-model="realForm.notes.value"
-              outlined
-              label="Notes"
-              lazy-rules
-              :rules="[lazyRules.maxCharacters(255)]"
-              :hint="`${realForm.notes.value.length}/255 character limit`"
-            />
+            <q-input type="textarea" v-model="realForm.notes.value" outlined label="Notes" />
+            <!-- lazy-rules
+              :rules="[lazyRules.required(), lazyRules.maxCharacters(255)]"
+              :hint="`${realForm.notes.value.length}/255 character limit`" -->
           </div>
         </div>
         <!-- TODO: alt options to edit -->
@@ -361,10 +345,10 @@
           :disable="!areValidForms()"
         /> -->
         <q-btn
+          :disable="!areValidForms()"
           class="q-mr-sm"
           style="background: var(--happypurim); color: white"
           label="SAVE CHANGES"
-          :disable="!areValidForms()"
           @click="onAddMember"
         />
       </div>
@@ -381,8 +365,12 @@
 
   <!--* confirm cancel --->
   <DialogAlert
-    @on-finish="(value) => console.log('on finish', { value })"
-    msg="Are you sure you want to cancel this order?"
+    @on-finish="
+      (value) => {
+        if (value) $router.push({ name: 'MembersSettingsPage' })
+      }
+    "
+    msg="Are you sure you want to cancel this member creation?"
     v-model="cancelOrderDialogFlag"
   />
 
@@ -392,17 +380,21 @@
 <script setup lang="ts">
 import DialogAlert from 'src/components/DialogAlert/DialogAlert.vue'
 import { lazyRules, useForm, validations } from 'src/composables'
+import { onlyDigits } from 'src/helpers/onlyDigits'
 import { useMember } from 'src/modules/dashboard/composables/useMember'
 import { statesOptions } from 'src/modules/dashboard/data'
 import type { MemberAddFormInterface } from 'src/modules/dashboard/interfaces/member-interfaces'
 import { useUI } from 'src/modules/UI/composables'
 import { ref } from 'vue'
+import { useRouter } from 'vue-router'
 
 // interface CheckboxItemInterface {
 //   value: boolean
 //   label: string
 //   id: number
 // }
+
+const $router = useRouter()
 
 const {
   // reloadPage,
@@ -421,37 +413,61 @@ const cancelOrderDialogFlag = ref<boolean>(false)
 // ])
 // const customOptions = ref<CheckboxItemInterface[]>([])
 
-const { realForm, isValidForm, getFormValue } = useForm({
+interface CreateMemberFormInterface {
+  lastName: string
+  firstName: string
+  spouse: string
+  title: string
+  displayName: string
+  address1: string
+  address2: string
+  city: string
+  state: string
+  zip: string
+  phone: string
+  email: string
+  email2: string
+  children: string
+  route: string
+  misc: string
+  hidden: boolean
+  notes: string
+  secondLastName: string
+  misc2: string
+  salutation: string
+  phone2: string
+}
+
+const { realForm, isValidForm, getFormValue, resetForm } = useForm<CreateMemberFormInterface>({
+  lastName: { value: '', required: true },
+  firstName: { value: '', required: true },
+  misc: { value: '', required: true },
+  displayName: { value: '', required: true },
+  spouse: { value: '', validations: [] },
   title: { value: '', validations: [] },
-  firstName: {
-    value: '',
-    validations: [validations.required],
-  },
-  lastName: {
-    value: '',
-    validations: [validations.required],
-  },
-  spouseTitle: { value: '', validations: [] },
-  spouseFirstName: { value: '', validations: [] },
-  spouseLastName: { value: '', validations: [] },
-  address: { value: '', validations: [validations.required] },
+  address1: { value: '', validations: [] },
   address2: { value: '', validations: [] },
-  city: { value: '', validations: [validations.required] },
-  state: { value: '', validations: [validations.required] },
-  zip: {
+  city: { value: '', validations: [] },
+  state: { value: '', validations: [] },
+  zip: { value: '', validations: [] },
+  phone: {
     value: '',
-    validations: [validations.required, validations.minCharacters(5), validations.maxCharacters(5)],
+    validations: [validations.minCharacters(18), validations.minCharacters(18)],
   },
-  phone: { value: '', validations: [validations.required] },
-  phone2: { value: '', validations: [] },
-  email: { value: '', validations: [validations.required, validations.isEmail] },
+  email: { value: '', validations: [validations.isEmail] },
   email2: { value: '', validations: [validations.isEmail] },
-  misc: { value: '', validations: [] },
-  misc2: { value: '', validations: [] },
-  displayAs: { value: '', validations: [validations.required] },
-  foods: { value: '', validations: [] },
-  salutation: { value: '', validations: [] },
+  children: { value: '', validations: [] },
+  route: { value: '', validations: [] },
+
+  hidden: { value: false, type: 'boolean', validations: [] },
   notes: { value: '', validations: [] },
+  secondLastName: { value: '', validations: [] },
+  misc2: { value: '', validations: [] },
+  salutation: { value: '', validations: [] },
+  phone2: {
+    value: '',
+    validations: [validations.minCharacters(18), validations.minCharacters(18)],
+  },
 })
 // const { realForm: altAddressForm, isValidForm: isValidAltAddressForm } = useForm({
 //   name: { value: '', validations: [validations.required] },
@@ -470,12 +486,12 @@ const areValidForms = () => {
   // && (!altAddress.value || (altAddress.value && isValidAltAddressForm()))
 }
 
-const onAddMember = () => {
-  const data = getFormValue() as unknown as MemberAddFormInterface
-  addMember_Co(data)
+const onAddMember = async () => {
+  const data = { ...getFormValue(), categoryIds: [] } as unknown as MemberAddFormInterface
+
+  const resp = await addMember_Co(data)
+  if (resp) resetForm()
 }
 </script>
 
-<style scoped lang="scss">
-@import './AddMemberPage.scss';
-</style>
+<style scoped lang="scss" src="./AddMemberPage.scss"></style>

@@ -1,6 +1,6 @@
 <template>
   <q-dialog v-model="show" persistent>
-    <q-card>
+    <q-card style="min-width: 50vw">
       <div class="row dialog-header custom-dialog-header-container">
         <div class="col-12">
           <p>Select Image</p>

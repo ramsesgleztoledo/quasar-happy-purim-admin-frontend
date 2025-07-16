@@ -20,7 +20,7 @@
         row-key="orderNum"
         title="Items"
         @onRowClick="
-          ({ row }) => {
+          ({ row }: any) => {
             $router.push({
               name: 'dashboard-transactionDetailsPage',
               params: {

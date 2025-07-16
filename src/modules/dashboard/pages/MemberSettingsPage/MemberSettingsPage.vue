@@ -1,37 +1,34 @@
 <template>
-  <div class="row">
-    <div
-      class="q-mb-sm"
-      :class="{
-        'col-4': !isMobile,
-        'col-12': isMobile,
-      }"
-    >
-      <q-input outlined v-model="searchText" label="Search">
-        <template v-slot:append>
-          <q-icon name="search" />
-        </template>
-      </q-input>
-    </div>
-    <div
-      class="MemberSettingsPage-desktop-btns"
-      :class="{
-        'col-8': !isMobile,
-        'col-12': isMobile,
-      }"
-    >
-      <q-btn
-        outline
-        label="ADD MEMBER"
-        class="q-mr-sm"
-        :to="{ name: 'MembersSettingsPage-AddMemberPage' }"
-      />
-      <q-btn
-        outline
-        label="UPLOAD MEMBER LIST"
-        :to="{ name: 'MembersSettingsPage-MemberListLayout' }"
-      />
-    </div>
+  <div class="row justify-content-end q-mb-md">
+    <q-btn
+      outline
+      label="ADD MEMBER"
+      class="q-mr-sm"
+      :to="{ name: 'MembersSettingsPage-AddMemberPage' }"
+    />
+    <q-btn
+      outline
+      label="UPLOAD MEMBER LIST"
+      :to="{ name: 'MembersSettingsPage-MemberListLayout' }"
+    />
+  </div>
+  <div :class="{ row: !isMobile }">
+    <q-input class="q-mr-sm q-mb-sm" outlined v-model="searchText" label="Search">
+      <template v-slot:append>
+        <q-icon name="search" />
+      </template>
+    </q-input>
+
+    <q-select
+      :class="{ 'item-width-300': !isMobile }"
+      v-model="categories"
+      outlined
+      multiple
+      :options="$dStore.categories"
+      label="Filter by categories"
+      option-label="categoryName"
+      option-value="categoryID"
+    />
   </div>
   <div class="q-pa-md">
     <div class="row RecentOrders-container" :class="{ fullscreen: isFullScreen }">
@@ -56,7 +53,7 @@
           ref="tableRef"
           :rows
           :columns="columns"
-          row-key="id"
+          row-key="m_id"
           styles="height: 360px"
           :pagination="{
             rowsPerPage: 20,
@@ -109,13 +106,28 @@ import { useRouter } from 'vue-router'
 import { useUI } from 'src/modules/UI/composables'
 import type { MemberInterface } from '../../interfaces/member-interfaces'
 import { useMember } from '../../composables/useMember'
+import type { ShulCategoryInterface } from '../../interfaces/category-interfaces'
+import { useDashboardStore } from '../../store/dashboardStore/dashboardStore'
 
 const { isMobile } = useUI()
 const $router = useRouter()
+const $dStore = useDashboardStore()
 const { memberState } = useMember()
 
+const categories = ref<ShulCategoryInterface[]>([])
+
 const rows = computed(() =>
-  memberState.value.members.filter((item) => JSON.stringify(item).toLowerCase().includes(searchText.value.toLowerCase())),
+  memberState.value.members
+    .filter((item) => JSON.stringify(item).toLowerCase().includes(searchText.value.toLowerCase()))
+    .filter((member) => {
+      const categoriesArray = categories.value || []
+
+      for (let i = 0; i < categoriesArray.length; i++) {
+        const cat = categoriesArray[i]!.categoryName
+        if (!member.m_category.includes(cat)) return false
+      }
+      return true
+    }),
 )
 const isFullScreen = ref(false)
 

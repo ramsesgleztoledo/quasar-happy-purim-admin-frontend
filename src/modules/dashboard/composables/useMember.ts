@@ -4,12 +4,11 @@ import { useMemberStore } from "../store/memberStore/memberStore";
 import { useMemberService } from "../services/member.service";
 import { useQuasar } from "quasar";
 import { useCategoryService } from "../services/category.service";
-import type { AlternativeMemberAddress, EmailLoginCodeInfoInterface, MemberAddFormInterface, MemberDataInterface, MemberDonateBasketOptionInterface, MemberHiddenInterface, MemberProfileQuestionInterface, MemberTransactionInterface, MemberUpdateAllDataForm, PendingDeletionInterface } from "../interfaces/member-interfaces";
+import type { AlternativeMemberAddress, EmailLoginCodeInfoInterface, MemberAddFormInterface, MemberDonateBasketOptionInterface, MemberHiddenInterface, MemberProfileQuestionInterface, MemberTransactionInterface, MemberUpdateAllDataForm, PendingDeletionInterface } from "../interfaces/member-interfaces";
 import type { MemberReciprocityInterface } from '../interfaces/member-interfaces';
 import type { MemberCategoryInterface } from "../interfaces/category-interfaces";
 import type { ApiCallResponseInterface } from "src/services/api-interfaces";
 import { useUI } from "src/modules/UI/composables";
-import { useRouter } from "vue-router";
 
 
 
@@ -18,8 +17,8 @@ export const useMember = () => {
 
   const $mStore = useMemberStore()
   const $q = useQuasar()
-  const { downloadFile } = useUI()
-  const $router = useRouter()
+  const { downloadFile, showToast } = useUI()
+
 
   const {
     getMembersList,
@@ -43,9 +42,10 @@ export const useMember = () => {
     updateHiddenByMemberId,
     updateMemberDonateBasketOptionByMemberId,
     getProfileQuestions,
-    // updateAlternativeAddressByMemberId,
+    updateAlternativeAddressByMemberId,
     addMember,
-
+    resetMemberLoginCode,
+    emailReceiptByTransactionId,
   } = useMemberService()
 
 
@@ -59,7 +59,7 @@ export const useMember = () => {
   const getMembers_Co = async () => {
     const members = await getMembersList({
       loading: {
-        message: 'loading members...'
+        message: 'Loading ...'
       }
     })
 
@@ -70,15 +70,21 @@ export const useMember = () => {
   const getMemberDataById_Co = async (memberId: number) => {
 
     $q.loading.show({
-      message: `loading member data ${memberId}...`,
+      message: `loading ...`,
       spinnerColor: '#f36b09',
       messageColor: '#f36b09',
     })
 
     try {
 
+      const member = await getMemberById(memberId, {
+        goBackIn403: true
+      })
+
+      if (!member.ok)
+        return
+
       const [
-        member,
         hidden,
         reciprocity,
         categories,
@@ -89,7 +95,6 @@ export const useMember = () => {
         profileQuestions
 
       ]: [
-          ApiCallResponseInterface<MemberDataInterface>,
           ApiCallResponseInterface<MemberHiddenInterface>,
           ApiCallResponseInterface<MemberReciprocityInterface>,
           ApiCallResponseInterface<MemberCategoryInterface[]>,
@@ -100,7 +105,7 @@ export const useMember = () => {
           ApiCallResponseInterface<MemberProfileQuestionInterface[]>,
 
         ] = await Promise.all([
-          getMemberById(memberId),
+
           getHiddenByMemberId(memberId),
           getReciprocityByMemberId(memberId),
           getCategoriesByMemberId(memberId),
@@ -178,12 +183,12 @@ export const useMember = () => {
     })
 
     const [resp1, resp2, resp3,
-      // resp4
+      resp4
     ]: [
         ApiCallResponseInterface<unknown>,
         ApiCallResponseInterface<unknown>,
         ApiCallResponseInterface<unknown>,
-        // ApiCallResponseInterface<unknown>,
+        ApiCallResponseInterface<unknown>,
       ] =
 
       await Promise.all([updateReciprocityByMemberId(memberId, data.reciprocity, {
@@ -195,9 +200,9 @@ export const useMember = () => {
       updateHiddenByMemberId(memberId, data.hidden, {
         dontRedirect: true
       }),
-        // updateAlternativeAddressByMemberId(memberId, data.altAddressData, {
-        //   dontRedirect: true
-        // })
+      updateAlternativeAddressByMemberId(memberId, data.altAddressData, {
+        dontRedirect: true
+      })
 
       ])
 
@@ -210,7 +215,7 @@ export const useMember = () => {
 
 
     if (!resp1.ok || !resp2.ok || !resp3.ok
-      // || !resp4.ok
+      || !resp4.ok
       || (resp5 !== undefined && !resp5.ok))
 
       $q.notify({
@@ -277,7 +282,7 @@ export const useMember = () => {
   const getBasketReceived_Co = async () => {
     const resp = await getBasketReceived({
       loading: {
-        message: 'Loading received baskets ...'
+        message: 'Loading ...'
       }
     })
 
@@ -292,7 +297,7 @@ export const useMember = () => {
   const getMemberPersonalBasket_Co = async () => {
     const resp = await getMemberPersonalBasket({
       loading: {
-        message: 'Loading personal baskets ...'
+        message: 'Loading ...'
       }
     })
 
@@ -311,29 +316,33 @@ export const useMember = () => {
       }
     })
 
-    if (resp.ok) {
-      $q.notify({
-        color: 'green',
-        textColor: 'black',
-        icon: 'error',
-        message: 'Member added',
-      })
+    showToast(resp.ok, 'Member added', `something went wrong adding a new member`)
 
-      $router.push({
-        name: 'MemberLayout',
-        params: {
-          memberId: resp.data.memberId
-        }
-      })
-    }
-    else {
-      $q.notify({
-        color: 'red',
-        textColor: 'black',
-        icon: 'error',
-        message: `something went wrong adding a new member`,
-      })
-    }
+    return resp.ok
+  };
+  const resetMemberLoginCode_Co = async (memberId: number) => {
+    const resp = await resetMemberLoginCode(memberId, {
+      loading: {
+        message: 'Resetting Code...'
+      }
+    })
+
+    showToast(resp.ok, `the member code was reset`, `something went wrong resetting the code`)
+
+    if (!resp.ok || !$mStore.selectedMember) return
+
+    $mStore.selectedMember.loginCode = resp.data.loginCode || ""
+    $mStore.selectedMember.signOnLink = resp.data.signOnLink || ""
+  };
+
+  const emailReceiptByTransactionId_Co = async (transactionId: number) => {
+    const resp = await emailReceiptByTransactionId(transactionId, {
+      dontRedirect: true,
+      loading: {
+        message: 'Sending email...'
+      }
+    })
+    return resp.data
   };
 
 
@@ -354,5 +363,7 @@ export const useMember = () => {
     getMemberPersonalBasket_Co,
     downloadMemberPersonalBasketCSV_Co,
     addMember_Co,
+    resetMemberLoginCode_Co,
+    emailReceiptByTransactionId_Co,
   };
 }

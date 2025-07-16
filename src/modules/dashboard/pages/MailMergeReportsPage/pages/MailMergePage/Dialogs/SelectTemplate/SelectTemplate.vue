@@ -1,17 +1,13 @@
 <template>
   <q-dialog v-model="show" persistent>
-    <q-card>
+    <q-card style="min-width: 50vw">
       <div class="row dialog-header custom-dialog-header-container">
         <div class="col-12">
           <p>Select a Template</p>
         </div>
       </div>
 
-      <div
-        v-if="templates.length"
-        class="custom-dialog-body-container q-pa-lg"
-        style="min-width: 50vw"
-      >
+      <div v-if="templates.length" class="custom-dialog-body-container q-pa-lg">
         <q-item v-for="(template, i) in templates" :key="i" class="q-item-bordered q-mb-sm">
           <q-item-section>
             <q-item-label>{{ template.name }}</q-item-label>

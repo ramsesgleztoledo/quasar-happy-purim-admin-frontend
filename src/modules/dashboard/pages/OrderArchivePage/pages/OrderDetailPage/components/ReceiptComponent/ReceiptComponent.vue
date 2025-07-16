@@ -12,7 +12,12 @@
         </div>
       </div>
       <div class="row">
-        <div class="col-12 justify-content-end">
+        <div class="col-12 justify-content-space-between">
+          <p class="text-h5">
+            <b>
+              {{ RECEIPT_NAME }}
+            </b>
+          </p>
           <p class="text-h5">
             <b>{{ $aStore.$state.shul?.shulName }} </b>
           </p>
@@ -159,6 +164,8 @@ const printArea = ref<HTMLElement | null | undefined>(null)
 const printReceipt = () => {
   printElement('print-receipt-id')
 }
+
+const RECEIPT_NAME = computed(() => process.env.RECEIPT_NAME || '')
 </script>
 
 <style scoped lang="scss">

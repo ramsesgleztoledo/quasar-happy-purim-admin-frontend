@@ -12,7 +12,7 @@
       v-if="memberState.isPendingDeletion"
       class="q-mb-md q-mt-md"
       type="error"
-      text="This member is pending for delete"
+      text="This member is pending for deletion"
     />
 
     <div class="q-mb-md">
@@ -27,7 +27,7 @@
             @click="copyToClipboard(memberState.selectedMember?.loginCode || '')"
           >
             Login Code:
-            <b>{{ memberState.selectedMember?.loginCode }}</b>
+            <b>{{ memberState.selectedMember?.loginCode }}</b> <q-icon name="copy_all" />
           </p>
           <div class="separator-right q-mr-sm q-ml-sm"></div>
           <p
@@ -35,7 +35,7 @@
             @click="copyToClipboard(memberState.selectedMember?.signOnLink || '')"
           >
             SignOn Link:
-            <b> {{ memberState.selectedMember?.signOnLink }}</b>
+            <b> {{ memberState.selectedMember?.signOnLink }}</b> <q-icon name="copy_all" />
           </p>
         </div>
         <!--=========================== END OF SECTION ===========================-->
@@ -84,6 +84,17 @@
                 <q-item clickable v-close-popup>
                   <q-item-section>
                     <q-btn
+                      icon="restart_alt"
+                      class="q-mr-sm q-mt-sm"
+                      style="background: var(--happypurim); color: white"
+                      label="Reset Login Code"
+                      @click="onResetLoginCode"
+                    />
+                  </q-item-section>
+                </q-item>
+                <q-item clickable v-close-popup>
+                  <q-item-section>
+                    <q-btn
                       icon="email"
                       class="q-mr-sm q-mt-sm"
                       style="background: var(--happypurim); color: white"
@@ -110,7 +121,7 @@
                       :icon="`${memberState.isPendingDeletion ? 'close' : 'delete'}`"
                       @click="deleteMemberDialogFlag = true"
                       outline
-                      :label="`${memberState.isPendingDeletion ? 'RESTORE' : 'DELETE'}`"
+                      :label="`${memberState.isPendingDeletion ? 'Remove delete flag' : 'DELETE'}`"
                       class="q-mr-sm q-mt-sm"
                       style="color: #990000; border-color: #990000"
                     />
@@ -125,7 +136,7 @@
               @click="copyToClipboard(memberState.selectedMember?.loginCode || '')"
             >
               Login Code:
-              <b> {{ memberState.selectedMember?.loginCode }}</b>
+              <b> {{ memberState.selectedMember?.loginCode }}</b> <q-icon name="copy_all" />
             </p>
           </div>
           <div class="row separator-bottom q-mt-sm"></div>
@@ -135,7 +146,7 @@
               @click="copyToClipboard(memberState.selectedMember?.signOnLink || '')"
             >
               SignOn Link:
-              <b> {{ memberState.selectedMember?.signOnLink }}</b>
+              <b> {{ memberState.selectedMember?.signOnLink }}</b> <q-icon name="copy_all" />
             </p>
           </div>
           <div class="row separator-bottom q-mt-sm"></div>
@@ -180,6 +191,13 @@
               @click="clearCartMemberDialogFlag = true"
             />
             <q-btn
+              icon="restart_alt"
+              class="q-mr-sm q-mt-sm"
+              style="background: var(--happypurim); color: white"
+              label="Reset Login Code"
+              @click="onResetLoginCode"
+            />
+            <q-btn
               icon="email"
               class="q-mr-sm q-mt-sm"
               style="background: var(--happypurim); color: white"
@@ -198,7 +216,7 @@
             :icon="`${memberState.isPendingDeletion ? 'close' : 'delete'}`"
             @click="deleteMemberDialogFlag = true"
             outline
-            :label="`${memberState.isPendingDeletion ? 'RESTORE' : 'DELETE'}`"
+            :label="`${memberState.isPendingDeletion ? 'Remove delete flag' : 'DELETE'}`"
             class="q-mr-sm q-mt-sm"
             style="color: #990000; border-color: #990000"
           />
@@ -447,76 +465,85 @@
               />
             </div>
           </div>
-          <!-- <div v-if="memberState.memberAlternativeAddress?.showAlternateDelivery">
-            <div class="row q-mt-md">
+
+          <div class="q-pa-sm" v-if="memberState.memberAlternativeAddress?.showAlternateDelivery">
+            <div class="border-container row q-mt-md">
               <div class="col-12">
-                <q-checkbox
-                  v-model="altAddress"
-                  label="Deliver My Basket to an Alternate Address"
-                />
+                <div class="row q-mt-md">
+                  <div class="col-12">
+                    <q-checkbox
+                      v-model="altAddress"
+                      label="Deliver My Basket to an Alternate Address"
+                    />
+                  </div>
+                </div>
+                <div v-if="altAddress">
+                  <div class="row q-mt-md">
+                    <div class="col-12 q-pl-sm q-pr-sm">
+                      <q-input
+                        v-model="altAddressForm.name.value"
+                        outlined
+                        label="Name *"
+                        lazy-rules
+                        :rules="[lazyRules.required()]"
+                      />
+                    </div>
+                  </div>
+                  <div class="row q-mt-md">
+                    <div class="col-12 q-pl-sm q-pr-sm">
+                      <q-input
+                        v-model="altAddressForm.address.value"
+                        outlined
+                        label="Address *"
+                        lazy-rules
+                        :rules="[lazyRules.required()]"
+                      />
+                    </div>
+                  </div>
+                  <div class="row q-mt-md">
+                    <div class="col-6 q-pl-sm q-pr-sm">
+                      <q-input
+                        v-model="altAddressForm.address2.value"
+                        outlined
+                        label="Address 2"
+                      />
+                    </div>
+                    <div class="col-6 q-pl-sm q-pr-sm">
+                      <q-input
+                        v-model="altAddressForm.city.value"
+                        outlined
+                        label="City *"
+                        lazy-rules
+                        :rules="[lazyRules.required()]"
+                      />
+                    </div>
+                  </div>
+                  <div class="row q-mt-md">
+                    <div class="col-6 q-pl-sm q-pr-sm">
+                      <q-select
+                        v-model="altAddressForm.state.value"
+                        outlined
+                        :options="statesOptions"
+                        label="State *"
+                        lazy-rules
+                        :rules="[lazyRules.required()]"
+                      />
+                    </div>
+                    <div class="col-6 q-pl-sm q-pr-sm">
+                      <q-input
+                        v-model="altAddressForm.zip.value"
+                        outlined
+                        label="Zip Code *"
+                        mask="#####"
+                        lazy-rules
+                        :rules="[lazyRules.required()]"
+                      />
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
-            <div v-if="altAddress">
-              <div class="row q-mt-md">
-                <div class="col-12 q-pl-sm q-pr-sm">
-                  <q-input
-                    v-model="altAddressForm.name.value"
-                    outlined
-                    label="Name *"
-                    lazy-rules
-                    :rules="[lazyRules.required()]"
-                  />
-                </div>
-              </div>
-              <div class="row q-mt-md">
-                <div class="col-12 q-pl-sm q-pr-sm">
-                  <q-input
-                    v-model="altAddressForm.address.value"
-                    outlined
-                    label="Address *"
-                    lazy-rules
-                    :rules="[lazyRules.required()]"
-                  />
-                </div>
-              </div>
-              <div class="row q-mt-md">
-                <div class="col-6 q-pl-sm q-pr-sm">
-                  <q-input v-model="altAddressForm.address2.value" outlined label="Address 2" />
-                </div>
-                <div class="col-6 q-pl-sm q-pr-sm">
-                  <q-input
-                    v-model="altAddressForm.city.value"
-                    outlined
-                    label="City *"
-                    lazy-rules
-                    :rules="[lazyRules.required()]"
-                  />
-                </div>
-              </div>
-              <div class="row q-mt-md">
-                <div class="col-6 q-pl-sm q-pr-sm">
-                  <q-select
-                    v-model="altAddressForm.state.value"
-                    outlined
-                    :options="statesOptions"
-                    label="State *"
-                    lazy-rules
-                    :rules="[lazyRules.required()]"
-                  />
-                </div>
-                <div class="col-6 q-pl-sm q-pr-sm">
-                  <q-input
-                    v-model="altAddressForm.zip.value"
-                    outlined
-                    label="Zip Code *"
-                    mask="#####"
-                    lazy-rules
-                    :rules="[lazyRules.required()]"
-                  />
-                </div>
-              </div>
-            </div>
-          </div> -->
+          </div>
           <div class="row q-mt-md">
             <div
               class="q-pl-sm q-pr-sm q-mb-md"
@@ -637,7 +664,7 @@
           if (value) setDeleteMember()
         }
       "
-      :msg="`Are you sure you want to ${memberState.isPendingDeletion ? 'restore' : 'delete'} this member?`"
+      :msg="`Are you sure you want to ${memberState.isPendingDeletion ? 'Remove delete flag for' : 'delete'} this member?`"
       v-model="deleteMemberDialogFlag"
     />
     <!--* confirm cart clear --->
@@ -670,7 +697,7 @@ import { useMember } from 'src/modules/dashboard/composables/useMember'
 import { useRoute, useRouter } from 'vue-router'
 import { useQuasar } from 'quasar'
 import type {
-  // MemberAlternativeAddressDataInterface,
+  AlternativeMemberAddressFormInterface,
   MemberUpdateAllDataForm,
   MemberUpdateFormInterface,
 } from 'src/modules/dashboard/interfaces/member-interfaces'
@@ -687,11 +714,18 @@ const $router = useRouter()
 const $q = useQuasar()
 const { dashboardState } = useDashboard()
 const { copyToClipboard, isMobile } = useUI()
-const { memberState, deleteMemberById_Co, updateMember_Co, clearMemberCart_Co } = useMember()
+const {
+  memberState,
+  deleteMemberById_Co,
+  updateMember_Co,
+  clearMemberCart_Co,
+  resetMemberLoginCode_Co,
+} = useMember()
 
 const currentMemberPage = ref<number>(1)
 const paginationCustomRef = ref()
 const isReady = ref<boolean>(false)
+const altAddress = ref<boolean>(false)
 
 // const altAddress = ref<boolean>(false)
 const recordPaymentDialogFlag = ref<boolean>(false)
@@ -739,25 +773,25 @@ const { realForm, resetForm, getFormValue, isValidForm } = useForm({
   notes: { value: '', validations: [] },
   route: { value: '', validations: [validations.required] },
 })
-// const {
-//   realForm: altAddressForm,
-//   isValidForm: isValidAltAddressForm,
-//   getFormValue: getAltAddressFormValue,
-// } = useForm({
-//   name: { value: '', validations: [validations.required] },
-//   address: { value: '', validations: [validations.required] },
-//   address2: { value: '', validations: [] },
-//   city: { value: '', validations: [validations.required] },
-//   state: { value: '', validations: [validations.required] },
-//   zip: {
-//     value: '',
-//     validations: [validations.required, validations.minCharacters(5), validations.maxCharacters(5)],
-//   },
-// })
+const {
+  realForm: altAddressForm,
+  isValidForm: isValidAltAddressForm,
+  getFormValue: getAltAddressFormValue,
+  resetForm: altAddressResetForm,
+} = useForm({
+  name: { value: '', validations: [validations.required] },
+  address: { value: '', validations: [validations.required] },
+  address2: { value: '', validations: [] },
+  city: { value: '', validations: [validations.required] },
+  state: { value: '', validations: [validations.required] },
+  zip: {
+    value: '',
+    validations: [validations.required, validations.minCharacters(5), validations.maxCharacters(5)],
+  },
+})
 
 const areValidForms = () => {
-  return isValidForm()
-  // && (!altAddress.value || (altAddress.value && isValidAltAddressForm()))
+  return isValidForm() && (!altAddress.value || (altAddress.value && isValidAltAddressForm()))
 }
 
 const onPageChange = (page: number) => {
@@ -814,34 +848,42 @@ const resetAllForm = (showNotify: boolean = false) => {
     route: memberState.value.selectedMember?.route,
   })
 
+  altAddress.value = !!memberState.value.memberAlternativeAddress?.isChecked
+
+  altAddressResetForm({
+    address: memberState.value.memberAlternativeAddress?.altAddress1,
+    name: memberState.value.memberAlternativeAddress?.altName,
+    address2: memberState.value.memberAlternativeAddress?.altAddress2,
+    city: memberState.value.memberAlternativeAddress?.altCity,
+    state: memberState.value.memberAlternativeAddress?.altState,
+    zip: memberState.value.memberAlternativeAddress?.altZip,
+  })
+
   // options
-  options.value = [{ id: 0, value: memberState.value.memberOptions.hidden, label: 'Hidden' }]
+  options.value = [{ id: 0, value: !!memberState.value.memberOptions.hidden, label: 'Hidden' }]
 
   if (memberState.value.memberOptions.reciprocity.showReciprocity)
     options.value = [
+      ...options.value,
       {
         id: 1,
         value: memberState.value.memberOptions.reciprocity.isReciprocal,
         label: 'Reciprocity',
       },
-      ...options.value,
     ]
 
   //categories
-  categories.value = [
-    ...memberState.value.memberCategories.map((cat) => ({
-      id: cat.categoryId,
-      value: cat.selected,
-      label: cat.categoryName,
-    })),
-  ]
-  profileQuestions.value = [
-    ...memberState.value.profileQuestions.map((proQ) => ({
-      id: proQ.optionId,
-      value: proQ.isChecked,
-      label: proQ.optionName,
-    })),
-  ]
+  categories.value = memberState.value.memberCategories.map((cat) => ({
+    id: cat.categoryId,
+    value: cat.selected,
+    label: cat.categoryName,
+  }))
+
+  profileQuestions.value = memberState.value.profileQuestions.map((proQ) => ({
+    id: proQ.optionId,
+    value: proQ.isChecked,
+    label: proQ.optionName,
+  }))
 
   if (memberState.value.memberDonateBasketOption?.visible)
     otherOptions.value = [
@@ -872,23 +914,26 @@ const onUpdateMember = async () => {
     ...getFormValue(),
     category: categories.value.filter((cat) => cat.value).map((cat) => cat.id),
   }
-  // const altAddressData = {
-  //   ...getAltAddressFormValue(),
-  //   useAlternateDelivery: altAddress.value,
-  // }
-
-  const data: MemberUpdateAllDataForm = {
-    reciprocity: !!options.value[0]?.value,
-    hidden: !!options.value[1]?.value,
-    memberData: memberData as unknown as MemberUpdateFormInterface,
-    donate: otherOptions.value.length ? otherOptions.value[0]!.value : undefined,
-    profileQuestions: profileQuestions.value
-    // altAddressData: altAddressData as unknown as MemberAlternativeAddressDataInterface,
+  const altAddressData = {
+    ...getAltAddressFormValue(),
+    useAlternateDelivery: altAddress.value,
   }
 
-  console.log({ data, id })
+  const data: MemberUpdateAllDataForm = {
+    hidden: !!options.value[0]?.value,
+    reciprocity: !!options.value[1]?.value,
+    memberData: memberData as unknown as MemberUpdateFormInterface,
+    donate: otherOptions.value.length ? otherOptions.value[0]!.value : undefined,
+    profileQuestions: profileQuestions.value,
+    altAddressData: altAddressData as unknown as AlternativeMemberAddressFormInterface,
+  }
 
   await updateMember_Co(id, data)
+}
+
+const onResetLoginCode = () => {
+  const id = memberState.value.selectedMember?.memberId
+  if (id) resetMemberLoginCode_Co(id)
 }
 
 watch(

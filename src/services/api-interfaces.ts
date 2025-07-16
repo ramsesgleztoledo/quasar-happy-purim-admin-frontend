@@ -4,6 +4,7 @@ import type { AxiosRequestHeaders, ResponseType } from "axios";
 export interface ExtraOptionsInterface {
   dontRedirect?: boolean | undefined | null;
   dontShowToast?: boolean | undefined | null;
+  goBackIn403?: boolean | undefined | null;
   dontUseErrorAction?: boolean | undefined | null;
   errorMsg?: string | undefined | null;
   loading?: {

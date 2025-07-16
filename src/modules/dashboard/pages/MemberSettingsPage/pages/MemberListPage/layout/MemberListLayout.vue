@@ -30,19 +30,21 @@
         <q-step :name="4" title="Primary Key" icon="key" :done="step > 4" />
         <q-step :name="5" title="Changes to Apply" icon="add" :done="step > 5" />
         <q-step :name="6" title="Preview Changes" icon="preview" :done="step > 6" />
-        <q-step :name="7" title="Upload" icon="check" :done="allDone" />
+        <q-step :name="7" title="Uploaded" icon="check" :done="allDone" />
       </q-stepper>
     </div>
   </div>
+
+
   <div style="display: flex; flex-direction: column; height: 90%">
     <div class="row MemberListLayout-container q-mb-lg">
       <div class="col-12 q-pa-md">
         <!-- STEP 1 UPLOAD LIST -->
         <template v-if="step === 1">
           <UploaderComponent
-            description="By following these instructions, you should be able to upload a new member list to [System Name] efficiently and accurately. If you have any questions or need further assistance, please contact us"
+            description="By following these instructions, you should be able to upload a new member list efficiently and accurately. If you have any questions or need further assistance, please contact us"
             v-model:file-model="fileModel"
-            accept="xlsx"
+            accept="xlsx, xls"
           />
         </template>
 
@@ -222,7 +224,7 @@
                 <div class="row q-mt-md">
                   <div class="col-12 justify-content-end">
                     <q-btn
-                      @click="() => revertBack"
+                      @click="revertBack"
                       color="primary"
                       icon="history"
                       label="Revert Changes"
@@ -365,7 +367,7 @@ const {
 const loading = ref(false)
 
 // stepper
-const step = ref(1)
+const step = ref<number>(1)
 
 // step 1 data
 const fileModel = ref<File[]>([])
@@ -429,6 +431,7 @@ const step_one = async () => {
 
 //! step 2 functions
 const step_two = async () => {
+  step_three_reset_data()
   loading.value = true
   const resp = await processAndMatch({
     sheetName: sheet.value,
@@ -448,10 +451,6 @@ const step_two = async () => {
   step.value++
 }
 
-const step_two_reset_data = () => {
-  sheet.value = ''
-}
-
 const step_three_resp = ref<StepResponseInterface>({
   success: true,
   message: '',
@@ -459,7 +458,7 @@ const step_three_resp = ref<StepResponseInterface>({
 
 const step_three = async () => {
   loading.value = true
-
+  step_four_reset_data()
   step_three_resp.value = (
     await updateAndValidate(
       matchedFields.value.map((item) => ({
@@ -543,6 +542,29 @@ const revertBack = async () => {
       name: 'DashboardLayout',
     })
   }
+}
+
+/**========================================================================
+ *                           resetting data
+ *========================================================================**/
+const step_two_reset_data = () => {
+  sheet.value = ''
+}
+const step_three_reset_data = () => {
+  step_three_resp.value = {
+    success: true,
+    message: '',
+  }
+  step_three_data.value = undefined
+  matchedFields.value = []
+}
+const step_four_reset_data = () => {
+  step_four_resp.value = {
+    success: true,
+    message: '',
+  }
+  sourceField.value = ''
+  destinationField.value = ''
 }
 
 onMounted(async () => {

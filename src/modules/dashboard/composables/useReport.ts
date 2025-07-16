@@ -76,13 +76,13 @@ export const useReport = () => {
         dontRedirect: true,
         dontShowToast: true,
         loading: {
-          message: 'running sql'
+          message: 'Loading ...'
         }
       });
 
       const resp = await getReportRecipientsByReportId(data, {
         loading: {
-          message: 'loading'
+          message: 'Loading ...'
         }
       })
 
