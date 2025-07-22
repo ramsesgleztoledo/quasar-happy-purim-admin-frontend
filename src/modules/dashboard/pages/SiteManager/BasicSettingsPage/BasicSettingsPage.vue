@@ -80,9 +80,9 @@
           'col-12': isMobile,
         }"
       >
-        <div class="w-full q-pa-md">
+        <!-- <div class="w-full q-pa-md">
           <PaymentProcessing />
-        </div>
+        </div> -->
       </div>
     </div>
   </div>
@@ -95,7 +95,7 @@ import { useUI } from 'src/modules/UI/composables'
 import GBProgram from './components/GBProgram/GBProgram.vue'
 import OrganizationInfo from './components/OrganizationInfo/OrganizationInfo.vue'
 import FundraiserCoordinator from './components/FundraiserCoordinator/FundraiserCoordinator.vue'
-import PaymentProcessing from './components/PaymentProcessing/PaymentProcessing.vue'
+// import PaymentProcessing from './components/PaymentProcessing/PaymentProcessing.vue'
 import { onMounted, ref } from 'vue'
 import { useBasicSettings } from 'src/modules/dashboard/composables/useBasicSettings'
 

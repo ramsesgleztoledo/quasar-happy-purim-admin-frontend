@@ -1,6 +1,6 @@
 import { useApiCall } from "src/services/apiCall";
 import type { ApiCallResponseInterface, ExtraOptionsInterface } from "src/services/api-interfaces";
-import type { UnPaidOrdersInterface } from "../interfaces/payment-interface";
+import type { RecordCheckOrCreditPaymentFormInterface, UnPaidOrdersInterface } from "../interfaces/payment-interface";
 
 
 
@@ -19,6 +19,17 @@ export const usePaymentService = () => {
       return await apiCall({
         url,
         extraOptions
+      })
+    },
+
+    recordCheckOrCreditPayment: async (memberId: number, data: RecordCheckOrCreditPaymentFormInterface, extraOptions?: ExtraOptionsInterface): Promise<ApiCallResponseInterface<unknown>> => {
+      const nextUrl = `/${memberId}/record-check-or-credit-payment`;
+      const url = `${baseUrl}${nextUrl}`;
+      return await apiCall({
+        url,
+        extraOptions,
+        method: 'POST',
+        data
       })
     },
 

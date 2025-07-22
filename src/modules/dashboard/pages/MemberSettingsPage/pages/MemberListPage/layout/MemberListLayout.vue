@@ -35,8 +35,7 @@
     </div>
   </div>
 
-
-  <div style="display: flex; flex-direction: column; height: 90%">
+  <div style="display: flex; flex-direction: column; height: 90%" ref="divContainer">
     <div class="row MemberListLayout-container q-mb-lg">
       <div class="col-12 q-pa-md">
         <!-- STEP 1 UPLOAD LIST -->
@@ -118,10 +117,12 @@
                           :options="useFieldOptions"
                           label="field"
                           filled
+                          @update:model-value="item.oldValue = false"
                         />
                       </div>
                       <div class="col">
                         <q-checkbox
+                          :disable="isCheckOldValueDisabled(item).value"
                           class="q-mr-sm"
                           v-model="item.oldValue"
                           label="Maintain old Value on Empty"
@@ -240,7 +241,7 @@
 
     <div class="row q-mt-lg cancel-save-btn-container">
       <div class="col-12">
-        <template v-if="step !== 7">
+        <div v-if="step !== 7" @click="goToTop(divContainer)">
           <q-btn
             outline
             label="CANCEL"
@@ -255,7 +256,11 @@
             v-if="step !== 1"
             class="q-mr-sm"
             label="Back"
-            @click="step--"
+            @click="
+              () => {
+                step--
+              }
+            "
             :disable="loading"
           />
 
@@ -310,7 +315,7 @@
             label="continue & Upload List "
             @click="onContinueAndUpload"
           />
-        </template>
+        </div>
 
         <template v-else>
           <q-btn
@@ -351,7 +356,7 @@ interface StepResponseInterface {
 
 const $router = useRouter()
 
-const { isMobile } = useUI()
+const { isMobile, goToTop } = useUI()
 const {
   uploadMemberList,
   processAndMatch,
@@ -566,6 +571,14 @@ const step_four_reset_data = () => {
   sourceField.value = ''
   destinationField.value = ''
 }
+
+const isCheckOldValueDisabled = (item: MatchedFieldInterface) =>
+  computed(() => {
+    const value = item.value.mapID
+    return value == '<ignore>' || value == 'm_hidden' || value.startsWith('C_')
+  })
+
+const divContainer = ref<HTMLDivElement | undefined>(undefined)
 
 onMounted(async () => {
   const resp = await Promise.all([getFieldOptions(), getDestinationKeys()])

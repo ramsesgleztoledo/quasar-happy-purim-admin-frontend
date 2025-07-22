@@ -32,10 +32,11 @@
 </div>
     </div>
     <div class="ViewReport-filters-container q-pa-sm">
-<div class="row q-mb-sm">
+<div class="row q-mb-sm q-mt-sm justify-content-space-between">
   <h6>
     Filters:
   </h6>
+  <q-btn outline icon="close" label="Clear Filters" @click="clearFilters" />
 </div>
 
 <div class="row">
@@ -80,7 +81,7 @@
           </div>
           <div class="row">
             <h6>
-              {{`Sending To (${$rStore.$state.selectedRecipients.length}/
+              {{`Recipients: (${$rStore.$state.selectedRecipients.length}/
               ${$rStore.$state.report?.members.length || 0})`}}
             </h6>
           </div>
@@ -148,7 +149,7 @@
           <div v-else>
             <div class="row ">
            <h6>
-             Not data for this report...
+            Not data returned...
            </h6>
             </div>
           </div>
@@ -208,6 +209,16 @@ const getInitialData = () => {
 
 
 
+const clearFilters = () => {
+  filter.value ={
+  basketSize: '',
+  categories: [],
+  donateBasket: '',
+  routeCode: '',
+  searchTerm: '',
+  zipCode: '',
+}
+};
 
 
 

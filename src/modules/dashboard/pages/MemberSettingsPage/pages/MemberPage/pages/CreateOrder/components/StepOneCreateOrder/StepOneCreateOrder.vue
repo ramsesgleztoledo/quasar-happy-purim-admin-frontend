@@ -24,6 +24,7 @@
         label="Filter by categories"
         option-label="categoryName"
         option-value="categoryID"
+        clearable
       />
     </div>
     <div
@@ -41,6 +42,7 @@
         label="Filter by order history"
         option-label="label"
         option-value="value"
+        clearable
       />
     </div>
     <div
@@ -49,7 +51,7 @@
         'item-width-300': !isMobile,
       }"
     >
-      <q-input v-model="search" outlined label="Search">
+      <q-input v-model="search" outlined label="Search" clearable>
         <template v-slot:append>
           <q-icon name="search" />
         </template>
@@ -153,7 +155,7 @@
                     class="text-center"
                     style="min-height: 70px; padding: 0px; display: flex"
                   >
-                    <RowStyle :row="props.row"/>
+                    <RowStyle :row="props.row" />
                   </q-card-section>
                   <q-separator />
                   <q-card-section>
@@ -263,7 +265,9 @@ const columns = ref<QTableColumn<OrderMemberListInterface>[]>([
 
 const rows = computed(() =>
   memberOrderState.value.memberList.copy.filter((item) => {
-    const se = JSON.stringify(item).toLowerCase().includes(search.value.toLowerCase())
+    const se = JSON.stringify(item)
+      ?.toLowerCase()
+      .includes((search.value || '').toLowerCase())
     if (!se) return false
 
     const orderHArray = orderHistory.value || []

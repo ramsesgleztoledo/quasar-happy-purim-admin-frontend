@@ -2,55 +2,66 @@
   <div class="q-pa-md q-gutter-sm breadcrumbs-container">
     <q-breadcrumbs>
       <q-breadcrumbs-el
-        v-for="(mr, i) in matchedRoutes"
-        :key="i"
-        :icon="matched((mr.name as string) || '').value?.icon"
+        v-for="mr in breadCrumbRoutes"
+        :key="mr.name"
+        :icon="mr.icon"
         :to="{
           name: mr.name,
-          params: params(matched((mr.name as string) || '').value?.params).value,
+          params: mr.params,
         }"
-        :label="showLabel(matched((mr.name as string) || '').value).value"
+        :label="mr.label"
       />
     </q-breadcrumbs>
   </div>
 </template>
 
 <script setup lang="ts">
-import type { RouteLocationMatched } from 'vue-router'
 import { useRoute } from 'vue-router'
 import { computed } from 'vue'
-import type { routeDataInterface, routeParamInterface } from '../../data/links'
+import type { routeParamInterface } from '../../data/links'
 import { routeInfo } from '../../data/links'
+
+interface BreadCrumbRoutesInterface {
+  name: string
+  params: routeParamInterface | undefined
+  icon: string
+  label: string
+}
 
 const $route = useRoute()
 
-const matchedRoutes = computed<RouteLocationMatched[]>(() => $route.matched || [])
+const breadCrumbRoutes = computed<BreadCrumbRoutesInterface[]>(() => {
+  const matchedRoutes = $route.matched || []
+  const breadCrumbRoutes: BreadCrumbRoutesInterface[] = []
 
-const matched = (name: string) =>
-  computed<routeDataInterface | undefined>(() => routeInfo.find((mr) => mr.name === name))
+  for (let i = 0; i < matchedRoutes.length; i++) {
+    const found = routeInfo.find((mr) => mr.name === matchedRoutes[i]!.name)
+    if (!found || !!found.dontShow) continue
+    const params = getParams(found.params)
 
-const params = (params?: string[]) =>
-  computed<routeParamInterface | undefined>(() => {
-    if (!params) return undefined
-
-    const routeParams = $route.params
-
-    const finalParams: routeParamInterface = {}
-    params.forEach((param: string) => {
-      finalParams[param] = routeParams[param]
+    breadCrumbRoutes.push({
+      icon: found.icon,
+      name: found.name,
+      params,
+      label: found.titleParam ? found.titleParam(params) : found.title,
     })
+  }
 
-    return finalParams
-  })
-const showLabel = (matchedRoute?: routeDataInterface) =>
-  computed<string>(() => {
-    if (matchedRoute) {
-      if (matchedRoute.titleParam) return matchedRoute.titleParam(params(matchedRoute.params).value)
-      return matchedRoute.title
-    }
+  return breadCrumbRoutes
+})
 
-    return 'non-label'
+
+const getParams = (params?: string[]) => {
+  if (!params) return undefined
+  const routeParams = $route.params
+  const finalParams: routeParamInterface = {}
+  params.forEach((param: string) => {
+    finalParams[param] = routeParams[param]
   })
+
+  return finalParams
+}
+
 </script>
 
 <style scoped lang="scss">

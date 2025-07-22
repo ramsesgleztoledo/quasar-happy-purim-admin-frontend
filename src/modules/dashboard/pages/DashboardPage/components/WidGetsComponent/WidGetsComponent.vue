@@ -40,9 +40,9 @@
   >
     <WidGet
       icon="group_add"
-      :first-p="`${convertWithCommas(participationRate.today)}%`"
+      :first-p="`${participationRate.today}%`"
       second-p="Participation Rate: "
-      :third-p="`${convertWithCommas(participationRate.yesterday)}% from yesterday`"
+      :third-p="`${participationRate.yesterday}% from yesterday`"
       icon-color="#BF83FF"
       background-color="#F3E8FF"
     />

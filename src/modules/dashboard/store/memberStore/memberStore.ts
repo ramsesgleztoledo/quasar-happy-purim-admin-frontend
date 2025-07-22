@@ -21,7 +21,8 @@ const initialState: MemberStateInterface = {
   memberAlternativeAddress: undefined,
   memberTransactions: [],
   memberDonateBasketOption: undefined,
-  profileQuestions: []
+  profileQuestions: [],
+  displayChildren: false,
 }
 
 export const useMemberStore = defineStore('memberStore', {
@@ -57,6 +58,9 @@ export const useMemberStore = defineStore('memberStore', {
     },
     setHidden(hidden: boolean) {
       this.memberOptions.hidden = hidden
+    },
+    setDisplayChildren(displayChildren: boolean) {
+      this.displayChildren = displayChildren
     },
     setProfileQuestions(profileQuestions: MemberProfileQuestionInterface[]) {
       this.profileQuestions = profileQuestions

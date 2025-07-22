@@ -12,7 +12,8 @@ export interface MemberStateInterface {
   memberAlternativeAddress: AlternativeMemberAddress | NoneType;
   memberTransactions: MemberTransactionInterface[];
   memberDonateBasketOption: MemberDonateBasketOptionInterface | NoneType;
-  profileQuestions: MemberProfileQuestionInterface[]
+  profileQuestions: MemberProfileQuestionInterface[];
+  displayChildren: boolean;
 }
 
 

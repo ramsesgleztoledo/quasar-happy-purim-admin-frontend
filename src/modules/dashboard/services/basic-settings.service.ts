@@ -112,6 +112,14 @@ export const useBasicSettingsService = () => {
         method: 'DELETE'
       })
     },
+    getShowOrderByCode: async (extraOptions?: ExtraOptionsInterface): Promise<ApiCallResponseInterface<boolean>> => {
+      const nextUrl = `/show-create-order-by-code`;
+      const url = `${baseUrl}${nextUrl}`;
+      return await apiCall({
+        url,
+        extraOptions,
+      })
+    },
   }
 
 }

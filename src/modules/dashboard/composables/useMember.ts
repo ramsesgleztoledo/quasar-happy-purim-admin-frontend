@@ -46,6 +46,8 @@ export const useMember = () => {
     addMember,
     resetMemberLoginCode,
     emailReceiptByTransactionId,
+    getDisplayChildren,
+    updateProfileQuestions,
   } = useMemberService()
 
 
@@ -92,7 +94,8 @@ export const useMember = () => {
         alternativeAddress,
         memberTransactions,
         memberDonateBasketOption,
-        profileQuestions
+        profileQuestions,
+        displayChildren,
 
       ]: [
           ApiCallResponseInterface<MemberHiddenInterface>,
@@ -103,6 +106,7 @@ export const useMember = () => {
           ApiCallResponseInterface<MemberTransactionInterface[]>,
           ApiCallResponseInterface<MemberDonateBasketOptionInterface>,
           ApiCallResponseInterface<MemberProfileQuestionInterface[]>,
+          ApiCallResponseInterface<boolean>,
 
         ] = await Promise.all([
 
@@ -113,12 +117,14 @@ export const useMember = () => {
           getAlternativeAddressByMemberId(memberId),
           getTransactionsByMemberId(memberId),
           getMemberDonateBasketOptionByMemberId(memberId),
-          getProfileQuestions(memberId)
+          getProfileQuestions(memberId),
+          getDisplayChildren(memberId)
         ]
         )
 
 
       $mStore.setSelectedMember(member.ok ? member.data : undefined)
+      $mStore.setDisplayChildren(displayChildren.ok ? displayChildren.data : false)
       $mStore.setMemberCategories(categories.ok ? categories.data : [])
       $mStore.setProfileQuestions(profileQuestions.ok ? profileQuestions.data : [])
       $mStore.setMemberAlternativeAddress(alternativeAddress.ok ? alternativeAddress.data : undefined)
@@ -183,8 +189,9 @@ export const useMember = () => {
     })
 
     const [resp1, resp2, resp3,
-      resp4
+      resp4, resp6
     ]: [
+        ApiCallResponseInterface<unknown>,
         ApiCallResponseInterface<unknown>,
         ApiCallResponseInterface<unknown>,
         ApiCallResponseInterface<unknown>,
@@ -202,6 +209,9 @@ export const useMember = () => {
       }),
       updateAlternativeAddressByMemberId(memberId, data.altAddressData, {
         dontRedirect: true
+      }),
+      updateProfileQuestions(memberId, data.profileQuestions, {
+        dontRedirect: true
       })
 
       ])
@@ -216,7 +226,7 @@ export const useMember = () => {
 
     if (!resp1.ok || !resp2.ok || !resp3.ok
       || !resp4.ok
-      || (resp5 !== undefined && !resp5.ok))
+      || (resp5 !== undefined && !resp5.ok) || !resp6.ok)
 
       $q.notify({
         color: 'red',

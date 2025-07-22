@@ -9,6 +9,7 @@ import { useMemberService } from "../services/member.service";
 import type { MembersLoggedInterface } from "../interfaces/member-interfaces";
 import { useCategoryService } from "../services/category.service";
 import type { ShulCategoryInterface } from "../interfaces/category-interfaces";
+import { useBasicSettingsService } from "../services/basic-settings.service";
 
 export const useDashboard = () => {
 
@@ -19,7 +20,7 @@ export const useDashboard = () => {
   const { getBasketInfo, getBasketSizeBreakdown, getFundraiserStatus, getFundraiserTotals, getMembersOrdersGraph, getMemberSummary, getOrderItems, getOrderTotalGraph, getParticipationInfoGraph, getParticipationRate, getTopTransactions, getTotalsRaised } = useDashboardService()
   const { getMembersLogged } = useMemberService()
   const { getShulCategories } = useCategoryService()
-
+  const { getShowOrderByCode } = useBasicSettingsService()
 
   return {
     dashboardState: computed(() => $dStore.$state),
@@ -47,6 +48,7 @@ export const useDashboard = () => {
         memberSummary,
         membersLogged,
         categories,
+        showCreateOrderByCode
       ]:
         [
           ApiCallResponseInterface<OrderGraphInterface[]>,
@@ -63,6 +65,7 @@ export const useDashboard = () => {
           ApiCallResponseInterface<MemberSummaryInterface>,
           ApiCallResponseInterface<MembersLoggedInterface>,
           ApiCallResponseInterface<ShulCategoryInterface[]>,
+          ApiCallResponseInterface<boolean>,
 
         ]
         = await Promise.all([
@@ -80,6 +83,7 @@ export const useDashboard = () => {
           getMemberSummary(),
           getMembersLogged(),
           getShulCategories(),
+          getShowOrderByCode(),
         ])
 
 
@@ -98,7 +102,9 @@ export const useDashboard = () => {
         orderItems: orderItems.ok ? orderItems.data : [],
         memberSummary: memberSummary.ok ? memberSummary.data : undefined,
         membersLogged: membersLogged.ok ? membersLogged.data : undefined,
-        categories: categories.ok ? categories.data : []
+        categories: categories.ok ? categories.data : [],
+        showCreateOrderByCode: showCreateOrderByCode.ok ? !!showCreateOrderByCode.data : false,
+
       })
 
       $q.loading.hide()

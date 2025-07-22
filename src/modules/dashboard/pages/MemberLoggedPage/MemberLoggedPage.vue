@@ -32,7 +32,7 @@
           :rows="dashboardState.membersLogged.rows"
           :columns="columns"
           row-key="orderNum"
-          @onRowClick="
+          @onRowClicked="
             ({ row }: any) => {
               $router.push({
                 name: 'MemberLayout',

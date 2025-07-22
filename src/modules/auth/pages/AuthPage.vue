@@ -18,7 +18,7 @@
             <q-input
               v-model="realForm.login.value"
               outlined
-              label="login *"
+              label="Login *"
               lazy-rules
               :rules="[lazyRules.required()]"
             />

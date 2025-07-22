@@ -114,16 +114,6 @@
       </q-input>
     </div>
   </div>
-  <div class="row q-mt-sm q-mb-sm">
-    <div class="col-12">
-      <label> <b>Select Options</b></label>
-      <div class="q-mt-md">
-        <div v-for="(item, index) in options" :key="index" class="row q-mb-sm">
-          <q-checkbox v-model="item.value" :label="item.label" />
-        </div>
-      </div>
-    </div>
-  </div>
   <div class="row">
     <div class="col-12 GBProgram-btn-container justify-content-end">
       <!-- <q-btn
@@ -138,6 +128,16 @@
         label="update"
         @click="onUpdate"
       />
+    </div>
+  </div>
+  <div class="row q-mt-sm q-mb-sm">
+    <div class="col-12">
+      <label> <b>Selected Options</b></label>
+      <div class="q-mt-md">
+        <div v-for="(item, index) in options" :key="index" class="row q-mb-sm">
+          <q-checkbox disable v-model="item.value" :label="item.label" />
+        </div>
+      </div>
     </div>
   </div>
 </template>

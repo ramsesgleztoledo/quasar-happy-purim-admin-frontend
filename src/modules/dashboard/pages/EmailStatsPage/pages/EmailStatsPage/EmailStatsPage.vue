@@ -23,7 +23,7 @@
             :columns="columns"
             row-key="id"
             title="Campaigns"
-            @onRowClick="
+            @onRowClicked="
               ({ row }: any) => {
                 $router.push({
                   name: 'EmailStatsPage-campaign',

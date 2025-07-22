@@ -1,6 +1,6 @@
 <template>
   <q-dialog v-model="show" persistent>
-    <q-card v-if="isReady" style="min-width: 50vw">
+    <q-card v-if="isReady" :style="{ width: isMobile ? '100vw' : '500px' }">
       <div class="row dialog-header custom-dialog-header-container">
         <div class="col-12">
           <p>Select a Draft</p>
@@ -50,10 +50,14 @@
 <script setup lang="ts">
 import { useDraft } from 'src/modules/dashboard/composables/useDraft'
 import type { DraftInterface } from 'src/modules/dashboard/interfaces/draft.interfaces'
+import { useUI } from 'src/modules/UI/composables'
 import { computed, ref, watch } from 'vue'
 interface ScheduleSendPropsInterface {
   modelValue: boolean
 }
+
+const { isMobile } = useUI()
+
 const isReady = ref(false)
 
 const $emit = defineEmits(['update:modelValue', 'onSelectDraft'])

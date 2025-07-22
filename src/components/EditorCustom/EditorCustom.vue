@@ -206,13 +206,13 @@
 
   <!-- Insert Img -->
   <q-dialog v-model="uploadInsertFileFlag" persistent>
-    <q-card>
+    <q-card :style="{ width: isMobile ? '100vw' : '600px' }">
       <div class="row dialog-header custom-dialog-header-container">
         <div class="col-12">
           <p>Insert File</p>
         </div>
       </div>
-      <q-card-section style="min-width: 50vw">
+      <q-card-section style="width: 100%">
         <div class="row q-mb-md">
           <div class="col-12 justify-content-end">
             <q-btn
@@ -223,7 +223,7 @@
             />
           </div>
         </div>
-        <div class="row">
+        <div class="row" style="max-height: 500px; overflow-y: auto">
           <div
             v-for="item in files"
             :key="item"
@@ -242,9 +242,7 @@
               <div
                 class="EditorCustom-img-container"
                 @click="() => onFileSelected(item)"
-                style="
-                  background-image: url('https://encrypted-tbn1.gstatic.com/images?q=tbn:ANd9GcSEDXTwqQdVDG_Olz2iNmsW2IQ-vmMTrHIREyAYPJCANU-ZYo1-419gGAJjKB1X4IWf5QzjPbvlhRDnBsrskqbp-B8JgWfXi8fZQuZW4pE');
-                "
+                :style="{ backgroundImage: ` url(${EDITOR_START_IMG_URL}${item})` }"
               ></div>
               <div class="row">
                 <div class="col-12">
@@ -273,7 +271,7 @@
           class="q-mr-sm q-mt-sm"
           style="background: var(--happypurim); color: white"
           label="Insert"
-          @click="insertFile()"
+          @click="insertInternalFile()"
           v-close-popup
           :disable="!selectedFile"
         />
@@ -283,13 +281,13 @@
 
   <!-- Upload Img -->
   <q-dialog v-model="uploadNewFileFlag" persistent>
-    <q-card>
+    <q-card :style="{ width: isMobile ? '100vw' : '500px' }">
       <div class="row dialog-header custom-dialog-header-container">
         <div class="col-12">
           <p>Upload Files</p>
         </div>
       </div>
-      <q-card-section style="min-width: 50vw">
+      <q-card-section>
         <UploaderComponent
           accept=".jpg, .png, image/*"
           title="Images only"
@@ -330,7 +328,7 @@ import { computed, onMounted, ref } from 'vue'
 import UploaderComponent from '../UploaderComponent/UploaderComponent.vue'
 import { useUI } from 'src/modules/UI/composables'
 
-const { isMobile } = useUI()
+const { isMobile, EDITOR_START_IMG_URL } = useUI()
 
 interface EditorCustomPropsInterface {
   modelValue: string
@@ -381,7 +379,7 @@ const addTokenText = (name: string) => {
   const edit = editorRef.value
   stringTokenRef.value?.hide()
   edit.caret.restore()
-  edit.runCmd('insertHTML', `&nbsp;{{${name}}} &nbsp;`)
+  edit.runCmd('insertHTML', `{{${name}}}&nbsp;`)
   edit.focus()
 }
 const addHTML = (value: string) => {
@@ -410,20 +408,20 @@ const onColorPickedBackground = () => {
   edit.focus()
 }
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-const selectedFile = ref<any>('')
+const selectedFile = ref<string>('')
 
-const onFileSelected = (item: unknown) => {
+const onFileSelected = (item: string) => {
   selectedFile.value = item
 }
 
-const insertFile = (
-  file?: string,
-  prop?: {
-    width: string
-    height: string
-  },
-) => {
+const insertInternalFile = () => {
+  if (!selectedFile.value) return
+  const src = `${EDITOR_START_IMG_URL.value}${selectedFile.value}`
+  insertFile(src)
+}
+
+const insertFile = (file: string, prop?: { width: string; height: string }) => {
+  if (!file) return
   if (!editorRef.value) return
   const edit = editorRef.value
   edit.caret.restore()

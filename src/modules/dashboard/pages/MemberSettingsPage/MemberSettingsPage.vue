@@ -12,15 +12,22 @@
       :to="{ name: 'MembersSettingsPage-MemberListLayout' }"
     />
   </div>
-  <div :class="{ row: !isMobile }">
-    <q-input class="q-mr-sm q-mb-sm" outlined v-model="searchText" label="Search">
+  <div :class="{ 'MemberSettingsPage-mobile-btn': isMobile, row: !isMobile }">
+    <q-input
+      class="q-mr-sm q-mb-sm"
+      :class="{ 'w-full': isMobile }"
+      outlined
+      v-model="searchText"
+      label="Search"
+    >
       <template v-slot:append>
         <q-icon name="search" />
       </template>
     </q-input>
 
     <q-select
-      :class="{ 'item-width-300': !isMobile }"
+      class="q-mr-sm q-mb-sm"
+      :class="{ 'item-width-300': !isMobile, 'w-full': isMobile }"
       v-model="categories"
       outlined
       multiple
@@ -29,6 +36,7 @@
       option-label="categoryName"
       option-value="categoryID"
     />
+    <q-btn @click="onClearFilters" class="q-mr-sm q-mb-sm" outline color="primary" icon="close" />
   </div>
   <div class="q-pa-md">
     <div class="row RecentOrders-container" :class="{ fullscreen: isFullScreen }">
@@ -144,7 +152,7 @@ const columns: QTableColumn<MemberInterface>[] = [
   {
     name: 'm_hidden',
     required: true,
-    label: '',
+    label: 'Hidden',
     align: 'left',
     field: 'm_hidden',
     sortable: true,
@@ -250,6 +258,11 @@ const columns: QTableColumn<MemberInterface>[] = [
 ]
 
 const searchText = ref<string>('')
+
+const onClearFilters = () => {
+  searchText.value = ''
+  categories.value = []
+}
 </script>
 
 <style scoped lang="scss">

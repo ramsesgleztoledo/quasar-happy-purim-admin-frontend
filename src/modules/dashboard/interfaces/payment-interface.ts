@@ -12,6 +12,18 @@ export interface InvoiceUnpaidOrderInterface {
   amountApplied: number | undefined
 }
 
+export interface RecordCheckOrCreditPaymentFormInterface {
+  paymentMethodIndex: number;
+  checkAmount:        number;
+  checkDate:          string;
+  creditAmount:       number;
+  creditDate:         string;
+  checkNumber:        string;
+  memo:               string;
+  cMemo:              string;
+}
+
+
 
 // export interface UnPaidOrdersInterface {
 //   invoices: InvoiceUnpaidOrderInterface[];

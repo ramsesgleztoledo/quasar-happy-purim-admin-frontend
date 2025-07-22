@@ -222,12 +222,12 @@ export const useAdvancedSettings = () => {
     async deleteTab1AdditionalProfileQuestion(id: number) {
       const resp = await deleteTab1AdditionalProfileQuestion(id, {
         loading: {
-          message: `deleting question ${id}...`,
+          message: `deleting question...`,
         }
       })
       showToast(resp.ok,
-        `question ${id} deleted`,
-        `something went wrong deleting the question ${id}`
+        `question deleted`,
+        `something went wrong deleting the question`
       )
 
       return resp.ok

@@ -233,14 +233,17 @@ export const useMemberService = () => {
         extraOptions,
       })
     },
-    updateProfileQuestions: async (memberId: number, extraOptions?: ExtraOptionsInterface): Promise<ApiCallResponseInterface<unknown>> => {
+    updateProfileQuestions: async (memberId: number, data: { option: number, value: 0 | 1 }[], extraOptions?: ExtraOptionsInterface): Promise<ApiCallResponseInterface<unknown[]>> => {
       const nextUrl = `/${memberId}/options`;
       const url = `${baseUrl}${nextUrl}`;
       return await apiCall({
         url,
         extraOptions,
+        method: 'PUT',
+        data
       })
     },
+
     resetMemberLoginCode: async (memberId: number, extraOptions?: ExtraOptionsInterface): Promise<ApiCallResponseInterface<{ loginCode: string, signOnLink: string }>> => {
       const nextUrl = `/${memberId}/reset-login-code`;
       const url = `${baseUrl}${nextUrl}`;
@@ -257,6 +260,14 @@ export const useMemberService = () => {
         url,
         extraOptions,
         method: 'POST'
+      })
+    },
+    getDisplayChildren: async (memberId: number, extraOptions?: ExtraOptionsInterface): Promise<ApiCallResponseInterface<boolean>> => {
+      const nextUrl = `/${memberId}/display-children`;
+      const url = `${baseUrl}${nextUrl}`;
+      return await apiCall({
+        url,
+        extraOptions,
       })
     },
 

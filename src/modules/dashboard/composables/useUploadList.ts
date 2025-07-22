@@ -44,7 +44,8 @@ export const useUploadList = () => {
 
     async processAndMatch(data: { filePath: string; sheetName: string; }) {
       const resp = await processAndMatch(data, {
-        dontRedirect: true
+        dontRedirect: true,
+        dontShowToast: true,
       })
 
       return resp.ok ? resp.data : resp.data
@@ -60,7 +61,8 @@ export const useUploadList = () => {
     },
     async updateAndValidate(data: UpdateAndValidateFormInterface[]) {
       const resp = await updateAndValidate(data, {
-        dontRedirect: true
+        dontRedirect: true,
+        dontShowToast: true,
       })
 
       return {
@@ -76,7 +78,11 @@ export const useUploadList = () => {
       const resp = await checkMatchSrcDestKey({
         destinationKey: data.destinationKey,
         sourceKey: data.sourceKey
-      })
+      },
+        {
+          dontRedirect: true,
+          dontShowToast: true,
+        })
 
       return resp
 

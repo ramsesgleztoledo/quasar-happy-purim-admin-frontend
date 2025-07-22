@@ -100,7 +100,7 @@
           @click="onAddNewOption"
           style="background: white; color: var(--happypurim)"
           icon="add"
-          label="add new options"
+          label="add new option"
           :disable="rowEdit?.optId === -1 || !!rows.find((it) => it.optId === -1)"
         />
       </div>
@@ -304,10 +304,8 @@ const onRowUpdated = async () => {
     delete newValue.optId
 
     const resp = await createTab1AdditionalProfileQuestion(newValue)
-    if (resp.ok)
-      // TODO: remove comment here
-      console.log(resp.ok)
-    // rows.value[0] = resp.data!
+    if (resp.ok) rows.value[0] = resp.data!
+    else rows.value.shift()
   } else {
     const resp = await updateTab1AdditionalProfileQuestion(rowEdit.value!)
     if (resp)

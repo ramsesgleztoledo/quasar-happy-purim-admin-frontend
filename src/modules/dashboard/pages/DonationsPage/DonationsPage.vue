@@ -27,7 +27,7 @@
         :rows="donations"
         :columns="columns"
         row-key="id"
-        @onRowClick="
+        @onRowClicked="
           ({ row }: any) => {
             $router.push({
               name: 'dashboard-transactionDetailsPage',

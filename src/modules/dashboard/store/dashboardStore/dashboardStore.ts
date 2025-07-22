@@ -37,6 +37,9 @@ export const useDashboardStore = defineStore('dashBoardStore', {
     setMemberSummary(memberSummary: MemberSummaryInterface | NoneType) {
       this.memberSummary = memberSummary
     },
+    setShowCreateOrderByCode(showCreateOrderByCode: boolean) {
+      this.showCreateOrderByCode = showCreateOrderByCode
+    },
 
   }
 });

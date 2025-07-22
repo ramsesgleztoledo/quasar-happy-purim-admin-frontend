@@ -1,13 +1,13 @@
 
 
 export interface LinksDataInterface {
-  title: string
+  title: string;
   name: string;
   routeClass?: string[];
   icon?: string;
   caption?: string;
   children?: LinksDataInterface[];
-  disabled?: boolean
+  disabled?: boolean;
 }
 
 const linksDataDev: LinksDataInterface[] = [];
@@ -104,14 +104,15 @@ export const linksData: LinksDataInterface[] = [
 
 
 export interface routeParamInterface {
-  [x: string]: string | string[] | undefined
+  [x: string]: string | string[] | undefined;
 }
 export interface routeDataInterface {
-  name: string
-  icon: string
-  title: string
-  params?: string[]
+  name: string;
+  icon: string;
+  title: string;
+  params?: string[];
   titleParam?: ((value?: routeParamInterface) => string);
+  dontShow?: boolean;
 }
 
 
@@ -212,7 +213,7 @@ export const routeInfo: routeDataInterface[] = [
     title: 'Members',
     icon: 'group',
     name: 'MembersSettingsPage-home',
-
+    dontShow: true,
   },
   {
 
@@ -286,7 +287,7 @@ export const routeInfo: routeDataInterface[] = [
     title: 'Mail Merge & Reports',
     icon: 'email',
     name: 'MailMergeReportsPage-MailMergeReportsPage',
-
+    dontShow: true,
   },
   {
 
@@ -358,6 +359,8 @@ export const routeInfo: routeDataInterface[] = [
       // value?: routeParamInterface
     ) => `Member`
     //  - ${value?.memberId}`
+    ,
+
   },
   {
     title: 'Member Data',

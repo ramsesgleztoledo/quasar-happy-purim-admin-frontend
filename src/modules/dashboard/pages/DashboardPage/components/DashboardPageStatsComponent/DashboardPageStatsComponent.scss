@@ -21,12 +21,13 @@
   text-decoration-skip-ink: none;
   display: flex;
   justify-content: flex-end;
+  margin: 0px;
 }
 
-.DashboardPageStatsComponent-left-description-container {
-  display: flex;
-  align-items: center;
-}
+// .DashboardPageStatsComponent-left-description-container {
+//   display: flex;
+//   align-items: center;
+// }
 
 .DashboardPageStatsComponent-custom-circle {
   width: 12px;

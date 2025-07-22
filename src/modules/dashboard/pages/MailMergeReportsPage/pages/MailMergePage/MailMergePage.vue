@@ -35,7 +35,7 @@
                     style="min-width: 200px"
                     v-model="realForm.sendTo.value"
                     outlined
-                    :options="['Primary', 'Primary & Alternate options']"
+                    :options="['Primary', 'Primary & Alternate']"
                     label="Send To *"
                     lazy-rules
                     :rules="[lazyRules.required()]"
@@ -125,7 +125,7 @@
                       'col-10' : !isMobile,
                       'col-12' : isMobile,
                     }">
-                      <EditorCustom v-model="email" height="750px" ref="editorRef" :stringTokens=" isMobile ? tokens : undefined"/>
+                      <EditorCustom  show-uploader  v-model="email" height="750px" ref="editorRef" :stringTokens=" isMobile ? tokens : undefined"/>
                     </div>
                     <div v-if="!isMobile" class="col-2 q-pa-sm ComposeEmail-tokens-container">
                       <div class="row q-mb-sm">
@@ -192,7 +192,7 @@
             class="table-sticky-header-column-table"
             flat:
             bordered
-            :title="`Sending To (${$rStore.$state.selectedRecipients.length})`"
+            :title="`Recipients: (${$rStore.$state.selectedRecipients.length})`"
             :rows="$rStore.$state.report?.members || []"
             :columns="columns"
             row-key="ID"
@@ -205,7 +205,7 @@
           >
             <template v-slot:header="props">
               <q-tr :props="props">
-                <q-th auto-width />
+                <!-- <q-th auto-width /> -->
                 <q-th auto-width>
                   <q-checkbox v-model="props.selected" />
                 </q-th>
@@ -217,7 +217,7 @@
 
             <template v-slot:body="props">
               <q-tr :props="props">
-                <q-td auto-width>
+                <!-- <q-td auto-width>
                   <q-btn
                     size="sm"
                     round
@@ -225,7 +225,7 @@
                     @click="props.expand = !props.expand"
                     :icon="props.expand ? 'remove' : 'add'"
                   />
-                </q-td>
+                </q-td> -->
                 <q-td auto-width>
                   <q-checkbox
                     :model-value="props.selected"
@@ -238,13 +238,13 @@
                   {{ col.value }}
                 </q-td>
               </q-tr>
-              <q-tr v-show="props.expand" :props="props">
+              <!-- <q-tr v-show="props.expand" :props="props">
                 <q-td colspan="100%">
                   <div class="text-left">
                     <InnerViewRow :recipient="props.row" />
                   </div>
                 </q-td>
-              </q-tr>
+              </q-tr> -->
             </template>
           </q-table>
 
@@ -284,7 +284,7 @@
               :disable="!email"
               class="q-mr-sm"
               style="background: var(--happypurim); color: white"
-              label="Generate PDF"
+              label="Generate PDF TO PRINT"
               @click="pdfTitleFlag = true"
             />
 
@@ -316,7 +316,7 @@
    <div v-else>
             <div class="row ">
            <h6>
-             Not data for this report...
+             Not data returned...
            </h6>
             </div>
           </div>
@@ -331,7 +331,7 @@
         </div>
       </div>
 
-      <div class="custom-dialog-body-container q-pa-lg" style="min-width: 50vw">
+      <div class="custom-dialog-body-container q-pa-lg" :style="{ width: isMobile ? '100vw' : '500px' }">
         <div class="row q-mb-sm">
           <div class="col-12">
             <q-input
@@ -343,6 +343,27 @@
             />
           </div>
         </div>
+        <div class="row">
+          <div class="col-6">
+            <q-select v-model="orderByPDF" :options="tokens" label="Order By *" filled style="width: 100%;"/>
+          </div>
+                   <div class="col-6 q-pl-sm" >
+                   <div class="row" style="
+                       align-content: center;
+                       justify-content: center;
+                       align-items: center;">
+                     <div>Ascendent</div>
+                     <q-toggle
+                   v-model="isAsc"
+                   color="primary"
+                   keep-color
+                   />
+                     <div>Descendent</div>
+                   </div>
+
+
+                   </div>
+                   </div>
 
       </div>
 
@@ -355,7 +376,7 @@
           v-close-popup
         />
         <q-btn
-           :disable="!pdfTitle"
+           :disable="!pdfTitle || !orderByPDF"
           style="background: var(--happypurim); color: white"
           label="Generate"
           class="q-mr-sm q-mt-sm"
@@ -375,7 +396,7 @@
         </div>
       </div>
 
-      <div class="custom-dialog-body-container q-pa-lg" style="min-width: 50vw">
+      <div class="custom-dialog-body-container q-pa-lg" :style="{ width: isMobile ? '100vw' : '500px' }">
        <div class="row -q-mb-sm">
     <div
       class="q-pa-sm"
@@ -490,11 +511,13 @@ import SelectDraft from './Dialogs/SelectDraft/SelectDraft.vue'
 import type { DraftInterface } from 'src/modules/dashboard/interfaces/draft.interfaces'
 import SaveDraft from './Dialogs/SaveDraft/SaveDraft.vue'
 import { useDraft } from 'src/modules/dashboard/composables/useDraft'
-import { columns } from './data/columns'
-import InnerViewRow from '../ViewReport/InnerViewRow.vue'
+// import InnerViewRow from '../ViewReport/InnerViewRow.vue'
 import { useRouter } from 'vue-router'
 import { isValidDate, isValidTime } from 'src/helpers'
 import { turnTimeAndDate } from 'src/helpers/turnTimeAndDate'
+import type { RecipientMemberInterface } from 'src/modules/dashboard/interfaces/report.interface'
+import type { QTableColumn } from 'quasar'
+import { sortArrayByField } from 'src/helpers/sortArrayByfield'
 
 const $router = useRouter()
 const $rStore = useReportStore()
@@ -515,6 +538,29 @@ const pageOption = computed(() => [
     value: '2',
   },
 ])
+
+ const columns: QTableColumn<RecipientMemberInterface>[] = [
+  {
+    name: 'Name',
+    required: true,
+    label: 'Name',
+    align: 'left',
+    field: 'ID',
+    format: (_, row) => `${row["Last Name"]}, ${row["First Name"]}`,
+    sortable: true,
+    style: 'max-width: 200px; overflow: hidden; text-overflow: ellipsis',
+    headerStyle: 'max-width: 200px; overflow: hidden; text-overflow: ellipsis',
+  },
+  {
+    name: 'email',
+    required: true,
+    label: 'Email',
+    align: 'left',
+    field: 'Email',
+    format: (val) => `${val}`,
+    sortable: true,
+
+  },]
 
 const selectTemplateDialogFlag = ref<boolean>(false)
 const selectDraftDialogFlag = ref<boolean>(false)
@@ -566,6 +612,8 @@ const onSaveDraft = async (form: { name: string; description: string }) => {
 
 
 const pdfTitle = ref('')
+const orderByPDF = ref('');
+const isAsc = ref(false);
 const pdfTitleFlag = ref(false)
 
 const onGeneratePDF = async () => {
@@ -577,14 +625,19 @@ const onGeneratePDF = async () => {
 await generatePDF({
     title: pdfTitle.value,
     content: content,
-    memberIds: $rStore.$state.selectedRecipients.map((re) => re.ID),
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    memberIds: sortArrayByField($rStore.$state.selectedRecipients,orderByPDF.value as any,isAsc.value).map((re) => re.ID),
   })
 
 
 };
 
 
-watch(pdfTitleFlag, () => pdfTitle.value = '')
+watch(pdfTitleFlag, () => {
+  pdfTitle.value = ''
+  orderByPDF.value = ''
+  isAsc.value = false
+})
 
 
 
@@ -654,7 +707,6 @@ $router.push({
 
 
 const onSelectImg = (img: string) => {
-
   if (editorRef.value) {
     editorRef.value.insertFile(img)
   }

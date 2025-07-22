@@ -99,7 +99,10 @@ export const useUI = () => {
     $router.forward()
   }
 
+  const EDITOR_START_IMG_URL = computed(() => process.env.EDITOR_START_IMG_URL || '')
+
   return {
+    EDITOR_START_IMG_URL,
     copyToClipboard,
     isMobile,
     isMobileByQuasar,
@@ -174,6 +177,17 @@ export const useUI = () => {
     goToTop(element: HTMLElement | undefined, behavior?: ScrollBehavior) {
       if (!element) return
       element.scrollIntoView({ behavior: behavior ? behavior : 'smooth', block: 'start' })
+    },
+
+    showLoading(text?: string) {
+      $q.loading.show({
+        message: text ? text : `loading ...`,
+        spinnerColor: '#f36b09',
+        messageColor: '#f36b09',
+      })
+    },
+    stopLoading() {
+      $q.loading.hide()
     }
 
   };

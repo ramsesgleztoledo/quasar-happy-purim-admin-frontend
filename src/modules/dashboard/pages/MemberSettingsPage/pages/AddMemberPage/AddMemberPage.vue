@@ -207,6 +207,20 @@
               :hint="`${realForm.notes.value.length}/255 character limit`" -->
           </div>
         </div>
+        <div class="row q-mt-md">
+          <div class="col-12 q-pl-sm q-pr-sm">
+            <q-select
+              v-model="categories"
+              multiple
+              :options="$dStores.$state.categories"
+              label="Categories"
+              outlined
+              option-label="categoryName"
+              option-value="categoryID"
+              clearable
+            />
+          </div>
+        </div>
         <!-- TODO: alt options to edit -->
         <!-- <div class="row q-mt-md">
           <div class="col-12">
@@ -348,7 +362,7 @@
           :disable="!areValidForms()"
           class="q-mr-sm"
           style="background: var(--happypurim); color: white"
-          label="SAVE CHANGES"
+          label="SAVE MEMBER"
           @click="onAddMember"
         />
       </div>
@@ -383,7 +397,9 @@ import { lazyRules, useForm, validations } from 'src/composables'
 import { onlyDigits } from 'src/helpers/onlyDigits'
 import { useMember } from 'src/modules/dashboard/composables/useMember'
 import { statesOptions } from 'src/modules/dashboard/data'
+import type { ShulCategoryInterface } from 'src/modules/dashboard/interfaces/category-interfaces'
 import type { MemberAddFormInterface } from 'src/modules/dashboard/interfaces/member-interfaces'
+import { useDashboardStore } from 'src/modules/dashboard/store/dashboardStore/dashboardStore'
 import { useUI } from 'src/modules/UI/composables'
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
@@ -402,9 +418,12 @@ const {
 } = useUI()
 
 const { addMember_Co } = useMember()
+const $dStores = useDashboardStore()
 
 // const altAddress = ref<boolean>(false)
 const cancelOrderDialogFlag = ref<boolean>(false)
+
+const categories = ref<ShulCategoryInterface[]>([])
 
 // const categories = ref<CheckboxItemInterface[]>([])
 // const otherOptions = ref<CheckboxItemInterface[]>([
@@ -487,7 +506,10 @@ const areValidForms = () => {
 }
 
 const onAddMember = async () => {
-  const data = { ...getFormValue(), categoryIds: [] } as unknown as MemberAddFormInterface
+  const data = {
+    ...getFormValue(),
+    categoryIds: categories.value.map((ca) => ca.categoryID),
+  } as unknown as MemberAddFormInterface
 
   const resp = await addMember_Co(data)
   if (resp) resetForm()

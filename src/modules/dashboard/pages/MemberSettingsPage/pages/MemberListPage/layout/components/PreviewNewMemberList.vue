@@ -327,14 +327,18 @@ const pendingUpdateData = computed(
   () =>
     data.value?.tables.updated.rows.map((row) => ({
       id: row.rowKey,
-      ...Object.fromEntries(columns.value.map((key, i) => [key.name, row.cellValues[i]])),
+      ...Object.fromEntries(
+        (data.value?.colHeaders || []).map((key, i) => [key, row.cellValues[i]]),
+      ),
     })) || [],
 )
 const pendingAdditionData = computed(
   () =>
     data.value?.tables.added.rows.map((row) => ({
       id: row.rowKey,
-      ...Object.fromEntries(columns.value.map((key, i) => [key.name, row.cellValues[i]])),
+      ...Object.fromEntries(
+        (data.value?.colHeaders || []).map((key, i) => [key, row.cellValues[i]]),
+      ),
     })) || [],
 )
 
@@ -342,14 +346,18 @@ const pendingDeletionData = computed(
   () =>
     data.value?.tables.deleted.rows.map((row) => ({
       id: row.rowKey,
-      ...Object.fromEntries(columns.value.map((key, i) => [key.name, row.cellValues[i]])),
+      ...Object.fromEntries(
+        (data.value?.colHeaders || []).map((key, i) => [key, row.cellValues[i]]),
+      ),
     })) || [],
 )
 const unchangedMembersData = computed(
   () =>
     data.value?.tables.unchanged.rows.map((row) => ({
       id: row.rowKey,
-      ...Object.fromEntries(columns.value.map((key, i) => [key.name, row.cellValues[i]])),
+      ...Object.fromEntries(
+        (data.value?.colHeaders || []).map((key, i) => [key, row.cellValues[i]]),
+      ),
     })) || [],
 )
 
@@ -455,9 +463,7 @@ const onKeepAllOldValue = async () => {
   })
 
   const resp = await Promise.all(
-    data.value.tables.updated.rows
-      .filter((item) => !item.rowKey.toLocaleLowerCase().startsWith('c_'))
-      .map((row) => getDetailedChanges_co(row.rowKey, false)),
+    data.value.tables.updated.rows.map((row) => getDetailedChanges_co(row.rowKey, false)),
   )
 
   data.value.tables.unchanged.rows = [
@@ -490,4 +496,4 @@ defineExpose({
 })
 </script>
 
-<style scoped lang="scss"></style>
+<style scoped lang="scss" />

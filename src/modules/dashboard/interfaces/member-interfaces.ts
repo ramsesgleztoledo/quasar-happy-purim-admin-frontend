@@ -228,12 +228,8 @@ export interface MemberUpdateAllDataForm {
   reciprocity: boolean;
   hidden: boolean;
   memberData: MemberUpdateFormInterface;
-  profileQuestions: {
-    value: boolean
-    label: string
-    id: number
-  }[]
   altAddressData: AlternativeMemberAddressFormInterface;
+  profileQuestions: { option: number, value: 0 | 1 }[]
 }
 
 
@@ -273,5 +269,5 @@ export interface MemberAddResponseInterface {
 export interface MemberProfileQuestionInterface {
   optionName: string;
   optionId: number;
-  isChecked: boolean;
+  isChecked: 0 | 1;
 }

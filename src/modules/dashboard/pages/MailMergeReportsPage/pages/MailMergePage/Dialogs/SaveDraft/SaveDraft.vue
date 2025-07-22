@@ -1,6 +1,6 @@
 <template>
   <q-dialog v-model="show" persistent>
-    <q-card style="min-width: 50vw">
+    <q-card :style="{ minWidth: isMobile ? '100vw' : '500px' }">
       <div class="row dialog-header custom-dialog-header-container">
         <div class="col-12">
           <p>Save Draft</p>
@@ -61,11 +61,14 @@
 
 <script setup lang="ts">
 import { lazyRules } from 'src/composables'
+import { useUI } from 'src/modules/UI/composables'
 import { computed, ref } from 'vue'
 
 interface ScheduleSendPropsInterface {
   modelValue: boolean
 }
+
+const { isMobile } = useUI()
 
 const $emit = defineEmits(['update:modelValue', 'onSaveDraft'])
 
