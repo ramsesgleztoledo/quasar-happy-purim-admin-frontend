@@ -204,13 +204,7 @@
         <div class="row q-pa-sm q-mb-sm">
           <div class="col-12 q-pa-sm">
             <div class="row text-h6 q-mb-sm" style="color: var(--happypurim)">Shipping Baskets</div>
-            <div
-              class="row"
-              v-for="option in memberOrderState.additionalCharityOptions"
-              :key="option.id"
-            >
-              <div v-html="memberOrderState.sendOutSettings.message"></div>
-            </div>
+            <div v-html="memberOrderState.sendOutSettings.message"></div>
           </div>
         </div>
         <div class="row q-mb-sm">

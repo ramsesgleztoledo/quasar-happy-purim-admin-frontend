@@ -27,7 +27,7 @@
     <div class="row">
       <div class="col-12">
         <TableCustom
-          class-name="table-sticky-header-column-table table-cursor-pinter-custom"
+          class-name="table-sticky-header-column-table table-cursor-pointer-custom"
           styles="height: 628px"
           :rows="dashboardState.membersLogged.rows"
           :columns="columns"

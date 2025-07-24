@@ -237,7 +237,7 @@
           :tableRowStyleFn="
             (row: DetailedKeyInterface) => (row.isUpdated ? `background-color: #a5a0a0` : '')
           "
-          class-name="table-sticky-header-column-table table-cursor-pinter-custom"
+          class-name="table-sticky-header-column-table table-cursor-pointer-custom"
           styles="height: 628px"
           :rows="detailRows"
           :columns="detailColumns"

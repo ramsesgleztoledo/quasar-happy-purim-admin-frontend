@@ -1,4 +1,4 @@
-import type { CharityType, PaymentFormInterface } from "src/modules/dashboard/interfaces/memberOrder-interfaces"
+import type { CharityType, PaymentCheckFormInterface, PaymentFormInterface } from "src/modules/dashboard/interfaces/memberOrder-interfaces"
 import type { MemberOrderStateInterface } from "../memberOrder-store-interfaces"
 import { getCustomShippingItemsTotalHelper, getMembersSelectedHelper } from "src/modules/dashboard/pages/MemberSettingsPage/pages/MemberPage/pages/CreateOrder/helpers/member-order-helpers"
 import type { FormComposition } from "src/composables/useForm/interfaces"
@@ -28,12 +28,21 @@ export const s_fee = (state: MemberOrderStateInterface) => {
 }
 
 export const s_isPaymentFormInvalid = (state: MemberOrderStateInterface) => {
-  if (!state.paymentForm.email) return true
+  const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  if (!regex.test(state.paymentForm.email)) return true
   if (state.paymentForm.paymentType == 3) return false
-  if (!state.paymentForm.form) return true
-  const form: FormComposition<PaymentFormInterface> = state.paymentForm.form;
 
-  return !form.isValidForm()
+  if (state.paymentForm.paymentType == 1) {
+    if (!state.paymentForm.form) return true
+    const form: FormComposition<PaymentFormInterface> = state.paymentForm.form;
+
+    return !form.isValidForm()
+  }
+  if (state.paymentForm.paymentType == 2) {
+    if (!state.paymentForm.checkForm) return true
+    const form: FormComposition<PaymentCheckFormInterface> = state.paymentForm.checkForm;
+    return !form.isValidForm()
+  }
 }
 
 export const s_customShippingItemsTotal = (state: MemberOrderStateInterface) => { return getCustomShippingItemsTotalHelper(state.customShippingItems, state.customShippingOptions) }

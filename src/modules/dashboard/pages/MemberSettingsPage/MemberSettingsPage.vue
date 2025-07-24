@@ -17,8 +17,9 @@
       class="q-mr-sm q-mb-sm"
       :class="{ 'w-full': isMobile }"
       outlined
-      v-model="searchText"
+      v-model="filters.search"
       label="Search"
+      :debounce="500"
     >
       <template v-slot:append>
         <q-icon name="search" />
@@ -26,11 +27,11 @@
     </q-input>
 
     <q-select
+      :debounce="500"
       class="q-mr-sm q-mb-sm"
       :class="{ 'item-width-300': !isMobile, 'w-full': isMobile }"
-      v-model="categories"
+      v-model="filters.category"
       outlined
-      multiple
       :options="$dStore.categories"
       label="Filter by categories"
       option-label="categoryName"
@@ -55,11 +56,11 @@
         <q-table
           title="Member List"
           :style="{ height: isFullScreen ? '800px' : '630px' }"
-          class="table-sticky-header-column-table"
+          class="table-sticky-header-column-table sticky-2-column-table"
           flat
           bordered
           ref="tableRef"
-          :rows
+          :rows="memberState.members"
           :columns="columns"
           row-key="m_id"
           styles="height: 360px"
@@ -94,8 +95,11 @@
                   <!-- <q-icon v-else color="primary" size="large" name="visibility" /> -->
                 </div>
 
-                <p v-else>
+                <p v-else style="cursor: pointer; overflow: hidden; text-overflow: ellipsis">
                   {{ col.value }}
+                  <q-tooltip>
+                    {{ col.value }}
+                  </q-tooltip>
                 </p>
               </q-td>
             </q-tr>
@@ -109,7 +113,7 @@
 <script setup lang="ts">
 import type { QTableColumn } from 'quasar'
 import { convertToUSDate } from 'src/helpers/convertToUSDate'
-import { computed, ref } from 'vue'
+import { ref, watch } from 'vue'
 import { useRouter } from 'vue-router'
 import { useUI } from 'src/modules/UI/composables'
 import type { MemberInterface } from '../../interfaces/member-interfaces'
@@ -120,23 +124,8 @@ import { useDashboardStore } from '../../store/dashboardStore/dashboardStore'
 const { isMobile } = useUI()
 const $router = useRouter()
 const $dStore = useDashboardStore()
-const { memberState } = useMember()
+const { memberState, getMembers_Co } = useMember()
 
-const categories = ref<ShulCategoryInterface[]>([])
-
-const rows = computed(() =>
-  memberState.value.members
-    .filter((item) => JSON.stringify(item).toLowerCase().includes(searchText.value.toLowerCase()))
-    .filter((member) => {
-      const categoriesArray = categories.value || []
-
-      for (let i = 0; i < categoriesArray.length; i++) {
-        const cat = categoriesArray[i]!.categoryName
-        if (!member.m_category.includes(cat)) return false
-      }
-      return true
-    }),
-)
 const isFullScreen = ref(false)
 
 const goToMember = (memberId: number) => {
@@ -148,121 +137,129 @@ const goToMember = (memberId: number) => {
   })
 }
 
-const columns: QTableColumn<MemberInterface>[] = [
+const auxColumns: QTableColumn[] = [
   {
     name: 'm_hidden',
-    required: true,
     label: 'Hidden',
-    align: 'left',
     field: 'm_hidden',
-    sortable: true,
   },
   {
     name: 'lastName',
-    required: true,
     label: 'Last Name',
-    align: 'left',
     field: 'm_LastName',
-    sortable: true,
   },
 
   {
     name: 'firstName',
-    required: true,
     label: 'First Name',
-    align: 'left',
     field: 'm_FName',
-    sortable: true,
   },
   {
     name: 'spouse',
     field: 'm_SFName',
     label: 'Spouse',
-    align: 'left',
-    required: true,
-    sortable: true,
   },
   {
     name: 'title',
     field: 'm_title',
     label: 'Title',
-    align: 'left',
-    required: true,
-    sortable: true,
   },
   {
     name: 'address',
     field: 'm_Address1',
     label: 'Address',
-    align: 'left',
-    required: true,
-    sortable: true,
   },
   {
     name: 'city',
     field: 'm_City',
     label: 'City',
-    align: 'left',
-    required: true,
-    sortable: true,
   },
   {
     name: 'zipCode',
     field: 'm_Zip',
     label: 'Zip Code',
-    align: 'left',
-    required: true,
-    sortable: true,
   },
   {
     name: 'phone',
     field: 'm_phone',
     label: 'Phone#',
-    align: 'left',
-    required: true,
-    sortable: true,
   },
   {
     name: 'email',
     field: 'm_email',
     label: 'Email',
-    align: 'left',
-    required: true,
-    sortable: true,
   },
   {
     name: 'code',
     field: 'm_Code',
     label: 'Code',
-    align: 'left',
-    required: true,
-    sortable: true,
   },
   {
     name: 'misc',
     field: 'm_misc',
     label: 'Misc',
-    align: 'left',
-    required: true,
-    sortable: true,
   },
   {
     name: 'dateAdded',
-    required: true,
     label: 'Date Added',
-    align: 'left',
     field: 'm_added',
     format: (date: string) => convertToUSDate(date),
-    sortable: true,
   },
 ]
 
-const searchText = ref<string>('')
+const columns: QTableColumn[] = auxColumns.map((co) => ({
+  ...co,
+  style: 'max-width: 150px; overflow: hidden; text-overflow: ellipsis',
+  headerStyle: 'max-width: 150px; overflow: hidden; text-overflow: ellipsis',
+  required: true,
+  sortable: true,
+  align: 'left',
+}))
+
+const filters = ref<{
+  category: ShulCategoryInterface | undefined
+  search: string
+}>({
+  category: undefined,
+  search: '',
+})
+
+const oldValue = ref<{
+  category: ShulCategoryInterface | undefined
+  search: string
+}>({
+  category: undefined,
+  search: '',
+})
 
 const onClearFilters = () => {
-  searchText.value = ''
-  categories.value = []
+  filters.value = {
+    category: undefined,
+    search: '',
+  }
 }
+
+watch(
+  filters,
+  (newValue) => {
+    const stringNewValue = JSON.stringify(newValue)
+    const stringOldValue = JSON.stringify(oldValue.value)
+
+    console.log({ stringNewValue, stringOldValue })
+
+    if (stringNewValue == stringOldValue) return
+
+    oldValue.value = { ...newValue }
+
+    getMembers_Co({
+      category: filters.value.category?.categoryID ?? '',
+      search: filters.value.search,
+    })
+  },
+  {
+    deep: true,
+  },
+)
 </script>
 
 <style scoped lang="scss">

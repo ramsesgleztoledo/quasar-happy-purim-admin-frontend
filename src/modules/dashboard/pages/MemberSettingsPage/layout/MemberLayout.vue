@@ -9,7 +9,10 @@ import { onMounted } from 'vue'
 const { getMembers_Co } = useMember()
 
 onMounted(() => {
-  getMembers_Co().catch(console.error)
+  getMembers_Co({
+    category: '',
+    search: '',
+  }).catch(console.error)
 })
 </script>
 

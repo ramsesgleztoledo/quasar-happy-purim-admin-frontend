@@ -26,6 +26,10 @@
         <q-separator class="q-mb-sm" />
         <CreditCardPayment />
       </div>
+      <div v-show="$moStore.paymentForm.paymentType == 2">
+        <q-separator class="q-mb-sm" />
+        <CheckPayment />
+      </div>
 
       <q-separator class="q-mb-sm" />
       <div class="row q-pa-sm q-mb-sm q-item-bordered">
@@ -57,18 +61,20 @@ import { computed, onMounted } from 'vue'
 import CreditCardPayment from './components/CreditCardPayment.vue'
 import { useMemberStore } from 'src/modules/dashboard/store/memberStore/memberStore'
 import { useMemberOrderStore } from 'src/modules/dashboard/store/memberOrderStore/memberOrderStore'
+import CheckPayment from './components/CheckPayment.vue'
 
 const $mStore = useMemberStore()
 const $moStore = useMemberOrderStore()
 
 const payments = computed(() => [
   { id: 1, label: 'Credit Card', icon: 'credit_card', visible: true },
-  { id: 2, label: 'PayPal', icon: 'monetization_on', visible: !!$moStore.orgSettings?.payPal },
+  { id: 2, label: 'Check', icon: 'local_atm', visible: true },
   {
     id: 3,
-    label: 'Pay Later',
+    label: 'Invoice',
     icon: 'request_quote',
-    visible: !!$moStore.orgSettings?.payLaterOption,
+    visible: true,
+    // visible: !!$moStore.orgSettings?.payLaterOption,
   },
 ])
 

@@ -317,7 +317,7 @@
             <q-separator color="orange" inset />
           </div>
         </div>
-        <div class="row">
+        <div class="q-pa-sm row">
           <div class="col-12">
             <div class="row q-mb-sm">
               <div class="col-2">

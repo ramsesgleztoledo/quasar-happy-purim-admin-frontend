@@ -7,7 +7,7 @@ import { useRouter } from "vue-router";
 import { decodeJWT } from "src/helpers/JsonWebToken";
 import { useEmailStore } from "src/modules/dashboard/store/emailStore/emailStore";
 import { useAuthService } from "../service/auth.service";
-import type { AuthJWTInterface } from "../interfaces/auth.interfaces";
+import type { AuthJWTInterface, LoginInterface } from "../interfaces/auth.interfaces";
 import { useOrderArchiveStore } from "src/modules/dashboard/store/orderArchiveStore/orderArchiveStore";
 import { useMemberStore } from "src/modules/dashboard/store/memberStore/memberStore";
 import { useUserAdminStore } from "src/modules/dashboard/store/adminUserStore/adminUserStore";
@@ -15,6 +15,8 @@ import { useAdvancedSettingsStore } from "src/modules/dashboard/store/advanceSet
 import { useBasicSettingsStore } from "src/modules/dashboard/store/basicSettingsStore/basicSettingsStore";
 import { useMemberOrderStore } from "src/modules/dashboard/store/memberOrderStore/memberOrderStore";
 import { useReportStore } from "src/modules/dashboard/store/ReportStore/reportStore";
+import type { ApiCallResponseInterface } from "src/services/api-interfaces";
+import { useUI } from "src/modules/UI/composables";
 
 export const useAuth = () => {
 
@@ -29,8 +31,9 @@ export const useAuth = () => {
   const $oStore = useOrderArchiveStore()
   const $rStore = useReportStore()
   const $aStore = useAuthStore()
+  const { showToast } = useUI()
 
-  const { login: authLogin } = useAuthService()
+  const { login: authLogin, loginWithUserAndPass: loginWithUserAndPass_se } = useAuthService()
 
   const $q = useQuasar();
   const $router = useRouter()
@@ -95,16 +98,10 @@ export const useAuth = () => {
 
   };
 
-  const login = async (tokenUrl: string, dontRedirect?: boolean) => {
+  const processLogin = (result: ApiCallResponseInterface<LoginInterface>, dontRedirect?: boolean) => {
+
     try {
 
-      const token = tokenUrl.split(' ').join('+')
-
-
-      const result = await authLogin(token)
-
-      if (!result || !result.ok)
-        return logOut()
       const payload = decodeJWT<AuthJWTInterface>(result.data.accessToken)
 
       if (!payload)
@@ -125,7 +122,7 @@ export const useAuth = () => {
         token: {
           token: result.data.accessToken,
           token_exp: payload.exp,
-          refresh_token: token,
+          refresh_token: result.data.refreshToken,
 
         },
         serverToken: {
@@ -153,8 +150,34 @@ export const useAuth = () => {
       })
       return logOut()
     }
+  };
+
+
+
+  const login = async (tokenUrl: string, dontRedirect?: boolean) => {
+    const token = tokenUrl.split(' ').join('+')
+    const result = await authLogin(token)
+
+    if (!result || !result.ok)
+      return logOut()
+
+    processLogin(result, dontRedirect)
+
   }
 
+  const loginWithUserAndPass = async (data: { username: string, password: string }) => {
+    const result = await loginWithUserAndPass_se(data, {
+      loading: {
+        message: 'Loading ...'
+      }
+    })
+    if (!result || !result.ok)
+      return logOut()
+
+    showToast(result.ok, 'User logged', 'Incorrect username and/or password')
+
+    processLogin(result)
+  }
 
   const refreshToken = () => {
     const token = authState.value.token?.refresh_token || ''
@@ -168,6 +191,7 @@ export const useAuth = () => {
     authState,
     // methods
     login,
+    loginWithUserAndPass,
     refreshToken,
     logOut,
 

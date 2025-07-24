@@ -22,7 +22,7 @@
   <div class="row">
     <div class="col-12">
       <TableCustom
-        class-name="table-sticky-header-column-table table-cursor-pinter-custom"
+        class-name="table-sticky-header-column-table table-cursor-pointer-custom sticky-2-column-table"
         styles="height: 628px"
         :rows="baskets"
         :columns="columns"

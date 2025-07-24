@@ -30,6 +30,7 @@ export interface MemberOrderStateInterface {
   paymentMethodTypes: PaymentMethodTypeInterface[];
   paymentForm: {
     form: any;
+    checkForm: any;
     email: string
     paymentType: number
   };

@@ -41,6 +41,7 @@ const initialState: MemberOrderStateInterface = {
   paymentMethodTypes: [],
   paymentForm: {
     form: undefined,
+    checkForm: undefined,
     email: "",
     paymentType: 1
   },
@@ -129,10 +130,14 @@ export const useMemberOrderStore = defineStore('memberOrderStore', {
     setPaymentForm(form: unknown) {
       this.paymentForm.form = form
     },
+    setCheckForm(form: unknown) {
+      this.paymentForm.checkForm = form
+    },
 
     resetPaymentForm() {
       this.paymentForm = {
         form: undefined,
+        checkForm: undefined,
         email: "",
         paymentType: 1
       }

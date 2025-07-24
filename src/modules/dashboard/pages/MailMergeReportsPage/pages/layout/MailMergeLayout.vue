@@ -17,12 +17,12 @@ const $rStore = useReportStore()
 const isReady = ref(false)
 
 const filter = {
-  basketSize: '',
+  basketSize: [],
   categories: [],
   donateBasket: '',
-  routeCode: '',
+  routeCode: [],
   searchTerm: '',
-  zipCode: '',
+  zipCode: [],
 }
 
 onMounted(() => {

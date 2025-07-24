@@ -39,11 +39,33 @@ export const linksData: LinksDataInterface[] = [
       'dashboard-reciprocityChargePage',
     ],
   },
+  // {
+  //   title: 'Member List',
+  //   icon: 'group',
+  //   name: 'MembersSettingsPage',
+  //   routeClass: ['MembersSettingsPage', 'MembersSettingsPage-home'],
+  // },
   {
-    title: 'Member List',
+    title: 'Members',
     icon: 'group',
     name: 'MembersSettingsPage',
-    routeClass: ['MembersSettingsPage', 'MembersSettingsPage-home'],
+    children: [
+      {
+        title: 'Member List',
+        icon: 'group',
+        name: 'MembersSettingsPage',
+        routeClass: ['MembersSettingsPage', 'MembersSettingsPage-home'],
+      },
+      {
+
+        title: 'Upload Member List',
+        icon: 'upload',
+        name: 'MembersSettingsPage-MemberListLayout',
+
+      },
+    ],
+
+
   },
   {
     title: 'Site Settings',

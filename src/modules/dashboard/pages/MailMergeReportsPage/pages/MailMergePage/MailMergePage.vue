@@ -125,7 +125,7 @@
                       'col-10' : !isMobile,
                       'col-12' : isMobile,
                     }">
-                      <EditorCustom  show-uploader  v-model="email" height="750px" ref="editorRef" :stringTokens=" isMobile ? tokens : undefined"/>
+                      <EditorCustom  show-uploader  v-model="email" height="750px" ref="editorRef" :stringTokens=" isMobile ? $rStore.$state.tokens : undefined"/>
                     </div>
                     <div v-if="!isMobile" class="col-2 q-pa-sm ComposeEmail-tokens-container">
                       <div class="row q-mb-sm">
@@ -136,7 +136,7 @@
                       <div class="token-items-container">
                         <q-item
                           class="ComposeEmail-token-item q-mb-sm"
-                          v-for="(token, i) in tokens"
+                          v-for="(token, i) in $rStore.$state.tokens"
                           :key="i"
                           clickable
                           @click="insertToken(token)"
@@ -345,7 +345,7 @@
         </div>
         <div class="row">
           <div class="col-6">
-            <q-select v-model="orderByPDF" :options="tokens" label="Order By *" filled style="width: 100%;"/>
+            <q-select v-model="orderByPDF" :options="$rStore.$state.tokens" label="Order By *" filled style="width: 100%;"/>
           </div>
                    <div class="col-6 q-pl-sm" >
                    <div class="row" style="
@@ -577,7 +577,7 @@ const insertToken = (tokenName: string) => {
 
 const email = ref('')
 
-const tokens = ref<string[]>([])
+
 const templates = ref<MailMergeTemplateInterface[]>([])
 
 
@@ -738,7 +738,7 @@ const timeRules = [
 onMounted(() => {
   getData().then((resp) => {
     // tokens
-    tokens.value = resp.tokens
+
 
     // templates
     templates.value = resp.templates

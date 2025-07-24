@@ -370,12 +370,14 @@ export const useMemberOrder = () => {
       const emailTo = $moStore.paymentForm.email || "";
 
       const paymentType = $moStore.paymentForm.paymentType
+
       let data: MemberCreateOrderFormInterface = {
-        paymentType: "",
-        paymentMethod: "",
+        phoneOrCheckDate: "",
+        cardType: "",
+        checkOrCCNumber: "",
+        paymentMethod: "Invoice",
         firstName: "",
         lastName: "",
-        creditCardNumber: "",
         cardCode: "",
         cardExpirationMonth: "",
         cardExpirationYear: "",
@@ -384,26 +386,18 @@ export const useMemberOrder = () => {
         billCity: "",
         billState: "",
         billZip: "",
-        phone: "",
         specialInstructions: false,
         reciprocity: false,
         emailTo,
         tempCode: tokenSession.value,
         total: $moStore.getCartData?.totalBefore || 0,
-        discountName: $moStore.getCartData?.discount?.name || "",
-        discountPrice: $moStore.getCartData?.discount?.value || 0,
-
       }
 
 
 
       switch (paymentType) {
-        case 3: {
-          data.paymentMethod = "BillMe";
-          break;
-        }
 
-        default: {
+        case 1: {
           const form: FormComposition<PaymentFormInterface> | undefined = $moStore.paymentForm.form
           if (!form) return
           const formData = form.getFormValue()
@@ -414,9 +408,27 @@ export const useMemberOrder = () => {
             ...formData,
             cardExpirationMonth: date![0] || "",
             cardExpirationYear: date![1] || "",
+            paymentType: "Credit Card",
           } as unknown as MemberCreateOrderFormInterface
           break;
         }
+        case 2: {
+          const form: FormComposition<PaymentFormInterface> | undefined = $moStore.paymentForm.checkForm
+          if (!form) return
+          const formData = form.getFormValue()
+
+          data = {
+            ...data,
+            ...formData,
+            paymentType: "Check",
+          } as unknown as MemberCreateOrderFormInterface
+          break;
+        }
+        default: {
+          data.paymentMethod = "Invoice";
+          break;
+        }
+
       }
 
 

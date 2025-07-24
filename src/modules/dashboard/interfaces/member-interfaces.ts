@@ -229,7 +229,9 @@ export interface MemberUpdateAllDataForm {
   hidden: boolean;
   memberData: MemberUpdateFormInterface;
   altAddressData: AlternativeMemberAddressFormInterface;
-  profileQuestions: { option: number, value: 0 | 1 }[]
+  profileQuestions: { option: number, value: 0 | 1 }[];
+  doorManValue: boolean;
+  membershipValue: boolean;
 }
 
 

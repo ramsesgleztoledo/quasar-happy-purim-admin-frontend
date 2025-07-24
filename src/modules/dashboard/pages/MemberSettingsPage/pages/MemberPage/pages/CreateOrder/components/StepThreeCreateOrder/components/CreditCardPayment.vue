@@ -24,7 +24,7 @@
       <div class="row q-mb-sm">
         <div class="col-12 q-pr-sm q-pl-sm">
           <q-input
-            v-model="paymentForm.realForm.value.creditCardNumber.value"
+            v-model="paymentForm.realForm.value.checkOrCCNumber.value"
             outlined
             label="Card Number *"
             lazy-rules
@@ -50,6 +50,7 @@
               ...creditFormDateRule,
             ]"
             label="Expiration Date *"
+            readonly
           >
             <template v-slot:append>
               <q-icon name="event" class="cursor-pointer">
@@ -168,7 +169,7 @@
         <div class="col-6 q-pl-sm q-pr-sm">
           <q-input
             :disable="sameAsProfile"
-            v-model="paymentForm.realForm.value.phone.value"
+            v-model="paymentForm.realForm.value.phoneOrCheckDate.value"
             outlined
             label="Primary Telephone *"
             mask="(###) - ### - ####"
@@ -197,20 +198,14 @@ const { memberOrderState } = useMemberOrder()
 const sameAsProfile = ref<boolean>(false)
 
 const paymentForm = useForm({
-  firstName: {
-    value: '',
-    validations: [validations.required],
-  },
-  lastName: {
-    value: '',
-    validations: [validations.required],
-  },
+  firstName: { value: '', validations: [validations.required] },
+  lastName: { value: '', validations: [validations.required] },
   date: { value: '', validations: [validations.required, validations.isValidDate] },
   cardCode: {
     value: '',
     validations: [validations.required, validations.minCharacters(3), validations.maxCharacters(4)],
   },
-  creditCardNumber: {
+  checkOrCCNumber: {
     value: '',
     validations: [validations.required, validations.minCharacters(19)],
   },
@@ -219,7 +214,10 @@ const paymentForm = useForm({
   billCity: { value: '', validations: [validations.required] },
   billState: { value: '', validations: [validations.required] },
   billZip: { value: '', validations: [validations.required, validations.minCharacters(5)] },
-  phone: { value: '', validations: [validations.required, validations.minCharacters(18)] },
+  phoneOrCheckDate: {
+    value: '',
+    validations: [validations.required, validations.minCharacters(18)],
+  },
 })
 
 const isValidDate = (value: string) => {
@@ -255,7 +253,7 @@ watch(sameAsProfile, (value) => {
     billCity: !value ? '' : member?.city || '',
     billState: !value ? '' : member?.state || '',
     billZip: !value ? '' : member?.zip || '',
-    phone: !value ? '' : member?.phone || '',
+    phoneOrCheckDate: !value ? '' : member?.phone || '',
   }
 
   paymentForm.resetForm(

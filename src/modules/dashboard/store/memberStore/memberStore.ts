@@ -4,6 +4,7 @@ import type { MemberStateInterface } from './member-store-interfaces';
 import type { AlternativeMemberAddress, MemberDataInterface, MemberDonateBasketOptionInterface, MemberOptionsInterface, MemberProfileQuestionInterface, MemberTransactionInterface } from '../../interfaces/member-interfaces';
 import type { NoneType } from '../../services/service-interfaces';
 import type { MemberCategoryInterface } from '../../interfaces/category-interfaces';
+import type { MembershipStatusInterface } from 'src/services/api-interfaces';
 
 
 const initialState: MemberStateInterface = {
@@ -23,6 +24,14 @@ const initialState: MemberStateInterface = {
   memberDonateBasketOption: undefined,
   profileQuestions: [],
   displayChildren: false,
+  doorManSettings: {
+    show: false,
+    value: false
+  },
+  membershipSettings: {
+    visible: true,
+    checkedStatus: false
+  },
 }
 
 export const useMemberStore = defineStore('memberStore', {
@@ -64,6 +73,15 @@ export const useMemberStore = defineStore('memberStore', {
     },
     setProfileQuestions(profileQuestions: MemberProfileQuestionInterface[]) {
       this.profileQuestions = profileQuestions
+    },
+    setDoorManSettings(doorManSettings: {
+      show: boolean,
+      value: boolean
+    }) {
+      this.doorManSettings = doorManSettings
+    },
+    setMembershipSettings(membershipSettings: MembershipStatusInterface) {
+      this.membershipSettings = membershipSettings
     },
   }
 });

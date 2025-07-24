@@ -65,7 +65,38 @@ export const useReportsService = () => {
         data
       })
     },
-
+    getZipCodeFilters: async (extraOptions?: ExtraOptionsInterface): Promise<ApiCallResponseInterface<string[]>> => {
+      const nextUrl = `/Receiving-from-report/filter-by-zip-options`;
+      const url = `${baseUrl}${nextUrl}`;
+      return await apiCall({
+        url,
+        extraOptions,
+      })
+    },
+    getRouteCodeFilters: async (extraOptions?: ExtraOptionsInterface): Promise<ApiCallResponseInterface<string[]>> => {
+      const nextUrl = `/Receiving-from-report/filter-by-route-options`;
+      const url = `${baseUrl}${nextUrl}`;
+      return await apiCall({
+        url,
+        extraOptions,
+      })
+    },
+    getBasketSizeFilters: async (extraOptions?: ExtraOptionsInterface): Promise<ApiCallResponseInterface<string[]>> => {
+      const nextUrl = `/Receiving-from-report/filter-by-basket-size-options`;
+      const url = `${baseUrl}${nextUrl}`;
+      return await apiCall({
+        url,
+        extraOptions,
+      })
+    },
+    getDonateFilters: async (extraOptions?: ExtraOptionsInterface): Promise<ApiCallResponseInterface<string[]>> => {
+      const nextUrl = `/Receiving-from-report/filter-by-donate-basket-options`;
+      const url = `${baseUrl}${nextUrl}`;
+      return await apiCall({
+        url,
+        extraOptions,
+      })
+    },
 
   }
 

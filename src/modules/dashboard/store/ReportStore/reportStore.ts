@@ -12,7 +12,8 @@ const initialState: reportStateInterface = {
   report: undefined,
   selectedRecipients: [],
   reportId: "",
-  images: []
+  images: [],
+  tokens: []
 }
 
 export const useReportStore = defineStore('reportStore', {
@@ -22,8 +23,6 @@ export const useReportStore = defineStore('reportStore', {
 
   getters: {
     getReportSelectedName(state: reportStateInterface) {
-
-
       const basic = state.basicReports.find(rp => rp.reportID == state.reportId)
       if (basic)
         return basic.name
@@ -38,6 +37,9 @@ export const useReportStore = defineStore('reportStore', {
 
       return "None-name"
 
+    },
+    showExtraFilters(state: reportStateInterface) {
+      return state.reportId == 2 || state.reportId == 3
     }
   },
 
@@ -63,6 +65,10 @@ export const useReportStore = defineStore('reportStore', {
     },
     setImages(images: string[]) {
       this.images = images.map(img => img)
+    },
+
+    setTokens(tokens: string[]) {
+      this.tokens = tokens.map(to => to)
     }
 
 

@@ -34,7 +34,7 @@
       <div class="row" style="height: fit-content">
         <div class="col-12">
           <q-table
-            class="table-sticky-header-column-table table-cursor-pinter-custom"
+            class="table-sticky-header-column-table table-cursor-pointer-custom sticky-2-column-table"
             style="height: 628px"
             :rows
             :columns

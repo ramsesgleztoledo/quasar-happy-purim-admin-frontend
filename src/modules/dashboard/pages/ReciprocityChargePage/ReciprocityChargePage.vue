@@ -55,8 +55,8 @@
                 color="primary"
                 :label="col.value"
                 :to="{
-                  name: 'OrderArchivePage-orderDetails',
-                  params: { orderId: props.row.orderId },
+                  name: 'dashboard-transactionDetailsPage',
+                  params: { transactionID: props.row.orderId },
                 }"
               ></q-btn>
 
@@ -67,7 +67,7 @@
                 :label="col.value"
                 :to="{
                   name: 'MemberLayout',
-                  params: { memberId: props.row.memberID },
+                  params: { memberId: props.row.memberId },
                 }"
               />
 

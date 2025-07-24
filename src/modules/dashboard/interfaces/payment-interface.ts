@@ -24,6 +24,42 @@ export interface RecordCheckOrCreditPaymentFormInterface {
 }
 
 
+export interface RecordCheckPaymentFormInterface {
+  amount: number;
+  date: string;
+  memo: string;
+  checkNumber: string;
+  invoices: RecordCheckPaymentInvoiceInterface[];
+}
+
+export interface RecordCheckPaymentInvoiceInterface {
+  transactionID: number;
+  amount: number;
+}
+
+
+export interface RecordCCPaymentFormInterface {
+  paymentMethodIndex: number;
+  total:              number;
+  invoiceList:        RecordCCPaymentInvoiceList[];
+  fullName:           string;
+  expiration:         string;
+  cardNumber:         string;
+  cvv:                string;
+  billingAddress:     string;
+  city:               string;
+  state:              string;
+  phone:              string;
+  postalCode:         string;
+  cardLast4:          string;
+}
+
+export interface RecordCCPaymentInvoiceList {
+  transactionId: number;
+  amountApplied: number;
+}
+
+
 
 // export interface UnPaidOrdersInterface {
 //   invoices: InvoiceUnpaidOrderInterface[];

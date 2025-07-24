@@ -54,7 +54,7 @@ export const useApiCall = () => {
         return extraOptions?.dontRedirect ? null : $router.push({ name: '500' });
 
       case 403:
-        options.message = 'You have not permissions to check this information'
+        options.message = 'You have not permission to check this information'
         $q.notify(options)
         return extraOptions?.goBackIn403 ? $router.back() : null
 

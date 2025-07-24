@@ -1,4 +1,4 @@
-import type { ApiCallResponseInterface, ExtraOptionsInterface } from "../../../services/api-interfaces";
+import type { ApiCallResponseInterface, DoorManStatusInterface, ExtraOptionsInterface, MembershipStatusInterface } from "../../../services/api-interfaces";
 import { useApiCall } from "../../../services/apiCall";
 import type { AlternativeMemberAddress, AlternativeMemberAddressFormInterface, BasketReceivedInterface, EmailLoginCodeInfoInterface, MemberAddFormInterface, MemberAddResponseInterface, MemberDataInterface, MemberDonateBasketOptionInterface, MemberHiddenInterface, MemberInterface, MemberPersonalBasketInterface, MemberProfileQuestionInterface, MemberReciprocityInterface, MembersLoggedInterface, MemberTransactionInterface, MemberUpdateFormInterface, PendingDeletionInterface } from "../interfaces/member-interfaces";
 
@@ -11,10 +11,12 @@ export const useMemberService = () => {
   const { apiCall } = useApiCall()
 
   return {
-    getMembersList: async (extraOptions?: ExtraOptionsInterface): Promise<ApiCallResponseInterface<MemberInterface[]>> => {
+    getMembersList: async (filters: { search: string, category: string | number}, extraOptions?: ExtraOptionsInterface): Promise<ApiCallResponseInterface<MemberInterface[]>> => {
+      const nextUrl = `?search=${filters.search}&category=${filters.category}`;
+      const url = `${baseUrl}${nextUrl}`;
 
       return await apiCall({
-        url: baseUrl,
+        url,
         extraOptions
       })
     },
@@ -268,6 +270,45 @@ export const useMemberService = () => {
       return await apiCall({
         url,
         extraOptions,
+      })
+    },
+    getKJSettings: async (memberId: number, extraOptions?: ExtraOptionsInterface): Promise<ApiCallResponseInterface<DoorManStatusInterface>> => {
+      const nextUrl = `/${memberId}/kj-settings`;
+      const url = `${baseUrl}${nextUrl}`;
+      return await apiCall({
+        url,
+        extraOptions,
+      })
+    },
+
+    updateKJSettings: async (memberId: number, value: boolean, extraOptions?: ExtraOptionsInterface): Promise<ApiCallResponseInterface<DoorManStatusInterface>> => {
+      const nextUrl = `/${memberId}/kj-update-doorman-status`;
+      const url = `${baseUrl}${nextUrl}`;
+      return await apiCall({
+        url,
+        extraOptions,
+        method: 'PUT',
+        data: {
+          selectedIndex: value ? 1 : 0,
+          rowKJVisible: true
+        }
+      })
+    },
+    getMemberShipStatus: async (memberId: number, extraOptions?: ExtraOptionsInterface): Promise<ApiCallResponseInterface<MembershipStatusInterface>> => {
+      const nextUrl = `/${memberId}/membership-status`;
+      const url = `${baseUrl}${nextUrl}`;
+      return await apiCall({
+        url,
+        extraOptions,
+      })
+    },
+    updateMemberShipStatus: async (memberId: number, value: boolean, extraOptions?: ExtraOptionsInterface): Promise<ApiCallResponseInterface<MembershipStatusInterface>> => {
+      const nextUrl = `/${memberId}/membership-status?isChecked=${value}`;
+      const url = `${baseUrl}${nextUrl}`;
+      return await apiCall({
+        url,
+        extraOptions,
+        method: 'PUT',
       })
     },
 

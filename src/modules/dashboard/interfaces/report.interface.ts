@@ -23,15 +23,16 @@ export interface RecipientDataFormInterface {
   id: number | string;
   searchTerm: string;
   categories: string[];
-  zipCode: string;
-  basketSize: string;
-  routeCode: string;
+  zipCode: string[];
+  basketSize: string[];
+  routeCode: string[];
   donateBasket: string;
 }
 
 
 export interface RecipientDataInterface {
   totalCount: number;
+  filteredCount: number;
   members: RecipientMemberInterface[];
 }
 

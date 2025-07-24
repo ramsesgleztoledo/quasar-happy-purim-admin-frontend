@@ -17,7 +17,7 @@
       <div class="row">
         <div class="col-12">
           <TableCustom
-            class-name="table-sticky-header-column-table table-cursor-pinter-custom"
+            class-name="table-sticky-header-column-table table-cursor-pointer-custom sticky-2-column-table"
             styles="height: 628px"
             :rows
             :columns="columns"
@@ -72,6 +72,14 @@ const columns: QTableColumn[] = [
     sortable: true,
   },
   {
+    name: 'memberName',
+    required: true,
+    label: 'Member Name',
+    align: 'left',
+    field: 'memberName',
+    sortable: true,
+  },
+  {
     name: 'date',
     required: true,
     label: 'Date Added',
@@ -81,14 +89,6 @@ const columns: QTableColumn[] = [
     sortable: true,
   },
 
-  {
-    name: 'memberName',
-    required: true,
-    label: 'Member Name',
-    align: 'left',
-    field: 'memberName',
-    sortable: true,
-  },
   {
     name: 'numSent',
     field: 'numSent',

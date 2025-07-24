@@ -45,6 +45,16 @@ export const useAuthService = () => {
         }
       })
     },
+    loginWithUserAndPass: async (data: { username: string, password: string }, extraOptions?: ExtraOptionsInterface): Promise<ApiCallResponseInterface<LoginInterface>> => {
+      const nextUrl = '/login-with-username-and-password';
+      const url = `${baseUrl}${nextUrl}`;
+      return await apiCall({
+        url,
+        extraOptions,
+        method: 'POST',
+        data,
+      })
+    },
 
     // ...loinFunctions,
   }

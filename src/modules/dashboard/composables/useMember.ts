@@ -7,7 +7,7 @@ import { useCategoryService } from "../services/category.service";
 import type { AlternativeMemberAddress, EmailLoginCodeInfoInterface, MemberAddFormInterface, MemberDonateBasketOptionInterface, MemberHiddenInterface, MemberProfileQuestionInterface, MemberTransactionInterface, MemberUpdateAllDataForm, PendingDeletionInterface } from "../interfaces/member-interfaces";
 import type { MemberReciprocityInterface } from '../interfaces/member-interfaces';
 import type { MemberCategoryInterface } from "../interfaces/category-interfaces";
-import type { ApiCallResponseInterface } from "src/services/api-interfaces";
+import type { ApiCallResponseInterface, DoorManStatusInterface, MembershipStatusInterface } from "src/services/api-interfaces";
 import { useUI } from "src/modules/UI/composables";
 
 
@@ -48,6 +48,10 @@ export const useMember = () => {
     emailReceiptByTransactionId,
     getDisplayChildren,
     updateProfileQuestions,
+    getKJSettings,
+    updateKJSettings,
+    getMemberShipStatus,
+    updateMemberShipStatus,
   } = useMemberService()
 
 
@@ -58,8 +62,11 @@ export const useMember = () => {
 
   const memberState = computed(() => $mStore.$state);
 
-  const getMembers_Co = async () => {
-    const members = await getMembersList({
+  const getMembers_Co = async (filters: {
+    search: string;
+    category: string | number;
+  }) => {
+    const members = await getMembersList(filters, {
       loading: {
         message: 'Loading ...'
       }
@@ -96,7 +103,8 @@ export const useMember = () => {
         memberDonateBasketOption,
         profileQuestions,
         displayChildren,
-
+        doorManSettings,
+        membershipSettings,
       ]: [
           ApiCallResponseInterface<MemberHiddenInterface>,
           ApiCallResponseInterface<MemberReciprocityInterface>,
@@ -107,6 +115,8 @@ export const useMember = () => {
           ApiCallResponseInterface<MemberDonateBasketOptionInterface>,
           ApiCallResponseInterface<MemberProfileQuestionInterface[]>,
           ApiCallResponseInterface<boolean>,
+          ApiCallResponseInterface<DoorManStatusInterface>,
+          ApiCallResponseInterface<MembershipStatusInterface>,
 
         ] = await Promise.all([
 
@@ -118,11 +128,24 @@ export const useMember = () => {
           getTransactionsByMemberId(memberId),
           getMemberDonateBasketOptionByMemberId(memberId),
           getProfileQuestions(memberId),
-          getDisplayChildren(memberId)
+          getDisplayChildren(memberId),
+          getKJSettings(memberId),
+          getMemberShipStatus(memberId)
         ]
         )
 
 
+      $mStore.setDoorManSettings(doorManSettings.ok ? {
+        show: !!doorManSettings.data.showKJRow,
+        value: doorManSettings.data.rbl24HourSelectedIndex === 1
+      } : {
+        show: false,
+        value: false
+      })
+      $mStore.setMembershipSettings(membershipSettings.ok ? membershipSettings.data : {
+        checkedStatus: false,
+        visible: false,
+      })
       $mStore.setSelectedMember(member.ok ? member.data : undefined)
       $mStore.setDisplayChildren(displayChildren.ok ? displayChildren.data : false)
       $mStore.setMemberCategories(categories.ok ? categories.data : [])
@@ -222,11 +245,29 @@ export const useMember = () => {
         dontRedirect: true
       });
 
+    let resp7 = undefined
+    if ($mStore.$state.doorManSettings.show)
+      resp7 = await updateKJSettings(memberId, data.doorManValue, {
+        dontRedirect: true
+      });
+
+    let resp8 = undefined
+    if ($mStore.$state.membershipSettings.visible)
+      resp8 = await updateMemberShipStatus(memberId, data.membershipValue, {
+        dontRedirect: true
+      });
 
 
-    if (!resp1.ok || !resp2.ok || !resp3.ok
+
+    if (
+      !resp1.ok
+      || !resp2.ok
+      || !resp3.ok
       || !resp4.ok
-      || (resp5 !== undefined && !resp5.ok) || !resp6.ok)
+      || (resp5 !== undefined && !resp5.ok)
+      || (resp7 !== undefined && !resp7.ok)
+      || (resp8 !== undefined && !resp8.ok)
+      || !resp6.ok)
 
       $q.notify({
         color: 'red',

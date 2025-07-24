@@ -59,15 +59,15 @@
     </div>
   </div>
 
-  <div class="row">
-    <div class="q-pa-lg col-12">
+  <div class="row q-mb-sm q-mt-sm">
+    <div class="col-12">
       <div class="CreateOrderPage-options">
         <label><b> Options </b> </label>
 
         <!-- <div class="row">
           <q-checkbox  v-model="reciprocity" label="Reciprocity" />
         </div> -->
-        <div class="row">
+        <div class="row q-mb-sm q-mt-sm">
           <q-checkbox
             @update:model-value="onHidePaidOrdersUpdated"
             v-model="hidePaidOrders"
@@ -120,8 +120,8 @@
                 </div>
               </div>
               <div class="row q-pa-sm" style="background-color: var(--happypurim)">
-                <div class="col-12"></div>
-                <h6 style="margin: 0px">
+                <q-checkbox v-model="allSelected" />
+                <h6 style="margin: 0px; align-items: center; display: flex">
                   Members ({{ memberOrderState.membersSelected.length }}/{{
                     memberOrderState.memberList.original.length
                   }})
@@ -173,10 +173,15 @@
                           }
                         "
                       />
-                      <div style="background-color:">
+                      <div class="text-overflow-ellipsis">
                         <b>
+                          <q-tooltip>
+                            {{
+                              `${props.row.lastName}, ${props.row.firstName} ${props.row.sFirstName ? `& ${props.row.sFirstName}` : ''}`
+                            }}
+                          </q-tooltip>
                           {{
-                            `${props.row.lastName}, ${props.row.firstName} ${props.row.sLastName ? `& ${props.row.sLastName}, ${props.row.sFirstName}` : ''}`
+                            `${props.row.lastName}, ${props.row.firstName} ${props.row.sFirstName ? `& ${props.row.sFirstName}` : ''}`
                           }}
                         </b>
                       </div>
@@ -233,7 +238,7 @@ const types = ref<ShulCategoryInterface[]>([])
 
 const orderHistory = ref<{ value: number; label: string }[]>([])
 const ordersHistory = ref([
-  { value: 1, label: 'People I sent the last year' },
+  { value: 1, label: 'People I sent to last year' },
   { value: 2, label: 'People I reciprocated to last year' },
   { value: 3, label: 'People I received from last year' },
 ])
@@ -262,6 +267,27 @@ const columns = ref<QTableColumn<OrderMemberListInterface>[]>([
     sortable: true,
   },
 ])
+
+const allSelected = computed({
+  get() {
+    const totalSelected = $moStore.membersSelected.length
+    const totals = rows.value.filter((item) => !item.paid).length
+
+    if (totalSelected && totalSelected < totals) return ''
+    return totalSelected === totals
+  },
+  set(val: boolean) {
+    toggleSelectAll(val)
+  },
+})
+
+const toggleSelectAll = (selectAll: boolean) => {
+  if (selectAll) {
+    $moStore.membersSelected = [...rows.value.filter((item) => !item.paid)]
+  } else {
+    $moStore.membersSelected = []
+  }
+}
 
 const rows = computed(() =>
   memberOrderState.value.memberList.copy.filter((item) => {
@@ -293,8 +319,8 @@ const rows = computed(() =>
     const typesArray = types.value || []
 
     for (let i = 0; i < typesArray.length; i++) {
-      const cat = typesArray[i]!.categoryName
-      if (!item.memberCategories.includes(cat)) return false
+      const cat = typesArray[i]!.categoryID
+      if (!item.memberCategories.includes(`${cat}`)) return false
     }
 
     return true

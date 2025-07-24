@@ -288,19 +288,28 @@ export interface PaymentFormInterface {
   firstName: string;
   lastName: string;
   date: string;
-  code: string;
-  number: string;
-  address: string;
-  address2: string;
-  city: string;
-  state: string;
-  zip: string;
-  phone: string;
+  cardCode: string;
+  checkOrCCNumber: string;
+  billAddress1: string;
+  billAddress2: string;
+  billCity: string;
+  billState: string;
+  billZip: string;
+  phoneOrCheckDate: string;
+}
+
+export interface PaymentCheckFormInterface {
+  checkOrCCNumber: string;
+  total: number;
+  firstName: string;
+  phoneOrCheckDate: string;
 }
 
 
-export interface MemberCreateOrderFormInterface {
-  paymentType: string;
+export interface MemberCreateOrderFormInterfaceOld {
+  cardType: 'v' | 'm' | 'a' | 'd' | '';
+  checkOrCCNumber: string;
+  paymentType: 'Credit Card' | 'Invoice' | 'Check';
   paymentMethod: string;
   firstName: string;
   lastName: string;
@@ -321,7 +330,31 @@ export interface MemberCreateOrderFormInterface {
   total: number;
   discountName: string;
   discountPrice: number;
+  phoneOrCheckDate: string;
 }
+
+export interface MemberCreateOrderFormInterface {
+  paymentMethod: 'Credit Card' | 'Invoice' | 'Check';
+  cardType: 'v' | 'm' | 'a' | 'd' | '';
+  firstName: string;
+  lastName: string;
+  checkOrCCNumber: string;
+  cardCode: string;
+  cardExpirationMonth: string;
+  cardExpirationYear: string;
+  billAddress1: string;
+  billAddress2: string;
+  billCity: string;
+  billState: string;
+  billZip: string;
+  total: number;
+  emailTo: string;
+  tempCode: string;
+  phoneOrCheckDate: string;
+  specialInstructions: boolean;
+  reciprocity: boolean;
+}
+
 
 export interface ShulSettingInterface {
   id: number;

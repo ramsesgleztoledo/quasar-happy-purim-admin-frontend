@@ -54,6 +54,7 @@
                           lazy-rules
                           :rules="[lazyRules.required()]"
                           label="Check Date"
+                          readonly
                         >
                           <template v-slot:append>
                             <q-icon name="event" class="cursor-pointer">
@@ -270,6 +271,7 @@
                           lazy-rules
                           :rules="[lazyRules.required()]"
                           label="Date"
+                          readonly
                         >
                           <template v-slot:append>
                             <q-icon name="event" class="cursor-pointer">
@@ -430,11 +432,12 @@
             style="color: #990000; border-color: #990000"
             v-close-popup
           />
+
           <q-btn
+            v-close-popup
             class="q-mr-sm q-mt-sm"
             style="background: var(--happypurim); color: white"
             label="Pay"
-            v-close-popup
             @click="onPay"
             :disable="!isValidForm()"
           />
@@ -469,12 +472,19 @@ import { lazyRules, useForm, validations } from 'src/composables'
 import { convertToUSDate, convertWithCommas } from 'src/helpers'
 import { usePayment } from 'src/modules/dashboard/composables/usePayment'
 import { statesOptions } from 'src/modules/dashboard/data'
-import type { InvoiceUnpaidOrderInterface } from 'src/modules/dashboard/interfaces/payment-interface'
+import type {
+  InvoiceUnpaidOrderInterface,
+  RecordCCPaymentFormInterface,
+  RecordCheckPaymentFormInterface,
+} from 'src/modules/dashboard/interfaces/payment-interface'
 import { ref, onMounted, computed, watch } from 'vue'
 import { useRoute } from 'vue-router'
 
 const $route = useRoute()
-const { getUnPaidOrdersByMemberId } = usePayment()
+const { getUnPaidOrdersByMemberId, recordCheckPayment, recordCCPayment, recordCreditPayment } =
+  usePayment()
+
+const memberId = computed(() => Number($route.params.memberId))
 
 //* payment 0,1,2
 const paymentType = ref<number>(0)
@@ -485,13 +495,18 @@ const {
   realForm: checkForm,
   onFieldChange: onFieldChangeCheckForm,
   isValidForm: isValidFormCheck,
+  getFormValue: getFormValueCheckForm,
 } = useForm({
   number: { value: '', validations: [validations.required] },
   date: { value: '', validations: [validations.required] },
   amount: { value: '0', validations: [validations.required, validations.greaterThan(0)] },
   memo: { value: '', validations: [validations.required] },
 })
-const { realForm: creditForm, isValidForm: isValidFormCredit } = useForm({
+const {
+  realForm: creditForm,
+  isValidForm: isValidFormCredit,
+  getFormValue: getFormValueCredit,
+} = useForm({
   holder: { value: '', validations: [validations.required] },
   date: { value: '', validations: [validations.required] },
   code: {
@@ -509,6 +524,7 @@ const {
   realForm: otherForm,
   onFieldChange: onFieldChangeOtherForm,
   isValidForm: isValidFormOther,
+  getFormValue: getFormValueOtherForm,
 } = useForm({
   date: { value: '', validations: [validations.required] },
   amount: { value: '0', validations: [validations.required, validations.greaterThan(0)] },
@@ -598,7 +614,74 @@ onMounted(() => {
 })
 
 const onPay = () => {
-  console.log({ data: rows.value })
+  switch (paymentType.value) {
+    case 0:
+      return onCheckPayment()
+    case 1:
+      return onCCPayment()
+
+    default:
+      return onCreditOtherPayment()
+  }
+}
+
+const onCheckPayment = async () => {
+  const checkFormValue = getFormValueCheckForm()
+  const data: RecordCheckPaymentFormInterface = {
+    amount: Number(checkFormValue.amount) || 0,
+    checkNumber: checkFormValue.number || '',
+    date: checkFormValue.date || '',
+    memo: checkFormValue.memo || '',
+    invoices: rows.value
+      .filter((item) => item.amountApplied)
+      .map((item) => ({
+        amount: item.amountApplied!,
+        transactionID: item.OrderNumber,
+      })),
+  }
+  await recordCheckPayment(memberId.value, data)
+}
+
+const onCCPayment = async () => {
+  const ccFormValue = getFormValueCredit()
+  const data: RecordCCPaymentFormInterface = {
+    billingAddress: ccFormValue.address!,
+    city: ccFormValue.city || '',
+    cardLast4: ccFormValue.number!.slice(-4) || '',
+    cardNumber: ccFormValue.number!,
+    cvv: ccFormValue.code!,
+    expiration: ccFormValue.date!,
+    fullName: ccFormValue.holder!,
+    state: ccFormValue.state!,
+    postalCode: ccFormValue.zipCode!,
+    paymentMethodIndex: 1,
+    phone: ccFormValue.phone!,
+    total: rows.value.reduce((sum, current) => sum + (Number(current.amountApplied) || 0), 0),
+    invoiceList: rows.value
+      .filter((item) => item.amountApplied)
+      .map((item) => ({
+        amountApplied: item.amountApplied!,
+        transactionId: item.OrderNumber,
+      })),
+  }
+  await recordCCPayment(memberId.value, data)
+}
+
+const onCreditOtherPayment = async () => {
+  const checkFormValue = getFormValueOtherForm()
+  const data: RecordCheckPaymentFormInterface = {
+    amount: Number(checkFormValue.amount) || 0,
+    checkNumber: '',
+    date: checkFormValue.date || '',
+    memo: checkFormValue.memo || '',
+    invoices: rows.value
+      .filter((item) => item.amountApplied)
+      .map((item) => ({
+        amount: item.amountApplied!,
+        transactionID: item.OrderNumber,
+      })),
+  }
+  await recordCreditPayment(memberId.value, data)
 }
 
 const isAmountAppliedDisabled = (row: InvoiceUnpaidOrderInterface) =>

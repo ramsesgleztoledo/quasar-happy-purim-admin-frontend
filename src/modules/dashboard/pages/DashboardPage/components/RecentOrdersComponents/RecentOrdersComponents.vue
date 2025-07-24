@@ -16,7 +16,7 @@
         <q-table
           title="Recent Orders"
           :style="{ height: isFullScreen ? '800px' : '400px' }"
-          class="table-sticky-header-column-table"
+          class="table-sticky-header-column-table sticky-2-column-table"
           flat
           bordered
           ref="tableRef"
@@ -25,8 +25,8 @@
           row-key="id"
           styles="height: 360px"
           :pagination="{
-          rowsPerPage: 0,
-        }"
+            rowsPerPage: 0,
+          }"
         >
           <template v-slot:body="props">
             <q-tr :props="props">
@@ -51,7 +51,13 @@
                     name: 'MemberLayout',
                     params: { memberId: props.row.memberId },
                   }"
-                />
+                  class="text-overflow-ellipsis-btn"
+                  style="width: 100%"
+                >
+                  <q-tooltip>
+                    {{ col.value }}
+                  </q-tooltip>
+                </q-btn>
 
                 <p v-else>
                   {{ col.value }}
@@ -77,7 +83,7 @@ const dStore = useDashboardStore()
 
 const isFullScreen = ref<boolean>(false)
 
-const columns: QTableColumn[] = [
+const auxColumns: QTableColumn[] = [
   {
     name: 'id',
     required: true,
@@ -85,6 +91,14 @@ const columns: QTableColumn[] = [
     align: 'left',
     field: 'id',
     // format: (val: any) => `${val}`,
+    sortable: true,
+  },
+  {
+    name: 'member',
+    required: true,
+    label: 'Member',
+    align: 'left',
+    field: 'member',
     sortable: true,
   },
   {
@@ -113,15 +127,15 @@ const columns: QTableColumn[] = [
     field: 'method',
     sortable: true,
   },
-  {
-    name: 'member',
-    required: true,
-    label: 'Member',
-    align: 'left',
-    field: 'member',
-    sortable: true,
-  },
 ]
+const columns: QTableColumn[] = auxColumns.map((co) => ({
+  ...co,
+  style: 'max-width: 150px; overflow: hidden; text-overflow: ellipsis',
+  headerStyle: 'max-width: 150px; overflow: hidden; text-overflow: ellipsis',
+  required: true,
+  sortable: true,
+  align: 'left',
+}))
 
 const rows = computed(() => [
   ...dStore.topTransactions.map((order) => ({

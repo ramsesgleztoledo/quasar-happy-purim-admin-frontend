@@ -15,7 +15,7 @@ export const useMailMerge = () => {
   const { downloadFile, showToast } = useUI()
   const $aStore = useAuthStore()
 
-  const { getFormFields, getTemplates, getTokensByReportId, getMergedContentByReportId, generatePDF, queueBulkEmails, addUnmergedEmailJobToTable, getImages } = useMailMergeService()
+  const { getFormFields, getTemplates, getMergedContentByReportId, generatePDF, queueBulkEmails, addUnmergedEmailJobToTable, getImages } = useMailMergeService()
 
   const $rStore = useReportStore()
 
@@ -52,13 +52,15 @@ export const useMailMerge = () => {
       const resp = await Promise.all([
         getFormFields(),
         getTemplates(),
-        getTokensByReportId($rStore.$state.reportId),
-        getImages()
+        getImages({
+          dontRedirect: true,
+          dontShowToast: true,
+        })
       ])
 
       $q.loading.hide()
 
-      $rStore.setImages(resp[3].ok ? resp[3].data : [])
+      $rStore.setImages(resp[2].ok ? resp[2].data : [])
 
       return {
         form: {
@@ -66,8 +68,6 @@ export const useMailMerge = () => {
           email: resp[0].ok ? resp[0].data.email : '',
         },
         templates: resp[1].ok ? resp[1].data : [],
-        tokens: resp[2].ok ? resp[2].data : [],
-
       }
 
 

@@ -3,14 +3,20 @@ import { useReportsService } from "../services/report.service";
 import { useReportStore } from "../store/ReportStore/reportStore";
 import type { RecipientDataFormInterface, ReportDataInterface } from "../interfaces/report.interface";
 import { useQuasar } from "quasar";
+import { useMailMergeService } from "../services/mailMerge.service";
 
 export const useReport = () => {
 
   const { getReportList, downloadReportExcelByReportId, getCustomReports, downloadCustomReportExcelByReportId,
-    runSQLReportRecipientsByReportId, getReportRecipientsByReportId
+    runSQLReportRecipientsByReportId, getReportRecipientsByReportId,
+    getZipCodeFilters,
+    getRouteCodeFilters,
+    getBasketSizeFilters,
+    getDonateFilters,
   } = useReportsService()
+  const { getTokensByReportId } = useMailMergeService()
   const $rStore = useReportStore()
-  const { downloadFile } = useUI()
+  const { downloadFile, showLoading, stopLoading } = useUI()
   const $q = useQuasar()
 
   return {
@@ -70,7 +76,51 @@ export const useReport = () => {
     },
 
 
+    async getFilterOptions() {
+      showLoading()
+
+      const resp = await Promise.all([
+        getZipCodeFilters({
+          dontRedirect: true,
+          dontShowToast: true,
+        }),
+        getRouteCodeFilters({
+          dontRedirect: true,
+          dontShowToast: true,
+        }),
+        getBasketSizeFilters({
+          dontRedirect: true,
+          dontShowToast: true,
+        }),
+        getDonateFilters({
+          dontRedirect: true,
+          dontShowToast: true,
+        }),
+      ])
+
+      stopLoading()
+
+      return {
+        zipCode: resp[0].ok ? resp[0].data : [],
+        routeCode: resp[1].ok ? resp[1].data : [],
+        basketSize: resp[2].ok ? resp[2].data : [],
+        donate: resp[3].ok ? resp[3].data : [],
+      }
+
+    },
+
+
+
+
     async getViewReport(data: RecipientDataFormInterface) {
+
+      const tokens = await getTokensByReportId(data.id, {
+        loading: {
+          message: 'Loading ...'
+        }
+      })
+
+      $rStore.setTokens(tokens.ok ? tokens.data : [])
 
       await runSQLReportRecipientsByReportId(data.id, {
         dontRedirect: true,

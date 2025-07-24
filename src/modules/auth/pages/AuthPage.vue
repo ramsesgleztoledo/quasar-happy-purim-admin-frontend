@@ -45,7 +45,13 @@
           </div>
         </div>
         <div class="row justify-content-end q-mt-lg">
-          <q-btn color="primary" label="login" icon="login" />
+          <q-btn
+            color="primary"
+            label="login"
+            icon="login"
+            :disable="!isValidForm()"
+            @click="onLogin"
+          />
         </div>
       </div>
     </div>
@@ -65,6 +71,7 @@ const $q = useQuasar()
 const {
   login,
   //  logOut
+  loginWithUserAndPass,
 } = useAuth()
 const $route = useRoute()
 
@@ -83,10 +90,18 @@ const showPassword = ref(false)
 
 const { isMobile } = useUI()
 
-const { realForm } = useForm({
+const { realForm, isValidForm } = useForm({
   login: { value: '', validations: [validations.required] },
   password: { value: '', validations: [validations.required] },
 })
+
+const onLogin = async () => {
+  const data = {
+    username: realForm.value.login.value,
+    password: realForm.value.password.value,
+  }
+  await loginWithUserAndPass(data)
+}
 </script>
 
 <style lang="css" scoped>

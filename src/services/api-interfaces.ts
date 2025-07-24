@@ -42,6 +42,19 @@ export interface ApiCallResponseInterface<T> {
   data: T
 }
 
+export interface DoorManStatusInterface {
+  showKJRow: boolean;
+  rbl24HourSelectedIndex: number;
+}
+
+
+export interface MembershipStatusInterface {
+  visible: boolean;
+  checkedStatus: boolean;
+}
+
+
+
 // export type ApiCallResponseInterface<T, E = unknown> =
 //   | { code: number; ok: true; data: T }
 //   | { code: number; ok: false; data: E };

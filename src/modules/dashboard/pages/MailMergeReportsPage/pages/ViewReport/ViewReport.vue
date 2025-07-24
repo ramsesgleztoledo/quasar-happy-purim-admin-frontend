@@ -53,12 +53,14 @@
           clearable
           label="Filter By Categories"
         />
-  <q-input class="q-ma-sm"  style="width: 150px;" v-model="filter.searchTerm" outlined label="Search" />
-  <q-input class="q-ma-sm"  style="width: 150px;" v-model="filter.basketSize" outlined label="Basket Size" />
-  <q-input class="q-ma-sm"  style="width: 150px;" v-model="filter.donateBasket" outlined label="Donate Basket" />
-  <q-input  class="q-ma-sm" style="width: 150px;" v-model="filter.routeCode" outlined label="Route Code" />
-  <q-input  class="q-ma-sm" style="width: 150px;" v-model="filter.zipCode" outlined label="Zip Code" />
+  <q-input class="q-ma-sm"  style="width: 150px;" v-model="filter.searchTerm" outlined label="Search" clearable />
 
+  <div style="display: flex" v-if="$rStore.showExtraFilters">
+  <q-select clearable multiple  class="q-ma-sm"  style="width: 150px;" v-model="filter.basketSize" outlined label="Basket Size" :options="filterOptions.basketSize"/>
+  <q-select clearable  class="q-ma-sm"  style="width: 150px;" v-model="filter.donateBasket" outlined label="Donate Basket" :options="filterOptions.donate"/>
+  <q-select clearable  multiple class="q-ma-sm" style="width: 150px;" v-model="filter.routeCode" outlined label="Route Code" :options="filterOptions.routeCode"/>
+  <q-select clearable  multiple class="q-ma-sm" style="width: 150px;" v-model="filter.zipCode" outlined label="Zip Code" :options="filterOptions.zipCode"/>
+ </div>
 </div>
 
 
@@ -88,7 +90,7 @@
           <q-table
           v-if="report.members.length"
             :style="{ height: isFullScreen ? '800px' : '628px' }"
-            class="table-sticky-header-column-table"
+            class="table-sticky-header-column-table sticky-2-1-column-table"
             flat:
             bordered
             :rows="report.members"
@@ -104,7 +106,7 @@
           >
             <template v-slot:header="props">
               <q-tr :props="props">
-                <q-th auto-width />
+                <!-- <q-th auto-width /> -->
                 <q-th auto-width>
                   <q-checkbox v-model="props.selected" />
                 </q-th>
@@ -116,7 +118,7 @@
 
             <template v-slot:body="props">
               <q-tr :props="props">
-                <q-td auto-width>
+                <!-- <q-td auto-width>
                   <q-btn
                     size="sm"
                     round
@@ -124,7 +126,7 @@
                     @click="props.expand = !props.expand"
                     :icon="props.expand ? 'remove' : 'add'"
                   />
-                </q-td>
+                </q-td> -->
                 <q-td auto-width>
                   <q-checkbox
                     :model-value="props.selected"
@@ -133,8 +135,9 @@
                   />
                 </q-td>
 
-                <q-td v-for="col in props.cols" :key="col.name" :props="props">
+                <q-td v-for="col in props.cols" :key="col.name" :props="props" style="cursor: pointer;">
                   {{ col.value }}
+                  <q-tooltip> {{ col.value }}</q-tooltip>
                 </q-td>
               </q-tr>
               <q-tr v-show="props.expand" :props="props">
@@ -145,6 +148,11 @@
                 </q-td>
               </q-tr>
             </template>
+             <template v-slot:bottom>
+        <div class="row justify-content-end w-full">
+     Showing 1 to {{report.filteredCount}} of {{report.filteredCount}} entries ( filtered from {{report.totalCount}} total entries )
+        </div>
+      </template>
           </q-table>
           <div v-else>
             <div class="row ">
@@ -163,19 +171,21 @@
 import { useReport } from 'src/modules/dashboard/composables/useReport'
 import type {
   RecipientDataInterface,
+
 } from 'src/modules/dashboard/interfaces/report.interface'
-import {  ref, watch } from 'vue'
+import {  computed, onMounted, ref, watch } from 'vue'
 import { useRoute } from 'vue-router'
 import InnerViewRow from './InnerViewRow.vue'
 import { useDashboardStore } from 'src/modules/dashboard/store/dashboardStore/dashboardStore'
 import { useReportStore } from 'src/modules/dashboard/store/ReportStore/reportStore'
 import type { NoneType } from 'src/modules/dashboard/services/service-interfaces'
-import { columns } from '../MailMergePage/data/columns'
 import { useUI } from 'src/modules/UI/composables'
+import type { QTableColumn } from 'quasar'
 
 
 
-const { getViewReport } = useReport()
+
+const { getViewReport,getFilterOptions } = useReport()
 const { reportId } = useRoute().params
 const $dStore = useDashboardStore()
 const $rStore = useReportStore()
@@ -186,16 +196,41 @@ const isTableLoading = ref(false)
 const report = ref<RecipientDataInterface | NoneType>($rStore.$state.report)
 
 const filter = ref({
-  basketSize: '',
+  basketSize: [],
   categories: [],
   donateBasket: '',
-  routeCode: '',
+  routeCode: [],
   searchTerm: '',
-  zipCode: '',
+  zipCode: [],
+})
+const filterOptions = ref<{
+  zipCode: string[];
+  routeCode: string[];
+  basketSize: string[];
+  donate: string[];
+}>({
+  zipCode: [],
+  routeCode: [],
+  basketSize: [],
+  donate: [],
 })
 
 const timeOut = ref<NodeJS.Timeout | undefined>(undefined)
 
+const columns= computed(()=>{
+const columns: QTableColumn[] = $rStore.$state.tokens.map((token) => ({
+  name: token,
+  required: true,
+  label: token,
+  align: 'left',
+  field: token,
+  sortable: true,
+  style: 'max-width: 100px; overflow: hidden; text-overflow: ellipsis',
+  headerStyle: 'max-width: 100px; overflow: hidden; text-overflow: ellipsis',
+}))
+return columns
+}
+)
 
 
 const getInitialData = () => {
@@ -211,12 +246,12 @@ const getInitialData = () => {
 
 const clearFilters = () => {
   filter.value ={
-  basketSize: '',
+  basketSize: [],
   categories: [],
   donateBasket: '',
-  routeCode: '',
+  routeCode: [],
   searchTerm: '',
-  zipCode: '',
+  zipCode: [],
 }
 };
 
@@ -233,6 +268,11 @@ timeOut.value = setTimeout(() => {
 
 }, {
   deep: true
+})
+
+onMounted(async () => {
+if(!$rStore.showExtraFilters) return
+filterOptions.value = await getFilterOptions()
 })
 
 </script>

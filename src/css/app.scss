@@ -366,3 +366,19 @@ hr {
   justify-content: center;
   align-items: center;
 }
+
+.text-overflow-ellipsis {
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  cursor: pointer;
+}
+
+.text-overflow-ellipsis-btn {
+  span {
+    max-width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    cursor: pointer;
+  }
+}

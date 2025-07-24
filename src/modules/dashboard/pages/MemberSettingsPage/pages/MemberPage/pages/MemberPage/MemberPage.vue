@@ -453,6 +453,13 @@
               />
             </div>
           </div>
+          <div v-if="memberState.doorManSettings.show" class="row q-mt-md q-pa-sm">
+            <div class="col-12 q-pl-sm q-pr-sm">
+              24 Hour Doorman:
+              <q-radio v-model="hasDoorman" :val="true" label="Yes" />
+              <q-radio v-model="hasDoorman" :val="false" label="No" />
+            </div>
+          </div>
 
           <div class="q-pa-sm" v-if="memberState.memberAlternativeAddress?.showAlternateDelivery">
             <div class="border-container row q-mt-md">
@@ -669,6 +676,7 @@ interface CheckboxItemInterface {
   value: boolean
   label: string
   id: number
+  display?: boolean
 }
 
 const $route = useRoute()
@@ -688,6 +696,7 @@ const currentMemberPage = ref<number>(1)
 const paginationCustomRef = ref()
 const isReady = ref<boolean>(false)
 const altAddress = ref<boolean>(false)
+const hasDoorman = ref<boolean>(false)
 
 // const altAddress = ref<boolean>(false)
 const recordPaymentDialogFlag = ref<boolean>(false)
@@ -803,6 +812,8 @@ const resetAllForm = (showNotify: boolean = false) => {
     children: memberState.value.displayChildren ? memberState.value.selectedMember?.children : '',
   })
 
+  hasDoorman.value = !!memberState.value.doorManSettings.value
+
   altAddress.value = !!memberState.value.memberAlternativeAddress?.isChecked
 
   altAddressResetForm({
@@ -818,14 +829,18 @@ const resetAllForm = (showNotify: boolean = false) => {
   options.value = [{ id: 0, value: !!memberState.value.memberOptions.hidden, label: 'Hidden' }]
 
   if (memberState.value.memberOptions.reciprocity.showReciprocity)
-    options.value = [
-      ...options.value,
-      {
-        id: 1,
-        value: memberState.value.memberOptions.reciprocity.isReciprocal,
-        label: 'Reciprocity',
-      },
-    ]
+    options.value.push({
+      id: 1,
+      value: memberState.value.memberOptions.reciprocity.isReciprocal,
+      label: 'Reciprocity',
+    })
+
+  if (memberState.value.membershipSettings.visible)
+    options.value.push({
+      id: 2,
+      value: memberState.value.membershipSettings.checkedStatus,
+      label: 'Membership',
+    })
 
   //categories
   categories.value = memberState.value.memberCategories.map((cat) => ({
@@ -875,8 +890,9 @@ const onUpdateMember = async () => {
   }
 
   const data: MemberUpdateAllDataForm = {
-    hidden: !!options.value[0]?.value,
-    reciprocity: !!options.value[1]?.value,
+    hidden: !!options.value.find((item) => item.id === 0)?.value,
+    reciprocity: !!options.value.find((item) => item.id === 1)?.value,
+    membershipValue: !!options.value.find((item) => item.id === 1)?.value,
     memberData: memberData as unknown as MemberUpdateFormInterface,
     donate: otherOptions.value.length ? otherOptions.value[0]!.value : undefined,
     profileQuestions: profileQuestions.value.map((proQ) => ({
@@ -884,6 +900,7 @@ const onUpdateMember = async () => {
       value: proQ.value ? 1 : 0,
     })),
     altAddressData: altAddressData as unknown as AlternativeMemberAddressFormInterface,
+    doorManValue: hasDoorman.value,
   }
 
   await updateMember_Co(id, data)
