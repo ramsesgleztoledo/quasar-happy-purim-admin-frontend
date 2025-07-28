@@ -338,6 +338,51 @@
         </div>
       </div>
     </div>
+    <!-- Discounts -->
+    <div v-if="addiTionalItems.length" class="row q-pa-sm">
+      <div class="col-12">
+        <div class="row">
+          <div class="col-12">
+            <div class="row">
+              <div class="col-12 justify-content-center" style="color: orange">
+                <b> Discounts </b>
+              </div>
+            </div>
+            <q-separator color="orange" inset />
+          </div>
+        </div>
+        <div v-for="disc in discounts" :key="disc.itemId" class="row q-pa-sm q-mb-sm">
+          <div class="col-12">
+            <div class="row q-mb-sm">
+              <div class="col-2">
+                <div class="CartItems-text">{{ disc.quantity }}</div>
+              </div>
+              <div class="col-5">
+                <div class="CartItems-text">{{ disc.description }}</div>
+              </div>
+              <div class="col-3">
+                <div class="CartItems-text">
+                  <b> ${{ convertWithCommas(disc.price * disc.quantity || 0) }} </b>
+                </div>
+              </div>
+
+              <div class="col-2">
+                <!-- <div class="row">
+                  <q-icon
+                    @click="() => addOrRemoveItem(false, aItem, true)"
+                    class="CartItems-icon"
+                    name="close"
+                    style="color: red"
+                  />
+                </div> -->
+              </div>
+            </div>
+
+            <q-separator />
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -444,6 +489,8 @@ const additionalBasketForPersonalUse = computed(() =>
 const addiTionalItems = computed(() =>
   memberOrderState.value.orderItems.filter((item) => item.itemId === 5),
 )
+
+const discounts = computed(() => memberOrderState.value.orderItems.filter((item) => item.price < 0))
 </script>
 
 <style scoped lang="scss">

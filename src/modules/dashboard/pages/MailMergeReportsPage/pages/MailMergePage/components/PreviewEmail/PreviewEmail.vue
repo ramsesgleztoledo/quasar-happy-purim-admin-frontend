@@ -24,7 +24,7 @@
   </div>
   <div class="row">
     <p>
-      <b> Preview Compose Email </b>
+      <b> Preview Compose Merge </b>
     </p>
   </div>
   <div class="row">

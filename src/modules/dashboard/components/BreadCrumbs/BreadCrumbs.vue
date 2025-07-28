@@ -18,8 +18,10 @@
 <script setup lang="ts">
 import { useRoute } from 'vue-router'
 import { computed } from 'vue'
-import type { routeParamInterface } from '../../data/links'
-import { routeInfo } from '../../data/links'
+import type { routeParamInterface } from './composables/breadcrumbs.interfaces'
+import { useBreadcrumb } from './composables/useBreadcrumb'
+
+const { routeInfo } = useBreadcrumb()
 
 interface BreadCrumbRoutesInterface {
   name: string
@@ -50,7 +52,6 @@ const breadCrumbRoutes = computed<BreadCrumbRoutesInterface[]>(() => {
   return breadCrumbRoutes
 })
 
-
 const getParams = (params?: string[]) => {
   if (!params) return undefined
   const routeParams = $route.params
@@ -61,7 +62,6 @@ const getParams = (params?: string[]) => {
 
   return finalParams
 }
-
 </script>
 
 <style scoped lang="scss">

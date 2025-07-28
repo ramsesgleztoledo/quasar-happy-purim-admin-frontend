@@ -58,6 +58,7 @@
               </div>
               <div class="row justify-content-center">
                 <q-select
+                  popup-content-class="q-menu-300"
                   style="width: 200px"
                   v-model="sheet"
                   :options="step_one_data?.sheetNames || []"
@@ -110,6 +111,7 @@
                       </div>
                       <div class="col-3">
                         <q-select
+                          popup-content-class="q-menu-300"
                           option-label="fieldName"
                           option-value="mapID"
                           class="q-mr-sm"
@@ -142,7 +144,7 @@
             <div class="col-12 q-pa-lg q-item-bordered">
               <div class="row q-mb-sm">
                 <h6 style="margin: 0px">
-                  Identify the id Field you would like to use as your PrimaryKey
+                  Identify the Field you would like to use as your key (this needs to be unique to each row)
                 </h6>
               </div>
               <div v-if="!step_four_resp.success" class="row q-ma-sm" style="color: red">
@@ -154,6 +156,7 @@
                   <div class="row">
                     <div class="col-6 q-pa-sm">
                       <q-select
+                        popup-content-class="q-menu-300"
                         v-model="sourceField"
                         :options="matchedFields.map((item) => item.importField)"
                         label="Source Field"
@@ -162,6 +165,7 @@
                     </div>
                     <div class="col-6 q-pa-sm">
                       <q-select
+                        popup-content-class="q-menu-300"
                         v-model="destinationField"
                         :options="destinationKeys.map((item) => item.fieldName)"
                         label="Destination Field"

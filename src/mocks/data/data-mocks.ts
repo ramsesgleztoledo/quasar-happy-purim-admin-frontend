@@ -73,4 +73,11 @@ export const loginAccounts: LoginAccountInterface[] = [
     token: "71iSSNJHcwDIr2OwkmrQ5Jw5iw3ze85xZnQLdHkJANrzkK1dvmXbiTEDpbxxIzK79asSxVvfqaDRRtUtZfZzaQ==",
     url: 'http://localhost:9000/#/authenticate?token=71iSSNJHcwDIr2OwkmrQ5Jw5iw3ze85xZnQLdHkJANrzkK1dvmXbiTEDpbxxIzK79asSxVvfqaDRRtUtZfZzaQ=='
   },
+  {
+    id: 16,
+    name: 'Young Israel of Hollywood',
+    guid: '41450B0B-2A8C-49D7-A83C-F7CB5D86712B',
+    token: "wzUzMmHj6GTblD2UsyvghVmxGUwHbvRPyqW6cKghyG+S2WLHQedl8/zY7hzTMmJ+K1slDPvcpq3bJdXVhJkx9w==",
+    url: 'http://localhost:9000/#/authenticate?token=wzUzMmHj6GTblD2UsyvghVmxGUwHbvRPyqW6cKghyG+S2WLHQedl8/zY7hzTMmJ+K1slDPvcpq3bJdXVhJkx9w=='
+  },
 ]

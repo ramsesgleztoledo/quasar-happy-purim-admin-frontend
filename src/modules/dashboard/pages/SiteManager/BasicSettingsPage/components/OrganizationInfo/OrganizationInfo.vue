@@ -66,6 +66,7 @@
       }"
     >
       <q-select
+        popup-content-class="q-menu-300"
         v-model="realForm.state.value"
         outlined
         :options="statesOptions"

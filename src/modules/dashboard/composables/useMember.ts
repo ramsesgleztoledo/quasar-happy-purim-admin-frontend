@@ -179,7 +179,8 @@ export const useMember = () => {
       loading: {
         message: `${isPending ? 'restoring' : 'deleting'} member${memberId}...`
       },
-      dontRedirect: true
+      dontRedirect: true,
+      dontShowToast: true,
     })
 
     if (response.ok) {
@@ -369,7 +370,18 @@ export const useMember = () => {
 
     showToast(resp.ok, 'Member added', `something went wrong adding a new member`)
 
-    return resp.ok
+    let id: number | string | undefined = undefined
+    if (resp.ok || resp.data?.member?.length) {
+
+      const member = resp.data.member[0]!
+      id = member.m_id
+      $mStore.$state.members.push(member)
+    }
+
+    return {
+      ok: resp.ok,
+      id
+    }
   };
   const resetMemberLoginCode_Co = async (memberId: number) => {
     const resp = await resetMemberLoginCode(memberId, {

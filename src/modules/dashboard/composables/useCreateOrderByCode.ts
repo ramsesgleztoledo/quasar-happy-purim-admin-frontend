@@ -24,11 +24,12 @@ export const useCreateOrderByCode = () => {
     async addOrdersByCode(receiverMisc: number | string) {
       const resp = await addOrdersByCode(memberId.value, { receiverMisc }, {
         dontRedirect: true,
+        dontShowToast: true,
         loading: {
           message: 'Loading ...'
         }
       })
-      showToast(resp.ok, 'success ...', `${resp.data}`)
+      showToast(resp.ok, 'success ...', `${resp.data ? resp.data : 'Something went wrong'}`)
       return resp.ok
     },
     async deleteOrdersByCode(receiverId: number) {

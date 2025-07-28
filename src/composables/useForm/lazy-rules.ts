@@ -20,4 +20,8 @@ export const lazyRules = {
   greaterThan: (number: number, equal: boolean, msg?: string) => (value: number) => !validations.greaterThan(number, equal)({ value }) || (msg ? msg : `This field needs to be greater ${equal ? 'or equal' : ''} than ${number}`),
 
   lowerThan: (number: number, equal: boolean, msg?: string) => (value: number) => !validations.lowerThan(number, equal)({ value }) || (msg ? msg : `This field needs to be lower ${equal ? 'or equal' : ''} than ${number}`),
+
+  minNumberDigitOnly: (min: number, msg?: string) => (value: string) => !validations.minNumberDigitOnly(min)({ value }) || (msg ? msg : `Min digits (${min})`),
+
+  maxNumberDigitOnly: (max: number, msg?: string) => (value: string) => !validations.maxNumberDigitOnly(max)({ value }) || (msg ? msg : `Max digits (${max})`),
 }

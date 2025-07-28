@@ -56,6 +56,7 @@
               </div>
               <div class="col-6 q-pr-sm q-pl-sm">
                 <q-select
+                  popup-content-class="q-menu-300"
                   :disable="dontEdit"
                   v-model="realForm.state.value"
                   outlined

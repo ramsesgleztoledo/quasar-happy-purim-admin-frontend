@@ -61,6 +61,7 @@ tr:hover {
 }
 
 .sticky-1-column-table {
+  cursor: pointer;
   td:first-child {
     /* bg color is important for td; just specify one */
     background-color: #ededed;
@@ -92,6 +93,7 @@ tr:hover {
   }
 }
 .sticky-2-1-column-table {
+  cursor: pointer;
   td:first-child {
     /* bg color is important for td; just specify one */
     background-color: #ededed;
@@ -146,6 +148,7 @@ tr:hover {
   }
 }
 .sticky-2-column-table {
+  cursor: pointer;
   td:first-child {
     /* bg color is important for td; just specify one */
     background-color: #ededed;

@@ -126,7 +126,7 @@ const $dStore = useDashboardStore()
 const $aStore = useAuthStore()
 
 const fundraiserStatus = computed(() => ({
-  fundraiserClosed: $dStore.fundraiserStatus?.fundraiserClosed || true,
+  fundraiserClosed: $dStore.fundraiserStatus?.fundraiserClosed || false,
   hasReciprocityTrans: $dStore.fundraiserStatus?.hasReciprocityTrans || false,
 }))
 

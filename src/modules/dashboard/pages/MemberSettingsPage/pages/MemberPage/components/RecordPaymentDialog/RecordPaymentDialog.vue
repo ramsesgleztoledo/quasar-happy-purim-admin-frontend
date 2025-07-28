@@ -229,6 +229,7 @@
                     <div class="row q-mb-sm">
                       <div class="col-6 q-pr-sm q-pl-sm">
                         <q-select
+                          popup-content-class="q-menu-300"
                           v-model="(creditForm.state as FormField).value as string"
                           outlined
                           :options="statesOptions"

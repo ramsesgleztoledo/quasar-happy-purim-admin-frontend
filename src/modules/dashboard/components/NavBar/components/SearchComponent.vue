@@ -1,5 +1,6 @@
 <template>
   <q-select
+    popup-content-class="q-menu-300"
     class="search-select-container"
     v-model="selected"
     :options="searched"
@@ -13,15 +14,18 @@
     @input-value="filterOptions"
   >
     <template v-slot:option="scope">
-      <q-item v-bind="scope.itemProps" @click="goTo(scope.opt.routeName)">
-        <q-item-section avatar>
-          <q-icon :name="scope.opt.icon" />
-        </q-item-section>
-        <q-item-section>
-          <q-item-label>{{ scope.opt.title }}</q-item-label>
-          <q-item-label caption>go to {{ scope.opt.title }} </q-item-label>
-        </q-item-section>
-      </q-item>
+      <div v-bind="scope.itemProps">
+        <div class="q-pa-md" v-if="scope.opt.routeName === 'none'">nothing found...</div>
+        <q-item v-else @click="goTo(scope.opt.routeName)" clickable>
+          <q-item-section avatar>
+            <q-icon :name="scope.opt.icon" />
+          </q-item-section>
+          <q-item-section>
+            <q-item-label>{{ scope.opt.title }}</q-item-label>
+            <q-item-label caption>go to {{ scope.opt.title }} </q-item-label>
+          </q-item-section>
+        </q-item>
+      </div>
     </template>
   </q-select>
 </template>
@@ -35,7 +39,14 @@ import { pagesForSearch } from '../data/search-data'
 import { useRouter } from 'vue-router'
 
 const selected = ref<PagesForSearchInterface | undefined>(undefined)
-const searched = ref<PagesForSearchInterface[]>([])
+const searched = ref<PagesForSearchInterface[]>([
+  {
+    icon: '',
+    phrases: [],
+    routeName: 'none',
+    title: 'Nothing found ...',
+  },
+])
 const $router = useRouter()
 
 const fuse = new Fuse(pagesForSearch, {
@@ -44,12 +55,38 @@ const fuse = new Fuse(pagesForSearch, {
 })
 
 const filterOptions = (val: string) => {
+  selected.value = undefined
   if (!val) {
-    searched.value = []
-    return []
+    searched.value = [
+      {
+        icon: '',
+        phrases: [],
+        routeName: 'none',
+        title: 'Nothing found ...',
+      },
+    ]
+    return [
+      {
+        icon: '',
+        phrases: [],
+        routeName: 'none',
+        title: 'Nothing found ...',
+      },
+    ]
   } else {
-    const result = fuse.search(val.toLowerCase()).map((result) => result.item)
+    let result = fuse.search(val.toLowerCase()).map((result) => result.item)
+    if (!result.length)
+      result = [
+        {
+          icon: '',
+          phrases: [],
+          routeName: 'none',
+          title: 'Nothing found ...',
+        },
+      ]
+
     searched.value = result
+
     return result
   }
 }

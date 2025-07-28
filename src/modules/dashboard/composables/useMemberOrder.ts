@@ -22,6 +22,8 @@ import type { FormComposition } from "src/composables/useForm/interfaces";
 import { useRouter } from "vue-router";
 import { useProcessOrderService } from "../services/processOrder.service";
 import { useShulService } from "../services/Shul.service";
+import { useMemberStore } from "../store/memberStore/memberStore";
+import { useMemberService } from "../services/member.service";
 
 
 
@@ -30,6 +32,8 @@ export const useMemberOrder = () => {
 
   const $router = useRouter()
   const $moStore = useMemberOrderStore()
+  const $mStore = useMemberStore()
+  const { getTransactionsByMemberId } = useMemberService()
   const { getPromotionsByMemberGuid } = usePromotionService()
   const { getMemberListMemberGuid } = useMemberListService()
   const { getOrderItemsByMemberGuid, addOrRemoveOrderItemsByMemberGuid } = useOrderItemService()
@@ -449,6 +453,12 @@ export const useMemberOrder = () => {
 
       if (resp.ok) {
         $moStore.resetPaymentForm()
+
+        //TODO: remove this if transaction is returned
+        const transactions = await getTransactionsByMemberId($mStore.selectedMember?.memberId || 0);
+        if (transactions.ok)
+          $mStore.setMemberTransactions(transactions.data)
+
         $router.push({
           name: 'MemberLayout',
           params: {

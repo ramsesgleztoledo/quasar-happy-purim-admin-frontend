@@ -114,6 +114,14 @@ export const useReport = () => {
 
     async getViewReport(data: RecipientDataFormInterface) {
 
+      await runSQLReportRecipientsByReportId(data.id, {
+        dontRedirect: true,
+        dontShowToast: true,
+        loading: {
+          message: 'Loading...'
+        }
+      });
+
       const tokens = await getTokensByReportId(data.id, {
         loading: {
           message: 'Loading ...'
@@ -121,14 +129,6 @@ export const useReport = () => {
       })
 
       $rStore.setTokens(tokens.ok ? tokens.data : [])
-
-      await runSQLReportRecipientsByReportId(data.id, {
-        dontRedirect: true,
-        dontShowToast: true,
-        loading: {
-          message: 'Loading ...'
-        }
-      });
 
       const resp = await getReportRecipientsByReportId(data, {
         loading: {

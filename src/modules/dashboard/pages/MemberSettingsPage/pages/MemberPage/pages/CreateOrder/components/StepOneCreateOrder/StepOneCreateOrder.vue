@@ -16,6 +16,7 @@
       }"
     >
       <q-select
+        popup-content-class="q-menu-300"
         :class="{ 'item-width-300': !isMobile }"
         v-model="types"
         outlined
@@ -35,6 +36,7 @@
       }"
     >
       <q-select
+        popup-content-class="q-menu-300"
         v-model="orderHistory"
         outlined
         multiple
@@ -149,7 +151,7 @@
             }"
           >
             <template v-slot:item="props">
-              <div class="q-pa-sm col-xs-12 col-sm-6 col-md-4">
+              <div class="q-pa-sm col-xs-12 col-sm-4 col-md-2">
                 <q-card bordered>
                   <q-card-section
                     class="text-center"

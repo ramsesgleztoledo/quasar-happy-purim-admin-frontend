@@ -82,7 +82,10 @@
         label="Contact Phone"
         mask="(###) - ### - ####"
         lazy-rules
-        :rules="[lazyRules.required(), lazyRules.minCharacters(18, 'Invalid phone')]"
+        :rules="[
+          lazyRules.required(),
+          lazyRules.minNumberDigitOnly(10, 'Wrong phone number format'),
+        ]"
       />
     </div>
   </div>
@@ -119,7 +122,10 @@ const { realForm, isValidForm, resetForm, getFormValue } = useForm({
 
   replyTo: { value: '', validations: [validations.required] },
 
-  contactPhone: { value: '', validations: [validations.required, validations.minCharacters(18)] },
+  contactPhone: {
+    value: '',
+    validations: [validations.required, validations.minNumberDigitOnly(10)],
+  },
 })
 
 onMounted(() => {

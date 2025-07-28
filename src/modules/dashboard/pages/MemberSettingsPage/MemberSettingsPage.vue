@@ -27,6 +27,7 @@
     </q-input>
 
     <q-select
+      popup-content-class="q-menu-300"
       :debounce="500"
       class="q-mr-sm q-mb-sm"
       :class="{ 'item-width-300': !isMobile, 'w-full': isMobile }"
@@ -43,7 +44,7 @@
     <div class="row RecentOrders-container" :class="{ fullscreen: isFullScreen }">
       <div class="col-12">
         <div class="row">
-          <div class="col-12 justify-content-end">
+          <div class="col-12 justify-content-end white-container">
             <q-btn
               flat
               round
@@ -113,7 +114,7 @@
 <script setup lang="ts">
 import type { QTableColumn } from 'quasar'
 import { convertToUSDate } from 'src/helpers/convertToUSDate'
-import { ref, watch } from 'vue'
+import { onMounted, ref, watch } from 'vue'
 import { useRouter } from 'vue-router'
 import { useUI } from 'src/modules/UI/composables'
 import type { MemberInterface } from '../../interfaces/member-interfaces'
@@ -239,13 +240,18 @@ const onClearFilters = () => {
   }
 }
 
+onMounted(() => {
+  getMembers_Co({
+    category: filters.value.category?.categoryID ?? '',
+    search: filters.value.search,
+  })
+})
+
 watch(
   filters,
   (newValue) => {
     const stringNewValue = JSON.stringify(newValue)
     const stringOldValue = JSON.stringify(oldValue.value)
-
-    console.log({ stringNewValue, stringOldValue })
 
     if (stringNewValue == stringOldValue) return
 

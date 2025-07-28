@@ -263,7 +263,7 @@ export interface MemberAddFormInterface {
 
 export interface MemberAddResponseInterface {
   message: string
-  memberId: number
+  member: MemberInterface[]
 }
 
 

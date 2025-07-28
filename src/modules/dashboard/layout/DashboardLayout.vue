@@ -49,14 +49,15 @@ import { onMounted, onUnmounted, ref } from 'vue'
 import EssentialLink from '../components/EssentialLink/EssentialLink.vue'
 import NavBar from '../components/NavBar/NavBar.vue'
 import BreadCrumbs from '../components/BreadCrumbs/BreadCrumbs.vue'
-import type { LinksDataInterface } from '../data/links'
-import { linksData } from '../data/links'
 import { useUI } from 'src/modules/UI/composables'
 import { useUIStore } from 'src/modules/UI/store/ui-store'
 import { useRouter } from 'vue-router'
 import { useDashboard } from '../composables/useDashboard'
 import { useAuth } from 'src/modules/auth/composables/useAuth'
+import type { LinksDataInterface } from '../data/links-old'
+import { useBreadcrumb } from '../components/BreadCrumbs/composables/useBreadcrumb'
 
+const { linksData } = useBreadcrumb()
 const { logOut } = useAuth()
 const $uiStore = useUIStore()
 const $router = useRouter()

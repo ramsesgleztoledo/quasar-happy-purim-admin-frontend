@@ -174,7 +174,7 @@ export const useUI = () => {
       }
     },
 
-    goToTop(element: HTMLElement | undefined, behavior?: ScrollBehavior) {
+    goToTop(element: HTMLElement | undefined | null, behavior?: ScrollBehavior) {
       if (!element) return
       element.scrollIntoView({ behavior: behavior ? behavior : 'smooth', block: 'start' })
     },

@@ -169,6 +169,7 @@
             <div class="row q-mt-md">
               <div class="col-6 q-pl-sm q-pr-sm">
                 <q-select
+                  popup-content-class="q-menu-300"
                   v-model="realForm.state.value"
                   outlined
                   :options="statesOptions"
@@ -343,7 +344,7 @@ const { realForm, isValidForm, getFormValue, resetForm } = useForm({
   lastName: { value: '', validations: [validations.required] },
   login: { value: '', validations: [validations.required] },
   email: { value: '', validations: [validations.required, validations.isEmail] },
-  phone: { value: '', validations: [validations.required, validations.minCharacters(18)] },
+  phone: { value: '', validations: [validations.required, validations.minNumberDigitOnly(10)] },
   address1: { value: '', validations: [validations.required] },
   city: { value: '', validations: [validations.required] },
   state: { value: '', validations: [validations.required] },

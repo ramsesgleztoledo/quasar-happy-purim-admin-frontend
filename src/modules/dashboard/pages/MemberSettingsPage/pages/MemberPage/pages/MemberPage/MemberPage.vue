@@ -20,7 +20,9 @@
         <!--=============================== if desktop =============================-->
 
         <div v-if="!isMobile" class="col-12 top-title-col">
-          <p class="MemberPage-user-title">{{ memberState.selectedMember?.displayAs }}</p>
+          <p class="MemberPage-user-title">
+            {{ memberState.selectedMember?.lastName }}, {{ memberState.selectedMember?.firstName }}
+          </p>
           <div class="separator-right q-mr-sm q-ml-sm"></div>
           <p
             class="MemberPage-login-code"
@@ -45,7 +47,10 @@
             class="col-12 MemberPage-user-title-col"
             style="display: flex; justify-content: space-between"
           >
-            <p class="MemberPage-user-title">{{ memberState.selectedMember?.displayAs }}</p>
+            <p class="MemberPage-user-title">
+              {{ memberState.selectedMember?.lastName }},
+              {{ memberState.selectedMember?.firstName }}
+            </p>
             <q-btn-dropdown icon="edit" color="primary" label="Actions">
               <q-list>
                 <q-item clickable v-close-popup>
@@ -300,6 +305,7 @@
           <div class="row q-mt-md">
             <div class="col-6 q-pl-sm q-pr-sm">
               <q-select
+                popup-content-class="q-menu-300"
                 v-model="realForm.state.value"
                 outlined
                 :options="statesOptions"
@@ -317,6 +323,7 @@
               />
             </div>
           </div>
+
           <div class="row q-mt-md">
             <div class="col-6 q-pl-sm q-pr-sm">
               <q-input
@@ -325,7 +332,7 @@
                 label="Primary Telephone"
                 mask="(###) - ### - ####"
                 lazy-rules
-                :rules="[lazyRules.minCharacters(18, 'wrong phone format')]"
+                :rules="[lazyRules.minNumberDigitOnly(10, 'Wrong phone number format')]"
               />
             </div>
             <div class="col-6 q-pl-sm q-pr-sm">
@@ -335,7 +342,7 @@
                 label="Optional 2nd Telephone"
                 mask="(###) - ### - ####"
                 lazy-rules
-                :rules="[lazyRules.minCharacters(18, 'wrong phone format')]"
+                :rules="[lazyRules.minNumberDigitOnly(10, 'Wrong phone number format')]"
               />
             </div>
           </div>
@@ -365,19 +372,13 @@
               <q-input
                 v-model="realForm.misc.value"
                 outlined
-                label="Misc"
+                label="Misc *"
                 lazy-rules
                 :rules="[lazyRules.required()]"
               />
             </div>
             <div class="col-6 q-pl-sm q-pr-sm">
-              <q-input
-                v-model="realForm.misc2.value"
-                outlined
-                label="Misc 2"
-                lazy-rules
-                :rules="[lazyRules.required()]"
-              />
+              <q-input v-model="realForm.misc2.value" outlined label="Misc 2" />
             </div>
           </div>
           <div class="row q-mt-md">
@@ -468,7 +469,10 @@
                   <div class="col-12">
                     <q-checkbox
                       v-model="altAddress"
-                      label="Deliver My Basket to an Alternate Address"
+                      :label="
+                        memberState.memberAlternativeAddress?.promptText ||
+                        'Deliver My Basket to an Alternate Address'
+                      "
                     />
                   </div>
                 </div>
@@ -494,6 +498,7 @@
                   <div class="row q-mt-md">
                     <div class="col-6 q-pl-sm q-pr-sm">
                       <q-select
+                        popup-content-class="q-menu-300"
                         v-model="altAddressForm.state.value"
                         outlined
                         :options="statesOptions"
@@ -723,13 +728,13 @@ const { realForm, resetForm, getFormValue, isValidForm } = useForm({
   city: { value: '' },
   state: { value: '' },
   zip: { value: '', validations: [validations.minCharacters(5), validations.maxCharacters(5)] },
-  phone: { value: '', validations: [validations.minCharacters(18)] },
-  phone2: { value: '', validations: [validations.minCharacters(18)] },
+  phone: { value: '', validations: [validations.minNumberDigitOnly(10)] },
+  phone2: { value: '', validations: [validations.minNumberDigitOnly(10)] },
   email: { value: '', validations: [validations.isEmail] },
   email2: { value: '', validations: [validations.isEmail] },
   misc: { value: '', required: true },
-  misc2: { value: '', required: true },
-  displayAs: { value: '', validations: [validations.required] },
+  misc2: { value: '' },
+  displayAs: { value: '', required: true },
   // foods: { value: '', validations: [] },
   salutation: { value: '' },
   notes: { value: '' },

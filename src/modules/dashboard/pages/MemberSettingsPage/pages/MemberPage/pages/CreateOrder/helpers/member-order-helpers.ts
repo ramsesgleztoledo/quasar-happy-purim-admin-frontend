@@ -61,7 +61,7 @@ export const getMembersSelectedHelper = (state: MemberOrderStateInterface) => {
 export const checkDisabledPromotionHelper = (promotion: OrderPromotionInterface, promotions: OrderPromotionInterface[]) => {
   const promotionCat = promotion.joinCategories.split(',') || []
 
-  console.log({ promotionCat });
+
 
 
   for (let i = 0; i < promotionCat.length; i++) {

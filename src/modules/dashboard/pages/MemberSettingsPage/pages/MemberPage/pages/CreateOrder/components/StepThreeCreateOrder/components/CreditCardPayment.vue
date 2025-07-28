@@ -31,6 +31,7 @@
             :rules="[
               lazyRules.required(),
               lazyRules.minCharacters(19, 'card number needs to be 16 digits'),
+              ...cardNumberRules,
             ]"
             mask="#### #### #### ####"
           />
@@ -144,6 +145,7 @@
         </div>
         <div class="col-6 q-pr-sm q-pl-sm">
           <q-select
+            popup-content-class="q-menu-300"
             :disable="sameAsProfile"
             v-model="paymentForm.realForm.value.billState.value"
             outlined
@@ -174,7 +176,10 @@
             label="Primary Telephone *"
             mask="(###) - ### - ####"
             lazy-rules
-            :rules="[lazyRules.required(), lazyRules.minCharacters(18, 'incorrect phone format')]"
+            :rules="[
+              lazyRules.required(),
+              lazyRules.minNumberDigitOnly(10, 'Wrong phone number format'),
+            ]"
           />
         </div>
       </div>
@@ -184,6 +189,7 @@
 
 <script setup lang="ts">
 import { lazyRules, useForm, validations } from 'src/composables'
+import { getCardType } from 'src/helpers/getCardType'
 import { useMemberOrder } from 'src/modules/dashboard/composables/useMemberOrder'
 import { statesOptions } from 'src/modules/dashboard/data'
 import type { PaymentMethodTypeInterface } from 'src/modules/dashboard/interfaces/memberOrder-interfaces'
@@ -197,6 +203,20 @@ const { memberOrderState } = useMemberOrder()
 
 const sameAsProfile = ref<boolean>(false)
 
+const cardTypeValidation = ({ value }: { value: string }) => {
+  const cardType = getCardType(value)
+
+  const cardTypes = memberOrderState.value.paymentMethodTypes.map((ca) => ca.methodDescription)
+
+  const found = cardTypes.find((item) => item == cardType)
+
+  if (found) return null
+  else
+    return {
+      invalidCard: `Incorrect card, we only accept: ${cardTypes}`,
+    }
+}
+
 const paymentForm = useForm({
   firstName: { value: '', validations: [validations.required] },
   lastName: { value: '', validations: [validations.required] },
@@ -207,7 +227,7 @@ const paymentForm = useForm({
   },
   checkOrCCNumber: {
     value: '',
-    validations: [validations.required, validations.minCharacters(19)],
+    validations: [validations.required, validations.minCharacters(19), cardTypeValidation],
   },
   billAddress1: { value: '', validations: [validations.required] },
   billAddress2: { value: '', validations: [] },
@@ -216,7 +236,7 @@ const paymentForm = useForm({
   billZip: { value: '', validations: [validations.required, validations.minCharacters(5)] },
   phoneOrCheckDate: {
     value: '',
-    validations: [validations.required, validations.minCharacters(18)],
+    validations: [validations.required, validations.minNumberDigitOnly(10)],
   },
 })
 
@@ -276,10 +296,24 @@ const cardImg = (type: PaymentMethodTypeInterface) =>
         return 'amex'
       case 'Discover':
         return 'discover'
-      default:
+      case 'Visa':
         return 'visa'
+      default:
+        return ''
     }
   })
+
+const cardNumberRules = ref([
+  (value: string) => {
+    const cardType = getCardType(value)
+
+    const cardTypes = memberOrderState.value.paymentMethodTypes.map((ca) => ca.methodDescription)
+
+    const found = cardTypes.find((item) => item == cardType)
+
+    return !!found || `Incorrect card, we only accept: ${cardTypes}`
+  },
+])
 
 onMounted(() => {
   $moStore.setPaymentForm(paymentForm)

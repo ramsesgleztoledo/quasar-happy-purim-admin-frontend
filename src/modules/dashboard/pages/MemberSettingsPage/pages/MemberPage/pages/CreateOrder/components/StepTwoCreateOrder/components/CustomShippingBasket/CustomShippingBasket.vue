@@ -37,6 +37,7 @@
     <div class="row q-mt-md">
       <div class="col-6 q-pl-sm q-pr-sm">
         <q-select
+          popup-content-class="q-menu-300"
           v-model="realForm.state.value"
           outlined
           :options="statesOptions"
@@ -64,7 +65,10 @@
           label="Phone *"
           mask="(###) - ### - ####"
           lazy-rules
-          :rules="[lazyRules.required(), lazyRules.minCharacters(18, 'Invalid phone number')]"
+          :rules="[
+            lazyRules.required(),
+            lazyRules.minNumberDigitOnly(10, 'Wrong phone number format'),
+          ]"
         />
       </div>
       <div class="col-6 q-pl-sm q-pr-sm">

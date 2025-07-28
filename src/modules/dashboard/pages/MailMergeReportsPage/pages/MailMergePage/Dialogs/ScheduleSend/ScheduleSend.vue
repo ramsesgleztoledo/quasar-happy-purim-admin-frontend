@@ -35,6 +35,7 @@
         <div class="row q-mb-sm">
           <div class="col-12 q-pa-sm">
             <q-select
+              popup-content-class="q-menu-300"
               outlined
               v-model="(realForm.repeat as FormField).value as string"
               :options="repeatOptions"

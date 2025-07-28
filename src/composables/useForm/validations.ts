@@ -1,4 +1,10 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
+
+const isCharacterNumber = (character: string) => {
+  return character === '0' || character === '1' || character === '2' || character === '3' || character === '4' || character === '5' || character === '6' || character === '7' || character === '8' || character === '9'
+
+}
+
 export default {
   //* required
   required: ({ value }: { value: string }) => {
@@ -328,30 +334,60 @@ export default {
       },
   greaterThan:
     (number: number, equal?: boolean) =>
-      ({ value }: { value: number }) => {
-        if (value === undefined || value === null) return null;
+      ({ value }: { value: number | "" }) => {
+        if (value === undefined || value === null || value === '') return null;
         let result = false;
 
         if (equal)
-          result = value >= number
+          result = Number(value) >= number
         else
-          result = value > number
+          result = Number(value) > number
 
         if (result) return null;
         else return equal ? { isNotGreaterOrEqualThan: number } : { isNotGreaterThan: number };
       },
   lowerThan:
     (number: number, equal?: boolean) =>
-      ({ value }: { value: number }) => {
-        if (value === undefined || value === null) return null;
+      ({ value }: { value: number | string }) => {
+        if (value === undefined || value === null || value === '') return null;
         let result = false;
 
         if (equal)
-          result = value <= number
+          result = Number(value) <= number
         else
-          result = value < number
+          result = Number(value) < number
 
         if (result) return null;
         else return equal ? { isNotLowerOrEqualThan: number } : { isNotLowerThan: number };
       },
-};
+  minNumberDigitOnly:
+    (number: number) =>
+      ({ value }: { value: string }) => {
+        if (value === undefined || value === null || value === '') return null;
+        let count = 0
+        for (let i = 0; i < value.length; i++) {
+          if (isCharacterNumber(value[i]!)) {
+            count++;
+          }
+        }
+        if (count >= number) return null
+        return {
+          [`minNumberDigitOnly_${number}`]: value
+        }
+      },
+  maxNumberDigitOnly:
+    (number: number) =>
+      ({ value }: { value: string }) => {
+        if (value === undefined || value === null || value === '') return null;
+        let count = 0
+        for (let i = 0; i < value.length; i++) {
+          if (isCharacterNumber(value[i]!))
+            count++;
+
+        }
+        if (count <= number) return null
+        return {
+          [`minNumberDigitOnly_${number}`]: value
+        }
+      },
+}

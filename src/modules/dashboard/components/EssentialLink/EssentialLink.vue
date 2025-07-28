@@ -60,8 +60,8 @@
 
 <script setup lang="ts">
 import { useRoute, useRouter } from 'vue-router'
-import type { LinksDataInterface } from '../../data/links'
 import { computed, onMounted, ref } from 'vue'
+import type { LinksDataInterface } from '../BreadCrumbs/composables/breadcrumbs.interfaces'
 const $props = defineProps<LinksDataInterface>()
 
 const $router = useRouter()

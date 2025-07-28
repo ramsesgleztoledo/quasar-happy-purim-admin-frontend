@@ -9,6 +9,7 @@
 
       <div class="custom-dialog-body-container q-pa-lg">
         <q-select
+          popup-content-class="q-menu-300"
           outlined
           v-model="filters"
           multiple

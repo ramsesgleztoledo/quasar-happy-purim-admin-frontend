@@ -13,64 +13,64 @@
       <!--=========================== END OF SECTION ===========================-->
     </div>
   </div>
+  <div ref="formContainer">
+    <!-- eslint-disable -->
+    <form action="" class="q-mt-lg">
+      <div class="row">
+        <!--=============================== member left=============================-->
+        <div
+          class="q-pr-lg"
+          :class="{
+            'col-6': !isMobile,
+            'col-12': isMobile,
+          }"
+        >
+          <div class="row q-mt-md">
+            <div class="col-6 q-pl-sm q-pr-sm">
+              <q-input v-model="realForm.title.value" outlined label="Title" />
+            </div>
+          </div>
+          <div class="row q-mt-md">
+            <div class="col-6 q-pl-sm q-pr-sm">
+              <q-input
+                v-model="realForm.firstName.value"
+                outlined
+                label="First Name *"
+                lazy-rules
+                :rules="[lazyRules.required()]"
+              />
+            </div>
+            <div class="col-6 q-pl-sm q-pr-sm">
+              <q-input
+                v-model="realForm.lastName.value"
+                outlined
+                label="Last Name *"
+                lazy-rules
+                :rules="[lazyRules.required()]"
+              />
+            </div>
+          </div>
 
-  <!-- eslint-disable -->
-  <form action="" class="q-mt-lg">
-    <div class="row">
-      <!--=============================== member left=============================-->
-      <div
-        class="q-pr-lg"
-        :class="{
-          'col-6': !isMobile,
-          'col-12': isMobile,
-        }"
-      >
-        <div class="row q-mt-md">
-          <div class="col-6 q-pl-sm q-pr-sm">
-            <q-input v-model="realForm.title.value" outlined label="Title" />
+          <div class="row q-mt-md">
+            <div class="col-6 q-pl-sm q-pr-sm">
+              <q-input v-model="realForm.spouse.value" outlined label="Spouse First Name" />
+            </div>
+            <div class="col-6 q-pl-sm q-pr-sm">
+              <q-input v-model="realForm.secondLastName.value" outlined label="Spouse Last Name" />
+            </div>
           </div>
-        </div>
-        <div class="row q-mt-md">
-          <div class="col-6 q-pl-sm q-pr-sm">
-            <q-input
-              v-model="realForm.firstName.value"
-              outlined
-              label="First Name *"
-              lazy-rules
-              :rules="[lazyRules.required()]"
-            />
+          <div class="row q-mt-md">
+            <div class="col-12 q-pl-sm q-pr-sm">
+              <q-input
+                v-model="realForm.displayName.value"
+                outlined
+                label="Display Name *"
+                lazy-rules
+                :rules="[lazyRules.required()]"
+              />
+            </div>
           </div>
-          <div class="col-6 q-pl-sm q-pr-sm">
-            <q-input
-              v-model="realForm.lastName.value"
-              outlined
-              label="Last Name *"
-              lazy-rules
-              :rules="[lazyRules.required()]"
-            />
-          </div>
-        </div>
-
-        <div class="row q-mt-md">
-          <div class="col-6 q-pl-sm q-pr-sm">
-            <q-input v-model="realForm.spouse.value" outlined label="Spouse First Name" />
-          </div>
-          <div class="col-6 q-pl-sm q-pr-sm">
-            <q-input v-model="realForm.secondLastName.value" outlined label="Spouse Last Name" />
-          </div>
-        </div>
-        <div class="row q-mt-md">
-          <div class="col-12 q-pl-sm q-pr-sm">
-            <q-input
-              v-model="realForm.displayName.value"
-              outlined
-              label="Display Name *"
-              lazy-rules
-              :rules="[lazyRules.required()]"
-            />
-          </div>
-        </div>
-        <!-- <div class="row q-mt-md">
+          <!-- <div class="row q-mt-md">
           <div class="col-6 q-pl-sm q-pr-sm">
             <q-input v-model="realForm.spouseFirstName.value" outlined label="Spouse First Name" />
           </div>
@@ -78,151 +78,158 @@
             <q-input v-model="realForm.spouseLastName.value" outlined label="Spouse Last Name" />
           </div>
         </div> -->
-        <div class="row q-mt-md">
-          <div class="col-12 q-pl-sm q-pr-sm">
-            <q-input v-model="realForm.address1.value" outlined label="Address" />
+          <div class="row q-mt-md">
+            <div class="col-12 q-pl-sm q-pr-sm">
+              <q-input v-model="realForm.address1.value" outlined label="Address" />
+            </div>
           </div>
-        </div>
-        <div class="row q-mt-md">
-          <div class="col-6 q-pl-sm q-pr-sm">
-            <q-input v-model="realForm.address2.value" outlined label="Address 2" />
+          <div class="row q-mt-md">
+            <div class="col-6 q-pl-sm q-pr-sm">
+              <q-input v-model="realForm.address2.value" outlined label="Address 2" />
+            </div>
+            <div class="col-6 q-pl-sm q-pr-sm">
+              <q-input v-model="realForm.city.value" outlined label="City" />
+            </div>
           </div>
-          <div class="col-6 q-pl-sm q-pr-sm">
-            <q-input v-model="realForm.city.value" outlined label="City" />
+          <div class="row q-mt-md">
+            <div class="col-6 q-pl-sm q-pr-sm">
+              <q-select
+                popup-content-class="q-menu-300"
+                v-model="realForm.state.value"
+                outlined
+                :options="statesOptions"
+                label="State"
+              />
+            </div>
+            <div class="col-6 q-pl-sm q-pr-sm">
+              <q-input v-model="realForm.zip.value" outlined label="Zip Code" mask="#####" />
+            </div>
           </div>
-        </div>
-        <div class="row q-mt-md">
-          <div class="col-6 q-pl-sm q-pr-sm">
-            <q-select
-              v-model="realForm.state.value"
-              outlined
-              :options="statesOptions"
-              label="State"
-            />
+          <div class="row q-mt-md">
+            <div class="col-6 q-pl-sm q-pr-sm">
+              <q-input
+                v-model="realForm.phone.value"
+                outlined
+                label="Primary Telephone"
+                mask="(###) - ### - ####"
+                lazy-rules
+                :rules="[lazyRules.minNumberDigitOnly(10, 'Wrong phone number format')]"
+              />
+            </div>
+            <div class="col-6 q-pl-sm q-pr-sm">
+              <q-input
+                v-model="realForm.phone2.value"
+                outlined
+                label="Optional 2nd Telephone"
+                mask="(###) - ### - ####"
+                lazy-rules
+                :rules="[lazyRules.minNumberDigitOnly(10, 'Wrong phone number format')]"
+              />
+            </div>
           </div>
-          <div class="col-6 q-pl-sm q-pr-sm">
-            <q-input v-model="realForm.zip.value" outlined label="Zip Code" mask="#####" />
+          <div class="row q-mt-md">
+            <div class="col-6 q-pl-sm q-pr-sm">
+              <q-input
+                v-model="realForm.email.value"
+                outlined
+                label="Email Address"
+                lazy-rules
+                :rules="[lazyRules.isEmail()]"
+                hint="Receipts will be sent here"
+              />
+            </div>
+            <div class="col-6 q-pl-sm q-pr-sm">
+              <q-input
+                v-model="realForm.email2.value"
+                outlined
+                label="Optional 2nd Email Address"
+                lazy-rules
+                :rules="[lazyRules.isEmail()]"
+              />
+            </div>
           </div>
-        </div>
-        <div class="row q-mt-md">
-          <div class="col-6 q-pl-sm q-pr-sm">
-            <q-input
-              v-model="realForm.phone.value"
-              outlined
-              label="Primary Telephone"
-              mask="(###) - ### - ####"
-              lazy-rules
-              :rules="[lazyRules.minCharacters(18), lazyRules.maxCharacters(18)]"
-            />
+          <div class="row q-mt-md">
+            <div class="col-6 q-pl-sm q-pr-sm">
+              <q-input
+                v-model="realForm.misc.value"
+                outlined
+                label="Misc *"
+                @keypress="onlyDigits"
+                lazy-rules
+                :rules="[lazyRules.required()]"
+              />
+            </div>
+            <div class="col-6 q-pl-sm q-pr-sm">
+              <q-input
+                v-model="realForm.misc2.value"
+                outlined
+                label="Misc 2"
+                @keypress="onlyDigits"
+              />
+            </div>
           </div>
-          <div class="col-6 q-pl-sm q-pr-sm">
-            <q-input
-              v-model="realForm.phone2.value"
-              outlined
-              label="Optional 2nd Telephone"
-              mask="(###) - ### - ####"
-              lazy-rules
-              :rules="[lazyRules.minCharacters(18), lazyRules.maxCharacters(18)]"
-            />
+          <div class="row q-mt-md">
+            <div class="col-6 q-pl-sm q-pr-sm">
+              <q-input v-model="realForm.route.value" outlined label="Route Code" />
+            </div>
+            <div class="col-6 q-pl-sm q-pr-sm">
+              <q-checkbox v-model="realForm.hidden.value" label="Hide this member" />
+            </div>
           </div>
-        </div>
-        <div class="row q-mt-md">
-          <div class="col-6 q-pl-sm q-pr-sm">
-            <q-input
-              v-model="realForm.email.value"
-              outlined
-              label="Email Address"
-              lazy-rules
-              :rules="[lazyRules.isEmail()]"
-              hint="Receipts will be sent here"
-            />
-          </div>
-          <div class="col-6 q-pl-sm q-pr-sm">
-            <q-input
-              v-model="realForm.email2.value"
-              outlined
-              label="Optional 2nd Email Address"
-              lazy-rules
-              :rules="[lazyRules.isEmail()]"
-            />
-          </div>
-        </div>
-        <div class="row q-mt-md">
-          <div class="col-6 q-pl-sm q-pr-sm">
-            <q-input
-              v-model="realForm.misc.value"
-              outlined
-              label="Misc *"
-              @keypress="onlyDigits"
-              lazy-rules
-              :rules="[lazyRules.required()]"
-            />
-          </div>
-          <div class="col-6 q-pl-sm q-pr-sm">
-            <q-input
-              v-model="realForm.misc2.value"
-              outlined
-              label="Misc 2"
-              @keypress="onlyDigits"
-            />
-          </div>
-        </div>
-        <div class="row q-mt-md">
-          <div class="col-6 q-pl-sm q-pr-sm">
-            <q-input v-model="realForm.route.value" outlined label="Route Code" />
-          </div>
-          <div class="col-6 q-pl-sm q-pr-sm">
-            <q-checkbox v-model="realForm.hidden.value" label="Hide this member" />
-          </div>
-        </div>
 
-        <div class="row q-mt-md">
-          <div class="col-12 q-pl-sm q-pr-sm">
-            <q-input type="textarea" v-model="realForm.children.value" outlined label="Children" />
-          </div>
-          <!-- lazy-rules
+          <div class="row q-mt-md">
+            <div class="col-12 q-pl-sm q-pr-sm">
+              <q-input
+                type="textarea"
+                v-model="realForm.children.value"
+                outlined
+                label="Children"
+              />
+            </div>
+            <!-- lazy-rules
             :rules="[lazyRules.required(), lazyRules.maxCharacters(255)]"
             :hint="`${realForm.children.value.length}/255 character limit`" -->
-        </div>
-      </div>
-      <!--=========================== END OF SECTION ===========================-->
-      <!--=============================== member left=============================-->
-      <div
-        class="q-pr-lg"
-        :class="{
-          'col-6': !isMobile,
-          'col-12': isMobile,
-        }"
-      >
-        <div class="row q-mt-md">
-          <div class="col-12 q-pl-sm q-pr-sm">
-            <q-input v-model="realForm.salutation.value" outlined label="Salutation" />
           </div>
         </div>
-        <div class="row q-mt-md">
-          <div class="col-12 q-pl-sm q-pr-sm">
-            <q-input type="textarea" v-model="realForm.notes.value" outlined label="Notes" />
-            <!-- lazy-rules
+        <!--=========================== END OF SECTION ===========================-->
+        <!--=============================== member left=============================-->
+        <div
+          class="q-pr-lg"
+          :class="{
+            'col-6': !isMobile,
+            'col-12': isMobile,
+          }"
+        >
+          <div class="row q-mt-md">
+            <div class="col-12 q-pl-sm q-pr-sm">
+              <q-input v-model="realForm.salutation.value" outlined label="Salutation" />
+            </div>
+          </div>
+          <div class="row q-mt-md">
+            <div class="col-12 q-pl-sm q-pr-sm">
+              <q-input type="textarea" v-model="realForm.notes.value" outlined label="Notes" />
+              <!-- lazy-rules
               :rules="[lazyRules.required(), lazyRules.maxCharacters(255)]"
               :hint="`${realForm.notes.value.length}/255 character limit`" -->
+            </div>
           </div>
-        </div>
-        <div class="row q-mt-md">
-          <div class="col-12 q-pl-sm q-pr-sm">
-            <q-select
-              v-model="categories"
-              multiple
-              :options="$dStores.$state.categories"
-              label="Categories"
-              outlined
-              option-label="categoryName"
-              option-value="categoryID"
-              clearable
-            />
+          <div class="row q-mt-md">
+            <div class="col-12 q-pl-sm q-pr-sm">
+              <q-select
+                popup-content-class="q-menu-300"
+                v-model="categories"
+                multiple
+                :options="$dStores.$state.categories"
+                label="Categories"
+                outlined
+                option-label="categoryName"
+                option-value="categoryID"
+                clearable
+              />
+            </div>
           </div>
-        </div>
-        <!-- TODO: alt options to edit -->
-        <!-- <div class="row q-mt-md">
+          <!-- TODO: alt options to edit -->
+          <!-- <div class="row q-mt-md">
           <div class="col-12">
             <q-checkbox v-model="altAddress" label="Deliver My Basket to an Alternate Address" />
           </div>
@@ -267,7 +274,7 @@
           </div>
           <div class="row q-mt-md">
             <div class="col-6 q-pl-sm q-pr-sm">
-              <q-select
+              <q-select popup-content-class="q-menu-300"
                 v-model="altAddressForm.state.value"
                 outlined
                 :options="statesOptions"
@@ -288,7 +295,7 @@
             </div>
           </div>
         </div> -->
-        <!-- <div class="row q-mt-md">
+          <!-- <div class="row q-mt-md">
           <div
             class="q-pl-sm q-pr-sm q-mb-md"
             :class="{
@@ -322,7 +329,7 @@
             </div>
           </div>
         </div> -->
-        <!-- <div class="row q-mt-md">
+          <!-- <div class="row q-mt-md">
           <div class="col-12 q-pl-sm q-pr-sm">
             <div class="border-container">
               <label> Select Categories</label>
@@ -336,39 +343,35 @@
             </div>
           </div>
         </div> -->
+        </div>
+        <!--=========================== END OF SECTION ===========================-->
       </div>
-      <!--=========================== END OF SECTION ===========================-->
-    </div>
-    <div class="row q-mt-lg cancel-save-btn-container">
-      <div class="col-12">
-        <q-btn
-          outline
-          label="CANCEL"
-          class="q-mr-sm"
-          style="color: #990000; border-color: #990000"
-          @click="cancelOrderDialogFlag = true"
-        />
-        <!-- <q-btn
-          class="q-mr-sm"
-          label="SAVE AND ADD ANOTHER"
-          @click="
-            () => {
-              reloadPage()
-            }
-          "
-          :disable="!areValidForms()"
-        /> -->
-        <q-btn
-          :disable="!areValidForms()"
-          class="q-mr-sm"
-          style="background: var(--happypurim); color: white"
-          label="SAVE MEMBER"
-          @click="onAddMember"
-        />
+      <div class="row q-mt-lg cancel-save-btn-container">
+        <div class="col-12">
+          <q-btn
+            outline
+            label="CANCEL"
+            class="q-mr-sm"
+            style="color: #990000; border-color: #990000"
+            @click="cancelOrderDialogFlag = true"
+          />
+          <q-btn
+            :disable="!areValidForms()"
+            class="q-mr-sm"
+            label="SAVE AND ADD ANOTHER"
+            @click="onAddMember()"
+          />
+          <q-btn
+            :disable="!areValidForms()"
+            class="q-mr-sm"
+            style="background: var(--happypurim); color: white"
+            label="SAVE MEMBER"
+            @click="onAddMember(true)"
+          />
+        </div>
       </div>
-    </div>
-  </form>
-
+    </form>
+  </div>
   <div class="row q-mt-lg">
     <div class="col-12"></div>
   </div>
@@ -415,10 +418,13 @@ const $router = useRouter()
 const {
   // reloadPage,
   isMobile,
+  goToTop,
 } = useUI()
 
 const { addMember_Co } = useMember()
 const $dStores = useDashboardStore()
+
+const formContainer = ref<HTMLDivElement | null>(null)
 
 // const altAddress = ref<boolean>(false)
 const cancelOrderDialogFlag = ref<boolean>(false)
@@ -471,7 +477,7 @@ const { realForm, isValidForm, getFormValue, resetForm } = useForm<CreateMemberF
   zip: { value: '', validations: [] },
   phone: {
     value: '',
-    validations: [validations.minCharacters(18), validations.minCharacters(18)],
+    validations: [validations.minNumberDigitOnly(10)],
   },
   email: { value: '', validations: [validations.isEmail] },
   email2: { value: '', validations: [validations.isEmail] },
@@ -485,7 +491,7 @@ const { realForm, isValidForm, getFormValue, resetForm } = useForm<CreateMemberF
   salutation: { value: '', validations: [] },
   phone2: {
     value: '',
-    validations: [validations.minCharacters(18), validations.minCharacters(18)],
+    validations: [validations.minNumberDigitOnly(10)],
   },
 })
 // const { realForm: altAddressForm, isValidForm: isValidAltAddressForm } = useForm({
@@ -505,14 +511,18 @@ const areValidForms = () => {
   // && (!altAddress.value || (altAddress.value && isValidAltAddressForm()))
 }
 
-const onAddMember = async () => {
+const onAddMember = async (dontAddNewOne?: boolean) => {
   const data = {
     ...getFormValue(),
     categoryIds: categories.value.map((ca) => ca.categoryID),
   } as unknown as MemberAddFormInterface
 
   const resp = await addMember_Co(data)
-  if (resp) resetForm()
+  if (!resp.ok) return
+  resetForm()
+  goToTop(formContainer.value)
+
+  if (dontAddNewOne) $router.push({ name: 'MemberLayout', params: { memberId: resp.id } })
 }
 </script>
 

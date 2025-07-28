@@ -17,6 +17,7 @@
     <div v-if="showRange" class="row WidgetChart-first-row">
       <p>{{ title }}</p>
       <q-select
+        popup-content-class="q-menu-300"
         v-model="range"
         :options="rangeOptions"
         label=""

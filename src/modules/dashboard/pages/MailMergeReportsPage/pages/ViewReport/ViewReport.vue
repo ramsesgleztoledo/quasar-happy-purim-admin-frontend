@@ -1,47 +1,50 @@
 <template>
   <div v-if="report">
     <div class="row q-mb-sm">
-    <div
-      class="top-title-col"
-      :class="{
-        'col-4': !isMobile,
-        'col-12': isMobile,
-      }"
-    >
-      <p class="page-main-title">{{$rStore.getReportSelectedName}}</p>
-      <div class="separator-right q-mr-sm q-ml-sm"></div>
-
+      <div
+        class="top-title-col"
+        :class="{
+          'col-4': !isMobile,
+          'col-12': isMobile,
+        }"
+      >
+        <p class="page-main-title">{{ $rStore.getReportSelectedName }}</p>
+        <div class="separator-right q-mr-sm q-ml-sm"></div>
+      </div>
+      <div
+        class="top-title-col"
+        :class="{
+          'col-8': !isMobile,
+          'col-12': isMobile,
+        }"
+      ></div>
     </div>
-    <div
-      class="top-title-col"
-      :class="{
-        'col-8': !isMobile,
-        'col-12': isMobile,
-      }"
-    ></div>
-  </div>
-  <div></div>
+    <div></div>
     <div class="row q-mb-sm">
-<div class="col-12 justify-content-end">
-<q-btn class="q-mr-sm" color="primary"  icon="check" label="Email or Print" :to="{
- name: 'MailMergeReportsPage-MailMergePage',
- params: { reportId },
-}"/>
-
-
-</div>
+      <div class="col-12 justify-content-end">
+        <q-btn
+          class="q-mr-sm"
+          color="primary"
+          icon="check"
+          label="Email or Print"
+          :to="{
+            name: 'MailMergeReportsPage-MailMergePage',
+            params: { reportId },
+          }"
+        />
+      </div>
     </div>
     <div class="ViewReport-filters-container q-pa-sm">
-<div class="row q-mb-sm q-mt-sm justify-content-space-between">
-  <h6>
-    Filters:
-  </h6>
-  <q-btn outline icon="close" label="Clear Filters" @click="clearFilters" />
-</div>
+      <div class="row q-mb-sm q-mt-sm justify-content-space-between">
+        <h6>Filters:</h6>
+        <q-btn outline icon="close" label="Clear Filters" @click="clearFilters" />
+      </div>
 
-<div class="row">
-  <q-select class="q-ma-sm"
-  style="width: 350px;"
+      <div class="row">
+        <q-select
+          popup-content-class="q-menu-300"
+          class="q-ma-sm"
+          :style="{ width: isMobile ? '100%' : '250px' }"
           outlined
           v-model="filter.categories"
           multiple
@@ -53,19 +56,66 @@
           clearable
           label="Filter By Categories"
         />
-  <q-input class="q-ma-sm"  style="width: 150px;" v-model="filter.searchTerm" outlined label="Search" clearable />
 
-  <div style="display: flex" v-if="$rStore.showExtraFilters">
-  <q-select clearable multiple  class="q-ma-sm"  style="width: 150px;" v-model="filter.basketSize" outlined label="Basket Size" :options="filterOptions.basketSize"/>
-  <q-select clearable  class="q-ma-sm"  style="width: 150px;" v-model="filter.donateBasket" outlined label="Donate Basket" :options="filterOptions.donate"/>
-  <q-select clearable  multiple class="q-ma-sm" style="width: 150px;" v-model="filter.routeCode" outlined label="Route Code" :options="filterOptions.routeCode"/>
-  <q-select clearable  multiple class="q-ma-sm" style="width: 150px;" v-model="filter.zipCode" outlined label="Zip Code" :options="filterOptions.zipCode"/>
- </div>
-</div>
+        <q-input
+          class="q-ma-sm"
+          :style="{ width: isMobile ? '100%' : '150px' }"
+          v-model="filter.searchTerm"
+          outlined
+          label="Search"
+          clearable
+        />
 
+        <template v-if="$rStore.showExtraFilters">
+          <q-select
+            popup-content-class="q-menu-300"
+            clearable
+            multiple
+            class="q-ma-sm"
+            :style="{ width: isMobile ? '100%' : '150px' }"
+            v-model="filter.basketSize"
+            outlined
+            label="Basket Size"
+            :options="filterOptions.basketSize"
+          />
 
+          <q-select
+            popup-content-class="q-menu-300"
+            clearable
+            class="q-ma-sm"
+            :style="{ width: isMobile ? '100%' : '150px' }"
+            v-model="filter.donateBasket"
+            outlined
+            label="Donate Basket"
+            :options="filterOptions.donate"
+          />
+
+          <q-select
+            popup-content-class="q-menu-300"
+            clearable
+            multiple
+            class="q-ma-sm"
+            :style="{ width: isMobile ? '100%' : '150px' }"
+            v-model="filter.routeCode"
+            outlined
+            label="Route Code"
+            :options="filterOptions.routeCode"
+          />
+
+          <q-select
+            popup-content-class="q-menu-300"
+            clearable
+            multiple
+            class="q-ma-sm"
+            :style="{ width: isMobile ? '100%' : '150px' }"
+            v-model="filter.zipCode"
+            outlined
+            label="Zip Code"
+            :options="filterOptions.zipCode"
+          />
+        </template>
+      </div>
     </div>
-
 
     <div class="q-pa-md">
       <div class="row white-container" :class="{ fullscreen: isFullScreen }">
@@ -83,15 +133,17 @@
           </div>
           <div class="row">
             <h6>
-              {{`Recipients: (${$rStore.$state.selectedRecipients.length}/
-              ${$rStore.$state.report?.members.length || 0})`}}
+              {{
+                `Recipients: (${$rStore.$state.selectedRecipients.length}/
+              ${$rStore.$state.report?.members.length || 0})`
+              }}
             </h6>
           </div>
           <q-table
-          v-if="report.members.length"
+            v-if="report.members.length"
             :style="{ height: isFullScreen ? '800px' : '628px' }"
             class="table-sticky-header-column-table sticky-2-1-column-table"
-            flat:
+            flat
             bordered
             :rows="report.members"
             :columns="columns"
@@ -102,7 +154,6 @@
               rowsPerPage: 0,
             }"
             :loading="isTableLoading"
-
           >
             <template v-slot:header="props">
               <q-tr :props="props">
@@ -135,7 +186,12 @@
                   />
                 </q-td>
 
-                <q-td v-for="col in props.cols" :key="col.name" :props="props" style="cursor: pointer;">
+                <q-td
+                  v-for="col in props.cols"
+                  :key="col.name"
+                  :props="props"
+                  style="cursor: pointer"
+                >
                   {{ col.value }}
                   <q-tooltip> {{ col.value }}</q-tooltip>
                 </q-td>
@@ -148,17 +204,16 @@
                 </q-td>
               </q-tr>
             </template>
-             <template v-slot:bottom>
-        <div class="row justify-content-end w-full">
-     Showing 1 to {{report.filteredCount}} of {{report.filteredCount}} entries ( filtered from {{report.totalCount}} total entries )
-        </div>
-      </template>
+            <template v-slot:bottom>
+              <div class="row justify-content-end w-full">
+                Showing 1 to {{ report.filteredCount }} of {{ report.filteredCount }} entries (
+                filtered from {{ report.totalCount }} total entries )
+              </div>
+            </template>
           </q-table>
           <div v-else>
-            <div class="row ">
-           <h6>
-            Not data returned...
-           </h6>
+            <div class="row">
+              <h6>No members found...</h6>
             </div>
           </div>
         </div>
@@ -169,11 +224,8 @@
 
 <script setup lang="ts">
 import { useReport } from 'src/modules/dashboard/composables/useReport'
-import type {
-  RecipientDataInterface,
-
-} from 'src/modules/dashboard/interfaces/report.interface'
-import {  computed, onMounted, ref, watch } from 'vue'
+import type { RecipientDataInterface } from 'src/modules/dashboard/interfaces/report.interface'
+import { computed, onMounted, ref, watch } from 'vue'
 import { useRoute } from 'vue-router'
 import InnerViewRow from './InnerViewRow.vue'
 import { useDashboardStore } from 'src/modules/dashboard/store/dashboardStore/dashboardStore'
@@ -182,14 +234,11 @@ import type { NoneType } from 'src/modules/dashboard/services/service-interfaces
 import { useUI } from 'src/modules/UI/composables'
 import type { QTableColumn } from 'quasar'
 
-
-
-
-const { getViewReport,getFilterOptions } = useReport()
+const { getViewReport, getFilterOptions } = useReport()
 const { reportId } = useRoute().params
 const $dStore = useDashboardStore()
 const $rStore = useReportStore()
-const {isMobile} = useUI()
+const { isMobile } = useUI()
 
 const isFullScreen = ref(false)
 const isTableLoading = ref(false)
@@ -204,10 +253,10 @@ const filter = ref({
   zipCode: [],
 })
 const filterOptions = ref<{
-  zipCode: string[];
-  routeCode: string[];
-  basketSize: string[];
-  donate: string[];
+  zipCode: string[]
+  routeCode: string[]
+  basketSize: string[]
+  donate: string[]
 }>({
   zipCode: [],
   routeCode: [],
@@ -217,70 +266,66 @@ const filterOptions = ref<{
 
 const timeOut = ref<NodeJS.Timeout | undefined>(undefined)
 
-const columns= computed(()=>{
-const columns: QTableColumn[] = $rStore.$state.tokens.map((token) => ({
-  name: token,
-  required: true,
-  label: token,
-  align: 'left',
-  field: token,
-  sortable: true,
-  style: 'max-width: 100px; overflow: hidden; text-overflow: ellipsis',
-  headerStyle: 'max-width: 100px; overflow: hidden; text-overflow: ellipsis',
-}))
-return columns
-}
-)
-
+const columns = computed(() => {
+  const columns: QTableColumn[] = $rStore.$state.tokens.map((token) => ({
+    name: token,
+    required: true,
+    label: token,
+    align: 'left',
+    field: token,
+    sortable: true,
+    style: 'max-width: 100px; overflow: hidden; text-overflow: ellipsis',
+    headerStyle: 'max-width: 100px; overflow: hidden; text-overflow: ellipsis',
+  }))
+  return columns
+})
 
 const getInitialData = () => {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  getViewReport({...filter.value, id: reportId as string, categories: filter.value.categories?.map(ca=> `${(ca as any).categoryID}`) || []}).then((res) => {
+  getViewReport({
+    ...filter.value,
+    id: reportId as string,
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    categories: filter.value.categories?.map((ca) => `${(ca as any).categoryID}`) || [],
+  }).then((res) => {
     report.value = res
 
     isTableLoading.value = false
   })
 }
 
-
-
 const clearFilters = () => {
-  filter.value ={
-  basketSize: [],
-  categories: [],
-  donateBasket: '',
-  routeCode: [],
-  searchTerm: '',
-  zipCode: [],
+  filter.value = {
+    basketSize: [],
+    categories: [],
+    donateBasket: '',
+    routeCode: [],
+    searchTerm: '',
+    zipCode: [],
+  }
 }
-};
 
-
-
-watch(filter, () => {
-  isTableLoading.value = true
-if(timeOut.value)
-clearTimeout(timeOut.value)
-timeOut.value = setTimeout(() => {
-  getInitialData()
-  }, 1000)
-
-
-}, {
-  deep: true
-})
+watch(
+  filter,
+  () => {
+    isTableLoading.value = true
+    if (timeOut.value) clearTimeout(timeOut.value)
+    timeOut.value = setTimeout(() => {
+      getInitialData()
+    }, 1000)
+  },
+  {
+    deep: true,
+  },
+)
 
 onMounted(async () => {
-if(!$rStore.showExtraFilters) return
-filterOptions.value = await getFilterOptions()
+  if (!$rStore.showExtraFilters) return
+  filterOptions.value = await getFilterOptions()
 })
-
 </script>
 
 <style scoped lang="scss">
-
 h6 {
   margin: 0px;
 }
-
 </style>

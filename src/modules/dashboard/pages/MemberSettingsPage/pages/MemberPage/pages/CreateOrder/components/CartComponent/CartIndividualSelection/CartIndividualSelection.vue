@@ -20,7 +20,10 @@
               >
                 <div class="row">
                   <div class="col-9">
-                    <div class="mini-text">{{ member.lastName }}, {{ member.firstName }}</div>
+                    <div class="mini-text">
+                      {{ member.lastName }}, {{ member.firstName }}
+                      {{ member.sFirstName ? `& ${member.sFirstName}` : '' }}
+                    </div>
                     <b> ${{ convertWithCommas(member.price || 0) }} </b>
                   </div>
                   <div class="col-3">
