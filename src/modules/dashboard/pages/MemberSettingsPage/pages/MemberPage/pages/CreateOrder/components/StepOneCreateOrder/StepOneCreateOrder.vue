@@ -293,10 +293,10 @@ const toggleSelectAll = (selectAll: boolean) => {
 
 const rows = computed(() =>
   memberOrderState.value.memberList.copy.filter((item) => {
-    const se = JSON.stringify(item)
-      ?.toLowerCase()
-      .includes((search.value || '').toLowerCase())
-    if (!se) return false
+    const se =
+      `${item.lastName}, ${item.firstName} ${item.sFirstName ? `& ${item.sFirstName}` : ''}`.toLowerCase()
+
+    if (!se.includes((search.value || '').toLowerCase())) return false
 
     const orderHArray = orderHistory.value || []
 

@@ -105,6 +105,8 @@ export const useMailMerge = () => {
         memberIds: data.memberIds
       })
 
+
+
       if (!result.length) return
 
       downloadFile(async () => await generatePDF({

@@ -13,6 +13,8 @@ export const useReport = () => {
     getRouteCodeFilters,
     getBasketSizeFilters,
     getDonateFilters,
+    runSQLReportRecipientsByReportIdCustom,
+    getReportRecipientsByReportIdCustom,
   } = useReportsService()
   const { getTokensByReportId } = useMailMergeService()
   const $rStore = useReportStore()
@@ -112,31 +114,63 @@ export const useReport = () => {
 
 
 
-    async getViewReport(data: RecipientDataFormInterface) {
+    async getViewReport(data: RecipientDataFormInterface, isCustom: boolean) {
 
-      await runSQLReportRecipientsByReportId(data.id, {
-        dontRedirect: true,
-        dontShowToast: true,
-        loading: {
-          message: 'Loading...'
-        }
-      });
 
-      const tokens = await getTokensByReportId(data.id, {
+
+      let tokens = undefined
+      let resp = undefined
+
+      if (!isCustom) {
+        await runSQLReportRecipientsByReportId(data.id, {
+          dontRedirect: true,
+          dontShowToast: true,
+          loading: {
+            message: 'Loading...'
+          }
+        });
+
+
+
+
+
+        resp = await getReportRecipientsByReportId(data, {
+          loading: {
+            message: 'Loading ...'
+          }
+        })
+      }
+
+      else {
+        await runSQLReportRecipientsByReportIdCustom(data.id, {
+          dontRedirect: true,
+          dontShowToast: true,
+          loading: {
+            message: 'Loading...'
+          }
+        });
+
+        resp = await getReportRecipientsByReportIdCustom(data.id, {
+          loading: {
+            message: 'Loading ...'
+          }
+        })
+      }
+
+      tokens = await getTokensByReportId(data.id, {
         loading: {
           message: 'Loading ...'
         }
       })
+
+      if (!tokens || !resp) return
 
       $rStore.setTokens(tokens.ok ? tokens.data : [])
-
-      const resp = await getReportRecipientsByReportId(data, {
-        loading: {
-          message: 'Loading ...'
-        }
-      })
-
       return resp.ok ? resp.data : undefined
+    },
+
+    setIsCustom(isCustom: boolean) {
+      $rStore.setIsCustom(isCustom)
     },
   }
 };

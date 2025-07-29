@@ -34,7 +34,29 @@
         />
       </div>
     </div>
-    <div class="ViewReport-filters-container q-pa-sm">
+
+    <div v-if="$rStore.$state.isCustom" class="row q-pl-md">
+      <div class="col-12">
+        <div class="row q-mb-sm">
+          <p style="margin: 0px">
+            <b>Total Yes: </b>
+            {{ $rStore.$state.report?.yesCount || 0 }}
+          </p>
+        </div>
+        <div class="row q-mb-sm">
+          <p style="margin: 0px">
+            <b>Total No: </b>
+            {{ $rStore.$state.report?.noCount || 0 }}
+          </p>
+        </div>
+      </div>
+      <div class="row">
+        <q-checkbox class="q-mr-sm" v-model="yesOnly" label="Show Yes Only" />
+        <q-checkbox class="q-mr-sm" v-model="hideNL" label="Hide (N/L) = Not Logged In" />
+      </div>
+    </div>
+
+    <div v-else class="ViewReport-filters-container q-pa-sm">
       <div class="row q-mb-sm q-mt-sm justify-content-space-between">
         <h6>Filters:</h6>
         <q-btn outline icon="close" label="Clear Filters" @click="clearFilters" />
@@ -121,7 +143,13 @@
       <div class="row white-container" :class="{ fullscreen: isFullScreen }">
         <div class="col-12">
           <div class="row">
-            <div class="col-12 justify-content-end">
+            <div class="col-12 justify-content-space-between q-pa-sm">
+              <h6>
+                {{
+                  `Recipients: (${$rStore.$state.selectedRecipients.length}/
+              ${$rStore.$state.report?.members.length || 0})`
+                }}
+              </h6>
               <q-btn
                 flat
                 round
@@ -131,21 +159,14 @@
               />
             </div>
           </div>
-          <div class="row">
-            <h6>
-              {{
-                `Recipients: (${$rStore.$state.selectedRecipients.length}/
-              ${$rStore.$state.report?.members.length || 0})`
-              }}
-            </h6>
-          </div>
+
           <q-table
             v-if="report.members.length"
             :style="{ height: isFullScreen ? '800px' : '628px' }"
             class="table-sticky-header-column-table sticky-2-1-column-table"
             flat
             bordered
-            :rows="report.members"
+            :rows="rows"
             :columns="columns"
             row-key="ID"
             selection="multiple"
@@ -224,7 +245,10 @@
 
 <script setup lang="ts">
 import { useReport } from 'src/modules/dashboard/composables/useReport'
-import type { RecipientDataInterface } from 'src/modules/dashboard/interfaces/report.interface'
+import type {
+  RecipientDataInterface,
+  RecipientMemberInterface,
+} from 'src/modules/dashboard/interfaces/report.interface'
 import { computed, onMounted, ref, watch } from 'vue'
 import { useRoute } from 'vue-router'
 import InnerViewRow from './InnerViewRow.vue'
@@ -244,6 +268,24 @@ const isFullScreen = ref(false)
 const isTableLoading = ref(false)
 const report = ref<RecipientDataInterface | NoneType>($rStore.$state.report)
 
+const rows = computed<RecipientMemberInterface[]>(() => {
+  const rec: RecipientMemberInterface[] = $rStore.$state.report?.members || []
+
+  if (!$rStore.$state.isCustom) return rec
+
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  return rec.filter((row: any) => {
+    const customOptionField = `${row['Custom Option']}`
+
+    if (yesOnly.value && customOptionField != 'yes') return false
+    if (hideNL.value && customOptionField != 'n/l') return false
+
+    return true
+  })
+})
+
+const yesOnly = ref(false)
+const hideNL = ref(false)
 const filter = ref({
   basketSize: [],
   categories: [],
@@ -281,12 +323,15 @@ const columns = computed(() => {
 })
 
 const getInitialData = () => {
-  getViewReport({
-    ...filter.value,
-    id: reportId as string,
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    categories: filter.value.categories?.map((ca) => `${(ca as any).categoryID}`) || [],
-  }).then((res) => {
+  getViewReport(
+    {
+      ...filter.value,
+      id: reportId as string,
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      categories: filter.value.categories?.map((ca) => `${(ca as any).categoryID}`) || [],
+    },
+    $rStore.$state.isCustom,
+  ).then((res) => {
     report.value = res
 
     isTableLoading.value = false
@@ -302,6 +347,8 @@ const clearFilters = () => {
     searchTerm: '',
     zipCode: [],
   }
+  yesOnly.value = false
+  hideNL.value = false
 }
 
 watch(

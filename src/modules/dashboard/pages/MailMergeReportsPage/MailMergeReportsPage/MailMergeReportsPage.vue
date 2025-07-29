@@ -50,6 +50,9 @@
                     params: {
                       reportId: item.reportID,
                     },
+                    query: {
+                      isCustom: pageView === '3' ? true : false,
+                    },
                   }"
                 />
                 <q-btn
@@ -69,6 +72,9 @@
                   :to="{
                     name: 'MailMergeReportsPage-MailMergePage',
                     params: { reportId: item.reportID },
+                    query: {
+                      isCustom: pageView === '3' ? true : false,
+                    },
                   }"
                 />
                 <q-btn
@@ -80,6 +86,9 @@
                   :to="{
                     name: 'MailMergeReportsPage-MailMergePage',
                     params: { reportId: item.reportID },
+                    query: {
+                      isCustom: pageView === '3' ? true : false,
+                    },
                   }"
                 />
               </div>

@@ -313,17 +313,14 @@
 
   <!-- generate pdf -->
   <q-dialog v-model="pdfTitleFlag" persistent>
-    <q-card>
+    <q-card :style="{ width: isMobile ? '100vw' : '500px' }">
       <div class="row dialog-header custom-dialog-header-container">
         <div class="col-12">
           <p>Generate PDF to print</p>
         </div>
       </div>
 
-      <div
-        class="custom-dialog-body-container q-pa-lg"
-        :style="{ width: isMobile ? '100vw' : '500px' }"
-      >
+      <div class="custom-dialog-body-container q-pa-lg">
         <div class="row q-mb-sm">
           <div class="col-12">
             <q-input
@@ -380,17 +377,14 @@
 
   <!-- send email-->
   <q-dialog v-model="sendEmailFlag" persistent>
-    <q-card>
+    <q-card :style="{ width: isMobile ? '100vw' : '500px' }">
       <div class="row dialog-header custom-dialog-header-container">
         <div class="col-12">
           <p>Send Email</p>
         </div>
       </div>
 
-      <div
-        class="custom-dialog-body-container q-pa-lg"
-        :style="{ width: isMobile ? '100vw' : '500px' }"
-      >
+      <div class="custom-dialog-body-container q-pa-lg">
         <div class="row">
           <q-select
             popup-content-class="q-menu-300"
@@ -441,7 +435,7 @@
           outline
           label="Close"
           class="q-mr-sm q-mt-sm"
-          style="color: #990000; border-color: #990000"
+          style="color: #990000; border-color: #990000; margin: 0px"
           v-close-popup
         />
         <q-btn-dropdown
@@ -469,17 +463,14 @@
 
   <!-- send later email -->
   <q-dialog v-model="sendLaterFlag" persistent>
-    <q-card>
+    <q-card :style="{ width: isMobile ? '100vw' : '500px' }">
       <div class="row dialog-header custom-dialog-header-container">
         <div class="col-12">
           <p>Schedule Email</p>
         </div>
       </div>
 
-      <div
-        class="custom-dialog-body-container q-pa-lg"
-        :style="{ width: isMobile ? '100vw' : '500px' }"
-      >
+      <div class="custom-dialog-body-container q-pa-lg">
         <div class="row -q-mb-sm">
           <div
             class="q-pa-sm"

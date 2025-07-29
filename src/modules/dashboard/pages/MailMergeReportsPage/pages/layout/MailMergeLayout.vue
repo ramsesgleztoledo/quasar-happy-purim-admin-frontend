@@ -10,9 +10,10 @@ import { useReportStore } from 'src/modules/dashboard/store/ReportStore/reportSt
 import { onMounted, ref } from 'vue'
 import { useRoute } from 'vue-router'
 
-const { getViewReport } = useReport()
+const { getViewReport, setIsCustom } = useReport()
 const { reportId } = useRoute().params
 const $rStore = useReportStore()
+const $route = useRoute()
 
 const isReady = ref(false)
 
@@ -26,12 +27,18 @@ const filter = {
 }
 
 onMounted(() => {
-  getViewReport({
-    ...filter,
-    id: reportId as string,
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    categories: filter.categories.map((ca) => (ca as any).categoryID),
-  }).then((res) => {
+  const isCustom = `${$route.query.isCustom}` == 'true'
+  setIsCustom(isCustom)
+
+  getViewReport(
+    {
+      ...filter,
+      id: reportId as string,
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      categories: filter.categories.map((ca) => (ca as any).categoryID),
+    },
+    isCustom,
+  ).then((res) => {
     $rStore.setReport(res)
     $rStore.setSelectedRecipients([...(res?.members || [])])
     $rStore.setReportId(reportId as string)

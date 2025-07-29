@@ -32,7 +32,10 @@ export interface RecipientDataFormInterface {
 
 export interface RecipientDataInterface {
   totalCount: number;
-  filteredCount: number;
+  filteredCount?: number;
+  yesCount?: number;
+  noCount?: number;
+  nlCount?: number;
   members: RecipientMemberInterface[];
 }
 

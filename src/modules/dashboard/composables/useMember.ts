@@ -409,6 +409,14 @@ export const useMember = () => {
   };
 
 
+  const getTransactionsByMemberSelected_co = async () => {
+    if ($mStore.selectedMember?.memberId == null) return
+
+    const transactions = await getTransactionsByMemberId($mStore.selectedMember.memberId);
+    if (transactions.ok)
+      $mStore.setMemberTransactions(transactions.data)
+
+  };
 
 
 
@@ -428,5 +436,6 @@ export const useMember = () => {
     addMember_Co,
     resetMemberLoginCode_Co,
     emailReceiptByTransactionId_Co,
+    getTransactionsByMemberSelected_co,
   };
 }

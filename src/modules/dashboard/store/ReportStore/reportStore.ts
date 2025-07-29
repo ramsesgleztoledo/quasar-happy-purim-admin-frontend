@@ -13,7 +13,8 @@ const initialState: reportStateInterface = {
   selectedRecipients: [],
   reportId: "",
   images: [],
-  tokens: []
+  tokens: [],
+  isCustom: false
 }
 
 export const useReportStore = defineStore('reportStore', {
@@ -69,10 +70,10 @@ export const useReportStore = defineStore('reportStore', {
 
     setTokens(tokens: string[]) {
       this.tokens = tokens.map(to => to)
-    }
-
-
-
+    },
+    setIsCustom(isCustom: boolean) {
+      this.isCustom = isCustom
+    },
   }
 });
 

@@ -9,6 +9,7 @@ export interface reportStateInterface {
   report: RecipientDataInterface | NoneType;
   selectedRecipients: RecipientMemberInterface[];
   reportId: string | number;
-  images: string[]
-  tokens: string[]
+  images: string[];
+  tokens: string[];
+  isCustom: boolean;
 }

@@ -471,6 +471,7 @@ import type { QTableColumn } from 'quasar'
 import type { FormField } from 'src/composables'
 import { lazyRules, useForm, validations } from 'src/composables'
 import { convertToUSDate, convertWithCommas } from 'src/helpers'
+import { useMember } from 'src/modules/dashboard/composables/useMember'
 import { usePayment } from 'src/modules/dashboard/composables/usePayment'
 import { statesOptions } from 'src/modules/dashboard/data'
 import type {
@@ -484,6 +485,7 @@ import { useRoute } from 'vue-router'
 const $route = useRoute()
 const { getUnPaidOrdersByMemberId, recordCheckPayment, recordCCPayment, recordCreditPayment } =
   usePayment()
+const { getTransactionsByMemberSelected_co } = useMember()
 
 const memberId = computed(() => Number($route.params.memberId))
 
@@ -614,16 +616,18 @@ onMounted(() => {
   })
 })
 
-const onPay = () => {
+const onPay = async () => {
   switch (paymentType.value) {
     case 0:
-      return onCheckPayment()
+      await onCheckPayment()
+      break
     case 1:
-      return onCCPayment()
-
+      await onCCPayment()
+      break
     default:
-      return onCreditOtherPayment()
+      await onCreditOtherPayment()
   }
+  await getTransactionsByMemberSelected_co()
 }
 
 const onCheckPayment = async () => {
