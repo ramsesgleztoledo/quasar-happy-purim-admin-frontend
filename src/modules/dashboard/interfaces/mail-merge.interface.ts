@@ -9,6 +9,10 @@ export interface MergedContentResponseInterface {
   message: string;
   results: MergedResultInterface[];
 }
+export interface MergedContentPrintInterface {
+  memberId: number;
+  body: string;
+}
 
 export interface MergedResultInterface {
   memberId: number;
@@ -43,13 +47,13 @@ export interface QueueBulkEmailsRecipientInterface {
 }
 
 export interface AddToUnmergedTableFormInterface {
-  addedBy:         number;
+  addedBy: number;
   documentContent: string;
-  fromName:        string;
-  fromEmail:       string;
-  toEmail:         string;
-  subject:         string;
-  sendDate:        Date;
+  fromName: string;
+  fromEmail: string;
+  toEmail: string;
+  subject: string;
+  sendDate: Date;
 }
 
 

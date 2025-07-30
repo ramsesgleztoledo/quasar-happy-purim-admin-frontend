@@ -48,7 +48,7 @@ interface PreviewPropsInterface {
 const $props = defineProps<PreviewPropsInterface>()
 
 const $rStore = useReportStore()
-const { getMergedContentByReportAndMember } = useMailMerge()
+const { getMergedContentPrintByReportAndMember } = useMailMerge()
 
 const pos = ref(0)
 const respError = ref(false)
@@ -61,7 +61,7 @@ watch(
   pos,
   (value) => {
     respError.value = false
-    getMergedContentByReportAndMember(members.value[value]!, $props.content).then((res) => {
+    getMergedContentPrintByReportAndMember(members.value[value]!, $props.content).then((res) => {
       console.log({ res })
       if (!res) respError.value = true
       else preview.value = res?.body || ''

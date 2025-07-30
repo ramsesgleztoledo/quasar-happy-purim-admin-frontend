@@ -1,6 +1,6 @@
 import { useApiCall } from "src/services/apiCall";
 import type { ApiCallResponseInterface, ExtraOptionsInterface } from "src/services/api-interfaces";
-import type { AddToUnmergedTableFormInterface, GeneratePDFFormInterface, MailMergeTemplateInterface, MergedContentResponseInterface, QueueBulkEmailsFormInterface } from "../interfaces/mail-merge.interface";
+import type { AddToUnmergedTableFormInterface, GeneratePDFFormInterface, MailMergeTemplateInterface, MergedContentPrintInterface, MergedContentResponseInterface, QueueBulkEmailsFormInterface } from "../interfaces/mail-merge.interface";
 
 
 
@@ -55,6 +55,22 @@ export const useMailMergeService = () => {
       }
     }, extraOptions?: ExtraOptionsInterface): Promise<ApiCallResponseInterface<MergedContentResponseInterface>> => {
       const nextUrl = `/email-merge-content?reportId=${data.reportId}&emailOption=${data.emailOption}`;
+      const url = `${baseUrl}${nextUrl}`;
+      return await apiCall({
+        url,
+        extraOptions
+        , method: 'POST',
+        data: data.data
+      })
+    },
+    getMergedContentPrintByReportId: async (data: {
+      reportId: number | string;
+      data: {
+        template: string;
+        memberIds: number[]
+      }
+    }, extraOptions?: ExtraOptionsInterface): Promise<ApiCallResponseInterface<MergedContentPrintInterface[]>> => {
+      const nextUrl = `/print-merge-content?reportId=${data.reportId}`;
       const url = `${baseUrl}${nextUrl}`;
       return await apiCall({
         url,

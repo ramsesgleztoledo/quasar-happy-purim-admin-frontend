@@ -2,7 +2,7 @@ import { useQuasar } from "quasar";
 import { useMailMergeService } from "../services/mailMerge.service";
 import { useReportStore } from "../store/ReportStore/reportStore";
 import { computed } from 'vue';
-import type { MergedResultInterface, QueueBulkEmailsFormInterface } from "../interfaces/mail-merge.interface";
+import type { MergedContentPrintInterface, MergedResultInterface, QueueBulkEmailsFormInterface } from "../interfaces/mail-merge.interface";
 import { useUI } from "src/modules/UI/composables";
 import { useAuthStore } from "src/modules/auth/store/auth.store";
 
@@ -15,7 +15,7 @@ export const useMailMerge = () => {
   const { downloadFile, showToast } = useUI()
   const $aStore = useAuthStore()
 
-  const { getFormFields, getTemplates, getMergedContentByReportId, generatePDF, queueBulkEmails, addUnmergedEmailJobToTable, getImages } = useMailMergeService()
+  const { getFormFields, getTemplates, getMergedContentByReportId, generatePDF, queueBulkEmails, addUnmergedEmailJobToTable, getImages, getMergedContentPrintByReportId } = useMailMergeService()
 
   const $rStore = useReportStore()
 
@@ -90,7 +90,26 @@ export const useMailMerge = () => {
 
       })
 
-      return resp.ok ? resp.data.results[0] : undefined
+      return resp.ok && resp.data?.results?.length ? resp.data.results[0] : undefined
+
+    },
+    async getMergedContentPrintByReportAndMember(memberId: number, content: string) {
+
+      const resp = await getMergedContentPrintByReportId({
+        reportId: reportId.value,
+        data: {
+          template: content,
+          memberIds: [memberId]
+        }
+      }, {
+        dontRedirect: true,
+        loading: {
+          message: 'loading'
+        }
+
+      })
+
+      return resp.ok && resp.data.length ? resp.data[0] : undefined
 
     },
 
@@ -100,10 +119,15 @@ export const useMailMerge = () => {
       memberIds: number[]
     }) {
 
-      const result: MergedResultInterface[] = await getMergedContent({
-        content: data.content,
-        memberIds: data.memberIds
+      const resp = await getMergedContentPrintByReportId({
+        reportId: reportId.value,
+        data: {
+          template: data.content,
+          memberIds: data.memberIds
+        }
       })
+
+      const result: MergedContentPrintInterface[] = resp.ok ? resp.data : []
 
 
 
