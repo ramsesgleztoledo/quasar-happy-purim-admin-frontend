@@ -9,7 +9,7 @@
       <q-input
         v-model="realForm.address.value"
         outlined
-        label="Address"
+        label="Address *"
         lazy-rules
         :rules="[lazyRules.required()]"
       />
@@ -35,7 +35,7 @@
       <q-input
         v-model="realForm.city.value"
         outlined
-        label="City"
+        label="City *"
         lazy-rules
         :rules="[lazyRules.required()]"
       />
@@ -52,7 +52,7 @@
       <q-input
         v-model="realForm.zip.value"
         outlined
-        label="Zip Code"
+        label="Zip Code *"
         mask="#####"
         lazy-rules
         :rules="[lazyRules.required(), lazyRules.maxCharacters(5), lazyRules.minCharacters(5)]"
@@ -70,7 +70,7 @@
         v-model="realForm.state.value"
         outlined
         :options="statesOptions"
-        label="State"
+        label="State *"
         lazy-rules
         :rules="[lazyRules.required()]"
       />

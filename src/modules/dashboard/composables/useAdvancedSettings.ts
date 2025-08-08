@@ -159,8 +159,8 @@ export const useAdvancedSettings = () => {
       });
 
       showToast(resp.ok,
-        `donate basket ${enabled ? 'enabled' : 'disabled'}`,
-        `something went wrong  ${enabled ? 'enabling' : 'disabling'} donate basket`
+        `donate basket option ${enabled ? 'enabled' : 'disabled'}`,
+        `something went wrong  ${enabled ? 'enabling' : 'disabling'} donate basket option`
       )
 
 
@@ -172,7 +172,7 @@ export const useAdvancedSettings = () => {
         }
       })
       showToast(resp.ok,
-        `donate basket question updated`,
+        `donate basket option updated`,
         'something went wrong updating donate basket'
       )
 
@@ -187,8 +187,8 @@ export const useAdvancedSettings = () => {
       });
 
       showToast(resp.ok,
-        `2nd address ${enabled ? 'enabled' : 'disabled'}`,
-        `something went wrong  ${enabled ? 'enabling' : 'disabling'} 2nd address`
+        `alternate delivery address option  ${enabled ? 'enabled' : 'disabled'}`,
+        `something went wrong  ${enabled ? 'enabling' : 'disabling'} alternate delivery address option`
       )
 
 
@@ -196,12 +196,12 @@ export const useAdvancedSettings = () => {
     async updateTab1AlternativeDeliveryAddressPrompt(text: string) {
       const resp = await updateTab1AlternativeDeliveryAddressPrompt(text, {
         loading: {
-          message: 'updating 2nd address...',
+          message: 'Loading ...',
         }
       })
       showToast(resp.ok,
         `2nd address question updated`,
-        'something went wrong updating 2nd address'
+        'something went wrong updating alternate delivery address option'
       )
 
 
@@ -209,12 +209,12 @@ export const useAdvancedSettings = () => {
     async updateTab1AdditionalProfileQuestion(data: Tab1AdditionalProfileQuestionInterface) {
       const resp = await updateTab1AdditionalProfileQuestion(data, {
         loading: {
-          message: `updating question ...`,
+          message: `Loading ...`,
         }
       })
       showToast(resp.ok,
-        `question updated`,
-        `something went wrong updating the question `
+        `profile question updated`,
+        `something went wrong updating the profile question `
       )
 
       return resp.ok
@@ -222,12 +222,12 @@ export const useAdvancedSettings = () => {
     async deleteTab1AdditionalProfileQuestion(id: number) {
       const resp = await deleteTab1AdditionalProfileQuestion(id, {
         loading: {
-          message: `deleting question...`,
+          message: `Loading ...`,
         }
       })
       showToast(resp.ok,
-        `question deleted`,
-        `something went wrong deleting the question`
+        `profile question deleted`,
+        `something went wrong deleting the profile question`
       )
 
       return resp.ok
@@ -235,12 +235,12 @@ export const useAdvancedSettings = () => {
     async createTab1AdditionalProfileQuestion(data: Omit<Tab1AdditionalProfileQuestionInterface, "optId">) {
       const resp = await createTab1AdditionalProfileQuestion(data, {
         loading: {
-          message: `adding new question...`,
+          message: `Loading ...`,
         }
       })
       showToast(resp.ok,
-        `new question added`,
-        `something went wrong adding a new question`
+        `new addition profile question added`,
+        `something went wrong adding a new addition profile question`
       )
 
       return {
@@ -266,23 +266,23 @@ export const useAdvancedSettings = () => {
     async updateAddon(data: Tab2AddonFormInterface) {
       const resp = await updateAddon(data, {
         loading: {
-          message: 'updating addon'
+          message: 'Loading ...'
         }
       })
       showToast(resp.ok,
-        'addon settings updated',
-        'something went wrong updating addon settings'
+        'add-on gift baskets settings updated',
+        'something went wrong updating the add-on gift baskets settings'
       )
     },
     async updateSendOut(data: Tab2AllowMembersFormInterface) {
       const resp = await updateSendOut(data, {
         loading: {
-          message: 'updating allow members settings'
+          message: 'loading ...'
         }
       })
       showToast(resp.ok,
-        'allow members settings updated',
-        'something went wrong updating allow members settings'
+        'Send Out Settings Updated ',
+        'something went wrong updating the Send Out Settings'
       )
     },
     async addAdditionalOrderingItems(data: Tab2AddOrderItemFormInterface) {
@@ -292,8 +292,8 @@ export const useAdvancedSettings = () => {
         }
       })
       showToast(resp.ok,
-        'new item added',
-        'something went wrong adding a new item'
+        'New Order Item Added',
+        'something went wrong adding a New Order Item'
       )
       if (resp.ok)
         $asStore.addOrderingItem([resp.data])
@@ -306,12 +306,12 @@ export const useAdvancedSettings = () => {
         optionId
       }, {
         loading: {
-          message: 'deleting item'
+          message: 'Loading ...'
         }
       })
       showToast(resp.ok,
-        'item deleted',
-        'something went wrong deleting an item'
+        'Order Item deleted',
+        'something went wrong deleting the Order Item'
       )
       return resp.ok
     },
@@ -320,12 +320,12 @@ export const useAdvancedSettings = () => {
     ) {
       const resp = await updateOrderItems(content, {
         loading: {
-          message: 'updating sell additional items...'
+          message: 'Loading ...'
         }
       })
       showToast(resp.ok,
-        'sell additional items updated',
-        'something went wrong updating sell additional items'
+        'Sell Additional Items Settings Updated ',
+        'something went wrong updating the Sell Additional Items Settings'
       )
     },
 
@@ -336,12 +336,12 @@ export const useAdvancedSettings = () => {
         sortOrder: item.sortOrder
       }, {
         loading: {
-          message: 'updating item'
+          message: 'Loading ...'
         }
       })
       showToast(resp.ok,
-        'item updated',
-        'something went wrong updating the item'
+        'Order Item Updated',
+        'something went wrong updating the Order Item'
       )
 
     },

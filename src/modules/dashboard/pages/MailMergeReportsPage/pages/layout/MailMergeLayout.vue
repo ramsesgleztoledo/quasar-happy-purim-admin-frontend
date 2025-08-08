@@ -41,6 +41,7 @@ onMounted(() => {
   ).then((res) => {
     $rStore.setReport(res)
     $rStore.setSelectedRecipients([...(res?.members || [])])
+    $rStore.setRecipientsFiltered([...(res?.members || [])])
     $rStore.setReportId(reportId as string)
 
     isReady.value = true

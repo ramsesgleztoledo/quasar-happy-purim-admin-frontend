@@ -143,7 +143,7 @@ export const useBasicSettings = () => {
           color: 'green',
           textColor: 'black',
           icon: 'error',
-          message: 'welcome page Updated',
+          message: 'welcome page updated',
         })
       }
       else {
@@ -206,7 +206,7 @@ export const useBasicSettings = () => {
         dontRedirect: true
       })
       showToast(resp.ok,
-        'filed deleted',
+        'file deleted',
         'something went wrong deleting the file'
       )
 

@@ -39,26 +39,26 @@ export const loginAccounts: LoginAccountInterface[] = [
   },
 
   {
-    id: -1,
+    id: 1,
     name: 'Demo Synagogue',
     guid: 'E336934F-73FE-47D8-ABEA-E1507A02D6D7',
     token: "tdlArHFb9T4EFeBJbMxi1iQcAH7bDuXXczajNZWAdZactIPyQzPL5PS9KKnW4jkMe/rP5mGT85AEk9ii/AgPOw==",
     url: 'http://localhost:9000/#/authenticate?token=tdlArHFb9T4EFeBJbMxi1iQcAH7bDuXXczajNZWAdZactIPyQzPL5PS9KKnW4jkMe/rP5mGT85AEk9ii/AgPOw=='
   },
   {
-    id: -2,
-    name: 'custom',
+    id: 332,
+    name: 'CSAIR Sisterhood',
     guid: '4DBC0623-10FC-419A-A780-5200B3D7E9F4',
     token: "fXDvYsO0IOTkXgQgI5B9ENDSKYSezQNSTjSC8/OcEsD0wqcV+0WFmJBLuM7myAO4LFK719ZHrmQLn4OzZefaSg==",
     url: 'http://localhost:9000/#/authenticate?token=fXDvYsO0IOTkXgQgI5B9ENDSKYSezQNSTjSC8/OcEsD0wqcV+0WFmJBLuM7myAO4LFK719ZHrmQLn4OzZefaSg=='
   },
-  {
-    id: 332,
-    name: 'Synagogue Adath Israel of Riverdale',
-    guid: '4DBC0623-10FC-419A-A780-5200B3D7E9F4',
-    token: "HltaNi20I5BMV9HpSm0892VKd1OuQ/QmSvfL67vnuih9U4Uv9wH1Qf4udyrjF9COMbDEPWSkGVwqZJbYMEXOkQ==",
-    url: 'http://localhost:9000/#/authenticate?token=HltaNi20I5BMV9HpSm0892VKd1OuQ/QmSvfL67vnuih9U4Uv9wH1Qf4udyrjF9COMbDEPWSkGVwqZJbYMEXOkQ=='
-  },
+  // {
+  //   id: 332,
+  //   name: 'Synagogue Adath Israel of Riverdale',
+  //   guid: '4DBC0623-10FC-419A-A780-5200B3D7E9F4',
+  //   token: "HltaNi20I5BMV9HpSm0892VKd1OuQ/QmSvfL67vnuih9U4Uv9wH1Qf4udyrjF9COMbDEPWSkGVwqZJbYMEXOkQ==",
+  //   url: 'http://localhost:9000/#/authenticate?token=HltaNi20I5BMV9HpSm0892VKd1OuQ/QmSvfL67vnuih9U4Uv9wH1Qf4udyrjF9COMbDEPWSkGVwqZJbYMEXOkQ=='
+  // },
   {
     id: 665,
     name: 'Congregation Shaarei Tefillah',

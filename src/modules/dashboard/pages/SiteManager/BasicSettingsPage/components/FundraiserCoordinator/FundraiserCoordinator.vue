@@ -15,7 +15,7 @@
       <q-input
         v-model="realForm.contactName.value"
         outlined
-        label="Contact Name"
+        label="Contact Name *"
         lazy-rules
         :rules="[lazyRules.required()]"
       />
@@ -32,7 +32,7 @@
         outlined
         label="Bcc Receipts To"
         lazy-rules
-        :rules="[lazyRules.required()]"
+        :rules="[]"
       />
     </div>
   </div>
@@ -47,7 +47,7 @@
       <q-input
         v-model="realForm.contactEmail.value"
         outlined
-        label="Contact Email"
+        label="Contact Email *"
         lazy-rules
         :rules="[lazyRules.required(), lazyRules.isEmail()]"
       />
@@ -62,7 +62,7 @@
       <q-input
         v-model="realForm.replyTo.value"
         outlined
-        label="Receipt Reply To"
+        label="Receipt Reply To *"
         lazy-rules
         :rules="[lazyRules.required()]"
       />
@@ -79,7 +79,7 @@
       <q-input
         v-model="realForm.contactPhone.value"
         outlined
-        label="Contact Phone"
+        label="Contact Phone *"
         mask="(###) - ### - ####"
         lazy-rules
         :rules="[
@@ -118,7 +118,7 @@ const { realForm, isValidForm, resetForm, getFormValue } = useForm({
 
   contactEmail: { value: '', validations: [validations.required, validations.isEmail] },
 
-  bccReceiptsTo: { value: '', validations: [validations.required] },
+  bccReceiptsTo: { value: '' },
 
   replyTo: { value: '', validations: [validations.required] },
 

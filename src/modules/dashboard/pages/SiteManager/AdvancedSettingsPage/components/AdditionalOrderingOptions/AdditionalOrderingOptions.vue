@@ -163,7 +163,7 @@
               />
               <InfoAlert
                 type="error"
-                text="don't do more than one item with the same description"
+                text="Do not enter more than one item with the same description"
               />
 
               <div

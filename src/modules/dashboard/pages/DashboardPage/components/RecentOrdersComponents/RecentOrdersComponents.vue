@@ -59,9 +59,9 @@
                   </q-tooltip>
                 </q-btn>
 
-                <p v-else>
+                <div v-else>
                   {{ col.value }}
-                </p>
+                </div>
               </q-td>
             </q-tr>
           </template>

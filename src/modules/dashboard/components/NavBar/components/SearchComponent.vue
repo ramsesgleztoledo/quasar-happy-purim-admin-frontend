@@ -15,7 +15,7 @@
   >
     <template v-slot:option="scope">
       <div v-bind="scope.itemProps">
-        <div class="q-pa-md" v-if="scope.opt.routeName === 'none'">nothing found...</div>
+        <div class="q-pa-md" style="display: none;" v-if="scope.opt.routeName === 'none'">nothing found...</div>
         <q-item v-else @click="goTo(scope.opt.routeName)" clickable>
           <q-item-section avatar>
             <q-icon :name="scope.opt.icon" />

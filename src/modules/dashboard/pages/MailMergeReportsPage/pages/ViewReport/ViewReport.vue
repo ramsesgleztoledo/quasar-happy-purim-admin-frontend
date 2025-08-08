@@ -227,8 +227,13 @@
             </template>
             <template v-slot:bottom>
               <div class="row justify-content-end w-full">
-                Showing 1 to {{ report.filteredCount }} of {{ report.filteredCount }} entries (
-                filtered from {{ report.totalCount }} total entries )
+                Showing 1 to {{ report.filteredCount }} of {{ report.filteredCount }} entries
+                {{
+                  areFilterInApplied()
+                    ? `(
+                filtered from ${report.totalCount} total entries )`
+                    : ''
+                }}
               </div>
             </template>
           </q-table>
@@ -258,7 +263,7 @@ import type { NoneType } from 'src/modules/dashboard/services/service-interfaces
 import { useUI } from 'src/modules/UI/composables'
 import type { QTableColumn } from 'quasar'
 
-const { getViewReport, getFilterOptions } = useReport()
+const { getFilterOptions, getReportData } = useReport()
 const { reportId } = useRoute().params
 const $dStore = useDashboardStore()
 const $rStore = useReportStore()
@@ -269,7 +274,7 @@ const isTableLoading = ref(false)
 const report = ref<RecipientDataInterface | NoneType>($rStore.$state.report)
 
 const rows = computed<RecipientMemberInterface[]>(() => {
-  const rec: RecipientMemberInterface[] = $rStore.$state.report?.members || []
+  const rec: RecipientMemberInterface[] = $rStore.$state.recipientsFiltered || []
 
   if (!$rStore.$state.isCustom) return rec
 
@@ -277,8 +282,8 @@ const rows = computed<RecipientMemberInterface[]>(() => {
   return rec.filter((row: any) => {
     const customOptionField = `${row['Custom Option']}`
 
-    if (yesOnly.value && customOptionField != 'yes') return false
-    if (hideNL.value && customOptionField != 'n/l') return false
+    if (yesOnly.value && customOptionField.toLocaleLowerCase() != 'yes') return false
+    if (hideNL.value && customOptionField.toLocaleLowerCase() != 'n/l') return false
 
     return true
   })
@@ -306,6 +311,21 @@ const filterOptions = ref<{
   donate: [],
 })
 
+const areFilterInApplied = () => {
+  const { basketSize, categories, donateBasket, routeCode, searchTerm, zipCode } = filter.value
+
+  return (
+    (basketSize && basketSize.length) ||
+    (categories && categories.length) ||
+    (donateBasket && donateBasket.length) ||
+    (routeCode && routeCode.length) ||
+    (searchTerm && searchTerm.length) ||
+    (zipCode && zipCode.length) ||
+    yesOnly.value ||
+    hideNL.value
+  )
+}
+
 const timeOut = ref<NodeJS.Timeout | undefined>(undefined)
 
 const columns = computed(() => {
@@ -316,14 +336,15 @@ const columns = computed(() => {
     align: 'left',
     field: token,
     sortable: true,
-    style: 'max-width: 100px; overflow: hidden; text-overflow: ellipsis',
-    headerStyle: 'max-width: 100px; overflow: hidden; text-overflow: ellipsis',
+
+    style: 'max-width: 200px; overflow: hidden; text-overflow: ellipsis',
+    headerStyle: 'max-width: 200px; overflow: hidden; text-overflow: ellipsis',
   }))
   return columns
 })
 
 const getInitialData = () => {
-  getViewReport(
+  getReportData(
     {
       ...filter.value,
       id: reportId as string,
@@ -333,7 +354,6 @@ const getInitialData = () => {
     $rStore.$state.isCustom,
   ).then((res) => {
     report.value = res
-
     isTableLoading.value = false
   })
 }

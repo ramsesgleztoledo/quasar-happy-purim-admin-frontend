@@ -130,9 +130,21 @@ export const dashboardRoutes: RouteRecordRaw[] = [
             component: () =>
               import(/* webpackChunkName: "MailMergeReportsPage-MailMergeReportsPage" */ "../pages/MailMergeReportsPage/MailMergeReportsPage/MailMergeReportsPage.vue"),
           },
+          {
+            path: 'scheduled-emails',
+            name: 'MailMergeReportsPage-ScheduleEmail',
+            component: () =>
+              import(/* webpackChunkName: "MailMergeReportsPage-MailMergeReportsPage" */ "../pages/ScheduleEmail/ScheduleEmail.vue"),
+          },
+          {
+            path: 'scheduled-emails/:scheduledEmailId',
+            name: 'MailMergeReportsPage-ScheduleEmailDetails',
+            component: () =>
+              import(/* webpackChunkName: "MailMergeReportsPage-MailMergeReportsPage" */ "../pages/ScheduleEmail/ViewScheduleEmail.vue"),
+          },
 
           {
-            path: ':reportId',
+            path: 'view/:reportId',
             name: 'MailMergeReportsPage-MailMergePageLayout',
             component: () =>
               import(/* webpackChunkName: "MailMergeReportsPage-MailMergePage" */ "../pages/MailMergeReportsPage/pages/layout/MailMergeLayout.vue"),

@@ -96,13 +96,37 @@ export const linksData: LinksDataInterface[] = [
     name: 'dashboard-OrderArchivePage',
     routeClass: ['dashboard-OrderArchivePage', 'OrderArchivePage-orders']
   },
-  {
 
-    title: 'Mail Merge & Reports',
+  {
+    title: 'Mail & Report',
     icon: 'email',
     name: 'dashboard-MailMergeReportsPage',
-    routeClass: ['dashboard-MailMergeReportsPage', 'MailMergeReportsPage-MailMergeReportsPage']
+
+    children: [
+      {
+
+        title: 'Mail Merge & Reports',
+        icon: 'email',
+        name: 'dashboard-SiteManagerPage-BasicSettingsPage',
+
+      },
+      {
+
+        title: 'Schedule Email',
+        icon: 'email',
+        name: 'MailMergeReportsPage-ScheduleEmail',
+      },
+    ],
+
   },
+
+  // {
+
+  //   title: 'Mail Merge & Reports',
+  //   icon: 'email',
+  //   name: 'dashboard-MailMergeReportsPage',
+  //   routeClass: ['dashboard-MailMergeReportsPage', 'MailMergeReportsPage-MailMergeReportsPage']
+  // },
   {
 
     title: 'Print & Labels',

@@ -15,6 +15,8 @@ export const useReport = () => {
     getDonateFilters,
     runSQLReportRecipientsByReportIdCustom,
     getReportRecipientsByReportIdCustom,
+    getCustomSpecialReports,
+    getAdvancedSpecialReports,
   } = useReportsService()
   const { getTokensByReportId } = useMailMergeService()
   const $rStore = useReportStore()
@@ -30,7 +32,9 @@ export const useReport = () => {
       })
       const resp = await Promise.all([
         getReportList(),
-        getCustomReports()
+        getCustomReports(),
+        getCustomSpecialReports(),
+        getAdvancedSpecialReports(),
       ])
 
 
@@ -45,6 +49,9 @@ export const useReport = () => {
           summary: "",
           isCustom: true
         })) : [],
+        advancedReportsSpecial: resp[2].ok ? resp[2].data : [],
+        customReportsSpecial: resp[3].ok ? resp[3].data : [],
+
       })
       $q.loading.hide()
     },
@@ -111,13 +118,12 @@ export const useReport = () => {
 
     },
 
-
+    setIsCustom(isCustom: boolean) {
+      $rStore.setIsCustom(isCustom)
+    },
 
 
     async getViewReport(data: RecipientDataFormInterface, isCustom: boolean) {
-
-
-
       let tokens = undefined
       let resp = undefined
 
@@ -129,9 +135,6 @@ export const useReport = () => {
             message: 'Loading...'
           }
         });
-
-
-
 
 
         resp = await getReportRecipientsByReportId(data, {
@@ -169,8 +172,32 @@ export const useReport = () => {
       return resp.ok ? resp.data : undefined
     },
 
-    setIsCustom(isCustom: boolean) {
-      $rStore.setIsCustom(isCustom)
+
+    async getReportData(data: RecipientDataFormInterface, isCustom: boolean) {
+      let resp = undefined
+
+      if (!isCustom)
+        resp = await getReportRecipientsByReportId(data, {
+          loading: {
+            message: 'Loading ...'
+          }
+        })
+
+
+      else
+        resp = await getReportRecipientsByReportIdCustom(data.id, {
+          loading: {
+            message: 'Loading ...'
+          }
+        })
+
+
+      if (!resp) return
+
+      $rStore.setRecipientsFiltered(resp.data.members || [])
+      return resp.ok ? resp.data : undefined
     },
+
+
   }
 };

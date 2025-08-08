@@ -54,9 +54,9 @@
                   @click="() => emailReceiptByTransactionId_Co(col.value)"
                 />
 
-                <p v-else>
+                <div v-else>
                   {{ col.value }}
-                </p>
+                </div>
               </q-td>
             </q-tr>
           </template>

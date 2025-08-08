@@ -174,7 +174,7 @@ export const useAuth = () => {
     if (!result || !result.ok)
       return logOut()
 
-    showToast(result.ok, 'User logged', 'Incorrect username and/or password')
+    showToast(result.ok, 'Admin User Logged In Successfully ', 'Incorrect username and/or password')
 
     processLogin(result)
   }

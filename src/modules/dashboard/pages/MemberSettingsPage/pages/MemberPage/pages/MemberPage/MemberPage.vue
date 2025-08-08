@@ -93,7 +93,7 @@
                       class="q-mr-sm q-mt-sm"
                       style="background: var(--happypurim); color: white"
                       label="Reset Login Code"
-                      @click="onResetLoginCode"
+                      @click="confirmResetLoginDialogFlag = true"
                     />
                   </q-item-section>
                 </q-item>
@@ -200,7 +200,7 @@
               class="q-mr-sm q-mt-sm"
               style="background: var(--happypurim); color: white"
               label="Reset Login Code"
-              @click="onResetLoginCode"
+              @click="confirmResetLoginDialogFlag = true"
             />
             <q-btn
               icon="email"
@@ -651,6 +651,16 @@
       :msg="`Are you sure you want to clear the cart for this member?`"
       v-model="clearCartMemberDialogFlag"
     />
+    <!--* confirm reset login --->
+    <DialogAlert
+      @on-finish="
+        (value) => {
+          if (value) onResetLoginCode()
+        }
+      "
+      :msg="`Are you sure you want to reset the login code for this member?`"
+      v-model="confirmResetLoginDialogFlag"
+    />
 
     <!--=========================== END OF SECTION ===========================-->
   </template>
@@ -708,6 +718,7 @@ const recordPaymentDialogFlag = ref<boolean>(false)
 const emailLoginCodeDialogFlag = ref<boolean>(false)
 const deleteMemberDialogFlag = ref<boolean>(false)
 const clearCartMemberDialogFlag = ref<boolean>(false)
+const confirmResetLoginDialogFlag = ref<boolean>(false)
 
 const categories = ref<CheckboxItemInterface[]>([])
 

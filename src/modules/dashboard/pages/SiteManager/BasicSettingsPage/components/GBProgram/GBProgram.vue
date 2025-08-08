@@ -20,7 +20,7 @@
         <q-input
           v-model="realForm.costPerPerson.value"
           outlined
-          label="Cost Per Person $"
+          label="Cost Per Person $ *"
           lazy-rules
           :rules="[lazyRules.required(), lazyRules.greaterThan(0, true)]"
           type="number"
@@ -32,7 +32,7 @@
         <q-input
           v-model="realForm.maximumCharge.value"
           outlined
-          label="Maximum Charge $"
+          label="Maximum Charge $ *"
           lazy-rules
           :rules="[lazyRules.required(), lazyRules.greaterThan(0, true)]"
           type="number"
@@ -45,7 +45,7 @@
         <q-input
           v-model="realForm.reciprocityCharge.value"
           outlined
-          label="Reciprocity Price $"
+          label="Reciprocity Price $ *"
           lazy-rules
           :rules="[lazyRules.required(), lazyRules.greaterThan(0, true)]"
           type="number"
@@ -69,7 +69,7 @@
         mask="date"
         lazy-rules
         :rules="[...dateRules]"
-        label="Date"
+        label="Date *"
       >
         <template v-slot:append>
           <q-icon name="event" class="cursor-pointer">
@@ -95,7 +95,7 @@
         outlined
         readonly
         v-model="timeValue"
-        label="Time"
+        label="Time *"
         mask="##:## a.a"
         lazy-rules
         :rules="[...timeRules]"

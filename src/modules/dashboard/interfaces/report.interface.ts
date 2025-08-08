@@ -76,3 +76,9 @@ export enum ReciprocityDataInterface {
   No = "No",
   Yes = "Yes",
 }
+
+export interface SpecialReportInterface {
+  name: string;
+  description: string;
+  url: string
+}

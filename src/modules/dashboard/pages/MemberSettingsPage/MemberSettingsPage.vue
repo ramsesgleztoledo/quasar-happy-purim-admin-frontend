@@ -55,6 +55,7 @@
           </div>
         </div>
         <q-table
+          @update:pagination="onPaginationUpdate"
           title="Member List"
           :style="{ height: isFullScreen ? '800px' : '630px' }"
           class="table-sticky-header-column-table sticky-2-column-table"
@@ -65,9 +66,7 @@
           :columns="columns"
           row-key="m_id"
           styles="height: 360px"
-          :pagination="{
-            rowsPerPage: 20,
-          }"
+          v-model:pagination="pagination"
           @row-click="
             (evt: Event, row: MemberInterface, index: number) => {
               console.log('row ', { row })
@@ -96,12 +95,12 @@
                   <!-- <q-icon v-else color="primary" size="large" name="visibility" /> -->
                 </div>
 
-                <p v-else style="cursor: pointer; overflow: hidden; text-overflow: ellipsis">
+                <div v-else style="cursor: pointer; overflow: hidden; text-overflow: ellipsis">
                   {{ col.value }}
                   <q-tooltip>
                     {{ col.value }}
                   </q-tooltip>
-                </p>
+                </div>
               </q-td>
             </q-tr>
           </template>
@@ -112,7 +111,7 @@
 </template>
 
 <script setup lang="ts">
-import type { QTableColumn } from 'quasar'
+import type { QTableColumn, QTableProps } from 'quasar'
 import { convertToUSDate } from 'src/helpers/convertToUSDate'
 import { onMounted, ref, watch } from 'vue'
 import { useRouter } from 'vue-router'
@@ -121,6 +120,7 @@ import type { MemberInterface } from '../../interfaces/member-interfaces'
 import { useMember } from '../../composables/useMember'
 import type { ShulCategoryInterface } from '../../interfaces/category-interfaces'
 import { useDashboardStore } from '../../store/dashboardStore/dashboardStore'
+import { compareValues } from 'src/helpers/compareValues'
 
 const { isMobile } = useUI()
 const $router = useRouter()
@@ -128,6 +128,10 @@ const $dStore = useDashboardStore()
 const { memberState, getMembers_Co } = useMember()
 
 const isFullScreen = ref(false)
+
+const pagination = ref<QTableProps['pagination']>({
+  rowsPerPage: 20,
+})
 
 const goToMember = (memberId: number) => {
   $router.push({
@@ -138,70 +142,58 @@ const goToMember = (memberId: number) => {
   })
 }
 
-const auxColumns: QTableColumn[] = [
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const auxColumns: { label: string; field: string; format?: any }[] = [
   {
-    name: 'm_hidden',
     label: 'Hidden',
     field: 'm_hidden',
   },
   {
-    name: 'lastName',
     label: 'Last Name',
     field: 'm_LastName',
   },
 
   {
-    name: 'firstName',
     label: 'First Name',
     field: 'm_FName',
   },
   {
-    name: 'spouse',
     field: 'm_SFName',
     label: 'Spouse',
   },
   {
-    name: 'title',
     field: 'm_title',
     label: 'Title',
   },
   {
-    name: 'address',
     field: 'm_Address1',
     label: 'Address',
   },
   {
-    name: 'city',
     field: 'm_City',
     label: 'City',
   },
   {
-    name: 'zipCode',
     field: 'm_Zip',
     label: 'Zip Code',
   },
   {
-    name: 'phone',
     field: 'm_phone',
     label: 'Phone#',
   },
   {
-    name: 'email',
     field: 'm_email',
     label: 'Email',
   },
   {
-    name: 'code',
     field: 'm_Code',
     label: 'Code',
   },
   {
-    name: 'misc',
     field: 'm_misc',
     label: 'Misc',
   },
   {
-    name: 'dateAdded',
     label: 'Date Added',
     field: 'm_added',
     format: (date: string) => convertToUSDate(date),
@@ -215,6 +207,7 @@ const columns: QTableColumn[] = auxColumns.map((co) => ({
   required: true,
   sortable: true,
   align: 'left',
+  name: co.field,
 }))
 
 const filters = ref<{
@@ -246,6 +239,23 @@ onMounted(() => {
     search: filters.value.search,
   })
 })
+
+const onPaginationUpdate = (newPagination: QTableProps['pagination']) => {
+  if (newPagination?.sortBy) {
+    const { sortBy, descending } = newPagination
+    if (sortBy) {
+      memberState.value.members.sort((a, b) => {
+        const valA = a[sortBy as keyof MemberInterface]
+        const valB = b[sortBy as keyof MemberInterface]
+
+        console.log({ valA, valB, sortBy, a })
+
+        return compareValues(valA, valB, descending)
+      })
+    }
+    pagination.value = newPagination
+  }
+}
 
 watch(
   filters,

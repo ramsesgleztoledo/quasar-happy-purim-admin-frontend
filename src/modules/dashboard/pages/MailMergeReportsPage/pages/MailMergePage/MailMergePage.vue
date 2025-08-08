@@ -338,7 +338,7 @@
               popup-content-class="q-menu-300"
               v-model="orderByPDF"
               :options="$rStore.$state.tokens"
-              label="Order By *"
+              label="Order By"
               filled
               style="width: 100%"
             />
@@ -365,7 +365,7 @@
           v-close-popup
         />
         <q-btn
-          :disable="!pdfTitle || !orderByPDF"
+          :disable="!pdfTitle"
           style="background: var(--happypurim); color: white"
           label="Generate"
           class="q-mr-sm q-mt-sm"
@@ -687,11 +687,14 @@ const onGeneratePDF = async () => {
   await generatePDF({
     title: pdfTitle.value,
     content: content,
-    memberIds: sortArrayByField(
-      $rStore.$state.selectedRecipients,
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      orderByPDF.value as any,
-      isAsc.value,
+    memberIds: (orderByPDF.value
+      ? sortArrayByField(
+          $rStore.$state.selectedRecipients,
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          orderByPDF.value as any,
+          isAsc.value,
+        )
+      : $rStore.$state.selectedRecipients
     ).map((re) => re.ID),
   })
 }

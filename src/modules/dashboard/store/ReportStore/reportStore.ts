@@ -1,7 +1,7 @@
 
 import { defineStore, acceptHMRUpdate } from 'pinia';
 import type { reportStateInterface } from './report-store-interfaces';
-import type { RecipientDataInterface, RecipientMemberInterface, ReportDataInterface } from '../../interfaces/report.interface';
+import type { RecipientDataInterface, RecipientMemberInterface, ReportDataInterface, SpecialReportInterface } from '../../interfaces/report.interface';
 import type { NoneType } from '../../services/service-interfaces';
 
 
@@ -11,10 +11,13 @@ const initialState: reportStateInterface = {
   customReports: [],
   report: undefined,
   selectedRecipients: [],
+  recipientsFiltered: [],
   reportId: "",
   images: [],
   tokens: [],
-  isCustom: false
+  isCustom: false,
+  advancedReportsSpecial: [],
+  customReportsSpecial: [],
 }
 
 export const useReportStore = defineStore('reportStore', {
@@ -48,11 +51,17 @@ export const useReportStore = defineStore('reportStore', {
     setAdvancedReports(advancedReports: ReportDataInterface[]) {
       this.advancedReports = advancedReports.map(item => ({ ...item }));
     },
+    setAdvancedReportsSpecial(advancedReportsSpecial: SpecialReportInterface[]) {
+      this.advancedReportsSpecial = advancedReportsSpecial.map(item => ({ ...item }));
+    },
     setBasicReports(basicReports: ReportDataInterface[]) {
       this.basicReports = basicReports.map(item => ({ ...item }));
     },
     setCustomReports(customReports: ReportDataInterface[]) {
       this.customReports = customReports.map(item => ({ ...item }));
+    },
+    setCustomReportsSpecial(customReportsSpecial: SpecialReportInterface[]) {
+      this.customReportsSpecial = customReportsSpecial.map(item => ({ ...item }));
     },
     setReport(report: RecipientDataInterface | NoneType) {
       this.report = report;
@@ -60,6 +69,9 @@ export const useReportStore = defineStore('reportStore', {
     },
     setSelectedRecipients(selectedRecipients: RecipientMemberInterface[]) {
       this.selectedRecipients = selectedRecipients.map(item => ({ ...item }));
+    },
+    setRecipientsFiltered(recipientsFiltered: RecipientMemberInterface[]) {
+      this.recipientsFiltered = recipientsFiltered.map(item => ({ ...item }));
     },
     setReportId(reportId: string | number) {
       this.reportId = reportId

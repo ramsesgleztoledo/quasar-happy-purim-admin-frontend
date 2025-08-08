@@ -1,6 +1,6 @@
 import { useApiCall } from "src/services/apiCall";
 import type { ApiCallResponseInterface, ExtraOptionsInterface } from "src/services/api-interfaces";
-import type { CustomReportInterface, RecipientDataFormInterface, RecipientDataInterface, ReportResponseInterface } from "../interfaces/report.interface";
+import type { CustomReportInterface, RecipientDataFormInterface, RecipientDataInterface, ReportResponseInterface, SpecialReportInterface } from "../interfaces/report.interface";
 
 
 
@@ -109,6 +109,22 @@ export const useReportsService = () => {
     },
     getDonateFilters: async (extraOptions?: ExtraOptionsInterface): Promise<ApiCallResponseInterface<string[]>> => {
       const nextUrl = `/Receiving-from-report/filter-by-donate-basket-options`;
+      const url = `${baseUrl}${nextUrl}`;
+      return await apiCall({
+        url,
+        extraOptions,
+      })
+    },
+    getCustomSpecialReports: async (extraOptions?: ExtraOptionsInterface): Promise<ApiCallResponseInterface<SpecialReportInterface[]>> => {
+      const nextUrl = `/special-custom-reports`;
+      const url = `${baseUrl}${nextUrl}`;
+      return await apiCall({
+        url,
+        extraOptions,
+      })
+    },
+    getAdvancedSpecialReports: async (extraOptions?: ExtraOptionsInterface): Promise<ApiCallResponseInterface<SpecialReportInterface[]>> => {
+      const nextUrl = `/special-advanced-reports`;
       const url = `${baseUrl}${nextUrl}`;
       return await apiCall({
         url,

@@ -90,7 +90,7 @@ const columns: QTableColumn<AdminUserInterface>[] = [
     field: 'lastName',
     name: 'lastName',
     required: true,
-    label: 'Las Name',
+    label: 'Last Name',
     align: 'left',
     sortable: true,
   },

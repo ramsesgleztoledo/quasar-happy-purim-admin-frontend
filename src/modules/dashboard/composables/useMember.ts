@@ -278,10 +278,10 @@ export const useMember = () => {
       })
     else
       $q.notify({
-        color: 'blue',
+        color: 'green',
         textColor: 'black',
         icon: 'error',
-        message: 'Member updated',
+        message: 'Member Updated',
       })
 
     if (resp3.ok)
@@ -390,7 +390,7 @@ export const useMember = () => {
       }
     })
 
-    showToast(resp.ok, `the member code was reset`, `something went wrong resetting the code`)
+    showToast(resp.ok, `the login code for this member has been reset`, `something went wrong resetting the code`)
 
     if (!resp.ok || !$mStore.selectedMember) return
 

@@ -50,7 +50,7 @@ interface DialogAlertPropsInterface {
 
 // Define props
 const $props = withDefaults(defineProps<DialogAlertPropsInterface>(), {
-  title: () => 'Confirm !',
+  title: () => 'Confirm!',
 })
 
 const modelVisible = computed({

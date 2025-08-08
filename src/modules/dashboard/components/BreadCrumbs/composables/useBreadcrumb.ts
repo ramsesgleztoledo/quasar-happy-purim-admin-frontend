@@ -57,7 +57,7 @@ export const useBreadcrumb = () => {
       name: 'MembersSettingsPage',
       children: [
         {
-          title: 'Member List',
+          title: 'Add Member & Member List',
           icon: 'group',
           name: 'MembersSettingsPage',
           routeClass: ['MembersSettingsPage', 'MembersSettingsPage-home'],
@@ -102,13 +102,37 @@ export const useBreadcrumb = () => {
       name: 'dashboard-OrderArchivePage',
       routeClass: ['dashboard-OrderArchivePage', 'OrderArchivePage-orders']
     },
-    {
+    // {
 
-      title: 'Mail Merge & Reports',
+    //   title: 'Mail Merge & Reports',
+    //   icon: 'email',
+    //   name: 'dashboard-MailMergeReportsPage',
+    //   routeClass: ['dashboard-MailMergeReportsPage', 'MailMergeReportsPage-MailMergeReportsPage']
+    // },
+
+    {
+      title: 'Reports',
       icon: 'email',
       name: 'dashboard-MailMergeReportsPage',
-      routeClass: ['dashboard-MailMergeReportsPage', 'MailMergeReportsPage-MailMergeReportsPage']
+
+      children: [
+        {
+
+          title: 'Mail Merge & Reports',
+          icon: 'email',
+          name: 'dashboard-MailMergeReportsPage',
+          routeClass: ['dashboard-MailMergeReportsPage', 'MailMergeReportsPage-MailMergeReportsPage']
+        },
+        {
+
+          title: 'Schedule Email',
+          icon: 'email',
+          name: 'MailMergeReportsPage-ScheduleEmail',
+        },
+      ],
+
     },
+
     {
 
       title: 'Print & Labels',
@@ -290,9 +314,15 @@ export const useBreadcrumb = () => {
     },
     {
 
-      title: 'Mail Merge & Reports',
+      title: 'Reports',
       icon: 'email',
       name: 'dashboard-MailMergeReportsPage',
+    },
+    {
+
+      title: 'Scheduled Emails',
+      icon: 'email',
+      name: 'MailMergeReportsPage-ScheduleEmail',
     },
     {
 
