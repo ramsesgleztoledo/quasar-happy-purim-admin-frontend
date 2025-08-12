@@ -64,6 +64,7 @@
 
       <div class="row">
         <q-select
+          v-if="$dStore.categories.length"
           popup-content-class="q-menu-300"
           class="q-ma-sm"
           :style="{ width: isMobile ? '100%' : '250px' }"

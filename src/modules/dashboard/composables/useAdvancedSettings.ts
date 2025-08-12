@@ -255,11 +255,11 @@ export const useAdvancedSettings = () => {
     async updateDonationContent(data: CharitySettingsInterface) {
       const resp = await updateDonationContent(data, {
         loading: {
-          message: 'updating charity settings'
+          message: 'Loading ...'
         }
       })
       showToast(resp.ok,
-        'charity settings updated',
+        'Charity Settings Updated',
         'something went wrong updating charity settings'
       )
     },
@@ -270,8 +270,8 @@ export const useAdvancedSettings = () => {
         }
       })
       showToast(resp.ok,
-        'add-on gift baskets settings updated',
-        'something went wrong updating the add-on gift baskets settings'
+        'Add-on Gift Baskets Settings Updated',
+        'Something went wrong updating the add-on gift baskets settings'
       )
     },
     async updateSendOut(data: Tab2AllowMembersFormInterface) {

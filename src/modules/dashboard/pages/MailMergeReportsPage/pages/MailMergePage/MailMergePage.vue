@@ -179,6 +179,20 @@
                 <!--=========================== END OF SECTION ===========================-->
               </div>
               <div v-else>
+                <q-select
+                  v-if="$dStore.categories.length"
+                  popup-content-class="q-menu-300"
+                  :debounce="500"
+                  class="q-mr-sm q-mb-sm"
+                  :class="{ 'item-width-300': !isMobile, 'w-full': isMobile }"
+                  v-model="categoryFiltered"
+                  outlined
+                  :options="$dStore.categories"
+                  label="Filter by categories"
+                  option-label="categoryName"
+                  option-value="categoryID"
+                />
+
                 <div class="q-pa-md">
                   <div class="row white-container" :class="{ fullscreen: isFullScreen }">
                     <div class="col-12">
@@ -199,7 +213,7 @@
                         flat
                         bordered
                         :title="`Recipients: (${$rStore.$state.selectedRecipients.length})`"
-                        :rows="$rStore.$state.report?.members || []"
+                        :rows
                         :columns="columns"
                         row-key="ID"
                         selection="multiple"
@@ -268,12 +282,10 @@
           <div class="col-12 q-pa-sm">
             <q-btn
               outline
-              label="CANCEL"
+              label="Close"
               class="q-mr-sm"
               style="color: #990000; border-color: #990000"
-              :to="{
-                name: 'dashboard-MailMergeReportsPage',
-              }"
+              @click="cancelDialogFlag = true"
             />
 
             <q-btn
@@ -562,6 +574,22 @@
       </q-card-actions> </q-card
   ></q-dialog>
 
+  <!--=============================== canceling  =============================-->
+  <DialogAlert
+    @on-finish="
+      (value) => {
+        if (value)
+          $router.push({
+            name: 'dashboard-MailMergeReportsPage',
+          })
+      }
+    "
+    msg="Are you sure you want to close this page? Everything will be lost."
+    v-model="cancelDialogFlag"
+  />
+
+  <!--=========================== END OF SECTION ===========================-->
+
   <!--=========================== END OF SECTION ===========================-->
 </template>
 
@@ -587,15 +615,32 @@ import { turnTimeAndDate } from 'src/helpers/turnTimeAndDate'
 import type { RecipientMemberInterface } from 'src/modules/dashboard/interfaces/report.interface'
 import type { QTableColumn } from 'quasar'
 import { sortArrayByField } from 'src/helpers/sortArrayByfield'
+import { useDashboardStore } from 'src/modules/dashboard/store/dashboardStore/dashboardStore'
+import type { ShulCategoryInterface } from 'src/modules/dashboard/interfaces/category-interfaces'
+import DialogAlert from 'src/components/DialogAlert/DialogAlert.vue'
 
 const $router = useRouter()
 const $rStore = useReportStore()
+const $dStore = useDashboardStore()
+
+const categoryFiltered = ref<ShulCategoryInterface | undefined>(undefined)
+
+const rows = computed(() => {
+  const members = $rStore.$state.report?.members || []
+  if (!categoryFiltered.value) return members
+
+  return members.filter((member) =>
+    member.Categories.toLowerCase().includes(`${categoryFiltered.value?.categoryID}`.toLowerCase()),
+  )
+})
+
 const { isMobile } = useUI()
 const { getData, generatePDF, sendNowEmail, addUnmergedEmailJobToTable } = useMailMerge()
 const { addDrafts } = useDraft()
 
 const preview = ref(false)
 const isFullScreen = ref(false)
+const cancelDialogFlag = ref(false)
 
 const pageView = ref('1')
 const pageOption = computed(() => [

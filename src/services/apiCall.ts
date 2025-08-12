@@ -48,15 +48,15 @@ export const useApiCall = () => {
         return $router.push({ name: 'LogOutPage' });
 
       case 500:
-      case 404:
         options.message = 'Internal error, please try again later'
         if (!extraOptions?.dontShowToast) $q.notify(options)
         return extraOptions?.dontRedirect ? null : $router.push({ name: '500' });
 
       case 403:
-        options.message = 'You have not permission to check this information'
+      case 404:
+        options.message = `You don't have permission to check this information`
         $q.notify(options)
-        return extraOptions?.goBackIn403 ? $router.back() : null
+        return extraOptions?.goBackIn400Error ? $router.back() : null
 
       default:
         options.message = 'Internal fronted error, please try again later'

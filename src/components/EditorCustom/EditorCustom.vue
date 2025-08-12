@@ -44,6 +44,7 @@
         'removeFormat',
       ],
       ['undo', 'redo'],
+      ['quote', 'unordered', 'ordered', 'outdent', 'indent', 'line-height'],
       ['token', 'insert', 'stringTokens', 'hr', 'link', 'custom_btn', showUploader ? 'upload' : ''],
       [
         {

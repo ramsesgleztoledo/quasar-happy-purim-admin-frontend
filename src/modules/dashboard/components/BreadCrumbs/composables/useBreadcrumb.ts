@@ -57,10 +57,17 @@ export const useBreadcrumb = () => {
       name: 'MembersSettingsPage',
       children: [
         {
-          title: 'Add Member & Member List',
+          title: 'Member List',
           icon: 'group',
           name: 'MembersSettingsPage',
           routeClass: ['MembersSettingsPage', 'MembersSettingsPage-home'],
+        },
+        {
+
+          title: 'Add Member',
+          icon: 'person_add',
+          name: 'MembersSettingsPage-AddMemberPage',
+
         },
         {
 
@@ -111,7 +118,7 @@ export const useBreadcrumb = () => {
     // },
 
     {
-      title: 'Reports',
+      title: 'Reports & Mails',
       icon: 'email',
       name: 'dashboard-MailMergeReportsPage',
 
@@ -119,14 +126,14 @@ export const useBreadcrumb = () => {
         {
 
           title: 'Mail Merge & Reports',
-          icon: 'email',
+          icon: 'receipt_long',
           name: 'dashboard-MailMergeReportsPage',
           routeClass: ['dashboard-MailMergeReportsPage', 'MailMergeReportsPage-MailMergeReportsPage']
         },
         {
 
-          title: 'Schedule Email',
-          icon: 'email',
+          title: 'Scheduled Emails',
+          icon: 'forward_to_inbox',
           name: 'MailMergeReportsPage-ScheduleEmail',
         },
       ],

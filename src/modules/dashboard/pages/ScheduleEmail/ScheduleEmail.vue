@@ -36,8 +36,8 @@
                     <div class="row">
                       <q-btn
                         class="q-mr-sm"
-                        padding="none"
-                        color="primary"
+                        style="background-color: var(--happypurim); color: white"
+                        label="view"
                         flat
                         icon="visibility"
                         @click="
@@ -57,8 +57,8 @@
                       </q-btn>
                       <q-btn
                         class="q-mr-sm"
-                        padding="none"
-                        color="primary"
+                        style="background-color: var(--happypurim); color: white"
+                        label="cancel"
                         flat
                         icon="cancel"
                         @click="
@@ -176,7 +176,15 @@ const columnsQueue: QTableColumn<ScheduleEmailInterface>[] = [
   {
     name: 'campaignId',
     required: true,
-    label: ' Options',
+    label: 'Options',
+    align: 'left',
+    field: 'campaignId',
+    sortable: true,
+  },
+  {
+    name: 'id',
+    required: true,
+    label: 'Campaign ID',
     align: 'left',
     field: 'campaignId',
     sortable: true,
@@ -184,7 +192,7 @@ const columnsQueue: QTableColumn<ScheduleEmailInterface>[] = [
   {
     name: 'emailCount',
     required: true,
-    label: '# Pending',
+    label: 'Number Of Emails Pending',
     align: 'left',
     field: 'emailCount',
     sortable: true,
@@ -197,16 +205,6 @@ const columnsQueue: QTableColumn<ScheduleEmailInterface>[] = [
     field: 'adminName',
     sortable: true,
   },
-
-  {
-    name: 'formattedSendingDate',
-    required: true,
-    label: 'Date Added',
-    align: 'left',
-    field: 'formattedSendingDate',
-    sortable: true,
-    // format: (date: string) => convertToUSDate(date),
-  },
   {
     name: 'subject',
     required: true,
@@ -214,6 +212,16 @@ const columnsQueue: QTableColumn<ScheduleEmailInterface>[] = [
     align: 'left',
     field: 'subject',
     sortable: true,
+  },
+
+  {
+    name: 'formattedSendingDate',
+    required: true,
+    label: 'Sending Date',
+    align: 'left',
+    field: 'formattedSendingDate',
+    sortable: true,
+    // format: (date: string) => convertToUSDate(date),
   },
 ]
 // const columnsSent: QTableColumn[] = [

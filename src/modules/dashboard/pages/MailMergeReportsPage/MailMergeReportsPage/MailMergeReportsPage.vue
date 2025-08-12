@@ -23,7 +23,40 @@
   <div class="row q-mb-md">
     <q-btn-toggle v-model="pageView" spread no-caps :options="pageOption" style="width: 445px" />
   </div>
-
+  <div class="row" v-if="pageView != '1'">
+    <div class="col-12 MailMergeReportsPage-container">
+      <div class="row q-mb-sm" v-for="item in specialReports" :key="item.name">
+        <div class="col-12">
+          <q-item class="MailMergeReportsPage-item">
+            <q-item-section
+              ><q-item-label>
+                <div class="row">
+                  {{ item.name }}
+                </div>
+              </q-item-label>
+              <q-item-label caption> {{ item.description }} </q-item-label></q-item-section
+            >
+            <q-item-section side>
+              <div class="row">
+                <q-btn
+                  class="q-mr-sm"
+                  padding="none"
+                  color="primary"
+                  flat
+                  icon="visibility"
+                  @click="viewSpecialReport(item.url)"
+                >
+                  <q-tooltip>
+                    <div>View Report</div>
+                  </q-tooltip>
+                </q-btn>
+              </div>
+            </q-item-section>
+          </q-item>
+        </div>
+      </div>
+    </div>
+  </div>
   <div class="row">
     <div class="col-12 MailMergeReportsPage-container">
       <div class="row q-mb-sm" v-for="item in reports" :key="item.reportID">
@@ -105,40 +138,6 @@
                 >
                   <q-tooltip>
                     <div>Print Report</div>
-                  </q-tooltip>
-                </q-btn>
-              </div>
-            </q-item-section>
-          </q-item>
-        </div>
-      </div>
-    </div>
-  </div>
-  <div class="row" v-if="pageView != '1'">
-    <div class="col-12 MailMergeReportsPage-container">
-      <div class="row q-mb-sm" v-for="item in specialReports" :key="item.name">
-        <div class="col-12">
-          <q-item class="MailMergeReportsPage-item">
-            <q-item-section
-              ><q-item-label>
-                <div class="row">
-                  {{ item.name }}
-                </div>
-              </q-item-label>
-              <q-item-label caption> {{ item.description }} </q-item-label></q-item-section
-            >
-            <q-item-section side>
-              <div class="row">
-                <q-btn
-                  class="q-mr-sm"
-                  padding="none"
-                  color="primary"
-                  flat
-                  icon="visibility"
-                  @click="viewSpecialReport(item.url)"
-                >
-                  <q-tooltip>
-                    <div>View Report</div>
                   </q-tooltip>
                 </q-btn>
               </div>

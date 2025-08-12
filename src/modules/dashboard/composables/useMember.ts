@@ -87,7 +87,7 @@ export const useMember = () => {
     try {
 
       const member = await getMemberById(memberId, {
-        goBackIn403: true
+        goBackIn400Error: true
       })
 
       if (!member.ok)

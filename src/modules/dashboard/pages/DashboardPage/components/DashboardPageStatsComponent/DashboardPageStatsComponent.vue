@@ -7,7 +7,7 @@
     <div class="col-8 q-pt-md">
       <div class="row">
         <div class="col-12">
-          <b class="DashboardPageStatsComponent-members">Members:</b>
+          <b class="DashboardPageStatsComponent-members">Members Statistics:</b>
         </div>
       </div>
       <div class="DashboardPageStatsComponent-labels-container">

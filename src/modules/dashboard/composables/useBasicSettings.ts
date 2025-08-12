@@ -5,12 +5,16 @@ import type { FundraiserCoordinatorFormInterface, GiftBasketProgramFormInterface
 import { useQuasar } from "quasar";
 import type { ApiCallResponseInterface } from "src/services/api-interfaces";
 import { useUI } from "src/modules/UI/composables";
+import { useDashboardService } from "../services/dashboard.service";
+import { useDashboardStore } from "../store/dashboardStore/dashboardStore";
 
 
 export const useBasicSettings = () => {
 
 
   const $bsStore = useBasicSettingsStore()
+  const $dStore = useDashboardStore()
+  const { getFundraiserStatus } = useDashboardService()
   const $q = useQuasar()
 
   const { getSettings, updateOrganizationInformation, updateFundraiserCoordinator, updatePricingSettings, getWelcomePage, updateWelcomePage, getFiles, uploadFile, deleteFile } = useBasicSettingsService()
@@ -63,22 +67,8 @@ export const useBasicSettings = () => {
         },
         dontRedirect: true
       })
-      if (resp.ok) {
-        $q.notify({
-          color: 'green',
-          textColor: 'black',
-          icon: 'error',
-          message: 'Organization Information Updated',
-        })
-      }
-      else {
-        $q.notify({
-          color: 'red',
-          textColor: 'black',
-          icon: 'error',
-          message: `something went wrong updating organization information`,
-        })
-      }
+
+      showToast(resp.ok, 'Organization Information Updated', `Something went wrong updating organization information`)
 
     },
     async updateFundraiserCoordinator(data: FundraiserCoordinatorFormInterface) {
@@ -88,48 +78,26 @@ export const useBasicSettings = () => {
         },
         dontRedirect: true
       })
-      if (resp.ok) {
-        $q.notify({
-          color: 'green',
-          textColor: 'black',
-          icon: 'error',
-          message: 'Fundraiser Coordinator Updated',
-        })
-      }
-      else {
-        $q.notify({
-          color: 'red',
-          textColor: 'black',
-          icon: 'error',
-          message: `something went wrong updating fundraiser coordinator`,
-        })
-      }
+
+      showToast(resp.ok, 'Fundraiser Coordinator Updated', `something went wrong updating fundraiser coordinator`)
+
 
     },
     async updatePricingSettings(data: GiftBasketProgramFormInterface) {
       const resp = await updatePricingSettings(data, {
         loading: {
-          message: 'Updating Gift Basket Program...'
+          message: 'Loading ...'
         },
         dontRedirect: true
       })
-      if (resp.ok) {
-        $q.notify({
-          color: 'green',
-          textColor: 'black',
-          icon: 'error',
-          message: 'Gift Basket Program Updated',
-        })
-      }
-      else {
-        $q.notify({
-          color: 'red',
-          textColor: 'black',
-          icon: 'error',
-          message: `something went wrong updating Gift Basket Program`,
-        })
-      }
 
+      showToast(resp.ok, 'Gift Basket Program Updated', `Something went wrong updating Gift Basket Program`)
+
+      if (!resp.ok) return
+
+      const status = await getFundraiserStatus()
+      if (status.ok)
+        $dStore.setFundraiserStatus(status.data)
     },
     async updateWelcomePage(html: string) {
       const resp = await updateWelcomePage(html, {
@@ -138,23 +106,9 @@ export const useBasicSettings = () => {
         },
         dontRedirect: true
       })
-      if (resp.ok) {
-        $q.notify({
-          color: 'green',
-          textColor: 'black',
-          icon: 'error',
-          message: 'welcome page updated',
-        })
-      }
-      else {
-        $q.notify({
-          color: 'red',
-          textColor: 'black',
-          icon: 'error',
-          message: `something went wrong updating the welcome page`,
-        })
-      }
 
+
+      showToast(resp.ok, 'Welcome Page Updated', `Something went wrong updating the welcome page`)
     },
     async uploadFiles(files: File[]) {
 

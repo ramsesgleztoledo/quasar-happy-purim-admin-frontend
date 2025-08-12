@@ -27,6 +27,7 @@
     </q-input>
 
     <q-select
+      v-if="$dStore.categories.length"
       popup-content-class="q-menu-300"
       :debounce="500"
       class="q-mr-sm q-mb-sm"
@@ -69,8 +70,6 @@
           v-model:pagination="pagination"
           @row-click="
             (evt: Event, row: MemberInterface, index: number) => {
-              console.log('row ', { row })
-
               goToMember(row.m_id)
             }
           "
@@ -114,7 +113,7 @@
 import type { QTableColumn, QTableProps } from 'quasar'
 import { convertToUSDate } from 'src/helpers/convertToUSDate'
 import { onMounted, ref, watch } from 'vue'
-import { useRouter } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 import { useUI } from 'src/modules/UI/composables'
 import type { MemberInterface } from '../../interfaces/member-interfaces'
 import { useMember } from '../../composables/useMember'
@@ -124,6 +123,7 @@ import { compareValues } from 'src/helpers/compareValues'
 
 const { isMobile } = useUI()
 const $router = useRouter()
+const $route = useRoute()
 const $dStore = useDashboardStore()
 const { memberState, getMembers_Co } = useMember()
 
@@ -234,6 +234,7 @@ const onClearFilters = () => {
 }
 
 onMounted(() => {
+  loadPage()
   getMembers_Co({
     category: filters.value.category?.categoryID ?? '',
     search: filters.value.search,
@@ -248,13 +249,34 @@ const onPaginationUpdate = (newPagination: QTableProps['pagination']) => {
         const valA = a[sortBy as keyof MemberInterface]
         const valB = b[sortBy as keyof MemberInterface]
 
-        console.log({ valA, valB, sortBy, a })
-
         return compareValues(valA, valB, descending)
       })
     }
     pagination.value = newPagination
   }
+}
+
+const goToPage = (categoryId: number | undefined, search: string) => {
+  $router.push({
+    name: 'MembersSettingsPage-home',
+    query: {
+      search,
+      categoryId,
+    },
+  })
+}
+
+const loadPage = () => {
+  const { categoryId, search } = $route.query
+
+  filters.value = {
+    category: categoryId
+      ? $dStore.categories.find((c) => c.categoryID == Number(categoryId))
+      : undefined,
+    search: search ? `${search}` : '',
+  }
+
+  goToPage(filters.value.category?.categoryID, filters.value.search)
 }
 
 watch(
@@ -267,6 +289,7 @@ watch(
 
     oldValue.value = { ...newValue }
 
+    goToPage(filters.value.category?.categoryID, newValue.search)
     getMembers_Co({
       category: filters.value.category?.categoryID ?? '',
       search: filters.value.search,

@@ -36,8 +36,8 @@
                     <div class="row">
                       <q-btn
                         class="q-mr-sm"
-                        padding="none"
-                        color="primary"
+                        style="background-color: var(--happypurim); color: white"
+                        label="view"
                         flat
                         icon="visibility"
                         @click="
@@ -157,15 +157,15 @@ const columns: QTableColumn<EmailToBeSentInterface>[] = [
     sortable: true,
   },
 
-  {
-    name: 'dateSent',
-    required: true,
-    label: 'Date Added',
-    align: 'left',
-    field: 'dateSent',
-    sortable: true,
-    format: (date: string) => (date ? date : 'N/A'),
-  },
+  // {
+  //   name: 'dateSent',
+  //   required: true,
+  //   label: 'Date Added',
+  //   align: 'left',
+  //   field: 'dateSent',
+  //   sortable: true,
+  //   format: (date: string) => (date ? date : 'N/A'),
+  // },
 ]
 
 const openEmailContent = async (id: number | string) => {

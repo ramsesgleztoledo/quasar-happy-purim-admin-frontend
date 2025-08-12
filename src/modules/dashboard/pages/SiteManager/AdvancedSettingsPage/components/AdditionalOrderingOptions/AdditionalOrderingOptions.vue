@@ -151,6 +151,22 @@
             </div>
           </div>
 
+          <div class="row q-mt-sm q-mb-md">
+            <div class="col-12 justify-content-end">
+              <q-btn
+                style="background: white; color: var(--happypurim)"
+                icon="save"
+                label="Save"
+                @click="
+                  () =>
+                    updateAdditionalOrderingItems({
+                      enabled: sellAdditionalFlag,
+                      message: sellAdditionalText,
+                    })
+                "
+              />
+            </div>
+          </div>
           <div class="row">
             <div class="col-12">
               <div class="separator-bottom q-mb-sm"></div>
@@ -297,23 +313,6 @@
                       </q-table>
                     </div>
                   </div>
-                </div>
-              </div>
-              <div class="separator-bottom q-mb-md"></div>
-              <div class="row q-mt-sm q-mb-md">
-                <div class="col-12 justify-content-end">
-                  <q-btn
-                    style="background: white; color: var(--happypurim)"
-                    icon="save"
-                    label="Save"
-                    @click="
-                      () =>
-                        updateAdditionalOrderingItems({
-                          enabled: sellAdditionalFlag,
-                          message: sellAdditionalText,
-                        })
-                    "
-                  />
                 </div>
               </div>
             </div>

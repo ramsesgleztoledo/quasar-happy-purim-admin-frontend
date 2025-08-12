@@ -154,18 +154,12 @@
                 v-model="realForm.misc.value"
                 outlined
                 label="Misc *"
-                @keypress="onlyDigits"
                 lazy-rules
                 :rules="[lazyRules.required()]"
               />
             </div>
             <div class="col-6 q-pl-sm q-pr-sm">
-              <q-input
-                v-model="realForm.misc2.value"
-                outlined
-                label="Misc 2"
-                @keypress="onlyDigits"
-              />
+              <q-input v-model="realForm.misc2.value" outlined label="Misc 2" />
             </div>
           </div>
           <div class="row q-mt-md">
@@ -395,9 +389,9 @@
 </template>
 
 <script setup lang="ts">
+// import { onlyDigits } from 'src/helpers/onlyDigits'
 import DialogAlert from 'src/components/DialogAlert/DialogAlert.vue'
 import { lazyRules, useForm, validations } from 'src/composables'
-import { onlyDigits } from 'src/helpers/onlyDigits'
 import { useMember } from 'src/modules/dashboard/composables/useMember'
 import { statesOptions } from 'src/modules/dashboard/data'
 import type { ShulCategoryInterface } from 'src/modules/dashboard/interfaces/category-interfaces'

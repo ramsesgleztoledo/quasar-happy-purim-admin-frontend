@@ -16,6 +16,7 @@
       }"
     >
       <q-select
+        v-if="$dStore.categories.length"
         popup-content-class="q-menu-300"
         :class="{ 'item-width-300': !isMobile }"
         v-model="types"
