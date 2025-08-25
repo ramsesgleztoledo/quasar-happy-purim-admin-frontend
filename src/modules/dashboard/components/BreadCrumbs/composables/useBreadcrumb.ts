@@ -36,7 +36,6 @@ export const useBreadcrumb = () => {
         'dashboard-DashboardPage',
         'dashboard-itemDetailsPage',
         'dashboard-memberLoggedPage',
-        'dashboard-transactionPage',
         'dashboard-donationPage',
         'dashboard-receivedBasketPage',
         'dashboard-BasketsToBeShipPage',
@@ -51,6 +50,13 @@ export const useBreadcrumb = () => {
     //   name: 'MembersSettingsPage',
     //   routeClass: ['MembersSettingsPage', 'MembersSettingsPage-home'],
     // },
+    {
+
+      title: 'Transactions History',
+      icon: 'receipt',
+      name: 'dashboard-transactionPage',
+      routeClass: ['dashboard-transactionPage',]
+    },
     {
       title: 'Members',
       icon: 'group',

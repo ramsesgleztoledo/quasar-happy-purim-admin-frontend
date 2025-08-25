@@ -86,8 +86,8 @@
           <b>Promotions</b>
         </label>
         <div v-for="item in promotions" :key="item.id" class="row">
+          <!-- :disable="checkDisabled(item).value" -->
           <q-checkbox
-            :disable="checkDisabled(item).value"
             @update:model-value="(value) => onAddOrRemovePromotion(value, item)"
             v-model="item.selected"
             :label="item.displayText"
@@ -153,7 +153,7 @@
           >
             <template v-slot:item="props">
               <div class="q-pa-sm col-xs-12 col-sm-4 col-md-2">
-                <q-card bordered>
+                <q-card bordered style="height: 100%">
                   <q-card-section
                     class="text-center"
                     style="min-height: 70px; padding: 0px; display: flex"
@@ -192,8 +192,14 @@
                   </q-card-section>
                   <q-separator />
                   <q-card-section class="flex justify-content-end">
-                    <div>
-                      <b> ${{ convertWithCommas(props.row.price || $moStore.getSPrice) }} </b>
+                    <div v-if="memberPriceToShow(props.row.price, $moStore.getSPrice).value">
+                      <b>
+                        ${{
+                          convertWithCommas(
+                            memberPriceToShow(props.row.price, $moStore.getSPrice).value,
+                          )
+                        }}
+                      </b>
                     </div>
                   </q-card-section>
                 </q-card>
@@ -220,7 +226,7 @@ import type {
 import type { StepOneCreateOrderInterface } from '../../interfaces'
 import { useMemberOrderStore } from 'src/modules/dashboard/store/memberOrderStore/memberOrderStore'
 import { getMembersByPromotion } from 'src/modules/dashboard/helpers/getMembersByPromotion'
-import { checkDisabledPromotionHelper } from '../../helpers/member-order-helpers'
+// import { checkDisabledPromotionHelper } from '../../helpers/member-order-helpers'
 import { useDashboardStore } from 'src/modules/dashboard/store/dashboardStore/dashboardStore'
 import type { ShulCategoryInterface } from 'src/modules/dashboard/interfaces/category-interfaces'
 import RowStyle from './components/RowStyle.vue'
@@ -436,12 +442,14 @@ const saveChanges = () => {
   }
 }
 
-const checkDisabled = (promotion: OrderPromotionInterface) =>
-  computed(() => checkDisabledPromotionHelper(promotion, promotions.value))
+// const checkDisabled = (promotion: OrderPromotionInterface) =>
+//   computed(() => checkDisabledPromotionHelper(promotion, promotions.value))
 
 defineExpose<StepOneCreateOrderInterface>({
   saveChanges,
 })
+
+const memberPriceToShow = (price: number, sPrice: number) => computed(() => price || sPrice || 0)
 </script>
 
 <style scoped lang="scss"></style>

@@ -36,30 +36,35 @@ export const useApiCall = () => {
       message: '',
 
     }
-    if (extraOptions?.errorMsg) {
+    if (extraOptions?.errorMsg) 
       options.message = extraOptions.errorMsg
-      $q.notify(options)
-    }
+
+
+
 
     switch (status) {
       case 401:
-        options.message = 'Unauthorized'
+        if (!options.message)
+          options.message = 'Unauthorized'
         if (!extraOptions?.dontShowToast) $q.notify(options)
         return $router.push({ name: 'LogOutPage' });
 
       case 500:
-        options.message = 'Internal error, please try again later'
+        if (!options.message)
+          options.message = 'Internal error, please try again later'
         if (!extraOptions?.dontShowToast) $q.notify(options)
         return extraOptions?.dontRedirect ? null : $router.push({ name: '500' });
 
       case 403:
       case 404:
-        options.message = `You don't have permission to check this information`
+        if (!options.message)
+          options.message = `You don't have permission to check this information`
         $q.notify(options)
         return extraOptions?.goBackIn400Error ? $router.back() : null
 
       default:
-        options.message = 'Internal fronted error, please try again later'
+        if (!options.message)
+          options.message = 'Internal fronted error, please try again later'
         if (!extraOptions?.dontShowToast) $q.notify(options)
         return extraOptions?.dontRedirect ? null : $router.push({ name: '500' });
     }
@@ -159,9 +164,14 @@ export const useApiCall = () => {
     } catch (error: AxiosError | any) {
 
 
+
+
       if (error instanceof AxiosError) {
         if (!extraOptions?.dontUseErrorAction)
-          errorAction(error.status!, extraOptions)
+
+          if (extraOptions?.useRespAsError)
+            extraOptions.errorMsg = error.response?.data
+        errorAction(error.status!, extraOptions)
       }
 
 

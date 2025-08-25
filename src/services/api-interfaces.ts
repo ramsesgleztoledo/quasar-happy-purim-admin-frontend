@@ -14,6 +14,7 @@ export interface ExtraOptionsInterface {
   }
   useCache?: boolean | undefined | null;
   ttl?: number | undefined | null;
+  useRespAsError?: boolean | undefined | null;
 }
 
 export type AxiosMethod = 'GET' | 'POST' | 'PUT' | 'DELETE' | 'HEAD' | 'OPTIONS' | 'PATCH';

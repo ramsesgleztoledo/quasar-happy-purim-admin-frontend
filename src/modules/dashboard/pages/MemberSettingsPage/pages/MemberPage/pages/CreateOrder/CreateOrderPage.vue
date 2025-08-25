@@ -153,6 +153,7 @@ import { useMemberOrder } from 'src/modules/dashboard/composables/useMemberOrder
 import type { StepOneCreateOrderInterface } from './interfaces'
 import { useRouter } from 'vue-router'
 import { useMemberOrderStore } from 'src/modules/dashboard/store/memberOrderStore/memberOrderStore'
+import { useCalculate } from 'src/modules/dashboard/composables/useCalculate'
 
 const $router = useRouter()
 const $moStore = useMemberOrderStore()
@@ -160,6 +161,7 @@ const { isMobile, goToTop } = useUI()
 const { memberState } = useMember()
 const { getInitialData, updateCart, setUpdatedPromotions, orderTotal, placeOrder } =
   useMemberOrder()
+const { setBackendTotal } = useCalculate()
 
 const cancelOrderDialogFlag = ref(false)
 const addReciprocityDialogFlag = ref(false)
@@ -198,6 +200,7 @@ const onNext = async () => {
   await saveStepOne()
   step.value++
   goToTop(createOrderPageContainerRef.value)
+  setBackendTotal()
 }
 
 const continueToPayment = () => {

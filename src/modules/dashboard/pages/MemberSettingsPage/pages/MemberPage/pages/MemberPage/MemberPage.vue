@@ -3,7 +3,7 @@
     <div class="row q-mb-lg">
       <PaginationCustom
         ref="paginationCustomRef"
-        :total="memberState.members.length"
+        :total="memberState.members.members.length"
         :current="currentMemberPage"
         @page-change="onPageChange"
       />
@@ -108,7 +108,7 @@
                     />
                   </q-item-section>
                 </q-item>
-                <q-item clickable v-close-popup>
+                <q-item clickable v-close-popup v-if="memberState.showRecordPaymentBtn">
                   <q-item-section>
                     <q-btn
                       icon="credit_card"
@@ -210,6 +210,7 @@
               @click="emailLoginCodeDialogFlag = true"
             />
             <q-btn
+              v-if="memberState.showRecordPaymentBtn"
               icon="credit_card"
               class="q-mr-sm q-mt-sm"
               style="background: var(--happypurim); color: white"
@@ -774,7 +775,7 @@ const areValidForms = () => {
 }
 
 const onPageChange = (page: number) => {
-  const member = memberState.value.members[page - 1]
+  const member = memberState.value.members.members[page - 1]
 
   const routeId = $route.params.memberId
   const memberId = (member?.m_id || 0).toString()
@@ -791,7 +792,7 @@ const onPageChange = (page: number) => {
 const loadPage = () => {
   isReady.value = false
   currentMemberPage.value =
-    memberState.value.members.findIndex(
+    memberState.value.members.members.findIndex(
       (member) => member.m_id === Number($route.params.memberId),
     ) + 1
   if (currentMemberPage.value === 0) return
@@ -885,7 +886,7 @@ const resetAllForm = (showNotify: boolean = false) => {
       color: 'blue',
       textColor: 'black',
       icon: 'error',
-      message: 'Data reset',
+      message: '"Data Reset"',
     })
 }
 

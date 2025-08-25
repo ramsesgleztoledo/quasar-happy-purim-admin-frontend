@@ -78,7 +78,7 @@
               <div class="col-2">
                 <div class="row">
                   <q-icon
-                    @click="() => addOrRemoveItem(false, aItem, true)"
+                    @click="() => addOrRemoveItemAItem(false, aItem, true)"
                     class="CartItems-icon"
                     name="close"
                     style="color: red"
@@ -130,7 +130,9 @@
               <div class="col-2">
                 <div class="row">
                   <q-icon
-                    @click="() => addOrRemoveItem(false, additionalBasketForPersonalUse!, true)"
+                    @click="
+                      () => addOrRemoveItemAItem(false, additionalBasketForPersonalUse!, true)
+                    "
                     class="CartItems-icon"
                     name="close"
                     style="color: red"
@@ -180,7 +182,9 @@
               <div class="col-2">
                 <div class="row">
                   <q-icon
-                    @click="() => addOrRemoveItem(false, $moStore.getDonations.donationUse!, true)"
+                    @click="
+                      () => addOrRemoveItemAItem(false, $moStore.getDonations.donationUse!, true)
+                    "
                     class="CartItems-icon"
                     name="close"
                     style="color: red"
@@ -328,9 +332,7 @@
               </div>
               <div class="col-3">
                 <div class="CartItems-text">
-                  <b>
-                    ${{ convertWithCommas(membersSelected.reduce((a, b) => a + b.price, 0) || 0) }}
-                  </b>
+                  <b v-if="mishloachTotal"> ${{ convertWithCommas(mishloachTotal) }} </b>
                 </div>
               </div>
             </div>
@@ -369,7 +371,7 @@
               <div class="col-2">
                 <!-- <div class="row">
                   <q-icon
-                    @click="() => addOrRemoveItem(false, aItem, true)"
+                    @click="() => addOrRemoveItemAItem(false, aItem, true)"
                     class="CartItems-icon"
                     name="close"
                     style="color: red"
@@ -389,6 +391,7 @@
 <script setup lang="ts">
 import { convertWithCommas } from 'src/helpers'
 import { useAuth } from 'src/modules/auth/composables/useAuth'
+import { useCalculate } from 'src/modules/dashboard/composables/useCalculate'
 import { useMemberOrder } from 'src/modules/dashboard/composables/useMemberOrder'
 import { getMembersByPromotion } from 'src/modules/dashboard/helpers/getMembersByPromotion'
 import type {
@@ -403,8 +406,18 @@ import { computed } from 'vue'
 const { memberOrderState, addOrRemoveItem, addOrRemoveDonation } = useMemberOrder()
 const { authState } = useAuth()
 const $moStore = useMemberOrderStore()
+const { setBackendTotal } = useCalculate()
 
 // const promotions = ref<ExtendedPromotionType[]>([])
+
+const addOrRemoveItemAItem = (
+  isAdd: boolean,
+  data: MemberOrderItemsInterface,
+  showLoading?: boolean,
+) => {
+  addOrRemoveItem(isAdd, data, showLoading)
+  setBackendTotal()
+}
 
 const promotions = computed(() => {
   const promotionsAux: ExtendedPromotionType[] = []
@@ -437,7 +450,7 @@ const checkIfPromotion = (item: MemberOrderItemsInterface) => {
 }
 
 const removePromotion = async (item: MemberOrderItemsInterface) => {
-  await addOrRemoveItem(
+  await addOrRemoveItemAItem(
     false,
     {
       description: item.description,
@@ -458,6 +471,7 @@ const removePromotion = async (item: MemberOrderItemsInterface) => {
 
 const removeDonate = async (charity: CharityType) => {
   await addOrRemoveDonation(false, charity)
+  setBackendTotal()
 }
 
 // check when orderItemsChange
@@ -491,6 +505,8 @@ const addiTionalItems = computed(() =>
 )
 
 const discounts = computed(() => memberOrderState.value.orderItems.filter((item) => item.price < 0))
+
+const mishloachTotal = membersSelected.value.reduce((a, b) => a + b.price, 0) || 0
 </script>
 
 <style scoped lang="scss">

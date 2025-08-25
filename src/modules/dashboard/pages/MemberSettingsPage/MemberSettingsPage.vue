@@ -63,7 +63,7 @@
           flat
           bordered
           ref="tableRef"
-          :rows="memberState.members"
+          :rows="memberState.members.members"
           :columns="columns"
           row-key="m_id"
           styles="height: 360px"
@@ -104,6 +104,15 @@
             </q-tr>
           </template>
         </q-table>
+        <div
+          v-if="memberState.members.filteredCount != memberState.members.totalCount"
+          class="row justify-content-end"
+        >
+          <span style="font-size: 12px"
+            >{{ memberState.members.filteredCount }} members Filtered of
+            {{ memberState.members.totalCount }}
+          </span>
+        </div>
       </div>
     </div>
   </div>
@@ -245,7 +254,7 @@ const onPaginationUpdate = (newPagination: QTableProps['pagination']) => {
   if (newPagination?.sortBy) {
     const { sortBy, descending } = newPagination
     if (sortBy) {
-      memberState.value.members.sort((a, b) => {
+      memberState.value.members.members.sort((a, b) => {
         const valA = a[sortBy as keyof MemberInterface]
         const valB = b[sortBy as keyof MemberInterface]
 

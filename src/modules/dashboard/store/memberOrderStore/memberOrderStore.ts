@@ -45,7 +45,8 @@ const initialState: MemberOrderStateInterface = {
     email: "",
     paymentType: 1
   },
-  shulSetting: undefined
+  shulSetting: undefined,
+  totalFromBackend: 0,
 }
 
 export const useMemberOrderStore = defineStore('memberOrderStore', {
@@ -144,6 +145,9 @@ export const useMemberOrderStore = defineStore('memberOrderStore', {
     },
     setShulSetting(shulSetting: ShulSettingInterface | NoneType) {
       this.shulSetting = shulSetting
+    },
+    setTotalFromBackend(totalFromBackend: number) {
+      this.totalFromBackend = totalFromBackend
     },
 
   }

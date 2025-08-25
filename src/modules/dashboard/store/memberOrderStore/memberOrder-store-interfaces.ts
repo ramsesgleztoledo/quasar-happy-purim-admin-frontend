@@ -34,5 +34,6 @@ export interface MemberOrderStateInterface {
     email: string
     paymentType: number
   };
-  shulSetting: ShulSettingInterface | NoneType
+  shulSetting: ShulSettingInterface | NoneType;
+  totalFromBackend: number;
 }

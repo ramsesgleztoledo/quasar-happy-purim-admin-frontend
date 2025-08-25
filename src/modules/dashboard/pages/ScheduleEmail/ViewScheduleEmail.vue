@@ -143,7 +143,7 @@ const columns: QTableColumn<EmailToBeSentInterface>[] = [
   {
     name: 'subject',
     required: true,
-    label: 'From Display Name',
+    label: 'Subject',
     align: 'left',
     field: 'subject',
     sortable: true,

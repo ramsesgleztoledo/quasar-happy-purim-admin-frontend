@@ -379,8 +379,8 @@ const onAddUser = async () => {
 
   showToast(
     resp.ok,
-    'user added successfully',
-    `something went wrong adding the user (${resp.msg})`,
+    'User Added Successfully',
+    `Something went wrong adding the user (${resp.msg})`,
   )
   if (resp.ok) {
     resetForm()
@@ -417,6 +417,7 @@ const onSetNewPassword = async () => {
     password: passwordForm.value.password.value,
   })
   setPasswordFlag.value = false
+  resetPasswordForm()
 }
 
 watch(

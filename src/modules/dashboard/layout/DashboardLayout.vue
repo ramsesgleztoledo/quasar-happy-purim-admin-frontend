@@ -8,10 +8,23 @@
     </q-header>
     <!-- Side menu -->
     <q-drawer v-model="$uiStore.sideMenuValue" show-if-above bordered>
-      <div v-if="isMobile" class="row justify-content-end q-pa-sm">
-        <q-btn flat round color="primary" icon="logout" @click="logOut(true)" />
+      <div v-if="isMobile">
+        <div class="row justify-content-end q-pa-sm">
+          <q-btn flat round color="primary" icon="logout" @click="logOut(true)" />
+        </div>
+        <div class="q-mr-sm q-pa-sm">
+          <div class="row">
+            <div class="col-12">{{ $aStore.$state.shul?.shulName }}</div>
+          </div>
+          <div class="row">
+            <div class="col-12 dashboard-user-info">
+              {{ $aStore.$state.user?.firstName }} {{ $aStore.$state.user?.lastName }}
+            </div>
+          </div>
+        </div>
       </div>
       <q-list>
+        <!-- style="margin-bottom: 60px" -->
         <q-item-label header style="margin-bottom: 60px"> </q-item-label>
 
         <EssentialLink v-for="link in linksList" :key="link.title" v-bind="link" />
@@ -23,7 +36,7 @@
       <!-- breadcrumbs -->
       <div class="row dashboard-breadcrumbs-container">
         <div class="col-12">
-          <BreadCrumbs></BreadCrumbs>
+          <BreadCrumbs />
         </div>
       </div>
       <div class="row dashboard-router-view">
@@ -56,10 +69,12 @@ import { useDashboard } from '../composables/useDashboard'
 import { useAuth } from 'src/modules/auth/composables/useAuth'
 import type { LinksDataInterface } from '../data/links-old'
 import { useBreadcrumb } from '../components/BreadCrumbs/composables/useBreadcrumb'
+import { useAuthStore } from 'src/modules/auth/store/auth.store'
 
 const { linksData } = useBreadcrumb()
 const { logOut } = useAuth()
 const $uiStore = useUIStore()
+const $aStore = useAuthStore()
 const $router = useRouter()
 const { isMobile, version } = useUI()
 const { loadStartedData, getMemberSummary } = useDashboard()

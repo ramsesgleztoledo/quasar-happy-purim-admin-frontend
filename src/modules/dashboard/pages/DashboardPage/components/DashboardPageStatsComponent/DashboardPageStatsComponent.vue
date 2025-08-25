@@ -7,7 +7,7 @@
     <div class="col-8 q-pt-md">
       <div class="row">
         <div class="col-12">
-          <b class="DashboardPageStatsComponent-members">Members Statistics:</b>
+          <b class="DashboardPageStatsComponent-members">Members Statistics: </b>
         </div>
       </div>
       <div class="DashboardPageStatsComponent-labels-container">
@@ -18,12 +18,12 @@
               :style="{ backgroundColor: data.color }"
             ></div>
           </div>
-          <div class="col-8 q-pa-sm centered-content">
+          <div class="col-8 q-pa-sm">
             <p class="DashboardPageStatsComponent-description">
               {{ data.label }}
             </p>
           </div>
-          <div class="col-2 q-pa-sm centered-content">
+          <div class="col-2 q-pa-sm ">
             <p class="DashboardPageStatsComponent-number">{{ getPercent(data.quantity).value }}%</p>
           </div>
         </div>

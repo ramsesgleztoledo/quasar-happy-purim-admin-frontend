@@ -10,6 +10,20 @@ export const loginAccounts: LoginAccountInterface[] = [
     url: 'http://localhost:9000/#/authenticate?token=IIiteGH1xpeGKnVAoyDFxPX2jEwl9IfIJ5ltNUzaFuIC+4JNcdZfigaPWY1MzmNFvdH5OA3vXJXecEdxxRqiRg=='
   },
   {
+    id: 334,
+    name: `Yeshiva Toras Chaim Toras Emes`,
+    guid: '4103410A-7A61-4C42-A7A8-75DE0014F4D9',
+    token: "+Q4V35+oGu9DzIMXSgG0gOX46yoiMc1lm9Rzka/+oFqtm3pATaCY6XKBAeWN86GT8JjwcUbuX9KDvOKb3qbpbQ==",
+    url: 'http://localhost:9000/#/authenticate?token=+Q4V35+oGu9DzIMXSgG0gOX46yoiMc1lm9Rzka/+oFqtm3pATaCY6XKBAeWN86GT8JjwcUbuX9KDvOKb3qbpbQ=='
+  },
+  {
+    id: 275,
+    name: `Young Israel of Holliswood`,
+    guid: '49B8697D-D609-4094-BC30-05C55F2E866B',
+    token: "k4ZTeJqtLItIypSdN0od7eibNp2kg/IS1xeZSxZYXqzMl/4ZksOiJMrbBLTF/V5uFJ/YEX61AIkuPZNoLZjN5w==",
+    url: 'http://localhost:9000/#/authenticate?token=k4ZTeJqtLItIypSdN0od7eibNp2kg/IS1xeZSxZYXqzMl/4ZksOiJMrbBLTF/V5uFJ/YEX61AIkuPZNoLZjN5w=='
+  },
+  {
     id: 107,
     name: 'KJ - Kehilath Jeshurun',
     guid: '540EE815-6F63-4E50-B365-F867888C1664',
@@ -52,13 +66,6 @@ export const loginAccounts: LoginAccountInterface[] = [
     token: "fXDvYsO0IOTkXgQgI5B9ENDSKYSezQNSTjSC8/OcEsD0wqcV+0WFmJBLuM7myAO4LFK719ZHrmQLn4OzZefaSg==",
     url: 'http://localhost:9000/#/authenticate?token=fXDvYsO0IOTkXgQgI5B9ENDSKYSezQNSTjSC8/OcEsD0wqcV+0WFmJBLuM7myAO4LFK719ZHrmQLn4OzZefaSg=='
   },
-  // {
-  //   id: 332,
-  //   name: 'Synagogue Adath Israel of Riverdale',
-  //   guid: '4DBC0623-10FC-419A-A780-5200B3D7E9F4',
-  //   token: "HltaNi20I5BMV9HpSm0892VKd1OuQ/QmSvfL67vnuih9U4Uv9wH1Qf4udyrjF9COMbDEPWSkGVwqZJbYMEXOkQ==",
-  //   url: 'http://localhost:9000/#/authenticate?token=HltaNi20I5BMV9HpSm0892VKd1OuQ/QmSvfL67vnuih9U4Uv9wH1Qf4udyrjF9COMbDEPWSkGVwqZJbYMEXOkQ=='
-  // },
   {
     id: 665,
     name: 'Congregation Shaarei Tefillah',
@@ -79,5 +86,12 @@ export const loginAccounts: LoginAccountInterface[] = [
     guid: '41450B0B-2A8C-49D7-A83C-F7CB5D86712B',
     token: "wzUzMmHj6GTblD2UsyvghVmxGUwHbvRPyqW6cKghyG+S2WLHQedl8/zY7hzTMmJ+K1slDPvcpq3bJdXVhJkx9w==",
     url: 'http://localhost:9000/#/authenticate?token=wzUzMmHj6GTblD2UsyvghVmxGUwHbvRPyqW6cKghyG+S2WLHQedl8/zY7hzTMmJ+K1slDPvcpq3bJdXVhJkx9w=='
+  },
+  {
+    id: 61,
+    name: 'Congregation Adat Yeshurun',
+    guid: '9D0570F1-609E-4A3E-A146-709B2395D0B6',
+    token: "qQg0vUyln9RCkx6wtY9Envs1b5lZgjZi5ncN7osIPwDtB+ms3eImgnjTuN6OM/mXwEUk+/KoqJgaqDSE5/oATA==",
+    url: 'http://localhost:9000/#/authenticate?token=qQg0vUyln9RCkx6wtY9Envs1b5lZgjZi5ncN7osIPwDtB+ms3eImgnjTuN6OM/mXwEUk+/KoqJgaqDSE5/oATA=='
   },
 ]

@@ -191,6 +191,7 @@
                   label="Filter by categories"
                   option-label="categoryName"
                   option-value="categoryID"
+                  clearable
                 />
 
                 <div class="q-pa-md">
@@ -630,7 +631,9 @@ const rows = computed(() => {
   if (!categoryFiltered.value) return members
 
   return members.filter((member) =>
-    member.Categories.toLowerCase().includes(`${categoryFiltered.value?.categoryID}`.toLowerCase()),
+    member.Categories?.toLowerCase().includes(
+      `${categoryFiltered.value?.categoryID}`.toLowerCase(),
+    ),
   )
 })
 

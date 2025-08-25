@@ -159,8 +159,8 @@ export const useAdvancedSettings = () => {
       });
 
       showToast(resp.ok,
-        `donate basket option ${enabled ? 'enabled' : 'disabled'}`,
-        `something went wrong  ${enabled ? 'enabling' : 'disabling'} donate basket option`
+        `Donate Basket Option ${enabled ? 'Enabled' : 'Disabled'}`,
+        `Something went wrong  ${enabled ? 'enabling' : 'disabling'} donate basket option`
       )
 
 
@@ -187,8 +187,8 @@ export const useAdvancedSettings = () => {
       });
 
       showToast(resp.ok,
-        `alternate delivery address option  ${enabled ? 'enabled' : 'disabled'}`,
-        `something went wrong  ${enabled ? 'enabling' : 'disabling'} alternate delivery address option`
+        `Alternate Delivery Address Option  ${enabled ? 'Enabled' : 'Disabled'}`,
+        `Something went wrong  ${enabled ? 'enabling' : 'disabling'} alternate delivery address option`
       )
 
 
@@ -200,8 +200,8 @@ export const useAdvancedSettings = () => {
         }
       })
       showToast(resp.ok,
-        `2nd address question updated`,
-        'something went wrong updating alternate delivery address option'
+        `Alternate Delivery Address Option Updated`,
+        'Something went wrong updating alternate delivery address option'
       )
 
 
@@ -213,8 +213,8 @@ export const useAdvancedSettings = () => {
         }
       })
       showToast(resp.ok,
-        `profile question updated`,
-        `something went wrong updating the profile question `
+        `Additional Profile Question Updated`,
+        `Something went wrong updating the additional profile question `
       )
 
       return resp.ok
@@ -226,8 +226,8 @@ export const useAdvancedSettings = () => {
         }
       })
       showToast(resp.ok,
-        `profile question deleted`,
-        `something went wrong deleting the profile question`
+        `Additional Profile Question Deleted`,
+        `Something went wrong deleting the profile question`
       )
 
       return resp.ok
@@ -239,8 +239,8 @@ export const useAdvancedSettings = () => {
         }
       })
       showToast(resp.ok,
-        `new addition profile question added`,
-        `something went wrong adding a new addition profile question`
+        `New Additional Profile Question Added”`,
+        `Something went wrong adding a new addition profile question`
       )
 
       return {
@@ -260,7 +260,7 @@ export const useAdvancedSettings = () => {
       })
       showToast(resp.ok,
         'Charity Settings Updated',
-        'something went wrong updating charity settings'
+        'Something went wrong updating charity settings'
       )
     },
     async updateAddon(data: Tab2AddonFormInterface) {
@@ -282,7 +282,7 @@ export const useAdvancedSettings = () => {
       })
       showToast(resp.ok,
         'Send Out Settings Updated ',
-        'something went wrong updating the Send Out Settings'
+        'Something went wrong updating the Send Out Settings'
       )
     },
     async addAdditionalOrderingItems(data: Tab2AddOrderItemFormInterface) {
@@ -293,7 +293,7 @@ export const useAdvancedSettings = () => {
       })
       showToast(resp.ok,
         'New Order Item Added',
-        'something went wrong adding a New Order Item'
+        'Something went wrong adding a New Order Item'
       )
       if (resp.ok)
         $asStore.addOrderingItem([resp.data])
@@ -311,7 +311,7 @@ export const useAdvancedSettings = () => {
       })
       showToast(resp.ok,
         'Order Item deleted',
-        'something went wrong deleting the Order Item'
+        'Something went wrong deleting the Order Item'
       )
       return resp.ok
     },
@@ -325,7 +325,7 @@ export const useAdvancedSettings = () => {
       })
       showToast(resp.ok,
         'Sell Additional Items Settings Updated ',
-        'something went wrong updating the Sell Additional Items Settings'
+        'Something went wrong updating the Sell Additional Items Settings'
       )
     },
 
@@ -341,7 +341,7 @@ export const useAdvancedSettings = () => {
       })
       showToast(resp.ok,
         'Order Item Updated',
-        'something went wrong updating the Order Item'
+        'Something went wrong updating the Order Item'
       )
 
     },
@@ -355,12 +355,12 @@ export const useAdvancedSettings = () => {
         data
         , {
           loading: {
-            message: 'adding new basket size'
+            message: 'Loading ...'
           }
         })
       showToast(resp.ok,
-        'new basket size added',
-        'something went wrong adding a new basket size'
+        'New Basket Size Added',
+        'Something went wrong adding a new basket size'
       )
       if (resp.ok)
         $asStore.setBasketSize(
@@ -371,12 +371,12 @@ export const useAdvancedSettings = () => {
       const resp = await deleteTab3BasketSize(
         id, {
         loading: {
-          message: 'deleting basket size'
+          message: 'Loading ...'
         }
       })
       showToast(resp.ok,
-        'basket size deleted',
-        'something went wrong deleting the basket size'
+        'Basket Size Deleted',
+        'Something went wrong deleting the basket size'
       )
 
       if (resp.ok) {

@@ -6,7 +6,7 @@
     </div>
   </div>
 
-  <div class="row q-mb-md">
+  <div class="row q-mb-md" v-if="donations.length">
     <div class="col-12 d-flex justify-content-end">
       <q-btn
         :disable="exportDisabled"
@@ -22,6 +22,7 @@
   <div class="row">
     <div class="col-12">
       <TableCustom
+        v-if="donations.length"
         class-name="table-sticky-header-column-table table-cursor-pointer-custom"
         styles="height: 628px"
         :rows="donations"
@@ -38,6 +39,7 @@
           }
         "
       />
+      <div v-else>“No Charity Donations”</div>
     </div>
   </div>
 </template>

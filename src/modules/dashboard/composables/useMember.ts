@@ -52,6 +52,7 @@ export const useMember = () => {
     updateKJSettings,
     getMemberShipStatus,
     updateMemberShipStatus,
+    getShowRecordPaymentBtn
   } = useMemberService()
 
 
@@ -72,9 +73,10 @@ export const useMember = () => {
       }
     })
 
-    $mStore.$patch({
-      members: members.ok ? members.data : [],
-    });
+    if (members.ok)
+      $mStore.$patch({
+        members: members.data,
+      });
   };
   const getMemberDataById_Co = async (memberId: number) => {
 
@@ -105,6 +107,7 @@ export const useMember = () => {
         displayChildren,
         doorManSettings,
         membershipSettings,
+        showRecordPaymentBtn,
       ]: [
           ApiCallResponseInterface<MemberHiddenInterface>,
           ApiCallResponseInterface<MemberReciprocityInterface>,
@@ -117,6 +120,9 @@ export const useMember = () => {
           ApiCallResponseInterface<boolean>,
           ApiCallResponseInterface<DoorManStatusInterface>,
           ApiCallResponseInterface<MembershipStatusInterface>,
+          ApiCallResponseInterface<{
+            showRecordPaymentButton: boolean
+          }>,
 
         ] = await Promise.all([
 
@@ -130,7 +136,8 @@ export const useMember = () => {
           getProfileQuestions(memberId),
           getDisplayChildren(memberId),
           getKJSettings(memberId),
-          getMemberShipStatus(memberId)
+          getMemberShipStatus(memberId),
+          getShowRecordPaymentBtn(memberId),
         ]
         )
 
@@ -148,6 +155,7 @@ export const useMember = () => {
       })
       $mStore.setSelectedMember(member.ok ? member.data : undefined)
       $mStore.setDisplayChildren(displayChildren.ok ? displayChildren.data : false)
+      $mStore.setShowRecordPaymentBtn(showRecordPaymentBtn.ok ? showRecordPaymentBtn.data.showRecordPaymentButton : false)
       $mStore.setMemberCategories(categories.ok ? categories.data : [])
       $mStore.setProfileQuestions(profileQuestions.ok ? profileQuestions.data : [])
       $mStore.setMemberAlternativeAddress(alternativeAddress.ok ? alternativeAddress.data : undefined)
@@ -375,7 +383,7 @@ export const useMember = () => {
 
       const member = resp.data.member[0]!
       id = member.m_id
-      $mStore.$state.members.push(member)
+      $mStore.$state.members.members.push(member)
     }
 
     return {
@@ -390,7 +398,8 @@ export const useMember = () => {
       }
     })
 
-    showToast(resp.ok, `the login code for this member has been reset`, `something went wrong resetting the code`)
+    showToast(resp.ok, `“The Login Code for this member has been reset”
+`, `something went wrong resetting the code`)
 
     if (!resp.ok || !$mStore.selectedMember) return
 

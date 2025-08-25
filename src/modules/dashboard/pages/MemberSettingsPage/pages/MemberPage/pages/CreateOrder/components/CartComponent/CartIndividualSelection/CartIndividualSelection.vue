@@ -24,7 +24,7 @@
                       {{ member.lastName }}, {{ member.firstName }}
                       {{ member.sFirstName ? `& ${member.sFirstName}` : '' }}
                     </div>
-                    <b> ${{ convertWithCommas(member.price || 0) }} </b>
+                    <b v-if="member.price"> ${{ convertWithCommas(member.price || 0) }} </b>
                   </div>
                   <div class="col-3">
                     <q-icon
@@ -52,8 +52,10 @@ import type { OrderMemberListInterface } from 'src/modules/dashboard/interfaces/
 import { useMemberOrderStore } from 'src/modules/dashboard/store/memberOrderStore/memberOrderStore'
 import { computed } from 'vue'
 import { getMembersSelectedHelper } from '../../../helpers/member-order-helpers'
+import { useCalculate } from 'src/modules/dashboard/composables/useCalculate'
 
 const $moStore = useMemberOrderStore()
+const { setBackendTotal } = useCalculate()
 
 const { removeMemberFromCart } = useMemberOrder()
 
@@ -69,6 +71,7 @@ const onDeleteMember = async (member: OrderMemberListInterface) => {
     $moStore.setMembersSelected($moStore.membersSelected.filter((me) => me.id !== member.id))
     memberFound.selected = false
   }
+  setBackendTotal()
 }
 </script>
 

@@ -58,6 +58,7 @@ export const useTransaction = () => {
       const resp = await getTransactionsDetailsByTransactionId(id, {
         goBackIn400Error: true,
         useCache: true,
+        useRespAsError: true,
         loading: {
           message: `Loading transaction detail for ${id}`
         }

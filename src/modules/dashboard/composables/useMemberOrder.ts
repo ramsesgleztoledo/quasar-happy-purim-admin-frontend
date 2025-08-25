@@ -24,6 +24,8 @@ import { useProcessOrderService } from "../services/processOrder.service";
 import { useShulService } from "../services/Shul.service";
 import { useMemberStore } from "../store/memberStore/memberStore";
 import { useMemberService } from "../services/member.service";
+import { useCalculateService } from "../services/Calculate.service";
+
 
 
 
@@ -52,6 +54,7 @@ export const useMemberOrder = () => {
   const { getPaymentMethods } = usePaymentMethodsService()
   const { placeOrder } = useProcessOrderService()
   const { getShulSettings } = useShulService()
+  const { CalculateTotal } = useCalculateService()
 
   const mGuid = computed(() => memberState.value.selectedMember?.memberGuid || '')
   const memberId = computed(() => memberState.value.selectedMember?.memberId || 0)
@@ -131,6 +134,8 @@ export const useMemberOrder = () => {
         getDiscounts(),
         getPaymentMethods(mGuid.value),
         getShulSettings(mGuid.value),
+        getShulSettings(mGuid.value),
+        CalculateTotal(mGuid.value, memberId.value)
       ])
 
       if (resp.find(resp => !resp.ok)) return
@@ -167,7 +172,8 @@ export const useMemberOrder = () => {
         additionalOrderOptions: resp[11].data,
         discounts: resp[12].data,
         paymentMethodTypes: resp[13].data,
-        shulSetting: resp[14].data
+        shulSetting: resp[14].data,
+        totalFromBackend: resp[16].data || 0
       })
     },
     addOrRemoveItem,
@@ -258,8 +264,8 @@ export const useMemberOrder = () => {
           validRespAdd &&
           // validRespDelete &&
           validRespPromotions,
-          'cart updated',
-          'something went wrong updating the cart'
+          'Cart Updated',
+          'Something went wrong updating the cart'
         )
       }
 

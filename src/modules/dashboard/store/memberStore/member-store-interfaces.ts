@@ -1,11 +1,11 @@
 import type { MembershipStatusInterface } from "src/services/api-interfaces";
 import type { MemberCategoryInterface } from "../../interfaces/category-interfaces";
-import type { AlternativeMemberAddress, MemberDataInterface, MemberDonateBasketOptionInterface, MemberInterface, MemberOptionsInterface, MemberProfileQuestionInterface, MemberTransactionInterface } from "../../interfaces/member-interfaces";
+import type { AlternativeMemberAddress, MemberDataInterface, MemberDonateBasketOptionInterface, MemberOptionsInterface, MemberProfileQuestionInterface, MembersResponseInterface, MemberTransactionInterface } from "../../interfaces/member-interfaces";
 import type { NoneType } from "../../services/service-interfaces";
 
 
 export interface MemberStateInterface {
-  members: MemberInterface[];
+  members: MembersResponseInterface;
   selectedMember: MemberDataInterface | NoneType;
   memberOptions: MemberOptionsInterface;
   memberCategories: MemberCategoryInterface[];
@@ -20,6 +20,7 @@ export interface MemberStateInterface {
     value: boolean;
   };
   membershipSettings: MembershipStatusInterface;
+  showRecordPaymentBtn: boolean;
 }
 
 

@@ -1,6 +1,6 @@
 import type { ApiCallResponseInterface, DoorManStatusInterface, ExtraOptionsInterface, MembershipStatusInterface } from "../../../services/api-interfaces";
 import { useApiCall } from "../../../services/apiCall";
-import type { AlternativeMemberAddress, AlternativeMemberAddressFormInterface, BasketReceivedInterface, EmailLoginCodeInfoInterface, MemberAddFormInterface, MemberAddResponseInterface, MemberDataInterface, MemberDonateBasketOptionInterface, MemberHiddenInterface, MemberInterface, MemberPersonalBasketInterface, MemberProfileQuestionInterface, MemberReciprocityInterface, MembersLoggedInterface, MemberTransactionInterface, MemberUpdateFormInterface, PendingDeletionInterface } from "../interfaces/member-interfaces";
+import type { AlternativeMemberAddress, AlternativeMemberAddressFormInterface, BasketReceivedInterface, EmailLoginCodeInfoInterface, MemberAddFormInterface, MemberAddResponseInterface, MemberDataInterface, MemberDonateBasketOptionInterface, MemberHiddenInterface, MemberPersonalBasketInterface, MemberProfileQuestionInterface, MemberReciprocityInterface, MembersLoggedInterface, MembersResponseInterface, MemberTransactionInterface, MemberUpdateFormInterface, PendingDeletionInterface } from "../interfaces/member-interfaces";
 
 
 
@@ -11,10 +11,20 @@ export const useMemberService = () => {
   const { apiCall } = useApiCall()
 
   return {
-    getMembersList: async (filters: { search: string, category: string | number}, extraOptions?: ExtraOptionsInterface): Promise<ApiCallResponseInterface<MemberInterface[]>> => {
+    getMembersList: async (filters: { search: string, category: string | number }, extraOptions?: ExtraOptionsInterface): Promise<ApiCallResponseInterface<MembersResponseInterface>> => {
       const nextUrl = `?search=${filters.search}&category=${filters.category}`;
       const url = `${baseUrl}${nextUrl}`;
 
+      return await apiCall({
+        url,
+        extraOptions
+      })
+    },
+    getShowRecordPaymentBtn: async (memberId: number | string, extraOptions?: ExtraOptionsInterface): Promise<ApiCallResponseInterface<{
+      showRecordPaymentButton: boolean
+    }>> => {
+      const nextUrl = `/${memberId}/show-record-payment-button`;
+      const url = `${baseUrl}${nextUrl}`;
       return await apiCall({
         url,
         extraOptions

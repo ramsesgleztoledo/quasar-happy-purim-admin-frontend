@@ -150,7 +150,7 @@ export const useUI = () => {
         color: 'blue',
         textColor: 'black',
         icon: 'error',
-        message: 'file downloaded',
+        message: '“File Downloaded”',
       })
 
     },

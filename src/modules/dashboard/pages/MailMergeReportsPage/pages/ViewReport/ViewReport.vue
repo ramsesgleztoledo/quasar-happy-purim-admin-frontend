@@ -256,7 +256,7 @@ import type {
   RecipientMemberInterface,
 } from 'src/modules/dashboard/interfaces/report.interface'
 import { computed, onMounted, ref, watch } from 'vue'
-import { useRoute } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 import InnerViewRow from './InnerViewRow.vue'
 import { useDashboardStore } from 'src/modules/dashboard/store/dashboardStore/dashboardStore'
 import { useReportStore } from 'src/modules/dashboard/store/ReportStore/reportStore'
@@ -269,6 +269,7 @@ const { reportId } = useRoute().params
 const $dStore = useDashboardStore()
 const $rStore = useReportStore()
 const { isMobile } = useUI()
+const $router = useRouter()
 
 const isFullScreen = ref(false)
 const isTableLoading = ref(false)
@@ -356,6 +357,24 @@ const getInitialData = () => {
   ).then((res) => {
     report.value = res
     isTableLoading.value = false
+    goToPageWithFilters()
+  })
+}
+
+const goToPageWithFilters = () => {
+  $router.push({
+    name: 'MailMergeReportsPage-ViewReport',
+    params: { reportId },
+    query: {
+      basketSize: JSON.stringify(filter.value.basketSize),
+      categories: JSON.stringify(filter.value.categories),
+      donateBasket: filter.value.donateBasket,
+      routeCode: JSON.stringify(filter.value.routeCode),
+      searchTerm: filter.value.searchTerm,
+      zipCode: JSON.stringify(filter.value.zipCode),
+      yesOnly: `${yesOnly.value}`,
+      hideNL: `${hideNL.value}`,
+    },
   })
 }
 
@@ -387,6 +406,31 @@ watch(
 )
 
 onMounted(async () => {
+  const {
+    basketSize,
+    categories,
+    donateBasket,
+    routeCode,
+    searchTerm,
+    zipCode,
+    yesOnly: yesOnlyValue,
+    hideNL: hideNLValue,
+  } = useRoute().query
+
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  filter.value.basketSize = basketSize ? JSON.parse(basketSize as any) : []
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  filter.value.categories = categories ? JSON.parse(categories as any) : []
+  filter.value.donateBasket = donateBasket ? (donateBasket as string) : ''
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  filter.value.routeCode = routeCode ? JSON.parse(routeCode as any) : []
+  filter.value.searchTerm = searchTerm ? (searchTerm as string) : ''
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  filter.value.zipCode = zipCode ? JSON.parse(zipCode as any) : []
+
+  yesOnly.value = yesOnlyValue ? (yesOnlyValue as string) == 'true' : false
+  hideNL.value = hideNLValue ? (hideNLValue as string) == 'true' : false
+
   if (!$rStore.showExtraFilters) return
   filterOptions.value = await getFilterOptions()
 })

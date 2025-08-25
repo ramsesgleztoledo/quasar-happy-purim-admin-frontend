@@ -43,6 +43,12 @@ export interface MemberInterface {
   MemberGUID: string;
 }
 
+export interface MembersResponseInterface {
+  totalCount: number,
+  filteredCount: number,
+  members: MemberInterface[]
+}
+
 
 export interface MemberDataInterface {
   memberGuid: string;

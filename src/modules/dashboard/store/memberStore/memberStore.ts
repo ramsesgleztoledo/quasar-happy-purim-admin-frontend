@@ -8,7 +8,11 @@ import type { MembershipStatusInterface } from 'src/services/api-interfaces';
 
 
 const initialState: MemberStateInterface = {
-  members: [],
+  members: {
+    filteredCount: 0,
+    totalCount: 0,
+    members: []
+  },
   selectedMember: undefined,
   memberOptions: {
     hidden: false,
@@ -19,6 +23,7 @@ const initialState: MemberStateInterface = {
   },
   memberCategories: [],
   isPendingDeletion: false,
+  showRecordPaymentBtn: false,
   memberAlternativeAddress: undefined,
   memberTransactions: [],
   memberDonateBasketOption: undefined,
@@ -82,6 +87,9 @@ export const useMemberStore = defineStore('memberStore', {
     },
     setMembershipSettings(membershipSettings: MembershipStatusInterface) {
       this.membershipSettings = membershipSettings
+    },
+    setShowRecordPaymentBtn(value: boolean) {
+      this.showRecordPaymentBtn = value
     },
   }
 });

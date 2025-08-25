@@ -124,7 +124,7 @@ export const useDashboard = () => {
           color: 'blue',
           textColor: 'white',
           icon: 'error',
-          message: `we can't update the member logged at this moment`,
+          message: `We can't update the member logged at this moment`,
         })
       }
 
