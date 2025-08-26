@@ -197,7 +197,7 @@ export interface CustomShippingItemFieldsInterface {
   // attributes: AttributeCustomShippingItemInterface[];
 }
 export interface CustomShippingItemResponseInterface extends CustomShippingItemFieldsInterface {
-  attributes: "";
+  attributes: string;
 }
 export interface CustomShippingItemInterface extends CustomShippingItemFieldsInterface {
   attributes: AttributeCustomShippingItemInterface[];

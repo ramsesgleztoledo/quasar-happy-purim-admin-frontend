@@ -19,7 +19,6 @@
               rowsPerPage: 0,
             }"
             title="Email Queue - Currently Pending"
-            :style="{ height: isFullScreenEmailQueue ? '800px' : '400px' }"
             class="table-sticky-header-column-table"
             flat
             bordered

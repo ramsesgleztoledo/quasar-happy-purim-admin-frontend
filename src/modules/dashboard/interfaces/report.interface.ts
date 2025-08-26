@@ -21,12 +21,12 @@ export interface CustomReportInterface {
 
 export interface RecipientDataFormInterface {
   id: number | string;
-  searchTerm: string;
-  categories: string[];
-  zipCode: string[];
-  basketSize: string[];
-  routeCode: string[];
-  donateBasket: string;
+  searchTerm?: string;
+  categories?: string[];
+  zipCode?: string[];
+  basketSize?: string[];
+  routeCode?: string[];
+  donateBasket?: string;
 }
 
 

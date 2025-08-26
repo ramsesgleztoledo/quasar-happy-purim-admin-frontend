@@ -1,8 +1,14 @@
-import type { OrderMemberListInterface } from "../interfaces/memberOrder-interfaces";
+import type { OrderMemberListInterface, OrderPromotionInterface } from "../interfaces/memberOrder-interfaces";
 
-export const getMembersByPromotion = (proCat: string, members: OrderMemberListInterface[], notFound?: boolean) => {
+export const getMembersByPromotion = (promotion: OrderPromotionInterface, members: OrderMemberListInterface[], notFound?: boolean) => {
 
-  const cats = proCat.split(',')
+
+  const isAll = promotion.categories.toLowerCase().includes('all')
+  if (isAll) return notFound ? [] : members
+
+  if (!promotion.joinCategories) return notFound ? members.filter(me => me.selected && !me.paid) : []
+
+  const cats = promotion.joinCategories.split(',')
 
   return members.filter(member => {
     const paid = member.paid

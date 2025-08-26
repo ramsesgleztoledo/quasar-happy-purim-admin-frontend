@@ -1,14 +1,17 @@
 import type { CharityType, PaymentCheckFormInterface, PaymentFormInterface } from "src/modules/dashboard/interfaces/memberOrder-interfaces"
 import type { MemberOrderStateInterface } from "../memberOrder-store-interfaces"
-import { getCustomShippingItemsTotalHelper, getMembersSelectedHelper } from "src/modules/dashboard/pages/MemberSettingsPage/pages/MemberPage/pages/CreateOrder/helpers/member-order-helpers"
+import {
+  getCustomShippingItemsTotalHelper,
+  // getMembersSelectedHelper
+} from "src/modules/dashboard/pages/MemberSettingsPage/pages/MemberPage/pages/CreateOrder/helpers/member-order-helpers"
 import type { FormComposition } from "src/composables/useForm/interfaces"
 
 export const s_orderTotal = (state: MemberOrderStateInterface) => {
-  const memberSel = getMembersSelectedHelper(state)
+  // const memberSel = getMembersSelectedHelper(state)
 
-  const totalMembers = memberSel.reduce((pre, cur) =>
-    pre + (cur.price || 0)
-    , 0)
+  // const totalMembers = memberSel.reduce((pre, cur) =>
+  //   pre + (cur.price || 0)
+  //   , 0)
 
   const totalItems = state.orderItems.reduce((pre, cur) =>
     pre + ((cur.price || 0) * (cur.quantity || 1))
@@ -16,7 +19,8 @@ export const s_orderTotal = (state: MemberOrderStateInterface) => {
 
   const totalCustomShippingOptions = getCustomShippingItemsTotalHelper(state.customShippingItems, state.customShippingOptions)
 
-  return totalMembers + totalItems + totalCustomShippingOptions
+  // return totalMembers +
+  return totalItems + totalCustomShippingOptions
 }
 
 export const s_fee = (state: MemberOrderStateInterface) => {
@@ -103,8 +107,8 @@ export const s_cartData = (state: MemberOrderStateInterface) => {
   /**============================================
    *               fees
    *=============================================**/
-  const percent = fees?.creditCardFee || 0
-  const fee = ((totalBefore - discountValue) * percent) / 100
+  // const percent = fees?.creditCardFee || 0
+  // const fee = ((totalBefore - discountValue) * percent) / 100
   // fee per person
   let feePerperson = 0
   if (state.shulSetting?.sMembershipfee)
@@ -114,13 +118,69 @@ export const s_cartData = (state: MemberOrderStateInterface) => {
    *               Total
    *=============================================**/
   const perTransactionFee = fees?.perTransactionFee || 0
-  const finalTotal = totalBefore - discountValue + fee + feePerperson + perTransactionFee;
+  const finalTotal = totalBefore - discountValue +
+    // fee +
+    feePerperson + perTransactionFee + state.totalFromBackend;
 
   return {
     totalBefore,
     discount,
-    fee,
+    // fee,
     feePerperson,
     finalTotal,
   }
 }
+// export const s_cartData2 = (state: MemberOrderStateInterface) => {
+
+//   const totalBefore = s_orderTotal(state)
+//   const fees = s_fee(state)
+
+//   /**============================================
+//    *               discounts
+//    *=============================================**/
+//   const disc = state.discounts.find((dis) => !dis.couponCodeRequired)
+
+
+//   let discount = undefined
+//   if (disc) {
+//     let totalCharities = 0
+
+//     const charities = s_donations(state)
+//     if (charities.charities && disc.discountPercent)
+//       totalCharities += charities.charities.reduce((pre, cur) => pre + cur.value, 0)
+//     if (charities.donationUse && disc.discountPercent)
+//       totalCharities += charities.donationUse.price
+
+//     const total = totalBefore - totalCharities || 0
+//     const value = (total * (disc.discountPercent || 0)) / 100
+//     discount = {
+//       ...disc,
+//       value,
+//     }
+
+//   }
+//   const discountValue = discount?.value || 0
+//   /**============================================
+//    *               fees
+//    *=============================================**/
+//   const percent = fees?.creditCardFee || 0
+//   const fee = ((totalBefore - discountValue) * percent) / 100
+//   // fee per person
+//   let feePerperson = 0
+//   if (state.shulSetting?.sMembershipfee)
+//     feePerperson = state.membersSelected.length * state.shulSetting?.sMembershipfee
+
+//   /**============================================
+//    *               Total
+//    *=============================================**/
+//   const perTransactionFee = fees?.perTransactionFee || 0
+//   const finalTotal = totalBefore - discountValue + fee + feePerperson + perTransactionFee;
+
+//   return {
+//     totalBefore,
+//     discount,
+//     fee,
+//     feePerperson,
+//     finalTotal,
+//   }
+// }

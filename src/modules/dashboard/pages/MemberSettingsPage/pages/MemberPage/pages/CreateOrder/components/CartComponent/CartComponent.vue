@@ -20,10 +20,10 @@
   <div class="row q-mb-md q-mt-sm q-pa-md">
     <div class="col-12" style="font-size: 12px">
       <!-- total -->
-      <div v-if="data.totalBefore" class="row w-full justify-content-space-between q-mb-sm">
+      <!-- <div class="row w-full justify-content-space-between q-mb-sm">
         <b>TOTAL</b>
         <div style="color: #1863b0">$ {{ convertWithCommas(data.totalBefore || 0) }}</div>
-      </div>
+      </div> -->
 
       <div v-if="data.totalBefore">
         <!-- discounts  -->
@@ -54,7 +54,7 @@
           <div style="color: green">$ -{{ convertWithCommas(data.discount.value) }}</div>
         </div>
         <!-- fee percent -->
-        <div
+        <!-- <div
           v-if="$moStore.getFee"
           class="row w-full justify-content-space-between q-mb-sm d-flex"
           style="color: var(--happypurim)"
@@ -66,7 +66,7 @@
           </div>
 
           <div>$ +{{ convertWithCommas(data.fee) }}</div>
-        </div>
+        </div> -->
         <!-- fee per transaction -->
         <div
           v-if="$moStore.getFee?.perTransactionFee"
@@ -96,12 +96,14 @@
         </div>
       </div>
 
-      <q-separator class="q-mb-sm" />
       <!-- final total -->
-      <!-- v-if="data.totalBefore" -->
-      <div class="row w-full justify-content-space-between q-mb-sm" style="color: #cc0505">
+      <div
+        v-if="orderTotal"
+        class="row w-full justify-content-space-between q-mb-sm"
+        style="color: #cc0505"
+      >
         <b>ORDER TOTAL </b>
-        <b>$ {{ convertWithCommas($moStore.totalFromBackend) }}</b>
+        <b>$ {{ convertWithCommas(orderTotal) }}</b>
       </div>
     </div>
   </div>
@@ -117,6 +119,7 @@ import { computed } from 'vue'
 
 const $moStore = useMemberOrderStore()
 const data = computed(() => $moStore.getCartData)
+const orderTotal = computed(() => data.value.finalTotal || 0)
 </script>
 
 <style scoped lang="scss"></style>

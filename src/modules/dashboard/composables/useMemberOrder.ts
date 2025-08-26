@@ -61,6 +61,17 @@ export const useMemberOrder = () => {
   const tokenSession = computed(() => authState.value.token?.token || "")
 
 
+
+  const getParse = (value: string) => {
+    try {
+      if (!value) return []
+      return JSON.parse(value)
+    } catch {
+      return []
+    }
+  };
+
+
   /**========================================================================
    *                           methods
    *========================================================================**/
@@ -105,7 +116,7 @@ export const useMemberOrder = () => {
 
     $moStore.setCustomShippingItems(data.map(item => ({
       ...item,
-      attributes: JSON.parse(item.attributes) || []
+      attributes: getParse(item.attributes)
     })) || [])
   };
 
@@ -163,7 +174,7 @@ export const useMemberOrder = () => {
         customShippingItems:
           resp[7].data.map(item => ({
             ...item,
-            attributes: JSON.parse(item.attributes) || []
+            attributes: getParse(item.attributes)
           })),
         // resp[7].data
         sendOutSettings: resp[8].data,

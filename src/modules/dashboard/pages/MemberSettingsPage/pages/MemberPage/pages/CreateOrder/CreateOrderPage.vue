@@ -90,7 +90,7 @@
               @click="onNext"
             />
             <q-btn
-              :disable="!orderTotal"
+              :disable="!orderTotal && !$moStore.totalFromBackend"
               v-if="step === 2"
               class="q-mr-sm"
               style="background: var(--happypurim); color: white"

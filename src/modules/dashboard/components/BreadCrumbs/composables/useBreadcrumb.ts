@@ -124,27 +124,45 @@ export const useBreadcrumb = () => {
     // },
 
     {
-      title: 'Reports & Mails',
-      icon: 'email',
+
+      title: 'Mail Merge & Reports',
+      icon: 'receipt_long',
       name: 'dashboard-MailMergeReportsPage',
+      routeClass: [
+        'dashboard-MailMergeReportsPage',
+        'MailMergeReportsPage-MailMergeReportsPage'
 
-      children: [
-        {
-
-          title: 'Mail Merge & Reports',
-          icon: 'receipt_long',
-          name: 'dashboard-MailMergeReportsPage',
-          routeClass: ['dashboard-MailMergeReportsPage', 'MailMergeReportsPage-MailMergeReportsPage']
-        },
-        {
-
-          title: 'Scheduled Emails',
-          icon: 'forward_to_inbox',
-          name: 'MailMergeReportsPage-ScheduleEmail',
-        },
-      ],
-
+      ]
     },
+    {
+
+      title: 'Scheduled Emails',
+      icon: 'forward_to_inbox',
+      name: 'dashboard-ScheduledEmailsPage',
+      routeClass: ['MailMergeReportsPage-ScheduleEmail',]
+    },
+    // {
+    //   title: 'Reports & Mails',
+    //   icon: 'email',
+    //   name: 'dashboard-MailMergeReportsPage',
+
+    //   children: [
+    //     {
+
+    //       title: 'Mail Merge & Reports',
+    //       icon: 'receipt_long',
+    //       name: 'dashboard-MailMergeReportsPage',
+    //       routeClass: ['dashboard-MailMergeReportsPage', 'MailMergeReportsPage-MailMergeReportsPage']
+    //     },
+    //     {
+
+    //       title: 'Scheduled Emails',
+    //       icon: 'forward_to_inbox',
+    //       name: 'MailMergeReportsPage-ScheduleEmail',
+    //     },
+    //   ],
+
+    // },
 
     {
 
@@ -334,8 +352,14 @@ export const useBreadcrumb = () => {
     {
 
       title: 'Scheduled Emails',
+      icon: 'forward_to_inbox',
+      name: 'dashboard-ScheduledEmailsPage',
+    },
+    {
+
+      title: 'View Emails',
       icon: 'email',
-      name: 'MailMergeReportsPage-ScheduleEmail',
+      name: 'MailMergeReportsPage-ScheduleEmailDetails',
     },
     {
 

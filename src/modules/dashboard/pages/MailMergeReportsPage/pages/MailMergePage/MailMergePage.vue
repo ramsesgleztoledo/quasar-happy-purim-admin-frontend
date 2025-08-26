@@ -180,13 +180,14 @@
               </div>
               <div v-else>
                 <q-select
-                  v-if="$dStore.categories.length"
+                  v-if="$dStore.categories.length && !$rStore.$state.isCustom"
                   popup-content-class="q-menu-300"
                   :debounce="500"
                   class="q-mr-sm q-mb-sm"
                   :class="{ 'item-width-300': !isMobile, 'w-full': isMobile }"
                   v-model="categoryFiltered"
                   outlined
+                  multiple
                   :options="$dStore.categories"
                   label="Filter by categories"
                   option-label="categoryName"
@@ -619,23 +620,47 @@ import { sortArrayByField } from 'src/helpers/sortArrayByfield'
 import { useDashboardStore } from 'src/modules/dashboard/store/dashboardStore/dashboardStore'
 import type { ShulCategoryInterface } from 'src/modules/dashboard/interfaces/category-interfaces'
 import DialogAlert from 'src/components/DialogAlert/DialogAlert.vue'
+import { useReport } from 'src/modules/dashboard/composables/useReport'
 
 const $router = useRouter()
 const $rStore = useReportStore()
 const $dStore = useDashboardStore()
+const { getFilteredRecipients } = useReport()
 
-const categoryFiltered = ref<ShulCategoryInterface | undefined>(undefined)
+const categoryFiltered = ref<ShulCategoryInterface[] | undefined>(undefined)
 
-const rows = computed(() => {
-  const members = $rStore.$state.report?.members || []
-  if (!categoryFiltered.value) return members
+// const rows = computed(() => {
+//   const members = $rStore.$state.report?.members || []
+//   if (!categoryFiltered.value) return members
 
-  return members.filter((member) =>
-    member.Categories?.toLowerCase().includes(
-      `${categoryFiltered.value?.categoryID}`.toLowerCase(),
-    ),
-  )
-})
+//   return members.filter((member) =>
+//     member.Categories?.toLowerCase().includes(
+//       `${categoryFiltered.value?.categoryID}`.toLowerCase(),
+//     ),
+//   )
+// })
+
+const rows = ref($rStore.$state.report?.members || [])
+
+watch(
+  categoryFiltered,
+  async (value: ShulCategoryInterface[] | undefined) => {
+    if ($rStore.$state.isCustom) return
+
+    if (!value) {
+      rows.value = $rStore.$state.report?.members || []
+      return
+    }
+    const resp = await getFilteredRecipients({
+      id: $rStore.$state.reportId,
+      categories: value.map((cat) => `${cat.categoryID}`),
+    })
+    rows.value = resp
+  },
+  {
+    deep: true,
+  },
+)
 
 const { isMobile } = useUI()
 const { getData, generatePDF, sendNowEmail, addUnmergedEmailJobToTable } = useMailMerge()
@@ -854,6 +879,4 @@ onMounted(() => {
 })
 </script>
 
-<style scoped lang="scss">
-@import './MailMergePage';
-</style>
+<style scoped lang="scss" src="./MailMergePage.scss" />

@@ -13,11 +13,11 @@
           </div>
 
           <div class="row q-mb-sm">
-            <div class="col-12 q-pa-sm q-item-bordered">
+            <div class="col-12 q-pa-sm">
               <div class="row q-mb-sm">
                 <div v-html="memberOrderState.addonSettings.message"></div>
               </div>
-              <div class="row justify-content-space-between">
+              <div class="row justify-content-space-between q-item-bordered q-pa-sm">
                 <b class="q-pa-sm" style="color: var(--happypurim)"> Additional Baskets</b>
                 <div class="row">
                   <q-input
@@ -149,14 +149,14 @@
               <div class="row text-h6 q-mb-sm" style="color: var(--happypurim)">
                 Additional Items
               </div>
+              <div class="row q-mb-sm">
+                <div v-html="memberOrderState.additionalOrderItemsSettings.message"></div>
+              </div>
             </div>
           </div>
 
           <div class="row q-mb-sm">
             <div class="col-12 q-pa-sm q-item-bordered">
-              <div class="row q-mb-sm">
-                <div v-html="memberOrderState.additionalOrderItemsSettings.message"></div>
-              </div>
               <div
                 v-for="(aItem, index) in memberOrderState.additionalOrderOptions"
                 :key="index"

@@ -94,4 +94,11 @@ export const loginAccounts: LoginAccountInterface[] = [
     token: "qQg0vUyln9RCkx6wtY9Envs1b5lZgjZi5ncN7osIPwDtB+ms3eImgnjTuN6OM/mXwEUk+/KoqJgaqDSE5/oATA==",
     url: 'http://localhost:9000/#/authenticate?token=qQg0vUyln9RCkx6wtY9Envs1b5lZgjZi5ncN7osIPwDtB+ms3eImgnjTuN6OM/mXwEUk+/KoqJgaqDSE5/oATA=='
   },
+  {
+    id: 32,
+    name: 'Temple Beth Sholom - Hamden',
+    guid: 'F9A053D4-342A-440B-817E-7FFBB72469E1',
+    token: "/mIvwbh/xiDa4f2rgx07q0jyle55t+wf8co1qzhb6YDTTqCjePUz64Dv6rnx2BeE5H1mHeUV8sOSY1NmCv049g==",
+    url: 'http://localhost:9000/#/authenticate?token=/mIvwbh/xiDa4f2rgx07q0jyle55t+wf8co1qzhb6YDTTqCjePUz64Dv6rnx2BeE5H1mHeUV8sOSY1NmCv049g=='
+  },
 ]

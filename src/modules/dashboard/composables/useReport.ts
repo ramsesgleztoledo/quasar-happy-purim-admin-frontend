@@ -198,6 +198,21 @@ export const useReport = () => {
       return resp.ok ? resp.data : undefined
     },
 
+    async getFilteredRecipients(data: RecipientDataFormInterface,) {
+
+      const resp = await getReportRecipientsByReportId(data, {
+        dontRedirect: true,
+        dontShowToast: true,
+        dontUseErrorAction: true,
+        loading: {
+          message: 'Loading ...'
+        }
+      })
+
+      return resp.ok ? resp.data.members : []
+
+    }
+
 
   }
 };

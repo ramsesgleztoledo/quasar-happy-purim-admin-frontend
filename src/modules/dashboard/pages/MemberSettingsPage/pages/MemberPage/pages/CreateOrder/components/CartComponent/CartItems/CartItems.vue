@@ -274,7 +274,7 @@
               </div>
             </div>
 
-            <div class="row q-pa-sm">
+            <div class="row q-pa-sm" v-if="item.memberList.length">
               <div class="col-12">
                 <q-expansion-item
                   icon="person"
@@ -410,7 +410,7 @@ const { setBackendTotal } = useCalculate()
 
 // const promotions = ref<ExtendedPromotionType[]>([])
 
-const addOrRemoveItemAItem = (
+const addOrRemoveItemAItem = async (
   isAdd: boolean,
   data: MemberOrderItemsInterface,
   showLoading?: boolean,
@@ -432,7 +432,7 @@ const promotions = computed(() => {
       promotionsAux.push({
         ...item,
         memberList: getMembersByPromotion(
-          promoFound.promotion!.joinCategories,
+          promoFound.promotion!,
           memberOrderState.value.memberList.original,
         ),
       })

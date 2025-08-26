@@ -15,7 +15,7 @@ export const getPromotionsHelper = (memberList: OrderMemberListInterface[], orde
       promotionsAux.push({
         ...item,
         memberList: getMembersByPromotion(
-          promoFound.promotion!.joinCategories,
+          promoFound.promotion!,
           memberList
         ),
       })
@@ -59,11 +59,14 @@ export const getMembersSelectedHelper = (state: MemberOrderStateInterface) => {
 }
 
 export const checkDisabledPromotionHelper = (promotion: OrderPromotionInterface, promotions: OrderPromotionInterface[]) => {
+
+  return !!promotions.find((pro) =>
+    pro.categories.toLowerCase().includes('all') && pro.id != promotion.id && pro.selected
+  )
+
+}
+export const checkDisabledPromotionHelper2 = (promotion: OrderPromotionInterface, promotions: OrderPromotionInterface[]) => {
   const promotionCat = promotion.joinCategories.split(',') || []
-
-
-
-
   for (let i = 0; i < promotionCat.length; i++) {
     const cat = promotionCat[i];
 

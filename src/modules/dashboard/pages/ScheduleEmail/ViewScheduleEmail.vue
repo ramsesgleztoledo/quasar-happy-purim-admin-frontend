@@ -19,7 +19,6 @@
               rowsPerPage: 0,
             }"
             title="Scheduled Emails"
-            :style="{ height: isFullScreen ? '800px' : '400px' }"
             class="table-sticky-header-column-table"
             flat
             bordered

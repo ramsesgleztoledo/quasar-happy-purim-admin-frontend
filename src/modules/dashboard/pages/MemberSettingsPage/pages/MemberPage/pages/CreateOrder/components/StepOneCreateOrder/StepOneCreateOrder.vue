@@ -9,6 +9,7 @@
   </div>
   <div class="row">
     <div
+      v-if="$dStore.categories.length"
       class="q-mr-md q-mb-md"
       :class="{
         'col-12': isMobile,
@@ -16,7 +17,6 @@
       }"
     >
       <q-select
-        v-if="$dStore.categories.length"
         popup-content-class="q-menu-300"
         :class="{ 'item-width-300': !isMobile }"
         v-model="types"
@@ -86,8 +86,8 @@
           <b>Promotions</b>
         </label>
         <div v-for="item in promotions" :key="item.id" class="row">
-          <!-- :disable="checkDisabled(item).value" -->
           <q-checkbox
+            :disable="checkDisabled(item).value"
             @update:model-value="(value) => onAddOrRemovePromotion(value, item)"
             v-model="item.selected"
             :label="item.displayText"
@@ -153,7 +153,7 @@
           >
             <template v-slot:item="props">
               <div class="q-pa-sm col-xs-12 col-sm-4 col-md-2">
-                <q-card bordered style="height: 100%">
+                <q-card bordered class="person-card-item">
                   <q-card-section
                     class="text-center"
                     style="min-height: 70px; padding: 0px; display: flex"
@@ -180,18 +180,18 @@
                         <b>
                           <q-tooltip>
                             {{
-                              `${props.row.lastName}, ${props.row.firstName} ${props.row.sFirstName ? `& ${props.row.sFirstName}` : ''}`
+                              `${props.row.lastName} ${props.row.firstName ? `, ${props.row.firstName}` : ``} ${props.row.sFirstName ? `& ${props.row.sFirstName}` : ''}`
                             }}
                           </q-tooltip>
                           {{
-                            `${props.row.lastName}, ${props.row.firstName} ${props.row.sFirstName ? `& ${props.row.sFirstName}` : ''}`
+                            `${props.row.lastName} ${props.row.firstName ? `, ${props.row.firstName}` : ``} ${props.row.sFirstName ? `& ${props.row.sFirstName}` : ''}`
                           }}
                         </b>
                       </div>
                     </div>
                   </q-card-section>
                   <q-separator />
-                  <q-card-section class="flex justify-content-end">
+                  <q-card-section  class="card-price-container">
                     <div v-if="memberPriceToShow(props.row.price, $moStore.getSPrice).value">
                       <b>
                         ${{
@@ -226,7 +226,7 @@ import type {
 import type { StepOneCreateOrderInterface } from '../../interfaces'
 import { useMemberOrderStore } from 'src/modules/dashboard/store/memberOrderStore/memberOrderStore'
 import { getMembersByPromotion } from 'src/modules/dashboard/helpers/getMembersByPromotion'
-// import { checkDisabledPromotionHelper } from '../../helpers/member-order-helpers'
+import { checkDisabledPromotionHelper } from '../../helpers/member-order-helpers'
 import { useDashboardStore } from 'src/modules/dashboard/store/dashboardStore/dashboardStore'
 import type { ShulCategoryInterface } from 'src/modules/dashboard/interfaces/category-interfaces'
 import RowStyle from './components/RowStyle.vue'
@@ -382,7 +382,21 @@ const onSelectAll = () => {
 }
 
 const onAddOrRemovePromotion = (value: boolean, item: OrderPromotionInterface) => {
-  const list = getMembersByPromotion(item.joinCategories, memberOrderState.value.memberList.copy)
+  const isAll = item.categories.toLowerCase().includes('all')
+
+  if (isAll)
+    promotions.value = promotions.value.map((pro) => {
+      if (pro.id == item.id) return pro
+
+      return {
+        ...pro,
+        selected: false,
+      }
+    })
+
+  const members = memberOrderState.value.memberList.copy
+
+  const list = getMembersByPromotion(item, members)
 
   const selectedId = new Set($moStore.membersSelected.map((member) => member.id))
 
@@ -393,12 +407,7 @@ const onAddOrRemovePromotion = (value: boolean, item: OrderPromotionInterface) =
         selectedId.add(item.id)
       }
     }
-  } else
-    $moStore.membersSelected = getMembersByPromotion(
-      item.joinCategories,
-      $moStore.membersSelected,
-      true,
-    )
+  } else $moStore.membersSelected = getMembersByPromotion(item, $moStore.membersSelected, true)
 }
 
 const onHidePaidOrdersUpdated = (value: boolean) => {
@@ -442,8 +451,8 @@ const saveChanges = () => {
   }
 }
 
-// const checkDisabled = (promotion: OrderPromotionInterface) =>
-//   computed(() => checkDisabledPromotionHelper(promotion, promotions.value))
+const checkDisabled = (promotion: OrderPromotionInterface) =>
+  computed(() => checkDisabledPromotionHelper(promotion, promotions.value))
 
 defineExpose<StepOneCreateOrderInterface>({
   saveChanges,
@@ -452,4 +461,4 @@ defineExpose<StepOneCreateOrderInterface>({
 const memberPriceToShow = (price: number, sPrice: number) => computed(() => price || sPrice || 0)
 </script>
 
-<style scoped lang="scss"></style>
+<style scoped lang="scss" src="./StepOneCreateOrder.scss" />

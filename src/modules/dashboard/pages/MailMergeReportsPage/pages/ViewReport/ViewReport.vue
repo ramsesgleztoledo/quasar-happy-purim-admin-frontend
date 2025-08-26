@@ -362,19 +362,29 @@ const getInitialData = () => {
 }
 
 const goToPageWithFilters = () => {
-  $router.push({
-    name: 'MailMergeReportsPage-ViewReport',
-    params: { reportId },
-    query: {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  let query: any = {}
+  if (!$rStore.$state.isCustom)
+    query = {
       basketSize: JSON.stringify(filter.value.basketSize),
       categories: JSON.stringify(filter.value.categories),
       donateBasket: filter.value.donateBasket,
       routeCode: JSON.stringify(filter.value.routeCode),
       searchTerm: filter.value.searchTerm,
       zipCode: JSON.stringify(filter.value.zipCode),
+      isCustom: 'false',
+    }
+  else
+    query = {
       yesOnly: `${yesOnly.value}`,
       hideNL: `${hideNL.value}`,
-    },
+      isCustom: 'true',
+    }
+
+  $router.push({
+    name: 'MailMergeReportsPage-ViewReport',
+    params: { reportId },
+    query,
   })
 }
 
@@ -392,7 +402,7 @@ const clearFilters = () => {
 }
 
 watch(
-  filter,
+  [filter, yesOnly, hideNL],
   () => {
     isTableLoading.value = true
     if (timeOut.value) clearTimeout(timeOut.value)

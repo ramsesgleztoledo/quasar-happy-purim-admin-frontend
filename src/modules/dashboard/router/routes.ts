@@ -115,8 +115,32 @@ export const dashboardRoutes: RouteRecordRaw[] = [
               import(/* webpackChunkName: "dashboard-OrderArchivePage" */ "../pages/OrderArchivePage/pages/OrderDetailPage/OrderDetailPage.vue"),
           },
         ]
-      }
-      ,
+      },
+
+      {
+        path: 'scheduled-emails',
+        name: 'dashboard-ScheduledEmailsPage',
+        redirect: { name: 'MailMergeReportsPage-ScheduleEmail' },
+        children: [
+          {
+            path: '',
+            name: 'MailMergeReportsPage-ScheduleEmail',
+            component: () =>
+              import(/* webpackChunkName: "MailMergeReportsPage-MailMergeReportsPage" */ "../pages/ScheduleEmail/ScheduleEmail.vue"),
+          },
+          {
+            path: '/:scheduledEmailId',
+            name: 'MailMergeReportsPage-ScheduleEmailDetails',
+            component: () =>
+              import(/* webpackChunkName: "MailMergeReportsPage-MailMergeReportsPage" */ "../pages/ScheduleEmail/ViewScheduleEmail.vue"),
+          },
+
+        ]
+      },
+
+
+
+
       {
         path: 'mail-merge-reports',
         name: 'dashboard-MailMergeReportsPage',
@@ -130,18 +154,8 @@ export const dashboardRoutes: RouteRecordRaw[] = [
             component: () =>
               import(/* webpackChunkName: "MailMergeReportsPage-MailMergeReportsPage" */ "../pages/MailMergeReportsPage/MailMergeReportsPage/MailMergeReportsPage.vue"),
           },
-          {
-            path: 'scheduled-emails',
-            name: 'MailMergeReportsPage-ScheduleEmail',
-            component: () =>
-              import(/* webpackChunkName: "MailMergeReportsPage-MailMergeReportsPage" */ "../pages/ScheduleEmail/ScheduleEmail.vue"),
-          },
-          {
-            path: 'scheduled-emails/:scheduledEmailId',
-            name: 'MailMergeReportsPage-ScheduleEmailDetails',
-            component: () =>
-              import(/* webpackChunkName: "MailMergeReportsPage-MailMergeReportsPage" */ "../pages/ScheduleEmail/ViewScheduleEmail.vue"),
-          },
+
+
 
           {
             path: 'view/:reportId',

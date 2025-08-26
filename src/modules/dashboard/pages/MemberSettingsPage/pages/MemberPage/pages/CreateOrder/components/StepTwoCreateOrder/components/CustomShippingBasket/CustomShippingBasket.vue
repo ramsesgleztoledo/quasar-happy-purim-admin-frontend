@@ -296,6 +296,8 @@ const onAddCustomShippingOption = async () => {
       ...data,
     } as unknown as UpdateShippingItemFormInterface
 
+    if (!edit.shippingOptionId) edit.shippingOptionId = -1
+
     await updateCustomShippingItem(edit)
   }
 }
