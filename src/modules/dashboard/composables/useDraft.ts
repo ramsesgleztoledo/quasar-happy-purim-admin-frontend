@@ -38,7 +38,7 @@ export const useDraft = () => {
           },
         },
       )
-      showToast(resp.ok, 'Draft added successfully',
+      showToast(resp.ok, 'Draft added',
         'something went wrong adding the draft')
 
     },

@@ -29,7 +29,7 @@ const orderItems = computed<ItemBasketInterface[]>(() => [
     value: $dStore.memberSummary?.totalMembers || 0,
   },
   {
-    label: 'Member logged in',
+    label: 'Members logged In',
     value: $dStore.memberSummary?.membersLoggedIn || 0,
     color: '#3c5ce0',
     redirectTo: {
@@ -37,12 +37,8 @@ const orderItems = computed<ItemBasketInterface[]>(() => [
     },
   },
   {
-    label: 'Member online',
+    label: 'Members Currently Online',
     value: $dStore.memberSummary?.membersOnline || 0,
-  },
-  {
-    label: 'Member online Names',
-    value: 'show',
     color: '#3c5ce0',
     hover: `<p> ${$dStore.memberSummary?.membersOnlineNames || ''} </p>`,
   },

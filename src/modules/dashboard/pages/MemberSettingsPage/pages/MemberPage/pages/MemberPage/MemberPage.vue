@@ -20,7 +20,7 @@
         <!--=============================== if desktop =============================-->
 
         <div v-if="!isMobile" class="col-12 top-title-col">
-          <q-icon name="person" class="q-mr-sm" size="large" />
+          <q-icon name="person" class="q-mr-sm MemberPage-user-title" />
           <p class="MemberPage-user-title">
             {{ memberState.selectedMember?.lastName }}, {{ memberState.selectedMember?.firstName }}
             {{
@@ -52,7 +52,7 @@
             style="display: flex; justify-content: space-between"
           >
             <div class="MemberPage-user-title d-flex align-items-center">
-              <q-icon name="person" class="q-mr-sm" size="large" />
+              <q-icon name="person" class="q-mr-sm MemberPage-user-title" />
               <p>
                 {{ memberState.selectedMember?.lastName }},
                 {{ memberState.selectedMember?.firstName }}

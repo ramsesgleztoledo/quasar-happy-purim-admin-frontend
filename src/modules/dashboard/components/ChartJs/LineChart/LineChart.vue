@@ -57,6 +57,7 @@ watch(
         formatter: '{a} - ({b}) : {c} ',
         z: 2147483647,
         confine: true,
+        appendToBody: true,
       },
       series: [
         ...($props.charData?.map((data) => ({

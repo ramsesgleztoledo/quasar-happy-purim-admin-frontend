@@ -15,16 +15,9 @@
             <q-item-section>
               <q-item-label>{{ draft.documentTitle }}</q-item-label>
               <q-item-label caption lines="2"
-                >Saved by: {{ draft.adminName }} -
-                {{ convertToUSDate(draft.dateAdded) }}</q-item-label
+                >{{ draft.adminName }} - {{ convertToUSDate(draft.dateAdded,true) }}</q-item-label
               >
-              <q-separator
-                v-if="draft.documentDescription"
-                spaced
-                inset
-                dark
-                style="background-color: #ded9d9"
-              />
+
               <q-item-label caption lines="2">{{ draft.documentDescription }}</q-item-label>
             </q-item-section>
             <q-item-section side>

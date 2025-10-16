@@ -7,20 +7,26 @@
       </div>
     </div>
 
-    <div class="row">
-      <div class="col-12 justify-content-end">
-        <q-btn
-          v-if="!$rStore.getReportSelectedReportData?.viewOnly"
-          class="q-mr-sm"
-          color="primary"
-          icon="check"
-          label="Email or Print"
-          :to="{
-            name: 'MailMergeReportsPage-MailMergePage',
-            params: { reportId },
-          }"
-        />
-      </div>
+    <div class="row justify-content-end">
+      <q-btn
+        style="min-width: 180.28px"
+        class="q-mr-sm q-mt-sm"
+        outline
+        icon="close"
+        label="Clear Filters"
+        @click="clearFilters"
+      />
+      <q-btn
+        v-if="!$rStore.getReportSelectedReportData?.viewOnly"
+        class="q-mr-sm q-mt-sm"
+        color="primary"
+        icon="check"
+        label="Email or Print"
+        :to="{
+          name: 'MailMergeReportsPage-MailMergePage',
+          params: { reportId },
+        }"
+      />
     </div>
 
     <div
@@ -50,13 +56,6 @@
     <div v-else class="ViewReport-filters-container q-pl-sm q-pr-sm">
       <div class="row q-mt-sm justify-content-space-between">
         <h6>Filters:</h6>
-        <q-btn
-          style="min-width: 180.28px"
-          outline
-          icon="close"
-          label="Clear Filters"
-          @click="clearFilters"
-        />
       </div>
 
       <div class="row">

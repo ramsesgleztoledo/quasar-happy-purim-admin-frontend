@@ -26,6 +26,8 @@ import { useMemberStore } from "../store/memberStore/memberStore";
 import { useMemberService } from "../services/member.service";
 import { useLocalDeliveryService } from "../services/LocalDelivery.service";
 import { useBasicSettingsService } from "../services/basic-settings.service";
+import { useDashboardService } from "../services/dashboard.service";
+import { useDashboardStore } from "../store/dashboardStore/dashboardStore";
 
 
 
@@ -58,6 +60,8 @@ export const useMemberOrder = () => {
   const { getShulSettings } = useShulService()
   const { getLocalDelivery } = useLocalDeliveryService()
   const { getSettings } = useBasicSettingsService()
+  const { getTopTransactions } = useDashboardService()
+  const $dStore = useDashboardStore()
 
 
   const mGuid = computed(() => memberState.value.selectedMember?.memberGuid || '')
@@ -505,7 +509,16 @@ export const useMemberOrder = () => {
         $moStore.resetPaymentForm()
 
         //TODO: remove this if transaction is returned
-        const transactions = await getTransactionsByMemberId($mStore.selectedMember?.memberId || 0);
+        const [transactions, topTransactions] = await Promise.all([
+          getTransactionsByMemberId($mStore.selectedMember?.memberId || 0),
+          getTopTransactions()
+        ])
+
+
+
+        if (topTransactions.ok)
+          $dStore.setTopTransactions(topTransactions.data)
+
         if (transactions.ok)
           $mStore.setMemberTransactions(transactions.data)
 

@@ -1,6 +1,7 @@
 // app global css in SCSS form
 @import './table-styles.scss';
 @import './font-sizes.scss';
+@import './chart-styles.scss';
 @import url('https://fonts.googleapis.com/css2?family=Arial:wght@400&family=Comic+Sans+MS:wght@400&family=Courier+New:wght@400&family=Times+New+Roman:wght@400&family=Verdana:wght@400&display=swap');
 
 // .q-loading {
@@ -16,6 +17,7 @@
 ::-webkit-scrollbar {
   width: 6px;
   height: 6px;
+  border-radius: 18px;
   background-color: adjust-color($happypurim, $lightness: 25%);
 }
 ::-webkit-scrollbar-thumb {

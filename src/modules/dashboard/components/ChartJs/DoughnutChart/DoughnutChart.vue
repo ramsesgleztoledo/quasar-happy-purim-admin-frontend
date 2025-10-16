@@ -62,6 +62,7 @@ const option = ref<ECBasicOption>({
     formatter: '{b} : {c} ({d}%)',
     z: 2147483647,
     confine: true,
+    appendToBody: true,
   },
   legend: {
     orient: 'vertical',
