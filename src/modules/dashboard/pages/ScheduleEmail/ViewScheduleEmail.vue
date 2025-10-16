@@ -35,7 +35,9 @@
                     <div class="row">
                       <q-btn
                         class="q-mr-sm"
-                        style="background-color: var(--happypurim); color: white"
+                        style="background-color: var(--happypurim); color: white; font-size: 12px"
+                        padding="5px"
+                        size="sm"
                         label="view"
                         flat
                         icon="visibility"

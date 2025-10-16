@@ -38,11 +38,12 @@
               <q-tr :props="props">
                 <q-td v-for="col in props.cols" :key="col.name" :props="props">
                   <div v-if="col.name === 'campaignId'">
-                    <div class="row">
+                    <div class="row" style="min-width: 250px">
                       <q-btn
                         class="q-mr-sm q-mt-sm"
                         style="background-color: var(--happypurim); color: white; font-size: 12px"
                         label="view"
+                        icon="visibility"
                         padding="5px"
                         size="sm"
                         flat
@@ -65,6 +66,7 @@
                         class="q-mr-sm q-mt-sm"
                         style="background-color: var(--happypurim); color: white; font-size: 12px"
                         label="cancel"
+                        icon="close"
                         padding="5px"
                         size="sm"
                         flat
