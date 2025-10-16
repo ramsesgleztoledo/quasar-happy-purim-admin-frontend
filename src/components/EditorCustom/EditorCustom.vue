@@ -53,14 +53,15 @@
           list: 'no-icons',
           options: ['h3', 'h4', 'h5', 'h6', 'p'],
         },
-        {
-          label: $q.lang.editor.fontSize,
-          icon: $q.iconSet.editor.fontSize,
-          fixedLabel: true,
-          fixedIcon: true,
-          list: 'no-icons',
-          options: ['size-1', 'size-2', 'size-3', 'size-4', 'size-5', 'size-6', 'size-7'],
-        },
+        // {
+        //   label: $q.lang.editor.fontSize,
+        //   icon: $q.iconSet.editor.fontSize,
+        //   fixedLabel: true,
+        //   fixedIcon: true,
+        //   list: 'no-icons',
+        //   options: ['size-1', 'size-2', 'size-3', 'size-4', 'size-5', 'size-6', 'size-7'],
+        // },
+        'Font-Size',
         {
           label: $q.lang.editor.defaultFont,
           icon: $q.iconSet.editor.font,
@@ -93,6 +94,33 @@
       verdana: 'Verdana',
     }"
   >
+    <template v-slot:Font-Size>
+      <q-btn-dropdown
+        ref="fontSizeRef"
+        dense
+        no-caps
+        no-wrap
+        unelevated
+        text-color="white"
+        label="Font-Size"
+        size="sm"
+        icon="format_size"
+      >
+        <q-list dense style="background-color: var(--happypurim); color: white">
+          <q-item
+            v-for="item in fontSize"
+            :key="item.size"
+            tag="label"
+            clickable
+            @click="changeFontSize(item.size)"
+          >
+            <q-item-section side> </q-item-section>
+            <q-item-section>{{ item.label }}</q-item-section>
+          </q-item>
+        </q-list>
+      </q-btn-dropdown>
+    </template>
+
     <template v-if="!!tokens" v-slot:token>
       <q-btn-dropdown
         dense
@@ -130,7 +158,7 @@
         unelevated
         color="white"
         text-color="primary"
-        label="Insert Token"
+        label="Insert Merge Fields"
         size="sm"
       >
         <q-list dense>
@@ -181,11 +209,24 @@
         <q-popup-proxy ref="popRefColorPicked" cover>
           <q-color
             v-model="colorPicked"
-            @update:model-value="onColorPicked"
+            @update:model-value="onColorPicked()"
             no-header
             no-footer
             default-view="palette"
           />
+          <div class="row justify-content-end">
+            <q-btn
+              class="clear-btn"
+              icon="close"
+              label="Clear"
+              outline
+              @click="
+                () => {
+                  onColorPicked(true)
+                }
+              "
+            />
+          </div>
         </q-popup-proxy>
       </q-btn>
     </template>
@@ -195,11 +236,24 @@
         <q-popup-proxy ref="popRefColorPickerBackground" cover>
           <q-color
             v-model="colorPickerBackground"
-            @update:model-value="onColorPickedBackground"
+            @update:model-value="onColorPickedBackground()"
             no-header
             no-footer
             default-view="palette"
           />
+          <div class="row justify-content-end">
+            <q-btn
+              class="clear-btn"
+              icon="close"
+              label="Clear"
+              outline
+              @click="
+                () => {
+                  onColorPickedBackground(true)
+                }
+              "
+            />
+          </div>
         </q-popup-proxy>
       </q-btn>
     </template>
@@ -338,7 +392,18 @@ interface EditorCustomPropsInterface {
   stringTokens?: string[] | undefined
   attacher?: { name: string; label: string; icon?: string; value: string }[]
   showUploader?: boolean
+  className?: string
 }
+
+const fontSize = ref([
+  { label: '10px', size: 1 },
+  { label: '12px', size: 2 },
+  { label: '14px', size: 3 },
+  { label: '18px', size: 4 },
+  { label: '26px', size: 5 },
+  { label: '50px', size: 6 },
+  { label: '80px', size: 7 },
+])
 
 const uploadInsertFileFlag = ref<boolean>(false)
 const uploadNewFileFlag = ref<boolean>(false)
@@ -364,6 +429,16 @@ const editorRef = ref<QEditor | undefined>(undefined)
 // Emit the updated value when the internal state changes
 const $emit = defineEmits(['update:modelValue'])
 
+const fontSizeRef = ref<QBtnDropdown | undefined>(undefined)
+
+const changeFontSize = (size: number) => {
+  if (!editorRef.value) return
+  const edit = editorRef.value
+  fontSizeRef.value?.hide()
+  edit.caret.restore()
+  edit.runCmd('fontSize', `${size}`)
+  edit.focus()
+}
 const add = (name: string) => {
   if (!editorRef.value) return
   const edit = editorRef.value
@@ -392,20 +467,20 @@ const addHTML = (value: string) => {
   edit.focus()
 }
 
-const onColorPicked = () => {
+const onColorPicked = (clear?: boolean) => {
   if (popRefColorPicked.value) popRefColorPicked.value.hide()
   if (!editorRef.value) return
   const edit = editorRef.value
   edit.caret.restore()
-  edit.runCmd('foreColor', colorPicked.value)
+  edit.runCmd('foreColor', clear ? 'black' : colorPicked.value)
   edit.focus()
 }
-const onColorPickedBackground = () => {
+const onColorPickedBackground = (clear?: boolean) => {
   if (popRefColorPickerBackground.value) popRefColorPickerBackground.value.hide()
   if (!editorRef.value) return
   const edit = editorRef.value
   edit.caret.restore()
-  edit.runCmd('backColor', colorPickerBackground.value)
+  edit.runCmd('backColor', clear ? 'transparent' : colorPickerBackground.value)
   edit.focus()
 }
 
@@ -430,7 +505,7 @@ const insertFile = (file: string, prop?: { width: string; height: string }) => {
     'insertHTML',
     `&nbsp;
 <div
-  class="editable-div" style="width: ${prop?.width ? prop.width : '200px'}; height: ${prop?.height ? prop.height : '200px'}">
+  class="editable-div" style="display: inline-block; width: ${prop?.width ? prop.width : '200px'}; height: ${prop?.height ? prop.height : '200px'}">
   <img
     src="${file}"
     style="width: 100%; height: 100%; pointer-events: none;"

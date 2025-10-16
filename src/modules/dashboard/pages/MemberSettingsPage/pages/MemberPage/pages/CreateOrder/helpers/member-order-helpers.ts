@@ -16,7 +16,8 @@ export const getPromotionsHelper = (memberList: OrderMemberListInterface[], orde
         ...item,
         memberList: getMembersByPromotion(
           promoFound.promotion!,
-          memberList
+          memberList,
+
         ),
       })
     }
@@ -85,8 +86,12 @@ export const checkDisabledPromotionHelper2 = (promotion: OrderPromotionInterface
   return false
 }
 
+export const getCustomShippingItemsTotalHelper = (
+  state: MemberOrderStateInterface): number => {
 
-export const getCustomShippingItemsTotalHelper = (customShippingItems: CustomShippingItemInterface[], customShippingOptions: CustomShippingOptionInterface[]): number => {
+  const customShippingItems: CustomShippingItemInterface[] = state.customShippingItems
+  const customShippingOptions: CustomShippingOptionInterface[] = state.customShippingOptions
+
   const total = customShippingItems.reduce((pre, cur) => {
 
     const totalAttributes = cur.attributes.reduce((preA, curA) =>
@@ -95,7 +100,9 @@ export const getCustomShippingItemsTotalHelper = (customShippingItems: CustomShi
 
     const found = customShippingOptions.find(item => item.id === cur.shippingOptionId)
 
-    return pre + totalAttributes + (found?.price || 0)
+    const localDeliveryPrice = state.localDeliveries.find(item => item.zipCode === cur.zip && item.enabled)?.localDeliveryPrice || 0
+
+    return pre + totalAttributes + (found?.price || localDeliveryPrice || state.shulSetting?.sSendoutprice || 0)
   }, 0)
 
   return total

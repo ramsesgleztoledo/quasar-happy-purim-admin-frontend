@@ -9,7 +9,7 @@
         @click="isFullScreen = !isFullScreen"
       />
     </div>
-    <VChart :option="option" autoresize />
+    <VChart :option="option" autoresize style="padding: 0px; margin: 0px" />
   </div>
 </template>
 

@@ -5,7 +5,7 @@
     </h5>
   </div>
   <div class="q-pa-md" v-if="memberState.memberTransactions.length">
-    <div class="row RecentOrders-container" :class="{ fullscreen: isFullScreen }">
+    <div class="row RecentOrders-container white-container" :class="{ fullscreen: isFullScreen }">
       <div class="col-12">
         <div class="row">
           <div class="col-12 justify-content-end">
@@ -149,7 +149,7 @@ const columns: QTableColumn<MemberTransactionInterface>[] = [
     required: true,
     align: 'left',
     sortable: true,
-    format: (amount: number) => `$${convertWithCommas(amount)}`,
+    format: (amount: number) => `$${convertWithCommas(amount, true)}`,
   },
   {
     field: 'paid',
@@ -158,7 +158,7 @@ const columns: QTableColumn<MemberTransactionInterface>[] = [
     required: true,
     align: 'left',
     sortable: true,
-    format: (amount: number) => `$${convertWithCommas(amount)}`,
+    format: (amount: number) => `$${convertWithCommas(amount, true)}`,
   },
   {
     field: 'balanceDue',
@@ -167,7 +167,7 @@ const columns: QTableColumn<MemberTransactionInterface>[] = [
     required: true,
     align: 'left',
     sortable: true,
-    format: (amount: number) => `$${convertWithCommas(amount)}`,
+    format: (amount: number) => `$${convertWithCommas(amount, true)}`,
   },
 ]
 </script>

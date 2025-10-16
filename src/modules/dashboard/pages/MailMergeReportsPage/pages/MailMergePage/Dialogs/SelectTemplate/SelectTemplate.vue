@@ -19,7 +19,6 @@
               <q-btn
                 padding="3px"
                 color="primary"
-                icon="check"
                 label="Select"
                 @click="() => $emit('onSelectTemplate', template.content)"
                 v-close-popup

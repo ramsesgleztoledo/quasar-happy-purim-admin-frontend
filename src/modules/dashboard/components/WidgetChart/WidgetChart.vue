@@ -1,6 +1,6 @@
 <template>
   <div
-    class="WidgetChart-container"
+    class="WidgetChart-container q-pa-sm"
     :class="{ fullscreen: isFullScreen }"
     style="display: flex; flex-direction: column"
   >
@@ -30,19 +30,19 @@
       <div class="col-12 WidgetChart-earned" :style="{ color: dataAux.color }">
         <div class="row">
           <p>{{ dataAux.label }}</p>
-          <p style="margin-left: 8px !important">
+          <p v-if="showLastValue" style="margin-left: 8px !important">
             ( {{ preFix ? preFix : ' '
             }}{{ convertWithCommas(dataAux.data[dataAux.data.length - 1]?.quantity)
             }}{{ subFix ? subFix : '' }} )
           </p>
         </div>
       </div>
-      <div class="col-12 WidgetChart-description">
+      <div v-if="showDescription" class="col-12 WidgetChart-description">
         {{ dataAux.data[dataAux.data.length - 1]?.label }}
       </div>
     </div>
     <div class="row" style="flex: 1; align-items: flex-end">
-      <div class="col-12 WidgetChart-graph" :style="{ height: isFullScreen ? '600px' : '' }">
+      <div class="col-12 WidgetChart-graph" :style="{ height: isFullScreen ? '600px' : '210px' }">
         <BarChart showLabel :charData="charData" v-if="typeChart === 'bar'" />
         <LineChart showLabel :charData="charData" v-if="typeChart === 'line'" />
       </div>

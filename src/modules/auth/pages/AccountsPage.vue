@@ -1,5 +1,5 @@
 <template>
-  <div class="row">
+  <div class="row" style="overflow: auto; max-height: 100vh">
     <div
       class="q-pa-sm"
       v-for="account in loginAccounts"

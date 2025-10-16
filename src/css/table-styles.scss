@@ -92,61 +92,7 @@ tr:hover {
     left: 0;
   }
 }
-.sticky-2-1-column-table {
-  cursor: pointer;
-  td:first-child {
-    /* bg color is important for td; just specify one */
-    background-color: #ededed;
-    z-index: 1;
-    position: sticky;
-    left: 0;
-  }
-  td:nth-child(2) {
-    /* bg color is important for td; just specify one */
-    background-color: #ededed;
-    z-index: 1;
-    position: sticky;
-    left: 72px;
-  }
 
-  tr th {
-    position: sticky;
-    /* higher than z-index for td below */
-    z-index: 2;
-    /* bg color is important; just specify one */
-  }
-
-  thead tr:first-child th {
-    top: 0;
-    z-index: 2;
-  }
-
-  thead tr:nth-child(2) th {
-    top: 48px;
-    z-index: 4;
-  }
-
-  tr:first-child th:first-child {
-    /* highest z-index */
-    z-index: 3;
-  }
-
-  tr:first-child th:nth-child(2) {
-    /* highest z-index */
-    z-index: 3;
-  }
-
-  th:first-child {
-    position: sticky;
-    left: 0;
-  }
-
-  th:nth-child(2) {
-    position: sticky;
-    left: 72px;
-    z-index: 10;
-  }
-}
 .sticky-2-column-table {
   cursor: pointer;
   td:first-child {
@@ -161,7 +107,7 @@ tr:hover {
     background-color: #ededed;
     z-index: 1;
     position: sticky;
-    left: 89px;
+    left: 100px;
   }
 
   tr th {
@@ -198,7 +144,70 @@ tr:hover {
 
   th:nth-child(2) {
     position: sticky;
-    left: 89px;
+    left: 100px;
     z-index: 10;
+  }
+}
+.sticky-2-1-column-table {
+  cursor: pointer;
+  td:first-child {
+    /* bg color is important for td; just specify one */
+    background-color: #ededed;
+    z-index: 1;
+    position: sticky;
+    left: 0;
+    width: 100px !important;
+  }
+  td:nth-child(2) {
+    /* bg color is important for td; just specify one */
+    background-color: #ededed;
+    z-index: 1;
+    position: sticky;
+    left: 108.46px;
+  }
+
+  tr th {
+    position: sticky;
+    /* higher than z-index for td below */
+    z-index: 2;
+    /* bg color is important; just specify one */
+  }
+
+  thead tr:first-child th {
+    top: 0;
+    z-index: 2;
+    width: 100px !important;
+  }
+
+  thead tr:nth-child(2) th {
+    top: 48px;
+    z-index: 4;
+  }
+
+  tr:first-child th:first-child {
+    /* highest z-index */
+    z-index: 3;
+  }
+
+  tr:first-child th:nth-child(2) {
+    /* highest z-index */
+    z-index: 3;
+  }
+
+  th:first-child {
+    position: sticky;
+    left: 0;
+  }
+
+  th:nth-child(2) {
+    position: sticky;
+    left: 108.46px;
+    z-index: 10;
+  }
+}
+
+thead{
+  tr{
+    background-color: $happypurim;
   }
 }

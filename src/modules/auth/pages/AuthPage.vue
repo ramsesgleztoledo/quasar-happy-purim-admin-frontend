@@ -9,8 +9,8 @@
       <div class="col-12 q-pa-sm">
         <div class="row q-mb-lg happypurim-logo user-select-none justify-content-end">
           <p class="hp-logo" style="font-size: 26px">
-            <!-- HappyPurim.com -->
-            HappyRoshHashanah.com
+            HappyPurim.com
+            <!-- HappyRoshHashanah.com -->
           </p>
         </div>
         <div class="row q-mt-md">
@@ -100,6 +100,7 @@ const onLogin = async () => {
     username: realForm.value.login.value,
     password: realForm.value.password.value,
   }
+
   await loginWithUserAndPass(data)
 }
 </script>

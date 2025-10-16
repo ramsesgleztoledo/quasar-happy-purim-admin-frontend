@@ -6,6 +6,7 @@ export interface LinksDataInterface {
   caption?: string;
   children?: LinksDataInterface[];
   disabled?: boolean;
+  force?: boolean;
 }
 
 

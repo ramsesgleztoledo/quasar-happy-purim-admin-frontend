@@ -24,7 +24,8 @@
                       {{ member.lastName }}, {{ member.firstName }}
                       {{ member.sFirstName ? `& ${member.sFirstName}` : '' }}
                     </div>
-                    <b v-if="member.price"> ${{ convertWithCommas(member.price || 0) }} </b>
+                    <!-- <b v-if="member.price"> {{ member.price ? '$' : ''
+              }}{{ convertWithCommas(member.price || 0) }} </b> -->
                   </div>
                   <div class="col-3">
                     <q-icon
@@ -46,7 +47,7 @@
 </template>
 
 <script setup lang="ts">
-import { convertWithCommas } from 'src/helpers'
+// import { convertWithCommas } from 'src/helpers'
 import { useMemberOrder } from 'src/modules/dashboard/composables/useMemberOrder'
 import type { OrderMemberListInterface } from 'src/modules/dashboard/interfaces/memberOrder-interfaces'
 import { useMemberOrderStore } from 'src/modules/dashboard/store/memberOrderStore/memberOrderStore'

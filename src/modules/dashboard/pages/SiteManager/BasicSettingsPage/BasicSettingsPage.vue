@@ -10,7 +10,7 @@
       v-if="!!basicSettingsState.settings?.hasCustomPricing"
       class="q-mb-md"
       type="warning"
-      text="This account is configured with customized pricing which can not be changed from the Site Settings Page."
+      text="This account is configured with customized pricing which cannot be changed from the Site Settings Page."
     />
     <div class="row">
       <div

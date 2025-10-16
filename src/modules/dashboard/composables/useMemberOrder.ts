@@ -24,7 +24,9 @@ import { useProcessOrderService } from "../services/processOrder.service";
 import { useShulService } from "../services/Shul.service";
 import { useMemberStore } from "../store/memberStore/memberStore";
 import { useMemberService } from "../services/member.service";
-import { useCalculateService } from "../services/Calculate.service";
+import { useLocalDeliveryService } from "../services/LocalDelivery.service";
+import { useBasicSettingsService } from "../services/basic-settings.service";
+
 
 
 
@@ -54,7 +56,9 @@ export const useMemberOrder = () => {
   const { getPaymentMethods } = usePaymentMethodsService()
   const { placeOrder } = useProcessOrderService()
   const { getShulSettings } = useShulService()
-  const { CalculateTotal } = useCalculateService()
+  const { getLocalDelivery } = useLocalDeliveryService()
+  const { getSettings } = useBasicSettingsService()
+
 
   const mGuid = computed(() => memberState.value.selectedMember?.memberGuid || '')
   const memberId = computed(() => memberState.value.selectedMember?.memberId || 0)
@@ -127,6 +131,26 @@ export const useMemberOrder = () => {
     memberOrderState: computed(() => $moStore.$state),
     orderTotal: computed(() => $moStore.getTotalCost),
 
+    async getNewData() {
+
+      const resp = await Promise.all([
+        getOrderItemsByMemberGuid(mGuid.value),
+        getCustomShippingItem(mGuid.value),
+
+      ])
+
+      if (resp.find(resp => !resp.ok)) return
+
+      $moStore.$patch({
+        orderItems: resp[0].data,
+        customShippingItems:
+          resp[1].data.map(item => ({
+            ...item,
+            attributes: getParse(item.attributes)
+          })),
+
+      })
+    },
     async getInitialData() {
 
       const resp = await Promise.all([
@@ -145,8 +169,8 @@ export const useMemberOrder = () => {
         getDiscounts(),
         getPaymentMethods(mGuid.value),
         getShulSettings(mGuid.value),
-        getShulSettings(mGuid.value),
-        CalculateTotal(mGuid.value, memberId.value)
+        getLocalDelivery(),
+        getSettings()
       ])
 
       if (resp.find(resp => !resp.ok)) return
@@ -184,7 +208,8 @@ export const useMemberOrder = () => {
         discounts: resp[12].data,
         paymentMethodTypes: resp[13].data,
         shulSetting: resp[14].data,
-        totalFromBackend: resp[16].data || 0
+        localDeliveries: resp[15].data,
+        settings: resp[16].data
       })
     },
     addOrRemoveItem,
@@ -216,16 +241,18 @@ export const useMemberOrder = () => {
 
 
       // let respDelete = undefined;
-      let respPromotions = undefined
+      // const respPromotions = undefined
 
 
-      const respAdd = await addMember({
+      // const respAdd =
+      await addMember({
         memberGuid: mGuid.value,
         memberId: memberId.value
       },
         [...data.membersAdd.map(member => ({
           receiver: member.id,
-          tempcode: `${mGuid.value}+${member.id}`
+          tempcode: `${mGuid.value}+${member.id}`,
+          price: member.price || $moStore.shulSetting?.sPerperson || 0
         }))]
       )
 
@@ -241,44 +268,44 @@ export const useMemberOrder = () => {
       //   )
 
       if (data.promotions.length)
-        respPromotions =
-          await Promise.all(
-            data.promotions.map(item => addOrRemoveItem(!!item.selected, {
-              description: item.displayText,
-              itemId: item.itemId,
-              message: "",
-              price: item.price,
-              quantity: item.quantity ? item.quantity : 1,
-              sessionId: tokenSession.value,
-              shipTo: ""
-            })),
+        // respPromotions =
+        await Promise.all(
+          data.promotions.map(item => addOrRemoveItem(!!item.selected, {
+            description: item.displayText,
+            itemId: item.itemId,
+            message: "",
+            price: item.price,
+            quantity: item.quantity ? item.quantity : 1,
+            sessionId: tokenSession.value,
+            shipTo: ""
+          })),
 
-          )
-
-
-      if (
-        respAdd !== undefined ||
-        // respDelete !== undefined ||
-        respPromotions !== undefined
-
-      ) {
-
-        const validRespAdd = respAdd === undefined ? true : respAdd.ok
-        // const validRespDelete = respDelete === undefined ? true : respDelete.ok
-        const validRespPromotions = respPromotions === undefined ? true : respPromotions.every(resp => resp)
-
-
-
-
-
-        showToast(
-          validRespAdd &&
-          // validRespDelete &&
-          validRespPromotions,
-          'Cart Updated',
-          'Something went wrong updating the cart'
         )
-      }
+
+
+      // if (
+      //   respAdd !== undefined ||
+      //   // respDelete !== undefined ||
+      //   respPromotions !== undefined
+
+      // ) {
+
+      //   const validRespAdd = respAdd === undefined ? true : respAdd.ok
+      //   // const validRespDelete = respDelete === undefined ? true : respDelete.ok
+      //   const validRespPromotions = respPromotions === undefined ? true : respPromotions.every(resp => resp)
+
+
+
+
+
+      //   showToast(
+      //     validRespAdd &&
+      //     // validRespDelete &&
+      //     validRespPromotions,
+      //     'Cart Updated',
+      //     'Something went wrong updating the cart'
+      //   )
+      // }
 
 
     },
@@ -326,11 +353,12 @@ export const useMemberOrder = () => {
       },
         [{
           receiver: member.id,
-          tempcode: `${mGuid.value}+${member.id}`
+          tempcode: `${mGuid.value}+${member.id}`,
+          price: 0
         }],
         {
           loading: {
-            message: 'removing member...'
+            message: 'Loading ...'
           }
         }
       )
@@ -344,7 +372,7 @@ export const useMemberOrder = () => {
     async getAttributesByCustomShippingOptionId(id: number): Promise<CustomShippingOptionAttributeType[]> {
       const attributes = await getAttributesByCustomShippingOptionId(id, mGuid.value, {
         loading: {
-          message: `Loading custom shipping option attributes ...`
+          message: `Loading ...`
         }
       })
 
@@ -367,9 +395,13 @@ export const useMemberOrder = () => {
     async updateCustomShippingItem(data: UpdateShippingItemFormInterface) {
       const resp = await updateCustomShippingItem(mGuid.value, data, {
         loading: {
-          message: `editing custom shipping item ...`
+          message: `Loading ...`
         }
       })
+
+      console.log({ data: resp.data });
+
+
       if (resp.ok)
         setCustomShippingItems(resp.data)
 
@@ -377,11 +409,12 @@ export const useMemberOrder = () => {
     async deleteCustomShippingItem(data: UpdateShippingItemFormInterface) {
       const resp = await deleteCustomShippingItem(mGuid.value, data, {
         loading: {
-          message: `deleting custom shipping item ...`
+          message: `Loading ...`
         }
       })
       if (resp.ok)
-        $moStore.setCustomShippingItems($moStore.customShippingItems.filter(item => item.shippingOptionId !== data.shippingOptionId))
+
+        $moStore.setCustomShippingItems($moStore.customShippingItems.filter(item => item.shippingItemId !== data.shippingItemId))
 
     },
     async placeOrder() {
@@ -411,7 +444,7 @@ export const useMemberOrder = () => {
         reciprocity: false,
         emailTo,
         tempCode: tokenSession.value,
-        total: $moStore.getCartData?.totalBefore || 0,
+        total: $moStore.getCartData?.total || 0,
       }
 
 

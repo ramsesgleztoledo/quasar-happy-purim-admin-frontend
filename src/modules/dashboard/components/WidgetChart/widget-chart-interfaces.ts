@@ -1,10 +1,12 @@
 export interface WidgetCharPropsInterface {
-  typeChart: 'bar' | 'line'
-  title: string
-  preFix?: string
-  subFix?: string
-  data: DataItemInterface,
-  showRange?: boolean
+  typeChart: 'bar' | 'line';
+  title: string;
+  preFix?: string;
+  subFix?: string;
+  data: DataItemInterface;
+  showRange?: boolean;
+  showLastValue?: boolean;
+  showDescription?: boolean;
 }
 export interface DataItemInterface {
   dates: string[]

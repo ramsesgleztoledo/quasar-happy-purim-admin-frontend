@@ -3,7 +3,8 @@
     <div class="row RecentOrders-container" :class="{ fullscreen: isFullScreen }">
       <div class="col-12">
         <div class="row">
-          <div class="col-12 justify-content-end">
+          <div class="col-12 justify-content-space-between">
+            <div class="q-table__title">Recent Orders</div>
             <q-btn
               flat
               round
@@ -14,8 +15,7 @@
           </div>
         </div>
         <q-table
-          title="Recent Orders"
-          :style="{ height: isFullScreen ? '800px' : '400px' }"
+          :style="{ height: isFullScreen ? '100%' : '' }"
           class="table-sticky-header-column-table sticky-2-column-table"
           flat
           bordered
@@ -116,7 +116,7 @@ const auxColumns: QTableColumn[] = [
     label: 'Amount',
     align: 'left',
     field: 'amount',
-    format: (amount: number) => `$${convertWithCommas(amount)}`,
+    format: (amount: number) => `$${convertWithCommas(amount || 0, true)}`,
     sortable: true,
   },
   {

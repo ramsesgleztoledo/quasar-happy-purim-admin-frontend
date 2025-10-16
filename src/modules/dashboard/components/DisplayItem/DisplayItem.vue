@@ -14,6 +14,7 @@
           :style="{
             color: item.color ? item.color : 'black',
             cursor: item.redirectTo || item.hover ? 'pointer' : '',
+            textDecoration: item.redirectTo ? 'underline' : '',
           }"
         >
           {{ item.value }}

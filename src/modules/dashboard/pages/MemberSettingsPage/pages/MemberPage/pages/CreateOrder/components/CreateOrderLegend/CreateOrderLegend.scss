@@ -1,8 +1,7 @@
 .CreateOrderLegend-square {
   width: 20px;
   height: 20px;
-  background-color: #9acd32;
-  margin-right: 20px;
+  margin-right: 8px;
 }
 
 .CreateOrderLegend-square-red-check {
@@ -29,4 +28,14 @@
   position: absolute;
   bottom: 25%;
   left: 40%;
+}
+
+p {
+  margin: 0px;
+}
+
+.CreateOrderLegend-container {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
 }

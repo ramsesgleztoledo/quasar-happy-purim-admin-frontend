@@ -4,6 +4,8 @@ export interface ScheduleEmailInterface {
   formattedSendingDate: string;
   subject: string;
   adminName: string;
+  regenerate: boolean;
+  timeZone: string;
 }
 
 export interface EmailToBeSentInterface {
@@ -14,4 +16,5 @@ export interface EmailToBeSentInterface {
   subject: string;
   status: string;
   dateSent: null;
+
 }

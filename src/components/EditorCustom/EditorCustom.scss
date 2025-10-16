@@ -28,9 +28,14 @@
   border: solid 8px $happypurim;
 }
 
-:deep(.editable-div) {
-  resize: both;
-  overflow: hidden;
-  border: 1px dashed #888;
-  display: inline-block;
+.clear-btn {
+  margin-top: 2px;
+  margin-bottom: 2px;
+  margin-right: 2px;
+  font-size: 10px;
+  padding: 0px;
+  padding-left: 4px;
+  padding-right: 4px;
+  background-color: transparent;
+  color: $happypurim;
 }

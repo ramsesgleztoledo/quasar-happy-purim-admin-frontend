@@ -119,6 +119,7 @@
       <div class="col-12">
         <div class="row CustomShippingBasket-personalization">Basket Personalization</div>
         <q-separator />
+
         <div
           class="row"
           v-for="(attribute, index) in customShippingSelectedAttributes"
@@ -134,7 +135,11 @@
               {{ index + 1 }}: {{ attribute.name }}
             </div>
             <div class="row q-pa-sm">
-              <q-checkbox v-model="attribute.selected" :label="attribute.description" />
+              <q-checkbox
+                v-model="attribute.selected"
+                :label="attribute.description"
+                @click="attribute.value = ''"
+              />
             </div>
             <div class="row q-pa-sm CustomShippingBasket-text">
               {{ attribute.promptText }}
@@ -209,6 +214,7 @@ import { useUI } from 'src/modules/UI/composables'
 import { useMemberOrder } from 'src/modules/dashboard/composables/useMemberOrder'
 import { computed, onMounted, ref, watch } from 'vue'
 import type {
+  AttributeCustomShippingItemInterface,
   CustomShippingItemInterface,
   UpdateShippingItemFormInterface,
 } from '../../../../../../../../../../interfaces/memberOrder-interfaces'
@@ -217,6 +223,7 @@ import type {
   CustomShippingOptionAttributeType,
   CustomShippingOptionInterface,
 } from 'src/modules/dashboard/interfaces/memberOrder-interfaces'
+import { useAuth } from 'src/modules/auth/composables/useAuth'
 
 interface CustomShippingBasketPropsInterface {
   prop_customsShippingItem?: CustomShippingItemInterface | undefined
@@ -231,7 +238,9 @@ const {
   getAttributesByCustomShippingOptionId,
   addCustomShippingItem,
   updateCustomShippingItem,
+  addOrRemoveItem,
 } = useMemberOrder()
+const { authState } = useAuth()
 
 const customShippingSelected = ref<CustomShippingOptionInterface | undefined>(undefined)
 
@@ -252,12 +261,12 @@ const { realForm, isValidForm, getFormValue, resetForm } = useForm({
 const isInvalid = computed(() => {
   if (
     !isValidForm() ||
-    (!customShippingSelected.value && memberOrderState.value.customShippingOptions.length)
+    (!customShippingSelected.value && memberOrderState.value.customShippingOptions?.length)
   )
     return true
 
-  if (customShippingSelectedAttributes.value.length) {
-    const atts = customShippingSelectedAttributes.value
+  if (customShippingSelectedAttributes.value?.length) {
+    const atts = customShippingSelectedAttributes.value || []
 
     for (let i = 0; i < atts.length; i++) {
       const att = atts[i]!
@@ -275,18 +284,33 @@ const isInvalid = computed(() => {
 const onAddCustomShippingOption = async () => {
   const formData = getFormValue()
 
+  const attributes = !customShippingSelectedAttributes.value
+    ? []
+    : customShippingSelectedAttributes.value.filter((ats) => ats.selected)
+
   const data: CustomShippingItemFormInterface = {
     ...formData,
     shippingOptionId: customShippingSelected.value?.id || undefined,
     glutenFree: false,
-    attributes: !customShippingSelectedAttributes.value
-      ? ''
-      : JSON.stringify(customShippingSelectedAttributes.value),
+    attributes: attributes.length ? JSON.stringify(attributes) : '',
   } as unknown as CustomShippingItemFormInterface
 
   const id = $props.prop_customsShippingItem?.shippingItemId || undefined
   if (!id) {
-    await addCustomShippingItem({ ...data, shippingOptionId: -1 })
+    const dataAux = { ...data }
+    if (!dataAux.shippingOptionId) dataAux.shippingOptionId = -1
+
+    await addCustomShippingItem(dataAux)
+    await addOrRemoveItem(true, {
+      description: 'Shipping Gift Basket to',
+      itemId: 2,
+      sessionId: authState.value?.token?.token || '',
+      quantity: 1,
+      message: dataAux.message || '',
+      shipTo: dataAux.recipient || '',
+      price: getBasketPrice(data),
+    })
+
     resetForm()
     customShippingSelected.value = undefined
     customShippingSelectedAttributes.value = []
@@ -300,6 +324,34 @@ const onAddCustomShippingOption = async () => {
 
     await updateCustomShippingItem(edit)
   }
+}
+
+const getBasketPrice = (basket: CustomShippingItemFormInterface) => {
+  const cShippings = memberOrderState.value.customShippingOptions || []
+
+  const cShipping = cShippings.find((cs) => cs.id === basket.shippingOptionId)
+  if (!cShipping) {
+    const sSendoutprice = memberOrderState.value.shulSetting?.sSendoutprice || 0
+    const localDelivery =
+      (memberOrderState.value.localDeliveries || []).find(
+        (it) => it.enabled && it.zipCode == basket.zip,
+      )?.localDeliveryPrice || 0
+
+    return localDelivery || sSendoutprice
+  }
+
+  const basketTotal = cShipping.price || 0
+
+  const attributes: AttributeCustomShippingItemInterface[] = JSON.parse(basket.attributes || '[]')
+
+  const attributesTotal = attributes.reduce(
+    (acc: number, curr: AttributeCustomShippingItemInterface) => {
+      return acc + (curr.price || 0)
+    },
+    0,
+  )
+
+  return basketTotal + attributesTotal || 0
 }
 
 // reset form with current value
@@ -325,7 +377,9 @@ onMounted(() => {
 watch(customShippingSelected, (value) => {
   if (!value) return
   getAttributesByCustomShippingOptionId(value.id)
-    .then((resp) => (customShippingSelectedAttributes.value = resp))
+    .then((resp) => {
+      customShippingSelectedAttributes.value = resp
+    })
     .catch(console.error)
 })
 
@@ -343,6 +397,7 @@ watch(customShippingSelectedAttributes, (value) => {
     if (foundAt) {
       foundAt.value = at.value
       foundAt.selected = true
+      // !!at.value
     }
   }
 })

@@ -8,17 +8,21 @@ import { useMailMergeService } from "../services/mailMerge.service";
 export const useReport = () => {
 
   const { getReportList, downloadReportExcelByReportId, getCustomReports, downloadCustomReportExcelByReportId,
-    runSQLReportRecipientsByReportId, getReportRecipientsByReportId,
+    // runSQLReportRecipientsByReportId,
+    getReportRecipientsByReportIdWithSQL,
+    getReportRecipientsByReportIdCustomWithSQL,
+    getReportRecipientsByReportId,
     getZipCodeFilters,
     getRouteCodeFilters,
     getBasketSizeFilters,
     getDonateFilters,
-    runSQLReportRecipientsByReportIdCustom,
-    getReportRecipientsByReportIdCustom,
+    downloadRouteReport,
+    // runSQLReportRecipientsByReportIdCustom,
+    // getReportRecipientsByReportIdCustom,
     getCustomSpecialReports,
     getAdvancedSpecialReports,
   } = useReportsService()
-  const { getTokensByReportId } = useMailMergeService()
+  const { getTokensByReportId, getCustomTokensByReportId } = useMailMergeService()
   const $rStore = useReportStore()
   const { downloadFile, showLoading, stopLoading } = useUI()
   const $q = useQuasar()
@@ -26,7 +30,7 @@ export const useReport = () => {
   return {
     async getReportList() {
       $q.loading.show({
-        message: 'Loading...',
+        message: 'Loading ...',
         spinnerColor: '#f36b09',
         messageColor: '#f36b09',
       })
@@ -124,72 +128,105 @@ export const useReport = () => {
 
 
     async getViewReport(data: RecipientDataFormInterface, isCustom: boolean) {
+
+
+      $rStore.setIsLoadingReportData(true)
       let tokens = undefined
       let resp = undefined
 
+
+
+      if (!isCustom)
+        tokens = await getTokensByReportId(data.id, {
+          // loading: {
+          //   message: 'Loading ...'
+          // }
+        })
+
+      else
+        tokens = await getCustomTokensByReportId({
+          // loading: {
+          //   message: 'Loading ...'
+          // }
+        })
+
+
+
+
+      if (tokens)
+        $rStore.setTokens(tokens.ok ? tokens.data : [])
+
       if (!isCustom) {
-        await runSQLReportRecipientsByReportId(data.id, {
-          dontRedirect: true,
-          dontShowToast: true,
-          loading: {
-            message: 'Loading...'
-          }
-        });
+        // await runSQLReportRecipientsByReportId(data.id, {
+        //   dontRedirect: true,
+        //   dontShowToast: true,
+        //   // loading: {
+        //   //   message: 'Loading ...'
+        //   // }
+        // });
 
 
-        resp = await getReportRecipientsByReportId(data, {
-          loading: {
-            message: 'Loading ...'
-          }
+        resp = await getReportRecipientsByReportIdWithSQL(data, {
+          // loading: {
+          //   message: 'Loading ...'
+          // }
         })
       }
 
       else {
-        await runSQLReportRecipientsByReportIdCustom(data.id, {
-          dontRedirect: true,
-          dontShowToast: true,
-          loading: {
-            message: 'Loading...'
-          }
-        });
+        // await runSQLReportRecipientsByReportIdCustom(data.id, {
+        //   dontRedirect: true,
+        //   dontShowToast: true,
+        //   // loading: {
+        //   //   message: 'Loading ...'
+        //   // }
+        // });
 
-        resp = await getReportRecipientsByReportIdCustom(data.id, {
-          loading: {
-            message: 'Loading ...'
-          }
+        resp = await getReportRecipientsByReportIdCustomWithSQL(data, {
+          // loading: {
+          //   message: 'Loading ...'
+          // }
         })
       }
 
-      tokens = await getTokensByReportId(data.id, {
-        loading: {
-          message: 'Loading ...'
-        }
-      })
 
-      if (!tokens || !resp) return
 
-      $rStore.setTokens(tokens.ok ? tokens.data : [])
-      return resp.ok ? resp.data : undefined
+
+
+      $rStore.setIsLoadingReportData(false)
+
+      return resp?.ok ? resp.data : undefined
     },
 
 
     async getReportData(data: RecipientDataFormInterface, isCustom: boolean) {
+
+
+
       let resp = undefined
 
       if (!isCustom)
-        resp = await getReportRecipientsByReportId(data, {
-          loading: {
-            message: 'Loading ...'
-          }
+        resp = await getReportRecipientsByReportIdWithSQL(data, {
+          // loading: {
+          //   message: 'Loading ...'
+          // }
         })
 
 
-      else
-        resp = await getReportRecipientsByReportIdCustom(data.id, {
-          loading: {
-            message: 'Loading ...'
-          }
+      else {
+        // resp = (await getReportRecipientsByReportIdCustomWithSQL(data.id, {
+        //   // loading: {
+        //   //   message: 'Loading ...'
+        //   // }
+        // }))
+        resp = await getReportRecipientsByReportIdCustomWithSQL(data, {
+          // loading: {
+          //   message: 'Loading ...'
+          // }
         })
+
+
+      }
 
 
       if (!resp) return
@@ -198,18 +235,33 @@ export const useReport = () => {
       return resp.ok ? resp.data : undefined
     },
 
-    async getFilteredRecipients(data: RecipientDataFormInterface,) {
+    async getFilteredRecipients(data: RecipientDataFormInterface) {
 
       const resp = await getReportRecipientsByReportId(data, {
         dontRedirect: true,
         dontShowToast: true,
         dontUseErrorAction: true,
-        loading: {
-          message: 'Loading ...'
-        }
+        // loading: {
+        //   message: 'Loading ...'
+        // }
       })
 
       return resp.ok ? resp.data.members : []
+
+    },
+    async downloadRouteReport() {
+      await downloadFile(async () => downloadRouteReport({
+        dontRedirect: true,
+        loading: {
+          message: 'Downloading report'
+        }
+      }), {
+        fileType: 'doc',
+        fileName: 'RouteReport',
+        extension: 'doc',
+      })
+
+
 
     }
 

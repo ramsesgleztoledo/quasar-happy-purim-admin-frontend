@@ -1,5 +1,5 @@
 <template>
-  <q-dialog v-model="show" persistent :style="{display: !isReady ? 'none !important' : ''}">
+  <q-dialog v-model="show" persistent>
     <q-card :style="{ width: isMobile ? '100vw' : '500px' }">
       <div class="row dialog-header custom-dialog-header-container">
         <div class="col-12">
@@ -32,7 +32,7 @@
               @click="() => $emit('onSelectImg', img)"
             />
           </div>
-          <q-inner-loading :showing="!isReady" label="Loading..." />
+          <q-inner-loading :showing="!isReady" label="Loading ..." />
         </div>
       </div>
       <div v-else class="q-pa-lg q-ma-lg">No images to show...</div>
@@ -54,7 +54,10 @@ import { useUI } from 'src/modules/UI/composables'
 import { computed, ref, watch } from 'vue'
 
 const $rStore = useReportStore()
-const { isMobile, showLoading, stopLoading } = useUI()
+const {
+  isMobile,
+  // showLoading, stopLoading
+} = useUI()
 const countImgLoads = ref(0)
 
 interface ScheduleSendPropsInterface {
@@ -75,14 +78,14 @@ const show = computed({
 watch(countImgLoads, (val) => {
   if (val >= $rStore.$state.images.length) {
     isReady.value = true
-    stopLoading()
+    // stopLoading()
   }
 })
 watch(
   () => $props.modelValue,
   () => {
     countImgLoads.value = 0
-    if ($props.modelValue) showLoading()
+    // if ($props.modelValue) showLoading()
   },
 )
 </script>

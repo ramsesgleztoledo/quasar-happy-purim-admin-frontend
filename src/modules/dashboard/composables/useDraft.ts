@@ -11,9 +11,7 @@ export const useDraft = () => {
   return {
     async getDrafts() {
       const resp = await getDrafts(0, 999999, {
-        loading: {
-          message: 'Loading ...',
-        },
+
       })
       return resp.ok ? resp.data : []
 

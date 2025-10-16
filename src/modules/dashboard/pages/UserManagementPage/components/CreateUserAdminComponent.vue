@@ -8,7 +8,7 @@
         </div>
       </div>
 
-      <div class="custom-dialog-body-container q-pa-lg" style="min-width: 50vw">
+      <div class="custom-dialog-body-container q-pa-lg">
         <div v-if="user" class="row q-mb-sm justify-content-end">
           <q-btn
             color="primary"
@@ -140,14 +140,14 @@
                   'col-6': !isMobile,
                   'col-12': isMobile,
                 }"
-                class="q-pl-sm q-pr-sm"
+                class="q-pl-sm q-pr-sm q-mb-md"
               >
                 <q-input
                   v-model="realForm.address1.value"
                   outlined
-                  label="Address *"
+                  label="Address"
                   lazy-rules
-                  :rules="[lazyRules.required()]"
+                  :rules="[]"
                 />
               </div>
               <div
@@ -160,9 +160,9 @@
                 <q-input
                   v-model="realForm.city.value"
                   outlined
-                  label="City *"
+                  label="City"
                   lazy-rules
-                  :rules="[lazyRules.required()]"
+                  :rules="[]"
                 />
               </div>
             </div>
@@ -173,19 +173,19 @@
                   v-model="realForm.state.value"
                   outlined
                   :options="statesOptions"
-                  label="State  *"
+                  label="State"
                   lazy-rules
-                  :rules="[lazyRules.required()]"
+                  :rules="[]"
                 />
               </div>
               <div class="col-6 q-pl-sm q-pr-sm">
                 <q-input
                   v-model="realForm.zip.value"
                   outlined
-                  label="Zip Code  *"
+                  label="Zip Code"
                   mask="#####"
                   lazy-rules
-                  :rules="[lazyRules.required()]"
+                  :rules="[]"
                 />
               </div>
             </div>
@@ -236,7 +236,7 @@
         </div>
       </div>
 
-      <div class="custom-dialog-body-container q-pa-lg" style="min-width: 50vw">
+      <div class="custom-dialog-body-container q-pa-lg">
         <div class="row">
           <!--=============================== member left=============================-->
           <div class="q-pr-lg col-12">
@@ -340,15 +340,15 @@ const { addUser, editAdmin, setNewPassword, deleteUser } = useUserAdmin()
 const showPassword = ref(false)
 
 const { realForm, isValidForm, getFormValue, resetForm } = useForm({
-  firstName: { value: '', validations: [validations.required] },
-  lastName: { value: '', validations: [validations.required] },
-  login: { value: '', validations: [validations.required] },
+  firstName: { value: '', required: true },
+  lastName: { value: '', required: true },
+  login: { value: '', required: true },
   email: { value: '', validations: [validations.required, validations.isEmail] },
   phone: { value: '', validations: [validations.required, validations.minNumberDigitOnly(10)] },
-  address1: { value: '', validations: [validations.required] },
-  city: { value: '', validations: [validations.required] },
-  state: { value: '', validations: [validations.required] },
-  zip: { value: '', validations: [validations.required] },
+  address1: { value: '' },
+  city: { value: '' },
+  state: { value: '' },
+  zip: { value: '' },
   password: {
     value: '',
     validations: [validations.required, validations.minCharacters(8), validations.isGoodPassword],

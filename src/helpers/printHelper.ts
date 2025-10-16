@@ -76,7 +76,6 @@ export const printElement = (elementId: string) => {
         ${stylesheets}
         <style>
           body {
-            font-family: "Roboto", sans-serif;
             padding: 16px;
           }
           @media print {

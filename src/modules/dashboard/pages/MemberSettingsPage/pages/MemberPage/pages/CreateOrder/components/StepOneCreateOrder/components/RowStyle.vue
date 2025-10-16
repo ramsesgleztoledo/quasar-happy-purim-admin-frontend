@@ -1,5 +1,5 @@
 <template>
-  <div class="row RowStyle-container">
+  <div class="row RowStyle-container" style="height: 100%">
     <div
       v-if="row.iSentLastYear"
       class="col-12 RowStyle-col"
@@ -15,7 +15,7 @@
       class="col-12 RowStyle-col"
       style="background-color: #86ceeb"
     ></div>
-    <div v-if="row.paid" class="col-12 RowStyle-col" style="background-color: #fa6666"></div>
+    <!-- <div v-if="row.paid" class="col-12 RowStyle-col" style="background-color: #fa6666"></div> -->
   </div>
 </template>
 
@@ -33,9 +33,11 @@ defineProps<RowStylePropsInterface>()
 .RowStyle-container {
   display: flex;
   flex-grow: 1;
-  flex-direction: column;
+  flex-direction: row;
 }
 .RowStyle-col {
-  flex: 1;
+  // flex: 1;
+  height: 100%;
+  width: 6px;
 }
 </style>

@@ -1,29 +1,29 @@
 <template>
   <div class="row">
+    <div class="col-12 q-pa-sm">
+      <b class="DashboardPageStatsComponent-members">Member Stats: </b>
+    </div>
+  </div>
+  <div class="row q-pa-sm">
     <div class="col-4 DashboardPageStatsComponent-chart-container">
       <HalfDoughnutChart :char-data="[...dataArray]" />
     </div>
 
-    <div class="col-8 q-pt-md">
-      <div class="row">
-        <div class="col-12">
-          <b class="DashboardPageStatsComponent-members">Members Statistics: </b>
-        </div>
-      </div>
+    <div class="col-8">
       <div class="DashboardPageStatsComponent-labels-container">
         <div class="row q-mt-sm" v-for="(data, index) in dataArray" :key="index">
-          <div class="col-2 q-pa-sm centered-content">
+          <div class="col-2 centered-content">
             <div
               class="DashboardPageStatsComponent-custom-circle"
               :style="{ backgroundColor: data.color }"
             ></div>
           </div>
-          <div class="col-8 q-pa-sm">
+          <div class="col-8">
             <p class="DashboardPageStatsComponent-description">
               {{ data.label }}
             </p>
           </div>
-          <div class="col-2 q-pa-sm ">
+          <div class="col-2">
             <p class="DashboardPageStatsComponent-number">{{ getPercent(data.quantity).value }}%</p>
           </div>
         </div>

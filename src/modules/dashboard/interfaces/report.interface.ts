@@ -7,13 +7,16 @@ export interface ReportDataInterface {
   reportID: string;
   name: string;
   summary: string;
-  isCustom?: boolean
+  isCustom?: boolean;
+  viewOnly?: boolean;
+  downloadOnly?: boolean;
 }
 
 export interface CustomReportInterface {
   reportId: number;
   reportName: string;
   displayOrder: number;
+
 }
 
 

@@ -1,5 +1,5 @@
 <template>
-  <div class="q-pa-md q-gutter-sm breadcrumbs-container">
+  <div class="breadcrumbs-container">
     <q-breadcrumbs>
       <q-breadcrumbs-el
         v-for="mr in breadCrumbRoutes"

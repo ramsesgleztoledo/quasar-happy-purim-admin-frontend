@@ -26,11 +26,7 @@ export const useUploadList = () => {
 
   return {
     async getDestinationKeys() {
-      const resp = await getDestinationKeys({
-        loading: {
-          message: 'loading ...'
-        }
-      })
+      const resp = await getDestinationKeys()
 
       return resp.ok ? resp.data : []
     },
@@ -98,7 +94,7 @@ export const useUploadList = () => {
     async compareDataGetSummary() {
       const resp = await compareDataGetSummary({
         loading: {
-          message: 'Loading'
+          message: 'Loading.... This may take a few moments'
         }
       })
       return resp.ok ? resp.data : undefined
@@ -120,7 +116,7 @@ export const useUploadList = () => {
 
       const resp = await revertChanges({
         loading: {
-          message: 'Loading...'
+          message: 'Loading ...'
         }
       })
       showToast(resp.ok, 'Data reverted', 'something went wrong reverting the data')

@@ -154,7 +154,7 @@ export const useAdvancedSettings = () => {
 
       const resp = await updateTab1DonateBasketEnabled(enabled, {
         loading: {
-          message: `${enabled ? 'enabling' : 'disabling'} donate basket...`,
+          message: `Loading ...`,
         }
       });
 
@@ -168,12 +168,12 @@ export const useAdvancedSettings = () => {
     async updateDonationBasketPrompt(text: string) {
       const resp = await updateTab1DonateBasketPrompt(text, {
         loading: {
-          message: 'updating donate basket...',
+          message: 'Loading ...',
         }
       })
       showToast(resp.ok,
-        `donate basket option updated`,
-        'something went wrong updating donate basket'
+        `Donate Basket Option Updated`,
+        'Something went wrong updating donate basket'
       )
 
 
@@ -182,7 +182,7 @@ export const useAdvancedSettings = () => {
 
       const resp = await updateTab1AlternativeDeliveryAddressEnabled(enabled, {
         loading: {
-          message: `${enabled ? 'enabling' : 'disabling'} 2nd address...`,
+          message: `Loading ...`,
         }
       });
 
@@ -239,7 +239,7 @@ export const useAdvancedSettings = () => {
         }
       })
       showToast(resp.ok,
-        `New Additional Profile Question Added”`,
+        `New Additional Profile Question Added`,
         `Something went wrong adding a new addition profile question`
       )
 
@@ -277,7 +277,7 @@ export const useAdvancedSettings = () => {
     async updateSendOut(data: Tab2AllowMembersFormInterface) {
       const resp = await updateSendOut(data, {
         loading: {
-          message: 'loading ...'
+          message: 'Loading ...'
         }
       })
       showToast(resp.ok,

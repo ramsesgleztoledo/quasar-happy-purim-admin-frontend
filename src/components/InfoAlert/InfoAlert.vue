@@ -8,7 +8,7 @@
           <q-icon v-if="icon" :name="icon" :style="{ color: iconColor }" />
         </p>
 
-        <div v-else v-html="innerHTML"></div>
+        <div class="InfoAlert-p" v-else v-html="innerHTML" />
       </div>
       <q-icon @click="show = false" name="close" />
     </div>

@@ -39,6 +39,20 @@
             </div>
             <div class="col-6">{{ transactionDetails.paymentInfo.tranId }}</div>
           </div>
+        </div>
+        <div class="col-6">
+          <div class="row">
+            <div class="col-6">
+              <b> Method of Payment: </b>
+            </div>
+            <div class="col-6">{{ transactionDetails.paymentInfo.method }}</div>
+          </div>
+        </div>
+      </div>
+      <!--=============================== here =============================-->
+
+      <div class="row q-mb-sm">
+        <div class="col-6">
           <div class="row">
             <div class="col-6">
               <b> Processed on: </b>
@@ -51,12 +65,14 @@
         <div class="col-6">
           <div class="row">
             <div class="col-6">
-              <b> Method of Payment: </b>
+              <b> Payment info: </b>
             </div>
-            <div class="col-6">{{ transactionDetails.paymentInfo.method }}</div>
+            <div class="col-6">{{ transactionDetails?.paymentInfo.last4OrCheckNo }}</div>
           </div>
         </div>
       </div>
+      <!--=========================== END OF SECTION ===========================-->
+
       <div class="row q-mb-sm">
         <div class="col-6">
           <div class="row">
@@ -64,22 +80,12 @@
               <b> Sold to: </b>
             </div>
             <div class="col-6">
-              {{ transactionDetails.summary.sendingFromName }},
+              {{ transactionDetails.summary.sendingFromName }}
+              <br />
               {{ transactionDetails.summary.sendingFromAddress }}
             </div>
           </div>
         </div>
-        <div class="col-6">
-          <div class="row">
-            <div class="col-6">
-              <b> Payment info: </b>
-            </div>
-            <div class="col-6">{{ transactionDetails?.paymentInfo.last4OrCheckNo }}</div>
-          </div>
-        </div>
-      </div>
-      <div class="row q-mb-sm">
-        <div class="col-6"></div>
         <div class="col-6">
           <div class="row">
             <div class="col-6">
@@ -89,12 +95,13 @@
           </div>
         </div>
       </div>
+
       <div class="row q-mb-sm">
         <div class="col">
           <b> Transaction Details: </b>
         </div>
       </div>
-      <div class="row q-pa-sm" style="background-color: #f36b09 !important">
+      <div class="row q-pa-sm" style="background-color: var(--happypurim) !important">
         <div class="col">
           <b> Sending To: </b>
         </div>
@@ -102,7 +109,9 @@
       <hr style="margin: 0px" />
       <div class="row q-mb-sm" v-for="(people, i) in transactionDetails.recipients" :key="i">
         <div class="col-6">{{ people.sendingTo }}</div>
-        <div class="col-6">${{ convertWithCommas(people.price || 0) }}</div>
+        <div class="col-6">
+          {{ people.price ? '$' : '' }}{{ convertWithCommas(people.price || 0) }}
+        </div>
       </div>
       <hr />
       <div class="row q-mb-sm">
@@ -128,7 +137,9 @@
         <div class="col-6">
           <div class="row">
             <div class="col-6"></div>
-            <div class="col-6">${{ convertWithCommas(item.price || 0) }}</div>
+            <div class="col-6">
+              {{ item.price ? '$' : '' }}{{ convertWithCommas(item.price || 0) }}
+            </div>
           </div>
         </div>
       </div>
@@ -141,7 +152,8 @@
               <b>Settlement Amount: </b>
             </div>
             <div class="col-6">
-              ${{ convertWithCommas(transactionDetails.paymentInfo.charge || 0) }}
+              {{ transactionDetails.paymentInfo.charge ? '$' : ''
+              }}{{ convertWithCommas(transactionDetails.paymentInfo.charge || 0) }}
             </div>
           </div>
         </div>

@@ -19,7 +19,7 @@
         @update:model-value="onPageChange(true)"
       />
     </div>
-    <div class="PaginationCustom-paginator-align q-mt-md">
+    <div v-if="showJumpBtn" class="PaginationCustom-paginator-align q-mt-md">
       <p>Jump to page:</p>
       <q-input class="q-mr-sm" style="width: 100px" outlined type="number" v-model="pageGo" />
       <q-btn
@@ -41,6 +41,7 @@ const { isMobile } = useUI()
 interface PaginatorPropsInterface {
   total: number
   current: number
+  showJumpBtn?: boolean
 }
 
 const $props = defineProps<PaginatorPropsInterface>()

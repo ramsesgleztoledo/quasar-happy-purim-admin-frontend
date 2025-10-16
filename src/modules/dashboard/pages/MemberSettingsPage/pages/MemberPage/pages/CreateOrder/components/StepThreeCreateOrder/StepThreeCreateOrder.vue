@@ -1,7 +1,7 @@
 <template>
   <div class="row">
     <div class="col-12">
-      <div class="row q-pa-sm q-mb-sm q-item-bordered">
+      <div class="row q-pa-sm q-mb-sm StepsCreateOrder-bordered q-mb-lg">
         <div class="col-12">
           <div class="row q-mb-sm">
             <div class="text-h6">Payment Options</div>
@@ -22,17 +22,14 @@
           </div>
         </div>
       </div>
-      <div v-show="$moStore.paymentForm.paymentType == 1">
-        <q-separator class="q-mb-sm" />
+      <div class="StepsCreateOrder-bordered q-mb-lg" v-show="$moStore.paymentForm.paymentType == 1">
         <CreditCardPayment />
       </div>
-      <div v-show="$moStore.paymentForm.paymentType == 2">
-        <q-separator class="q-mb-sm" />
+      <div class="StepsCreateOrder-bordered q-mb-lg" v-show="$moStore.paymentForm.paymentType == 2">
         <CheckPayment />
       </div>
 
-      <q-separator class="q-mb-sm" />
-      <div class="row q-pa-sm q-mb-sm q-item-bordered">
+      <div class="row q-pa-sm q-mb-sm StepsCreateOrder-bordered q-mb-lg">
         <div class="col-12">
           <div class="row q-mb-sm">
             <div class="text-h6">Email Receipt To</div>

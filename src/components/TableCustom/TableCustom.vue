@@ -4,7 +4,6 @@
       :class="className"
       flat
       bordered
-      title="Recent Orders"
       :rows="rows"
       :columns="columns"
       :row-key="rowKey"

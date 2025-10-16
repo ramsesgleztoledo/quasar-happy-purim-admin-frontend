@@ -19,11 +19,11 @@
         <div class="row">
           <div class="col-12">
             <div class="row">
-              <div class="col-12 justify-content-center" style="color: orange">
+              <div class="col-12 justify-content-center cart-item-color cart-item-color">
                 <b> Gift Baskets to be Shipped </b>
               </div>
             </div>
-            <q-separator color="orange" inset />
+            <q-separator inset />
           </div>
         </div>
         <div class="row q-pa-sm q-mb-sm">
@@ -37,7 +37,10 @@
               </div>
               <div class="col-3">
                 <div class="CartItems-text">
-                  <b> ${{ convertWithCommas($moStore.getCustomShippingItemsTotal) }} </b>
+                  <b>
+                    {{ $moStore.getSymbol
+                    }}{{ convertWithCommas($moStore.getCustomShippingItemsTotal) }}
+                  </b>
                 </div>
               </div>
             </div>
@@ -53,11 +56,11 @@
         <div class="row">
           <div class="col-12">
             <div class="row">
-              <div class="col-12 justify-content-center" style="color: orange">
+              <div class="col-12 justify-content-center cart-item-color">
                 <b> Additional Items </b>
               </div>
             </div>
-            <q-separator color="orange" inset />
+            <q-separator inset />
           </div>
         </div>
         <div v-for="(aItem, index) in addiTionalItems" :key="index" class="row q-pa-sm q-mb-sm">
@@ -71,7 +74,10 @@
               </div>
               <div class="col-3">
                 <div class="CartItems-text">
-                  <b> ${{ convertWithCommas(aItem.price * aItem.quantity || 0) }} </b>
+                  <b>
+                    {{ $moStore.getSymbol
+                    }}{{ convertWithCommas(aItem.price * aItem.quantity || 0) }}
+                  </b>
                 </div>
               </div>
 
@@ -98,11 +104,11 @@
         <div class="row">
           <div class="col-12">
             <div class="row">
-              <div class="col-12 justify-content-center" style="color: orange">
+              <div class="col-12 justify-content-center cart-item-color">
                 <b> Additional baskets </b>
               </div>
             </div>
-            <q-separator color="orange" inset />
+            <q-separator inset />
           </div>
         </div>
         <div class="row q-pa-sm q-mb-sm">
@@ -117,7 +123,8 @@
               <div class="col-3">
                 <div class="CartItems-text">
                   <b>
-                    ${{
+                    {{ $moStore.getSymbol
+                    }}{{
                       convertWithCommas(
                         additionalBasketForPersonalUse.price *
                           additionalBasketForPersonalUse.quantity || 0,
@@ -155,11 +162,11 @@
         <div class="row">
           <div class="col-12">
             <div class="row">
-              <div class="col-12 justify-content-center" style="color: orange">
+              <div class="col-12 justify-content-center cart-item-color">
                 <b> Charities </b>
               </div>
             </div>
-            <q-separator color="orange" inset />
+            <q-separator inset />
           </div>
         </div>
         <div v-if="$moStore.getDonations?.donationUse" class="row q-pa-sm q-mb-sm">
@@ -175,7 +182,10 @@
               </div>
               <div class="col-3">
                 <div class="CartItems-text">
-                  <b> ${{ convertWithCommas($moStore.getDonations?.donationUse.price || 0) }} </b>
+                  <b>
+                    {{ $moStore.getSymbol
+                    }}{{ convertWithCommas($moStore.getDonations?.donationUse.price || 0) }}
+                  </b>
                 </div>
               </div>
 
@@ -212,7 +222,7 @@
                 </div>
                 <div class="col-3">
                   <div class="CartItems-text">
-                    <b> ${{ convertWithCommas(item.value || 0) }} </b>
+                    <b> {{ $moStore.getSymbol }}{{ convertWithCommas(item.value || 0) }} </b>
                   </div>
                 </div>
 
@@ -240,11 +250,11 @@
         <div class="row">
           <div class="col-12">
             <div class="row">
-              <div class="col-12 justify-content-center" style="color: orange">
+              <div class="col-12 justify-content-center cart-item-color">
                 <b> Promotions </b>
               </div>
             </div>
-            <q-separator color="orange" inset />
+            <q-separator inset />
           </div>
         </div>
         <div class="row q-pa-sm q-mb-sm" v-for="(item, i) in promotions" :key="i">
@@ -258,7 +268,7 @@
               </div>
               <div class="col-3">
                 <div class="CartItems-text">
-                  <b> ${{ convertWithCommas(item.price || 0) }} </b>
+                  <b> {{ $moStore.getSymbol }}{{ convertWithCommas(item.price || 0) }} </b>
                 </div>
               </div>
 
@@ -274,7 +284,7 @@
               </div>
             </div>
 
-            <div class="row q-pa-sm" v-if="item.memberList.length">
+            <div class="row q-pa-sm" v-if="getMembersInThisPromotions(item).value.length">
               <div class="col-12">
                 <q-expansion-item
                   icon="person"
@@ -284,7 +294,7 @@
                   <div
                     class="row q-mt-sm"
                     style="color: red"
-                    v-for="(member, i) in item.memberList"
+                    v-for="(member, i) in getMembersInThisPromotions(item).value"
                     :key="i"
                   >
                     <div class="col-12">
@@ -314,11 +324,11 @@
         <div class="row">
           <div class="col-12">
             <div class="row">
-              <div class="col-12 justify-content-center" style="color: orange">
+              <div class="col-12 justify-content-center cart-item-color">
                 <b> Members </b>
               </div>
             </div>
-            <q-separator color="orange" inset />
+            <q-separator inset />
           </div>
         </div>
         <div class="q-pa-sm row">
@@ -332,7 +342,12 @@
               </div>
               <div class="col-3">
                 <div class="CartItems-text">
-                  <b v-if="mishloachTotal"> ${{ convertWithCommas(mishloachTotal) }} </b>
+                  <b v-if="$moStore.$state.totalFromBackend || data.totalPriceMembers">
+                    {{ $moStore.getSymbol
+                    }}{{
+                      convertWithCommas($moStore.$state.totalFromBackend || data.totalPriceMembers)
+                    }}
+                  </b>
                 </div>
               </div>
             </div>
@@ -341,16 +356,16 @@
       </div>
     </div>
     <!-- Discounts -->
-    <div v-if="addiTionalItems.length" class="row q-pa-sm">
+    <div v-if="addiTionalItems.length && discounts.length" class="row q-pa-sm">
       <div class="col-12">
         <div class="row">
           <div class="col-12">
             <div class="row">
-              <div class="col-12 justify-content-center" style="color: orange">
+              <div class="col-12 justify-content-center cart-item-color">
                 <b> Discounts </b>
               </div>
             </div>
-            <q-separator color="orange" inset />
+            <q-separator inset />
           </div>
         </div>
         <div v-for="disc in discounts" :key="disc.itemId" class="row q-pa-sm q-mb-sm">
@@ -364,7 +379,56 @@
               </div>
               <div class="col-3">
                 <div class="CartItems-text">
-                  <b> ${{ convertWithCommas(disc.price * disc.quantity || 0) }} </b>
+                  <b>
+                    {{ $moStore.getSymbol }}{{ convertWithCommas(disc.price * disc.quantity || 0) }}
+                  </b>
+                </div>
+              </div>
+
+              <div class="col-2">
+                <!-- <div class="row">
+                  <q-icon
+                    @click="() => addOrRemoveItemAItem(false, aItem, true)"
+                    class="CartItems-icon"
+                    name="close"
+                    style="color: red"
+                  />
+                </div> -->
+              </div>
+            </div>
+
+            <q-separator />
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- all items -->
+    <div v-if="allItems.length" class="row q-pa-sm">
+      <div class="col-12">
+        <div class="row">
+          <div class="col-12">
+            <div class="row">
+              <div class="col-12 justify-content-center cart-item-color">
+                <b> All Items </b>
+              </div>
+            </div>
+            <q-separator inset />
+          </div>
+        </div>
+        <div v-for="item in allItems" :key="item.itemId" class="row q-pa-sm q-mb-sm">
+          <div class="col-12">
+            <div class="row q-mb-sm">
+              <div class="col-2">
+                <div class="CartItems-text">{{ item.quantity }}</div>
+              </div>
+              <div class="col-5">
+                <div class="CartItems-text">{{ item.description }}</div>
+              </div>
+              <div class="col-3">
+                <div class="CartItems-text">
+                  <b>
+                    {{ $moStore.getSymbol }}{{ convertWithCommas(item.price * item.quantity || 0) }}
+                  </b>
                 </div>
               </div>
 
@@ -393,12 +457,16 @@ import { convertWithCommas } from 'src/helpers'
 import { useAuth } from 'src/modules/auth/composables/useAuth'
 import { useCalculate } from 'src/modules/dashboard/composables/useCalculate'
 import { useMemberOrder } from 'src/modules/dashboard/composables/useMemberOrder'
-import { getMembersByPromotion } from 'src/modules/dashboard/helpers/getMembersByPromotion'
+import {
+  getMembersByPromotion,
+  getMembersInsidePromotion,
+} from 'src/modules/dashboard/helpers/getMembersByPromotion'
 import type {
   CharityType,
   ExtendedPromotionType,
   MemberOrderItemsInterface,
   OrderMemberListInterface,
+  OrderPromotionInterface,
 } from 'src/modules/dashboard/interfaces/memberOrder-interfaces'
 import { useMemberOrderStore } from 'src/modules/dashboard/store/memberOrderStore/memberOrderStore'
 import { computed } from 'vue'
@@ -415,7 +483,7 @@ const addOrRemoveItemAItem = async (
   data: MemberOrderItemsInterface,
   showLoading?: boolean,
 ) => {
-  addOrRemoveItem(isAdd, data, showLoading)
+  await addOrRemoveItem(isAdd, data, showLoading)
   setBackendTotal()
 }
 
@@ -431,9 +499,9 @@ const promotions = computed(() => {
     if (promoFound.ok) {
       promotionsAux.push({
         ...item,
-        memberList: getMembersByPromotion(
+        memberList: getMembersInsidePromotion(
           promoFound.promotion!,
-          memberOrderState.value.memberList.original,
+          memberOrderState.value.membersSelected,
         ),
       })
     }
@@ -503,10 +571,25 @@ const additionalBasketForPersonalUse = computed(() =>
 const addiTionalItems = computed(() =>
   memberOrderState.value.orderItems.filter((item) => item.itemId === 5),
 )
+const allItems = computed(() => memberOrderState.value.orderItems || [])
 
 const discounts = computed(() => memberOrderState.value.orderItems.filter((item) => item.price < 0))
 
-const mishloachTotal = membersSelected.value.reduce((a, b) => a + b.price, 0) || 0
+// const mishloachTotal = membersSelected.value.reduce((a, b) => a + b.price, 0) || 0
+const data = computed(() => $moStore.getCartData)
+
+const getMembersInThisPromotions = (item: ExtendedPromotionType) =>
+  computed<OrderMemberListInterface[]>(() => {
+    const promotion: OrderPromotionInterface | undefined = $moStore.promotions.find(
+      (pro) => pro.itemId === item.itemId,
+    )
+
+    if (!promotion) return []
+
+    const members = getMembersByPromotion(promotion, memberOrderState.value.membersSelected)
+
+    return members || []
+  })
 </script>
 
 <style scoped lang="scss">

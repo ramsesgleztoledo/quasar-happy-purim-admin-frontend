@@ -15,7 +15,7 @@ export const useTransaction = () => {
     async getTransactions() {
       const transactions = await getTransactions({
         loading: {
-          message: 'Loading transactions...'
+          message: 'Loading ...'
         }
       })
       return {
@@ -27,7 +27,7 @@ export const useTransaction = () => {
     async getDonations() {
       const donations = await getDonations({
         loading: {
-          message: 'Loading donations...'
+          message: 'Loading ...'
         }
       })
       return donations.ok ? donations.data : []
@@ -42,7 +42,7 @@ export const useTransaction = () => {
     async getReciprocityCharges() {
       const resp = await getReciprocityCharges({
         loading: {
-          message: 'Loading reciprocity charges...'
+          message: 'Loading ...'
         }
       })
       return resp.ok ? resp.data : []
@@ -60,7 +60,7 @@ export const useTransaction = () => {
         useCache: true,
         useRespAsError: true,
         loading: {
-          message: `Loading transaction detail for ${id}`
+          message: `Loading ...`
         }
       })
 

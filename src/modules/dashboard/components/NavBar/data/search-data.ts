@@ -2,7 +2,9 @@ export interface PagesForSearchInterface {
   routeName: string;
   title: string;
   phrases: string[];
-  icon: string
+  icon: string;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  params?: any;
 }
 
 

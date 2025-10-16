@@ -1,47 +1,66 @@
 <template>
-  <div class="row justify-content-end q-mb-md">
-    <q-btn
-      outline
-      label="ADD MEMBER"
-      class="q-mr-sm"
-      :to="{ name: 'MembersSettingsPage-AddMemberPage' }"
-    />
-    <q-btn
-      outline
-      label="UPLOAD MEMBER LIST"
-      :to="{ name: 'MembersSettingsPage-MemberListLayout' }"
-    />
+  <div class="row q-mb-md">
+    <div class="col-12 top-title-col">
+      <p class="page-main-title">Member List</p>
+      <div class="separator-right q-mr-sm q-ml-sm"></div>
+    </div>
   </div>
-  <div :class="{ 'MemberSettingsPage-mobile-btn': isMobile, row: !isMobile }">
-    <q-input
-      class="q-mr-sm q-mb-sm"
-      :class="{ 'w-full': isMobile }"
-      outlined
-      v-model="filters.search"
-      label="Search"
-      :debounce="500"
+  <div class="row justify-content-space-between">
+    <div
+      :class="{ 'MemberSettingsPage-mobile-btn': isMobile, row: !isMobile, 'full-width': isMobile }"
     >
-      <template v-slot:append>
-        <q-icon name="search" />
-      </template>
-    </q-input>
+      <q-input
+        class="q-mb-sm"
+        :class="{ 'w-full': isMobile, 'q-mr-sm': !isMobile }"
+        outlined
+        v-model="filters.search"
+        label="Search"
+        :debounce="500"
+      >
+        <template v-slot:append>
+          <q-icon name="search" />
+        </template>
+      </q-input>
 
-    <q-select
-      v-if="$dStore.categories.length"
-      popup-content-class="q-menu-300"
-      :debounce="500"
-      class="q-mr-sm q-mb-sm"
-      :class="{ 'item-width-300': !isMobile, 'w-full': isMobile }"
-      v-model="filters.category"
-      outlined
-      :options="$dStore.categories"
-      label="Filter by categories"
-      option-label="categoryName"
-      option-value="categoryID"
-    />
-    <q-btn @click="onClearFilters" class="q-mr-sm q-mb-sm" outline color="primary" icon="close" />
+      <q-select
+        v-if="$dStore.categories.length"
+        popup-content-class="q-menu-300"
+        :debounce="500"
+        class="q-mb-sm"
+        :class="{ 'item-width-300': !isMobile, 'w-full': isMobile, 'q-mr-sm': !isMobile }"
+        v-model="filters.category"
+        outlined
+        multiple
+        :options="$dStore.categories"
+        label="Filter by categories"
+        option-label="categoryName"
+        option-value="categoryID"
+      />
+      <q-btn
+        @click="onClearFilters"
+        class="q-mb-sm"
+        :class="{ 'q-mr-sm': !isMobile }"
+        outline
+        color="primary"
+        icon="close"
+      />
+    </div>
+
+    <div :class="{ 'justify-content-end': isMobile, 'w-full': isMobile }">
+      <q-btn
+        outline
+        label="ADD MEMBER "
+        class="q-mr-sm"
+        :to="{ name: 'MembersSettingsPage-AddMemberPage' }"
+      />
+      <q-btn
+        outline
+        label="UPLOAD MEMBER LIST"
+        :to="{ name: 'MembersSettingsPage-MemberListLayout' }"
+      />
+    </div>
   </div>
-  <div class="q-pa-md">
+  <div class="">
     <div class="row RecentOrders-container" :class="{ fullscreen: isFullScreen }">
       <div class="col-12">
         <div class="row">
@@ -52,12 +71,12 @@
               color="primary"
               :icon="isFullScreen ? 'fullscreen_exit' : 'fullscreen'"
               @click="isFullScreen = !isFullScreen"
+              style="font-size: 12px"
             />
           </div>
         </div>
         <q-table
           @update:pagination="onPaginationUpdate"
-          title="Member List"
           :style="{ height: isFullScreen ? '800px' : '630px' }"
           class="table-sticky-header-column-table sticky-2-column-table"
           flat
@@ -84,7 +103,7 @@
               :props="props"
             >
               <q-td v-for="col in props.cols" :key="col.name" :props="props">
-                <div v-if="col.name === 'm_hidden'">
+                <div v-if="col.name === 'm_hidden'" style="width: 100px">
                   <q-icon
                     v-if="props.row.m_hidden"
                     color="primary"
@@ -94,7 +113,10 @@
                   <!-- <q-icon v-else color="primary" size="large" name="visibility" /> -->
                 </div>
 
-                <div v-else style="cursor: pointer; overflow: hidden; text-overflow: ellipsis">
+                <div
+                  v-else
+                  style="cursor: pointer; overflow: hidden; text-overflow: ellipsis; width: 100px"
+                >
                   {{ col.value }}
                   <q-tooltip>
                     {{ col.value }}
@@ -108,9 +130,9 @@
           v-if="memberState.members.filteredCount != memberState.members.totalCount"
           class="row justify-content-end"
         >
-          <span style="font-size: 12px"
-            >{{ memberState.members.filteredCount }} members Filtered of
-            {{ memberState.members.totalCount }}
+          <span style="font-size: 12px; padding-right: 50px"
+            >{{ memberState.members.filteredCount }} members filtered from
+            {{ memberState.members.totalCount }} total members
           </span>
         </div>
       </div>
@@ -220,34 +242,45 @@ const columns: QTableColumn[] = auxColumns.map((co) => ({
 }))
 
 const filters = ref<{
-  category: ShulCategoryInterface | undefined
+  category: ShulCategoryInterface[]
   search: string
 }>({
-  category: undefined,
+  category: [],
   search: '',
 })
 
 const oldValue = ref<{
-  category: ShulCategoryInterface | undefined
+  category: ShulCategoryInterface[]
   search: string
 }>({
-  category: undefined,
+  category: [],
   search: '',
 })
 
 const onClearFilters = () => {
   filters.value = {
-    category: undefined,
+    category: [],
     search: '',
   }
 }
 
-onMounted(() => {
-  loadPage()
-  getMembers_Co({
-    category: filters.value.category?.categoryID ?? '',
-    search: filters.value.search,
+const getCategoriesIdAsString = () => {
+  let value = ''
+  filters.value.category.forEach((category, index) => {
+    if (index > 0) value += ','
+    value += `${category.categoryID}`
   })
+  return value
+}
+
+onMounted(() => {
+  console.log('mounting page')
+
+  loadPage()
+  // getMembers_Co({
+  //   categories: getCategoriesIdAsString(),
+  //   search: filters.value.search,
+  // })
 })
 
 const onPaginationUpdate = (newPagination: QTableProps['pagination']) => {
@@ -265,7 +298,7 @@ const onPaginationUpdate = (newPagination: QTableProps['pagination']) => {
   }
 }
 
-const goToPage = (categoryId: number | undefined, search: string) => {
+const goToPage = (categoryId: string | undefined, search: string) => {
   $router.push({
     name: 'MembersSettingsPage-home',
     query: {
@@ -275,37 +308,53 @@ const goToPage = (categoryId: number | undefined, search: string) => {
   })
 }
 
+const getCategoriesByCategoryArr = (categories: string[]) => {
+  const catArray = $dStore.categories.filter((cat) =>
+    categories.includes(cat.categoryID.toString()),
+  )
+  return catArray
+}
+
 const loadPage = () => {
   const { categoryId, search } = $route.query
+  const categoryIdAux: string = categoryId as string
+
+  const categories = categoryIdAux ? categoryIdAux.split(',') : []
 
   filters.value = {
-    category: categoryId
-      ? $dStore.categories.find((c) => c.categoryID == Number(categoryId))
-      : undefined,
+    category: categories.length ? getCategoriesByCategoryArr(categories) : [],
+    // ? $dStore.categories.find((c) => c.categoryID == Number(categoryId))
+    // : undefined,
     search: search ? `${search}` : '',
   }
-
-  goToPage(filters.value.category?.categoryID, filters.value.search)
+  goToPage(getCategoriesIdAsString(), filters.value.search)
 }
+
+const filterDebounce = ref<NodeJS.Timeout | undefined>(undefined)
 
 watch(
   filters,
   (newValue) => {
-    const stringNewValue = JSON.stringify(newValue)
-    const stringOldValue = JSON.stringify(oldValue.value)
+    if (filterDebounce.value) clearTimeout(filterDebounce.value)
 
-    if (stringNewValue == stringOldValue) return
+    filterDebounce.value = setTimeout(() => {
+      // const stringNewValue = JSON.stringify(newValue)
+      // const stringOldValue = JSON.stringify(oldValue.value)
 
-    oldValue.value = { ...newValue }
+      // if (stringNewValue == stringOldValue) return
 
-    goToPage(filters.value.category?.categoryID, newValue.search)
-    getMembers_Co({
-      category: filters.value.category?.categoryID ?? '',
-      search: filters.value.search,
-    })
+      oldValue.value = { ...newValue }
+
+      goToPage(getCategoriesIdAsString(), newValue.search)
+      getMembers_Co({
+        categories: getCategoriesIdAsString().split(',').join(', '),
+        search: filters.value.search,
+      })
+    }, 800)
   },
   {
     deep: true,
+    // immediate: true,
   },
 )
 </script>

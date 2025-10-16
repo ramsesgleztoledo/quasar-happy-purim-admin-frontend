@@ -3,7 +3,7 @@
   background-color: rgb(255, 255, 255);
 }
 .dashboard-layout-title {
-  padding: 10px;
+  // padding: 10px;
   .row {
     align-items: center;
   }
@@ -13,7 +13,7 @@
     font-weight: 800;
     font-family: cursive;
     margin: 0px;
-    margin-right: 10px;
+    margin-left: 5px;
   }
 }
 .dashboard-layout-right-info {
@@ -22,8 +22,6 @@
   flex-direction: row;
   align-items: flex-end;
 }
-
-
 
 .dashboard-happypurim-logo {
   cursor: pointer;
@@ -48,4 +46,10 @@
     justify-content: center;
     align-items: center;
   }
+}
+
+.sub-title-navbar {
+  color: #919191;
+  margin-top: -11px;
+  font-size: 15px;
 }

@@ -1,10 +1,10 @@
 
 import { defineStore, acceptHMRUpdate } from 'pinia';
 import type { MemberStateInterface } from './member-store-interfaces';
-import type { AlternativeMemberAddress, MemberDataInterface, MemberDonateBasketOptionInterface, MemberOptionsInterface, MemberProfileQuestionInterface, MemberTransactionInterface } from '../../interfaces/member-interfaces';
+import type { AlternativeMemberAddress, MemberDataInterface, MemberDonateBasketOptionInterface, MemberOptionsInterface, MemberProfileQuestionInterface, MembershipStatusInterface, MemberTransactionInterface } from '../../interfaces/member-interfaces';
 import type { NoneType } from '../../services/service-interfaces';
 import type { MemberCategoryInterface } from '../../interfaces/category-interfaces';
-import type { MembershipStatusInterface } from 'src/services/api-interfaces';
+
 
 
 const initialState: MemberStateInterface = {
@@ -37,6 +37,7 @@ const initialState: MemberStateInterface = {
     visible: true,
     checkedStatus: false
   },
+  showClearCart: false
 }
 
 export const useMemberStore = defineStore('memberStore', {
@@ -90,6 +91,9 @@ export const useMemberStore = defineStore('memberStore', {
     },
     setShowRecordPaymentBtn(value: boolean) {
       this.showRecordPaymentBtn = value
+    },
+    setShowClearCart(value: boolean) {
+      this.showClearCart = value
     },
   }
 });

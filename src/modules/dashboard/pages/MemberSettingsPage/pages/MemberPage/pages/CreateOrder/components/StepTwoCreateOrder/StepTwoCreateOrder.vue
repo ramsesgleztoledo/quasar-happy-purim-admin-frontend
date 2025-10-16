@@ -2,7 +2,7 @@
   <div class="row">
     <div class="col-12">
       <!--! =============================== additional basket  =============================-->
-      <div v-if="memberOrderState.addonSettings.enabled" class="row StepTwoCreateOrder-donations">
+      <div v-if="memberOrderState.addonSettings.enabled" class="StepsCreateOrder-bordered q-mb-lg">
         <div class="col-12">
           <div class="row q-pa-sm q-mb-sm">
             <div class="col-12 q-pa-sm">
@@ -17,8 +17,8 @@
               <div class="row q-mb-sm">
                 <div v-html="memberOrderState.addonSettings.message"></div>
               </div>
-              <div class="row justify-content-space-between q-item-bordered q-pa-sm">
-                <b class="q-pa-sm" style="color: var(--happypurim)"> Additional Baskets</b>
+              <div class="row q-pa-sm">
+                <b class="q-pa-sm q-mr-sm" style="color: var(--happypurim)"> Additional Baskets</b>
                 <div class="row">
                   <q-input
                     type="number"
@@ -39,20 +39,14 @@
               </div>
             </div>
           </div>
-          <div class="row">
-            <div class="col-12">
-              <q-separator />
-            </div>
-          </div>
         </div>
-        <q-separator />
       </div>
       <!--=============================== end additional basket =============================-->
 
       <!--! =============================== donations =============================-->
       <div
         v-if="charities.length || memberOrderState.additionalCharityOptions.length"
-        class="row StepTwoCreateOrder-donations"
+        class="row StepTwoCreateOrder-donations StepsCreateOrder-bordered q-mb-lg"
       >
         <div class="col-12">
           <div class="row q-pa-sm q-mb-sm">
@@ -71,8 +65,10 @@
           </div>
 
           <template v-if="!charities.length">
-            <div class="row q-pa-sm justify-content-space-between q-mt-sm q-item-bordered">
-              <b class="q-pa-sm" style="color: var(--happypurim)"> I would like to donate</b>
+            <div class="row q-pa-sm q-mt-sm">
+              <b class="q-pa-sm q-mr-sm" style="color: var(--happypurim)">
+                I would like to donate</b
+              >
               <div class="row">
                 <q-input
                   type="number"
@@ -125,13 +121,7 @@
               </div>
             </div>
           </template>
-          <div class="row q-mb-sm q-mt-sm">
-            <div class="col-12">
-              <q-separator />
-            </div>
-          </div>
         </div>
-        <q-separator />
       </div>
       <!--=============================== end donations =============================-->
 
@@ -141,7 +131,7 @@
           memberOrderState.additionalOrderItemsSettings.enabled &&
           memberOrderState.additionalOrderOptions.length
         "
-        class="row StepTwoCreateOrder-donations"
+        class="row StepTwoCreateOrder-donations StepsCreateOrder-bordered q-mb-lg"
       >
         <div class="col-12">
           <div class="row q-pa-sm q-mb-sm">
@@ -156,13 +146,15 @@
           </div>
 
           <div class="row q-mb-sm">
-            <div class="col-12 q-pa-sm q-item-bordered">
+            <div class="col-12 q-pa-sm">
               <div
                 v-for="(aItem, index) in memberOrderState.additionalOrderOptions"
                 :key="index"
-                class="q-mb-md row justify-content-space-between"
+                class="q-mb-md row q-mr-sm"
               >
-                <b class="q-pa-sm" style="color: var(--happypurim)"> {{ aItem.description }}</b>
+                <b class="q-pa-sm" style="color: var(--happypurim); width: 300px">
+                  {{ aItem.description }}</b
+                >
                 <div class="row">
                   <q-input
                     type="number"
@@ -175,7 +167,7 @@
                       lazyRules.greaterThan(0, false),
                       ...(aItem.maxQuantity ? [lazyRules.lowerThan(aItem.maxQuantity, true)] : []),
                     ]"
-                    :hint="`$${convertWithCommas(aItem.price || 0)} ea. (${aItem.maxQuantity ? aItem.maxQuantity + ' max' : ''})`"
+                    :hint="`${memberOrderState.orgSettings?.symbol || '$'}${convertWithCommas(aItem.price || 0)} ea. (${aItem.maxQuantity ? aItem.maxQuantity + ' max' : ''})`"
                   />
 
                   <q-btn
@@ -200,7 +192,10 @@
       <!--=============================== end additional items =============================-->
 
       <!--! =============================== custom shipping items =============================-->
-      <div v-if="memberOrderState.sendOutSettings.enabled">
+      <div
+        v-if="memberOrderState.sendOutSettings.enabled"
+        class="StepsCreateOrder-bordered q-mb-lg"
+      >
         <div class="row q-pa-sm q-mb-sm">
           <div class="col-12 q-pa-sm">
             <div class="row text-h6 q-mb-sm" style="color: var(--happypurim)">Shipping Baskets</div>
@@ -208,7 +203,7 @@
           </div>
         </div>
         <div class="row q-mb-sm">
-          <div class="col-12 q-item-bordered q-pa-sm">
+          <div class="col-12 q-pa-sm">
             <div class="row">
               <div class="col-12">
                 <CustomShippingBasket />
@@ -251,7 +246,7 @@ const itemAlreadyAdded = () => {
     color: 'blue',
     textColor: 'black',
     icon: 'error',
-    message: `You already Added this item, please remove it before adding a different amount`,
+    message: `You already added this item, please remove it before adding a different amount`,
   })
 }
 
@@ -263,6 +258,7 @@ const donate = async (charity: CharityType) => {
   if (memberOrderState.value.orderItems.find((oi) => oi.itemId === charity.id))
     return itemAlreadyAdded()
   await addOrRemoveDonation(true, charity)
+  charity.value = 0
 }
 
 watch(
@@ -280,7 +276,7 @@ const addAdditionalBasket = async () => {
   if (additionalBasketForPersonalUse.value) return itemAlreadyAdded()
   const authState: authStateInterface | null = $q.localStorage.getItem('authState')
   const data: MemberOrderItemsInterface = {
-    description: `Addition Gift Basket(s) for Personal Use`,
+    description: `Additional Gift Baskets for Personal Use`,
     itemId: -1,
     message: '',
     price: memberOrderState.value.addonSettings.price,
@@ -290,6 +286,7 @@ const addAdditionalBasket = async () => {
   }
 
   await addOrRemoveItem(true, data, true)
+  additionalBasketsPersonal.value = 0
 }
 const addDonation = async () => {
   if (donationUse.value) return itemAlreadyAdded()
@@ -306,6 +303,7 @@ const addDonation = async () => {
   }
 
   await addOrRemoveItem(true, data, true)
+  donationAmount.value = 0
 }
 
 const additionalBasketForPersonalUse = computed(() =>
@@ -346,6 +344,7 @@ const addAdditionalItem = async (item: AdditionalOrderOptionInterface) => {
   }
 
   await addOrRemoveItem(true, data, true)
+  item.value = 0
 }
 </script>
 

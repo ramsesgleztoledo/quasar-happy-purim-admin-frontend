@@ -112,11 +112,25 @@ export const useDashboard = () => {
     async getMemberSummary() {
       try {
         // console.log('====== UPDATING INFORMATION ======');
-        const memberSummary = await getMemberSummary({
+        const resp = await Promise.all([getMemberSummary({
           dontRedirect: true,
           dontShowToast: true
-        })
-        $dStore.setMemberSummary(memberSummary.ok ? memberSummary.data : undefined);
+        }),
+        getFundraiserTotals({
+          dontRedirect: true,
+          dontShowToast: true
+        }),
+        getParticipationRate({
+          dontRedirect: true,
+          dontShowToast: true
+        }),])
+
+
+
+        $dStore.setMemberSummary(resp[0].ok ? resp[0].data : undefined);
+        $dStore.setFundraiserTotals(resp[1].ok ? resp[1].data : undefined)
+        $dStore.setParticipationRate(resp[2].ok ? resp[2].data : undefined)
+
       } catch (error) {
         console.error(error);
 

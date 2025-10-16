@@ -1,6 +1,9 @@
 <template>
+  <div class="row q-pa-sm">
+    <div class="text-h6">Payment Information</div>
+  </div>
   <div class="row q-mb-sm">
-    <div class="col-12 q-pa-sm q-item-bordered">
+    <div class="col-12 q-pa-sm">
       <div class="row q-mt-lg q-mb-sm">
         <div class="col-6 q-pr-sm q-pl-sm">
           <q-input

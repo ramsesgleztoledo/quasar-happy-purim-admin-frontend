@@ -15,4 +15,5 @@ export interface reportStateInterface {
   isCustom: boolean;
   advancedReportsSpecial: SpecialReportInterface[];
   customReportsSpecial: SpecialReportInterface[];
+  isLoadingReportData: boolean
 }

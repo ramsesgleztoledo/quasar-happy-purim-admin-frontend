@@ -7,21 +7,16 @@
       </div>
     </div>
 
-    <div class="row q-mb-md">
-      <div class="col-12 d-flex justify-content-end">
-        <q-input outlined v-model="searchText" label="Search">
-          <template v-slot:append>
-            <q-icon name="search" />
-          </template>
-        </q-input>
-      </div>
-    </div>
-
-    <div class="q-pa-md">
+    <div class="">
       <div class="row table-white-container" :class="{ fullscreen: isFullScreen }">
         <div class="col-12">
           <div class="row">
-            <div class="col-12 justify-content-end">
+            <div class="col-12 justify-content-space-between">
+              <q-input outlined v-model="searchText" label="Search">
+                <template v-slot:append>
+                  <q-icon name="search" />
+                </template>
+              </q-input>
               <q-btn
                 flat
                 round

@@ -16,11 +16,15 @@
                 :key="item.shippingOptionId"
                 class="CartBaskets-basket-container q-mb-md"
               >
-                <div class="row q-pa-sm" style="background-color: #ffdfc3">
+                <div class="row q-pa-sm" style="background-color: #fef5f7">
                   <div class="col-2">{{ item.recipient }}</div>
                   <div class="col-4">{{ getShippingOption(item).value?.description }}</div>
-                  <div v-if="item.attributes.length" class="col-4">
-                    Customization (${{ convertWithCommas(totalCustomization(item).value) }})
+                  <div
+                    v-if="item.attributes.length && totalCustomization(item).value"
+                    class="col-4"
+                  >
+                    Customization ({{ totalCustomization(item).value ? $moStore.getSymbol : ''
+                    }}{{ convertWithCommas(totalCustomization(item).value) }})
                   </div>
                   <div class="col-2 justify-content-end">
                     <q-icon
@@ -36,12 +40,11 @@
                     />
                     <q-icon
                       @click="
-                        () => {
-                          deleteCustomShippingItem({
+                        () =>
+                          deleteCustomSI({
                             ...item,
                             attributes: JSON.stringify(item.attributes),
                           } as unknown as UpdateShippingItemFormInterface)
-                        }
                       "
                       class="cursor-pointer"
                       name="close"
@@ -67,7 +70,7 @@
                   </div>
                 </div>
 
-                <div v-if="item.attributes.length" class="row">
+                <div v-if="item.attributes.length && totalCustomization(item).value" class="row">
                   <div class="col-12">
                     <div class="row">
                       <div class="col-12">
@@ -80,17 +83,18 @@
                         <div class="row">
                           <div class="col-12">
                             <ul>
-                              <li
+                              <div
                                 v-for="attribute in item.attributes"
                                 :key="attribute.shippingOptionAttributeGuid"
                               >
-                                <p style="margin: 0px">
-                                  <b> {{ attribute.promptText }}: </b>
-                                  {{ attribute.value }} - (${{
-                                    convertWithCommas(attribute.price || 0)
-                                  }})
-                                </p>
-                              </li>
+                                <li v-if="attribute.selected && attribute.value">
+                                  <p style="margin: 0px">
+                                    <b> {{ attribute.promptText }}: </b>
+                                    {{ attribute.value }} - ({{ $moStore.getSymbol
+                                    }}{{ convertWithCommas(attribute.price || 0) }})
+                                  </p>
+                                </li>
+                              </div>
                             </ul>
                           </div>
                         </div>
@@ -130,6 +134,11 @@ import type {
 } from 'src/modules/dashboard/interfaces/memberOrder-interfaces'
 import { computed, ref } from 'vue'
 import CustomShippingBasket from '../../StepTwoCreateOrder/components/CustomShippingBasket/CustomShippingBasket.vue'
+import { useMemberOrderStore } from 'src/modules/dashboard/store/memberOrderStore/memberOrderStore'
+import { useCalculate } from 'src/modules/dashboard/composables/useCalculate'
+
+const $moStore = useMemberOrderStore()
+const { setBackendTotal } = useCalculate()
 
 const { memberOrderState, deleteCustomShippingItem } = useMemberOrder()
 
@@ -145,7 +154,12 @@ const getShippingOption = (item: CustomShippingItemInterface) =>
   })
 
 const totalCustomization = (item: CustomShippingItemInterface) =>
-  computed(() => item.attributes.reduce((pre, curr) => pre + curr.price, 0))
+  computed(() => item.attributes.reduce((pre, curr) => pre + (curr.selected ? curr.price : 0), 0))
+
+const deleteCustomSI = async (data: UpdateShippingItemFormInterface) => {
+  await deleteCustomShippingItem(data)
+  setBackendTotal()
+}
 </script>
 
 <style scoped lang="scss">

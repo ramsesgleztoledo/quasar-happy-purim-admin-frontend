@@ -22,15 +22,17 @@ export const useMailMerge = () => {
   const reportId = computed(() => $rStore.$state.reportId)
   const userId = computed(() => $aStore.$state.user?.id)
 
-  const getMergedContent = async (data: { content: string, memberIds: number[] }) => {
+  const getMergedContent = async (data: { content: string, memberIds: number[], emailOption: 'Primary' | 'primary_alternate' }) => {
     const merged = await getMergedContentByReportId({
       reportId: reportId.value,
-      emailOption: 'Primary',
+      emailOption: data.emailOption,
       data: {
         template: data.content,
         memberIds: data.memberIds
       }
     }, {
+      dontRedirect: true,
+      useRespAsError: true,
       loading: {
         message: 'Getting Merged Content'
       }
@@ -50,8 +52,14 @@ export const useMailMerge = () => {
       })
 
       const resp = await Promise.all([
-        getFormFields(),
-        getTemplates(),
+        getFormFields({
+          dontRedirect: true,
+          dontShowToast: true,
+        }),
+        getTemplates({
+          dontRedirect: true,
+          dontShowToast: true,
+        }),
         getImages({
           dontRedirect: true,
           dontShowToast: true,
@@ -73,17 +81,18 @@ export const useMailMerge = () => {
 
     },
 
-    async getMergedContentByReportAndMember(memberId: number, content: string) {
+    async getMergedContentByReportAndMember(memberId: number, content: string, emailOption: 'Primary' | 'primary_alternate') {
 
       const resp = await getMergedContentByReportId({
         reportId: reportId.value,
-        emailOption: 'Primary',
+        emailOption,
         data: {
           template: content,
           memberIds: [memberId]
         }
       }, {
         dontRedirect: true,
+        useRespAsError: true,
         loading: {
           message: 'loading'
         }
@@ -103,6 +112,7 @@ export const useMailMerge = () => {
         }
       }, {
         dontRedirect: true,
+        useRespAsError: true,
         loading: {
           message: 'loading'
         }
@@ -125,6 +135,9 @@ export const useMailMerge = () => {
           template: data.content,
           memberIds: data.memberIds
         }
+      }, {
+        dontRedirect: true,
+        useRespAsError: true,
       })
 
       const result: MergedContentPrintInterface[] = resp.ok ? resp.data : []
@@ -140,8 +153,10 @@ export const useMailMerge = () => {
           content: da.body
         }))
       }, {
+        dontRedirect: true,
+        useRespAsError: true,
         loading: {
-          message: 'Generating PDF'
+          message: 'Generating PDF, this can take a while ...'
         }
       }), {
         fileType: 'pdf',
@@ -153,36 +168,44 @@ export const useMailMerge = () => {
 
     async sendNowEmail(data: {
       form: {
-        sendTo: string;
+        sendTo: 'Primary' | 'primary_alternate';
         fullName: string;
         email: string;
         emailSubject: string;
       },
       content: string;
       memberIds: number[];
-      date: Date;
+      date?: Date;
+      timeZone?: string;
+      sendNow: boolean;
+
     }, isSchedule?: boolean) {
 
       const recipients: MergedResultInterface[] = await getMergedContent({
         content: data.content,
-        memberIds: data.memberIds
+        memberIds: data.memberIds,
+        emailOption: data.form.sendTo || 'Primary'
       })
 
       if (!recipients.length) return
 
-      const queueEmail: QueueBulkEmailsFormInterface = {
+      const queueEmail: QueueBulkEmailsFormInterface & { timeZone?: string } = {
         attachments: "",
         dateAdded: data.date,
         fromAddress: data.form.email,
         fromDisplayName: data.form.fullName,
         subject: data.form.emailSubject,
         recipients,
+        timeZone: data.timeZone || '',
+        sendNow: data.sendNow,
       }
 
       const resp = await queueBulkEmails(queueEmail, {
         loading: {
-          message: 'Sending emails'
-        }
+          message: 'Loading ...'
+        },
+        dontRedirect: true,
+        useRespAsError: true,
       })
       if (!isSchedule)
         showToast(resp.ok, 'All emails were sent',
@@ -203,6 +226,7 @@ export const useMailMerge = () => {
         emailSubject: string;
       },
       content: string;
+      timeZone: string;
       date: Date;
     }) {
       const resp = await addUnmergedEmailJobToTable(reportId.value, {
@@ -212,8 +236,11 @@ export const useMailMerge = () => {
         fromEmail: data.form.email,
         toEmail: data.form.sendTo,
         subject: data.form.emailSubject,
-        sendDate: data.date
+        sendDate: data.date,
+        timeZone: data.timeZone
       }, {
+        dontRedirect: true,
+        useRespAsError: true,
         loading: {
           message: 'Scheduling emails'
         }

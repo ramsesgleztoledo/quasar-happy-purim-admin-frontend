@@ -7,7 +7,13 @@
       <NavBar />
     </q-header>
     <!-- Side menu -->
-    <q-drawer v-model="$uiStore.sideMenuValue" show-if-above bordered>
+    <q-drawer
+      :width="234"
+      :behavior="isMobile ? 'mobile' : 'desktop'"
+      v-model="$uiStore.sideMenuValue"
+      show-if-above
+      bordered
+    >
       <div v-if="isMobile">
         <div class="row justify-content-end q-pa-sm">
           <q-btn flat round color="primary" icon="logout" @click="logOut(true)" />
@@ -25,33 +31,44 @@
       </div>
       <q-list>
         <!-- style="margin-bottom: 60px" -->
-        <q-item-label header style="margin-bottom: 60px"> </q-item-label>
+        <q-item-label header style="margin-bottom: 20px"> </q-item-label>
 
         <EssentialLink v-for="link in linksList" :key="link.title" v-bind="link" />
       </q-list>
     </q-drawer>
-
-    <!-- pages content -->
-    <q-page-container style="padding-top: 60px" :class="{ 'dashboard-page-container': !isMobile }">
-      <!-- breadcrumbs -->
-      <div class="row dashboard-breadcrumbs-container">
-        <div class="col-12">
-          <BreadCrumbs />
-        </div>
+    <div
+      class="row dashboard-breadcrumbs-container"
+      :style="{
+        width: isMobile ? '100%' : 'calc(100% - 234px)',
+      }"
+    >
+      <div class="col-12">
+        <BreadCrumbs />
       </div>
-      <div class="row dashboard-router-view">
-        <div class="col-12">
+    </div>
+    <!-- pages content -->
+    <q-page-container
+      style="padding-top: 46px; padding-bottom: 0px"
+      :class="{ 'dashboard-page-container': !isMobile }"
+    >
+      <!-- breadcrumbs -->
+
+      <div class="row">
+        <div class="col-12 dashboard-router-view">
           <router-view />
         </div>
       </div>
     </q-page-container>
     <q-footer reveal elevated>
       <q-toolbar style="min-height: 5px !important">
-        <p class="d-flex justify-content-end w-full q-pa-sm" style="margin: 0px">
-          2025 Happy Rosh Hashanah LLC, ALl Rights Reserved. | HappyRoshHashanah Admin Panel (v{{
+        <p class="d-flex justify-content-end w-full" style="margin: 0px">
+          2025 Happy Purim LLC, All Rights Reserved. | HappyPurim Admin Panel (v{{ version }})
+        </p>
+        <!-- <p class="d-flex justify-content-end w-full " style="margin: 0px">
+          2025 Happy Rosh Hashanah LLC, All Rights Reserved. | HappyRoshHashanah Admin Panel (v{{
             version
           }})
-        </p>
+        </p> -->
       </q-toolbar>
     </q-footer>
   </q-layout>
@@ -99,7 +116,7 @@ const loadData = async () => {
     if (getMembersSummaryInterval) clearInterval(getMembersSummaryInterval)
     getMembersSummaryInterval = setInterval(() => {
       getMemberSummary().catch(console.error)
-    }, 8000)
+    }, 30000)
   } catch {
     isLoading.value = false
     $router.push({ name: '500' })

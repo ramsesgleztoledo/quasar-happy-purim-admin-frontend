@@ -1,10 +1,11 @@
 
 import { defineStore, acceptHMRUpdate } from 'pinia';
 import type { MemberOrderStateInterface } from './memberOrder-store-interfaces';
-import type { OrderMemberListInterface, OrderPromotionInterface, MemberOrderItemsInterface, MemberOrderOrgSettingInterface, MemberAdditionalCharityOptionsInterface, MemberCharityOptionInterface, CustomShippingOptionInterface, CustomShippingItemInterface, AdditionalOrderOptionInterface, DiscountInterface, PaymentMethodTypeInterface, ShulSettingInterface, } from '../../interfaces/memberOrder-interfaces';
+import type { OrderMemberListInterface, OrderPromotionInterface, MemberOrderItemsInterface, MemberOrderOrgSettingInterface, MemberAdditionalCharityOptionsInterface, MemberCharityOptionInterface, CustomShippingOptionInterface, CustomShippingItemInterface, AdditionalOrderOptionInterface, DiscountInterface, PaymentMethodTypeInterface, ShulSettingInterface, LocalDeliveryInterface, } from '../../interfaces/memberOrder-interfaces';
 import type { NoneType } from '../../services/service-interfaces';
 import type { OrderItemSettingsInterface, Tab2AddonInterface } from '../../interfaces/advanced-settings.interfaces';
-import { s_cartData, s_customShippingItemsTotal, s_donations, s_fee, s_isPaymentFormInvalid, s_orderTotal } from './services';
+import { s_cartData, s_customShippingItemsTotal, s_donations, s_fee, s_hasExtraOptions, s_isPaymentFormInvalid, s_orderTotal } from './services';
+import type { OrganizationSettingsInterface } from '../../interfaces/basic-settings.interfaces';
 
 
 
@@ -47,6 +48,8 @@ const initialState: MemberOrderStateInterface = {
   },
   shulSetting: undefined,
   totalFromBackend: 0,
+  localDeliveries: [],
+  settings: undefined
 }
 
 export const useMemberOrderStore = defineStore('memberOrderStore', {
@@ -57,7 +60,7 @@ export const useMemberOrderStore = defineStore('memberOrderStore', {
   getters: {
 
     getMemberList: (state) => state.memberList,
-
+    getSymbol: (state) => state.orgSettings?.symbol || '$',
     getCustomShippingItemsTotal: (state: MemberOrderStateInterface): number => s_customShippingItemsTotal(state),
 
     getTotalCost: (state: MemberOrderStateInterface): number => s_orderTotal(state),
@@ -70,7 +73,9 @@ export const useMemberOrderStore = defineStore('memberOrderStore', {
 
     getCartData: (state: MemberOrderStateInterface) => s_cartData(state),
 
-    getSPrice: (state: MemberOrderStateInterface) => state.shulSetting?.sPerperson || 0
+    getSPrice: (state: MemberOrderStateInterface) => state.shulSetting?.sPerperson || 0,
+
+    hasExtraOptions: (state: MemberOrderStateInterface) => s_hasExtraOptions(state)
   },
 
   actions: {
@@ -148,6 +153,12 @@ export const useMemberOrderStore = defineStore('memberOrderStore', {
     },
     setTotalFromBackend(totalFromBackend: number) {
       this.totalFromBackend = totalFromBackend
+    },
+    setLocalDeliveries(localDeliveries: LocalDeliveryInterface[]) {
+      this.localDeliveries = localDeliveries.map(item => ({ ...item }))
+    },
+    setSettings(settings: OrganizationSettingsInterface | NoneType) {
+      this.settings = settings
     },
 
   }

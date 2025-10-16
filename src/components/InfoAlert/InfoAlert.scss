@@ -1,10 +1,10 @@
 .InfoAlert-container-row {
   display: flex;
-  
+
   justify-content: space-between;
   width: 100%;
   align-items: center;
-  padding: 10px;
+  padding: 4px;
   border-radius: 5px;
 }
 
@@ -21,4 +21,10 @@ i {
 p {
   margin: 0px;
   margin-left: 10px;
+}
+
+:deep(.InfoAlert-p) {
+  p {
+    margin: 0px;
+  }
 }

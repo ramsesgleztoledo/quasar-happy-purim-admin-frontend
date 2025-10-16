@@ -4,10 +4,10 @@ import { useMemberStore } from "../store/memberStore/memberStore";
 import { useMemberService } from "../services/member.service";
 import { useQuasar } from "quasar";
 import { useCategoryService } from "../services/category.service";
-import type { AlternativeMemberAddress, EmailLoginCodeInfoInterface, MemberAddFormInterface, MemberDonateBasketOptionInterface, MemberHiddenInterface, MemberProfileQuestionInterface, MemberTransactionInterface, MemberUpdateAllDataForm, PendingDeletionInterface } from "../interfaces/member-interfaces";
+import type { AlternativeMemberAddress, DoorManStatusInterface, EmailLoginCodeInfoInterface, MemberAddFormInterface, MemberDonateBasketOptionInterface, MemberHiddenInterface, MemberProfileQuestionInterface, MembershipStatusInterface, MemberTransactionInterface, MemberUpdateAllDataForm, PendingDeletionInterface } from "../interfaces/member-interfaces";
 import type { MemberReciprocityInterface } from '../interfaces/member-interfaces';
 import type { MemberCategoryInterface } from "../interfaces/category-interfaces";
-import type { ApiCallResponseInterface, DoorManStatusInterface, MembershipStatusInterface } from "src/services/api-interfaces";
+import type { ApiCallResponseInterface, } from "src/services/api-interfaces";
 import { useUI } from "src/modules/UI/composables";
 
 
@@ -52,7 +52,9 @@ export const useMember = () => {
     updateKJSettings,
     getMemberShipStatus,
     updateMemberShipStatus,
-    getShowRecordPaymentBtn
+    getShowRecordPaymentBtn,
+    getShowClearCart,
+    searchMembers,
   } = useMemberService()
 
 
@@ -65,7 +67,7 @@ export const useMember = () => {
 
   const getMembers_Co = async (filters: {
     search: string;
-    category: string | number;
+    categories: string | number;
   }) => {
     const members = await getMembersList(filters, {
       loading: {
@@ -81,102 +83,106 @@ export const useMember = () => {
   const getMemberDataById_Co = async (memberId: number) => {
 
     $q.loading.show({
-      message: `loading ...`,
+      message: `Loading ...`,
       spinnerColor: '#f36b09',
       messageColor: '#f36b09',
     })
 
-    try {
+    const member = await getMemberById(memberId, {
+      goBackIn400Error: true,
+      toastByErrorCode: {
+        404: 'Member Not Found'
+      }
+    })
 
-      const member = await getMemberById(memberId, {
-        goBackIn400Error: true
+    if (!member.ok)
+      return
+
+    const [
+      hidden,
+      reciprocity,
+      categories,
+      isPendingDeletion,
+      alternativeAddress,
+      memberTransactions,
+      memberDonateBasketOption,
+      profileQuestions,
+      displayChildren,
+      doorManSettings,
+      membershipSettings,
+      showRecordPaymentBtn,
+      showClearCart,
+
+    ]: [
+        ApiCallResponseInterface<MemberHiddenInterface>,
+        ApiCallResponseInterface<MemberReciprocityInterface>,
+        ApiCallResponseInterface<MemberCategoryInterface[]>,
+        ApiCallResponseInterface<PendingDeletionInterface>,
+        ApiCallResponseInterface<AlternativeMemberAddress>,
+        ApiCallResponseInterface<MemberTransactionInterface[]>,
+        ApiCallResponseInterface<MemberDonateBasketOptionInterface>,
+        ApiCallResponseInterface<MemberProfileQuestionInterface[]>,
+        ApiCallResponseInterface<boolean>,
+        ApiCallResponseInterface<DoorManStatusInterface>,
+        ApiCallResponseInterface<MembershipStatusInterface>,
+        ApiCallResponseInterface<{
+          showRecordPaymentButton: boolean
+        }>,
+        ApiCallResponseInterface<boolean>,
+
+      ] = await Promise.all([
+
+        getHiddenByMemberId(memberId),
+        getReciprocityByMemberId(memberId),
+        getCategoriesByMemberId(memberId),
+        getIsPendingDeletionByMemberId(memberId),
+        getAlternativeAddressByMemberId(memberId),
+        getTransactionsByMemberId(memberId),
+        getMemberDonateBasketOptionByMemberId(memberId),
+        getProfileQuestions(memberId),
+        getDisplayChildren(memberId),
+        getKJSettings(memberId),
+        getMemberShipStatus(memberId),
+        getShowRecordPaymentBtn(memberId),
+        getShowClearCart(memberId)
+      ]
+      )
+
+
+    $mStore.setDoorManSettings(doorManSettings.ok ? {
+      show: !!doorManSettings.data.showKJRow,
+      value: doorManSettings.data.rbl24HourSelectedIndex === 1
+    } : {
+      show: false,
+      value: false
+    })
+    $mStore.setMembershipSettings(membershipSettings.ok ? membershipSettings.data : {
+      checkedStatus: false,
+      visible: false,
+    })
+    $mStore.setSelectedMember(member.ok ? member.data : undefined)
+    $mStore.setDisplayChildren(displayChildren.ok ? displayChildren.data : false)
+    $mStore.setShowRecordPaymentBtn(showRecordPaymentBtn.ok ? showRecordPaymentBtn.data.showRecordPaymentButton : false)
+    $mStore.setMemberCategories(categories.ok ? categories.data : [])
+    $mStore.setProfileQuestions(profileQuestions.ok ? profileQuestions.data : [])
+    $mStore.setMemberAlternativeAddress(alternativeAddress.ok ? alternativeAddress.data : undefined)
+    $mStore.setMemberTransactions(memberTransactions.ok ? memberTransactions.data : [])
+    $mStore.setMemberDonateBasketOption(memberDonateBasketOption.ok ? memberDonateBasketOption.data : undefined)
+    $mStore.setShowClearCart(showClearCart.ok ? showClearCart.data : false)
+
+    if (isPendingDeletion.ok)
+      $mStore.setIsPendingDeletion(!!isPendingDeletion.data?.isPendingDeletion)
+
+    if (hidden.ok &&
+      reciprocity.ok)
+      $mStore.setMemberOptions({
+        hidden: !!hidden.data?.m_hidden,
+        reciprocity: {
+          ...reciprocity?.data
+        }
       })
 
-      if (!member.ok)
-        return
 
-      const [
-        hidden,
-        reciprocity,
-        categories,
-        isPendingDeletion,
-        alternativeAddress,
-        memberTransactions,
-        memberDonateBasketOption,
-        profileQuestions,
-        displayChildren,
-        doorManSettings,
-        membershipSettings,
-        showRecordPaymentBtn,
-      ]: [
-          ApiCallResponseInterface<MemberHiddenInterface>,
-          ApiCallResponseInterface<MemberReciprocityInterface>,
-          ApiCallResponseInterface<MemberCategoryInterface[]>,
-          ApiCallResponseInterface<PendingDeletionInterface>,
-          ApiCallResponseInterface<AlternativeMemberAddress>,
-          ApiCallResponseInterface<MemberTransactionInterface[]>,
-          ApiCallResponseInterface<MemberDonateBasketOptionInterface>,
-          ApiCallResponseInterface<MemberProfileQuestionInterface[]>,
-          ApiCallResponseInterface<boolean>,
-          ApiCallResponseInterface<DoorManStatusInterface>,
-          ApiCallResponseInterface<MembershipStatusInterface>,
-          ApiCallResponseInterface<{
-            showRecordPaymentButton: boolean
-          }>,
-
-        ] = await Promise.all([
-
-          getHiddenByMemberId(memberId),
-          getReciprocityByMemberId(memberId),
-          getCategoriesByMemberId(memberId),
-          getIsPendingDeletionByMemberId(memberId),
-          getAlternativeAddressByMemberId(memberId),
-          getTransactionsByMemberId(memberId),
-          getMemberDonateBasketOptionByMemberId(memberId),
-          getProfileQuestions(memberId),
-          getDisplayChildren(memberId),
-          getKJSettings(memberId),
-          getMemberShipStatus(memberId),
-          getShowRecordPaymentBtn(memberId),
-        ]
-        )
-
-
-      $mStore.setDoorManSettings(doorManSettings.ok ? {
-        show: !!doorManSettings.data.showKJRow,
-        value: doorManSettings.data.rbl24HourSelectedIndex === 1
-      } : {
-        show: false,
-        value: false
-      })
-      $mStore.setMembershipSettings(membershipSettings.ok ? membershipSettings.data : {
-        checkedStatus: false,
-        visible: false,
-      })
-      $mStore.setSelectedMember(member.ok ? member.data : undefined)
-      $mStore.setDisplayChildren(displayChildren.ok ? displayChildren.data : false)
-      $mStore.setShowRecordPaymentBtn(showRecordPaymentBtn.ok ? showRecordPaymentBtn.data.showRecordPaymentButton : false)
-      $mStore.setMemberCategories(categories.ok ? categories.data : [])
-      $mStore.setProfileQuestions(profileQuestions.ok ? profileQuestions.data : [])
-      $mStore.setMemberAlternativeAddress(alternativeAddress.ok ? alternativeAddress.data : undefined)
-      $mStore.setMemberTransactions(memberTransactions.ok ? memberTransactions.data : [])
-      $mStore.setMemberDonateBasketOption(memberDonateBasketOption.ok ? memberDonateBasketOption.data : undefined)
-
-      if (isPendingDeletion.ok)
-        $mStore.setIsPendingDeletion(!!isPendingDeletion.data?.isPendingDeletion)
-
-      if (hidden.ok &&
-        reciprocity.ok)
-        $mStore.setMemberOptions({
-          hidden: !!hidden.data?.m_hidden,
-          reciprocity: {
-            ...reciprocity?.data
-          }
-        })
-
-    } catch (error) {
-      console.error(error);
-    }
     $q.loading.hide()
   };
   const deleteMemberById_Co = async (memberId: number) => {
@@ -196,7 +202,7 @@ export const useMember = () => {
         color: 'blue',
         textColor: 'white',
         icon: 'error',
-        message: !isPending ? `Member set to delete` : 'Member restore',
+        message: !isPending ? `Member flagged for deletion` : 'Member is no longer flagged for deletion',
       })
       $mStore.setIsPendingDeletion(!isPending)
     }
@@ -215,38 +221,45 @@ export const useMember = () => {
   const updateMember_Co = async (memberId: number, data: MemberUpdateAllDataForm) => {
 
     $q.loading.show({
-      message: `Updating member data ${memberId}...`,
+      message: `Loading ...`,
       spinnerColor: '#f36b09',
       messageColor: '#f36b09',
     })
 
     const [resp1, resp2, resp3,
-      resp4, resp6
+      resp4,
     ]: [
         ApiCallResponseInterface<unknown>,
         ApiCallResponseInterface<unknown>,
         ApiCallResponseInterface<unknown>,
         ApiCallResponseInterface<unknown>,
-        ApiCallResponseInterface<unknown>,
+
       ] =
 
-      await Promise.all([updateReciprocityByMemberId(memberId, data.reciprocity, {
-        dontRedirect: true
-      }),
-      updateMemberByMemberId(memberId, data.memberData, {
-        dontRedirect: true
-      }),
-      updateHiddenByMemberId(memberId, data.hidden, {
-        dontRedirect: true
-      }),
-      updateAlternativeAddressByMemberId(memberId, data.altAddressData, {
-        dontRedirect: true
-      }),
-      updateProfileQuestions(memberId, data.profileQuestions, {
+      await Promise.all([
+        updateReciprocityByMemberId(memberId, data.reciprocity, {
+          dontRedirect: true
+        }),
+        updateMemberByMemberId(memberId, data.memberData, {
+          dontRedirect: true
+        }),
+        updateHiddenByMemberId(memberId, data.hidden, {
+          dontRedirect: true
+        }),
+        updateAlternativeAddressByMemberId(memberId, data.altAddressData, {
+          dontRedirect: true
+        }),
+
+
+      ])
+
+    let resp6 = undefined;
+
+    if (data.profileQuestions?.length)
+      resp6 = await updateProfileQuestions(memberId, data.profileQuestions, {
         dontRedirect: true
       })
 
-      ])
 
     let resp5 = undefined
     if (data.donate !== undefined)
@@ -267,7 +280,7 @@ export const useMember = () => {
       });
 
 
-
+    let ok = true
     if (
       !resp1.ok
       || !resp2.ok
@@ -276,14 +289,15 @@ export const useMember = () => {
       || (resp5 !== undefined && !resp5.ok)
       || (resp7 !== undefined && !resp7.ok)
       || (resp8 !== undefined && !resp8.ok)
-      || !resp6.ok)
-
+      || (resp6 !== undefined && !resp6.ok)) {
+      ok = false
       $q.notify({
         color: 'red',
         textColor: 'black',
         icon: 'error',
         message: 'Something went wrong updating part of this member, please try again later',
       })
+    }
     else
       $q.notify({
         color: 'green',
@@ -296,15 +310,23 @@ export const useMember = () => {
       $mStore.setHidden(data.hidden)
 
     $q.loading.hide()
+
+    if (!ok) return ok
+    await getMemberDataById_Co(memberId)
+    return ok
+
+
   };
   const clearMemberCart_Co = async (memberId: number) => {
     try {
       $q.loading.show({
-        message: `Clearing member's cart ${memberId}...`,
+        message: `Loading ...`,
         spinnerColor: '#f36b09',
         messageColor: '#f36b09',
       })
       await clearCartByMemberId(memberId)
+
+      $mStore.setShowClearCart(false)
 
       $q.notify({
         color: 'blue',
@@ -398,7 +420,7 @@ export const useMember = () => {
       }
     })
 
-    showToast(resp.ok, `“The Login Code for this member has been reset”
+    showToast(resp.ok, `The Login Code for this member has been reset
 `, `something went wrong resetting the code`)
 
     if (!resp.ok || !$mStore.selectedMember) return
@@ -426,12 +448,34 @@ export const useMember = () => {
       $mStore.setMemberTransactions(transactions.data)
 
   };
+  const getShowCart_co = async () => {
+    if ($mStore.selectedMember?.memberId == null) return
+
+    const resp = await getShowClearCart($mStore.selectedMember.memberId);
+    if (resp.ok)
+      $mStore.setShowClearCart(resp.data)
+
+  };
+  const searchMembers_co = async (query: string) => {
+
+
+    const resp = await searchMembers(query, {
+      dontRedirect: true,
+      dontShowToast: true,
+      
+    });
+
+    return resp.ok ? resp.data : []
+
+
+  };
 
 
 
   return {
     memberState,
     getMembers_Co,
+    searchMembers_co,
     getMemberDataById_Co,
     deleteMemberById_Co,
     updateMember_Co,
@@ -446,5 +490,6 @@ export const useMember = () => {
     resetMemberLoginCode_Co,
     emailReceiptByTransactionId_Co,
     getTransactionsByMemberSelected_co,
+    getShowCart_co
   };
 }

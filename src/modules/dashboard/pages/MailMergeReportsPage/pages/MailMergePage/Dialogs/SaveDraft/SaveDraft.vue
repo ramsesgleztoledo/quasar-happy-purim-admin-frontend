@@ -25,9 +25,9 @@
               type="textarea"
               v-model="form.description"
               outlined
-              label="Description *"
+              label="Description"
               lazy-rules
-              :rules="[lazyRules.required()]"
+              :rules="[]"
             />
           </div>
         </div>
@@ -43,7 +43,7 @@
         />
         <q-btn
           style="background: var(--happypurim); color: white"
-          :disable="!form.name || !form.description"
+          :disable="!form.name"
           label="Save"
           class="q-mr-sm q-mt-sm"
           v-close-popup

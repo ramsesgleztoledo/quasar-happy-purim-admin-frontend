@@ -18,6 +18,7 @@ export interface MergedResultInterface {
   memberId: number;
   email: string;
   body: string;
+
 }
 
 
@@ -35,9 +36,10 @@ export interface QueueBulkEmailsFormInterface {
   fromAddress: string;
   fromDisplayName: string;
   subject: string;
-  dateAdded: Date;
+  dateAdded?: Date | undefined;
   attachments: string;
   recipients: QueueBulkEmailsRecipientInterface[];
+  sendNow: boolean
 }
 
 export interface QueueBulkEmailsRecipientInterface {
@@ -54,6 +56,7 @@ export interface AddToUnmergedTableFormInterface {
   toEmail: string;
   subject: string;
   sendDate: Date;
+  timeZone: string;
 }
 
 

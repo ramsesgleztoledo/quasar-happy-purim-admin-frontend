@@ -76,7 +76,7 @@
           <b> Transaction Details: </b>
         </div>
       </div>
-      <div class="row q-pa-sm" style="background-color: #f36b09 !important">
+      <div class="row q-pa-sm" style="background-color: var(--happypurim) !important">
         <div class="col">
           <b> Sending To: </b>
         </div>
@@ -104,7 +104,10 @@
             <div class="col-6">
               <b>Total Due From Baskets: </b>
             </div>
-            <div class="col-6">${{ convertWithCommas(receipt.dueFromBaskets || 0) }}</div>
+            <div class="col-6">
+              {{ receipt.dueFromBaskets ? '$' : '' }}
+              {{ convertWithCommas(receipt.dueFromBaskets || 0) }}
+            </div>
           </div>
         </div>
       </div>
@@ -115,7 +118,9 @@
         <div class="col-6">
           <div class="row">
             <div class="col-6"></div>
-            <div class="col-6">${{ convertWithCommas(item.totalPrice || 0) }}</div>
+            <div class="col-6">
+              {{ item.totalPrice ? '$' : '' }}{{ convertWithCommas(item.totalPrice || 0) }}
+            </div>
           </div>
         </div>
       </div>
@@ -127,7 +132,7 @@
             <div class="col-6">
               <b>Total Amount Due: </b>
             </div>
-            <div class="col-6">${{ convertWithCommas(receipt.amountDue || 0) }}</div>
+            <div class="col-6">item.totalPrice {{ convertWithCommas(receipt.amountDue || 0) }}</div>
           </div>
         </div>
       </div>
@@ -139,7 +144,10 @@
             <div class="col-6">
               <b>Total Amount Paid: </b>
             </div>
-            <div class="col-6">${{ convertWithCommas(receipt.totalAmountPaid || 0) }}</div>
+            <div class="col-6">
+              {{ receipt.totalAmountPaid ? '$' : '' }}
+              {{ convertWithCommas(receipt.totalAmountPaid || 0) }}
+            </div>
           </div>
         </div>
       </div>

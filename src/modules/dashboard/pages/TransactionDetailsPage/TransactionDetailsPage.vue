@@ -31,17 +31,13 @@ const transactionDetails = ref<TransactionDetailsInterface | undefined>(undefine
 
 onMounted(async () => {
   const transactionID = $route.params.transactionID
-
-  getTransactionsDetailsByTransactionId(Number(transactionID))
-    .then((resp) => {
-      transactionDetails.value = resp
-    })
-    .finally(() => {
-      isLoading.value = false
-    })
+  const resp = await getTransactionsDetailsByTransactionId(Number(transactionID))
+  transactionDetails.value = resp
+  isLoading.value = false
 })
 </script>
 
 <style scoped lang="scss">
 @import './TransactionDetailsPage.scss';
 </style>
+\

@@ -2,7 +2,8 @@
 
 
 import type { OrderItemSettingsInterface, Tab2AddonInterface } from "../../interfaces/advanced-settings.interfaces";
-import type { AdditionalOrderOptionInterface, CustomShippingItemInterface, CustomShippingOptionInterface, DiscountInterface, MemberAdditionalCharityOptionsInterface, MemberCharityOptionInterface, MemberOrderItemsInterface, MemberOrderOrgSettingInterface, OrderMemberListInterface, OrderPromotionInterface, PaymentMethodTypeInterface, ShulSettingInterface } from "../../interfaces/memberOrder-interfaces";
+import type { OrganizationSettingsInterface } from "../../interfaces/basic-settings.interfaces";
+import type { AdditionalOrderOptionInterface, CustomShippingItemInterface, CustomShippingOptionInterface, DiscountInterface, LocalDeliveryInterface, MemberAdditionalCharityOptionsInterface, MemberCharityOptionInterface, MemberOrderItemsInterface, MemberOrderOrgSettingInterface, OrderMemberListInterface, OrderPromotionInterface, PaymentMethodTypeInterface, ShulSettingInterface } from "../../interfaces/memberOrder-interfaces";
 import type { NoneType } from "../../services/service-interfaces";
 
 
@@ -36,4 +37,6 @@ export interface MemberOrderStateInterface {
   };
   shulSetting: ShulSettingInterface | NoneType;
   totalFromBackend: number;
+  localDeliveries: LocalDeliveryInterface[];
+  settings: OrganizationSettingsInterface | NoneType
 }

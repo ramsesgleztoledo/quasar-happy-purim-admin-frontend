@@ -7,7 +7,9 @@
         'col-12': isMobile,
       }"
     >
-      <p class="page-main-title">{{ $rStore.getReportSelectedName }}</p>
+      <p class="page-main-title">
+        {{ cutName($rStore.getReportSelectedReportData?.name || 'Report', 33) }}
+      </p>
       <div class="separator-right q-mr-sm q-ml-sm"></div>
     </div>
     <div
@@ -18,7 +20,8 @@
       }"
     ></div>
   </div>
-  <div v-if="$rStore.$state.report?.members?.length" class="row">
+  <!-- v-if="$rStore.$state.report?.members?.length" -->
+  <div class="row">
     <div class="col-12">
       <div style="display: flex; flex-direction: column; height: 80vh">
         <div class="row" style="flex: 1">
@@ -29,7 +32,7 @@
                   <q-btn-toggle v-model="pageView" spread no-caps :options="pageOption" />
                 </div>
               </div>
-              <div v-if="pageView == '1'">
+              <div v-show="pageView == '1'">
                 <!-- <div class="row q-gutter-sm">
                   <q-select popup-content-class="q-menu-300"
                     style="min-width: 200px"
@@ -122,7 +125,7 @@
                 <div>
                   <div class="row">
                     <div
-                      class="col-10 q-pa-sm"
+                      class="MailMergePage-q-editor"
                       :class="{
                         'col-10': !isMobile,
                         'col-12': isMobile,
@@ -143,6 +146,10 @@
                         </div>
                       </div>
                       <div class="token-items-container">
+                        <!-- <q-inner-loading
+                          :showing="$rStore.isLoadingReportData"
+                          class="merged-field-loading"
+                        /> -->
                         <q-item
                           class="ComposeEmail-token-item q-mb-sm"
                           v-for="(token, i) in $rStore.$state.tokens"
@@ -178,28 +185,35 @@
 
                 <!--=========================== END OF SECTION ===========================-->
               </div>
-              <div v-else>
-                <q-select
-                  v-if="$dStore.categories.length && !$rStore.$state.isCustom"
-                  popup-content-class="q-menu-300"
-                  :debounce="500"
-                  class="q-mr-sm q-mb-sm"
-                  :class="{ 'item-width-300': !isMobile, 'w-full': isMobile }"
-                  v-model="categoryFiltered"
-                  outlined
-                  multiple
-                  :options="$dStore.categories"
-                  label="Filter by categories"
-                  option-label="categoryName"
-                  option-value="categoryID"
-                  clearable
-                />
+              <div v-show="pageView == '2'">
+                <div class="row">
+                  <q-select
+                    v-if="$dStore.categories.length && !$rStore.$state.isCustom"
+                    popup-content-class="q-menu-300"
+                    :debounce="500"
+                    class="q-mr-sm q-mb-sm"
+                    :class="{ 'item-width-300': !isMobile, 'w-full': isMobile }"
+                    v-model="categoryFiltered"
+                    outlined
+                    multiple
+                    :options="$dStore.categories"
+                    label="Filter by categories "
+                    option-label="categoryName"
+                    option-value="categoryID"
+                    clearable
+                  />
+
+                  <q-checkbox v-model="showSelectedOnly" label="Show Selected Members Only" />
+                </div>
 
                 <div class="q-pa-md">
                   <div class="row white-container" :class="{ fullscreen: isFullScreen }">
                     <div class="col-12">
                       <div class="row">
-                        <div class="col-12 justify-content-end">
+                        <div class="col-12 justify-content-space-between">
+                          <h6>
+                            {{ `Recipients: (${$rStore.$state.selectedRecipients.length})` }}
+                          </h6>
                           <q-btn
                             flat
                             round
@@ -210,25 +224,26 @@
                         </div>
                       </div>
                       <q-table
+                        :loading="isRecipientsTableLoading"
                         :style="{ height: isFullScreen ? '800px' : '628px' }"
                         class="table-sticky-header-column-table"
                         flat
                         bordered
-                        :title="`Recipients: (${$rStore.$state.selectedRecipients.length})`"
-                        :rows
+                        :rows="rowsAux"
                         :columns="columns"
                         row-key="ID"
                         selection="multiple"
                         v-model:selected="$rStore.$state.selectedRecipients"
                         :pagination="{
-                          rowsPerPage: 0,
+                          rowsPerPage: 100,
                         }"
                       >
                         <template v-slot:header="props">
                           <q-tr :props="props">
                             <!-- <q-th auto-width /> -->
                             <q-th auto-width>
-                              <q-checkbox v-model="props.selected" />
+                              <!-- <q-checkbox v-model="props.selected" /> -->
+                              <q-checkbox v-model="allRowSelected" @click="selectUnselectAllRows" />
                             </q-th>
                             <q-th v-for="col in props.cols" :key="col.name" :props="props">
                               {{ col.label }}
@@ -275,7 +290,7 @@
             </template>
 
             <template v-else>
-              <PreviewEmail :content="email" />
+              <PreviewEmail :content="email" @onContinue="preview = false" />
             </template>
           </div>
         </div>
@@ -303,26 +318,34 @@
               class="q-mr-sm"
               style="background: var(--happypurim); color: white"
               label="Generate PDF To Print"
-              @click="pdfTitleFlag = true"
+              @click="
+                () => {
+                  if (checkIfRecipients()) pdfTitleFlag = true
+                }
+              "
             />
             <q-btn
               v-if="!preview"
               :disable="!email"
               class="q-mr-sm"
               style="background: var(--happypurim); color: white"
-              label="Send Email"
-              @click="sendEmailFlag = true"
+              label="Send Email "
+              @click="
+                () => {
+                  if (checkIfRecipients()) sendEmailFlag = true
+                }
+              "
             />
           </div>
         </div>
       </div>
     </div>
   </div>
-  <div v-else>
+  <!-- <div v-else>
     <div class="row">
       <h6>No members found...</h6>
     </div>
-  </div>
+  </div> -->
   <!--=============================== dialogs =============================-->
 
   <!-- generate pdf -->
@@ -455,7 +478,7 @@
         <q-btn-dropdown
           v-if="!preview"
           :disable="!isValidForm() || !email"
-          label="Send Email"
+          label="Send Email "
           style="background: var(--happypurim); color: white"
         >
           <q-list>
@@ -475,6 +498,7 @@
     </q-card></q-dialog
   >
 
+  <!-- TODO: add time zone -->
   <!-- send later email -->
   <q-dialog v-model="sendLaterFlag" persistent>
     <q-card :style="{ width: isMobile ? '100vw' : '500px' }">
@@ -485,7 +509,7 @@
       </div>
 
       <div class="custom-dialog-body-container q-pa-lg">
-        <div class="row -q-mb-sm">
+        <div class="row q-mb-sm">
           <div
             class="q-pa-sm"
             :class="{
@@ -500,11 +524,12 @@
               mask="date"
               lazy-rules
               :rules="[...dateRules]"
-              label="Date"
+              label="Date *"
             >
               <template v-slot:append>
                 <q-icon name="event" class="cursor-pointer">
                   <q-popup-proxy cover transition-show="scale" transition-hide="scale">
+                    <!-- :options="dateOptionsFn" -->
                     <q-date v-model="dateValue">
                       <div class="row items-center justify-end">
                         <q-btn v-close-popup label="Close" color="primary" flat />
@@ -526,7 +551,7 @@
               readonly
               outlined
               v-model="timeValue"
-              label="Time"
+              label="Time *"
               mask="##:## a.a"
               lazy-rules
               :rules="[...timeRules]"
@@ -534,6 +559,7 @@
               <template v-slot:append>
                 <q-icon name="access_time" class="cursor-pointer">
                   <q-popup-proxy cover transition-show="scale" transition-hide="scale">
+                    <!-- :options="timeOptionsFn" -->
                     <q-time v-model="timeValue" mask="hh:mm aa">
                       <div class="row items-center justify-end">
                         <q-btn v-close-popup label="Close" color="primary" flat />
@@ -545,7 +571,39 @@
             </q-input>
           </div>
         </div>
-
+        <div class="row q-mb-sm">
+          <div class="col-12 q-pa-sm">
+            <q-select
+              use-input
+              v-model="timeZoneSelect"
+              outlined
+              :options="filteredTimeZoneOptions"
+              label="Time Zone *"
+              lazy-rules
+              :rules="[lazyRules.required()]"
+              @filter="timeZoneFilterFn"
+            >
+              <template v-slot:no-option>
+                <q-item>
+                  <q-item-section class="text-grey"> No results ... </q-item-section>
+                </q-item>
+              </template>
+              <template v-slot:option="scope">
+                <q-item v-bind="scope.itemProps">
+                  <q-item-section>
+                    <q-item-label>{{ scope.label.replace('_', ' ') }}</q-item-label>
+                  </q-item-section>
+                </q-item>
+              </template>
+              <template v-slot:selected>
+                {{ timeZoneSelect.replace('_', ' ') }}
+              </template>
+            </q-select>
+          </div>
+        </div>
+        <div v-if="!isValidDateValue" class="row q-pl-md" style="color: red">
+          Invalid date, please select a date and time in the future (at least 20 min from now)
+        </div>
         <div class="row q-mb-sm q-pa-sm" style="align-items: center">
           <div>Regenerate before sending:</div>
           <q-radio v-model="regenerateBefore" :val="true" label="Yes" />
@@ -562,11 +620,12 @@
           outline
           label="Close"
           class="q-mr-sm q-mt-sm"
+          @click="resetDateForm"
           style="color: #990000; border-color: #990000"
           v-close-popup
         />
         <q-btn
-          :disable="!dateValue || !timeValue"
+          :disable="!dateValue || !timeValue || !isValidDateValue"
           style="background: var(--happypurim); color: white"
           label="Schedule"
           class="q-mr-sm q-mt-sm"
@@ -615,19 +674,34 @@ import { useRouter } from 'vue-router'
 import { isValidDate, isValidTime } from 'src/helpers'
 import { turnTimeAndDate } from 'src/helpers/turnTimeAndDate'
 import type { RecipientMemberInterface } from 'src/modules/dashboard/interfaces/report.interface'
-import type { QTableColumn } from 'quasar'
+import { useQuasar, type QTableColumn } from 'quasar'
 import { sortArrayByField } from 'src/helpers/sortArrayByfield'
 import { useDashboardStore } from 'src/modules/dashboard/store/dashboardStore/dashboardStore'
 import type { ShulCategoryInterface } from 'src/modules/dashboard/interfaces/category-interfaces'
 import DialogAlert from 'src/components/DialogAlert/DialogAlert.vue'
 import { useReport } from 'src/modules/dashboard/composables/useReport'
+import { cutName } from 'src/helpers/cutName'
+// import { date as dateUtils } from 'quasar'
 
 const $router = useRouter()
+const $q = useQuasar()
 const $rStore = useReportStore()
 const $dStore = useDashboardStore()
 const { getFilteredRecipients } = useReport()
 
 const categoryFiltered = ref<ShulCategoryInterface[] | undefined>(undefined)
+
+const allRowSelected = computed(() => {
+  if ($rStore.$state.selectedRecipients.length === rowsAux.value.length && rowsAux.value.length > 0)
+    return true
+  else if ($rStore.$state.selectedRecipients.length === 0) return false
+  else return null
+})
+
+const selectUnselectAllRows = () => {
+  if ($rStore.$state.selectedRecipients.length) $rStore.$state.selectedRecipients = []
+  else $rStore.$state.selectedRecipients = rowsAux.value.map((row) => ({ ...row }))
+}
 
 // const rows = computed(() => {
 //   const members = $rStore.$state.report?.members || []
@@ -640,22 +714,50 @@ const categoryFiltered = ref<ShulCategoryInterface[] | undefined>(undefined)
 //   )
 // })
 
+const showSelectedOnly = ref(false)
+
 const rows = ref($rStore.$state.report?.members || [])
+const rowsAux = computed(() => {
+  const arr: RecipientMemberInterface[] = rows.value || []
+  if (!showSelectedOnly.value) return arr
+
+  return arr.filter((re) => !!$rStore.$state.selectedRecipients.find((re2) => re2.ID === re.ID))
+})
+
+watch(
+  () => $rStore.$state.report?.members,
+  (value: RecipientMemberInterface[] | undefined) => {
+    if (!value) return
+    rows.value = value
+  },
+  {
+    deep: true,
+  },
+)
+
+const isRecipientsTableLoading = ref(false)
+const categoryFilteredDebounce = ref<NodeJS.Timeout | undefined>(undefined)
 
 watch(
   categoryFiltered,
   async (value: ShulCategoryInterface[] | undefined) => {
-    if ($rStore.$state.isCustom) return
+    if (categoryFilteredDebounce.value) clearTimeout(categoryFilteredDebounce.value)
 
-    if (!value) {
-      rows.value = $rStore.$state.report?.members || []
-      return
-    }
-    const resp = await getFilteredRecipients({
-      id: $rStore.$state.reportId,
-      categories: value.map((cat) => `${cat.categoryID}`),
-    })
-    rows.value = resp
+    categoryFilteredDebounce.value = setTimeout(async () => {
+      if ($rStore.$state.isCustom) return
+      if (!value) {
+        rows.value = $rStore.$state.report?.members || []
+        return
+      }
+
+      isRecipientsTableLoading.value = true
+      const resp = await getFilteredRecipients({
+        id: $rStore.$state.reportId,
+        categories: value.map((cat) => `${cat.categoryID}`),
+      })
+      rows.value = resp
+      isRecipientsTableLoading.value = false
+    }, 600)
   },
   {
     deep: true,
@@ -672,10 +774,12 @@ const cancelDialogFlag = ref(false)
 
 const pageView = ref('1')
 const pageOption = computed(() => [
-  { label: 'Compose Merge', value: '1' },
+  { label: 'Compose Merge', value: '1', disable: false },
   {
     label: `Recipients (${$rStore.$state.selectedRecipients.length}/${$rStore.$state.report?.members.length || 0})`,
     value: '2',
+
+    loading: $rStore.isLoadingReportData,
   },
 ])
 
@@ -756,10 +860,9 @@ const sendEmailFlag = ref(false)
 const onGeneratePDF = async () => {
   if (!editorRef.value) return
   const content = editorRef.value.getEditorValue() || ''
-
   await generatePDF({
     title: pdfTitle.value,
-    content: content,
+    content: content.replace(/\\+/g, ''),
     memberIds: (orderByPDF.value
       ? sortArrayByField(
           $rStore.$state.selectedRecipients,
@@ -779,9 +882,10 @@ watch(pdfTitleFlag, () => {
 })
 
 const onSendNowEmail = async () => {
-  await onSendEmail(new Date())
+  await onSendEmail()
 }
 
+// TODO: add time zone
 const onSendLaterEmail = async () => {
   if (!editorRef.value) return
   const content = editorRef.value.getEditorValue() || ''
@@ -789,9 +893,11 @@ const onSendLaterEmail = async () => {
   const dateString = turnTimeAndDate({
     dateValue: dateValue.value,
     timeValue: timeValue.value,
+    timeZone: timeZoneSelect.value,
   })
 
-  const date = new Date(dateString!)
+  // const date = new Date(dateString!)
+  const date = dateString!
 
   if (!regenerateBefore.value) await onSendEmail(date, true)
   else {
@@ -799,8 +905,9 @@ const onSendLaterEmail = async () => {
     const resp = await addUnmergedEmailJobToTable({
       content,
       date,
+      timeZone: timeZoneSelect.value,
       form: {
-        sendTo: formData.sendTo || '',
+        sendTo: formData.sendTo == 'Primary' ? 'Primary' : 'primary_alternate',
         fullName: formData.fullName || '',
         email: formData.email || '',
         emailSubject: formData.emailSubject || '',
@@ -811,16 +918,52 @@ const onSendLaterEmail = async () => {
         name: 'dashboard-MailMergeReportsPage',
       })
   }
+  resetDateForm()
 }
+// const onSendLaterEmail = async () => {
+//   if (!editorRef.value) return
+//   const content = editorRef.value.getEditorValue() || ''
 
-const onSendEmail = async (date: Date, isSchedule?: boolean) => {
+//   const dateString = turnTimeAndDate({
+//     dateValue: dateValue.value,
+//     timeValue: timeValue.value,
+//   })
+
+//   // console.log({ dateString })
+
+//   // const date = new Date(dateString!)
+//   const date = dateString!
+
+//   if (!regenerateBefore.value) await onSendEmail(date, true)
+//   else {
+//     const formData = getFormValue()
+//     const resp = await addUnmergedEmailJobToTable({
+//       content,
+//       date,
+//       form: {
+//         sendTo: formData.sendTo == 'Primary' ? 'Primary' : 'primary_alternate',
+//         fullName: formData.fullName || '',
+//         email: formData.email || '',
+//         emailSubject: formData.emailSubject || '',
+//       },
+//     })
+//     if (resp)
+//       $router.push({
+//         name: 'dashboard-MailMergeReportsPage',
+//       })
+//   }
+//   resetDateForm()
+// }
+
+const onSendEmail = async (date?: Date, isSchedule?: boolean) => {
   if (!editorRef.value) return
   const content = editorRef.value.getEditorValue() || ''
   const formData = getFormValue()
 
-  const data = {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const data: any = {
     form: {
-      sendTo: formData.sendTo || '',
+      sendTo: formData.sendTo == 'Primary' ? 'Primary' : 'primary_alternate',
       fullName: formData.fullName || '',
       email: formData.email || '',
       emailSubject: formData.emailSubject || '',
@@ -828,7 +971,10 @@ const onSendEmail = async (date: Date, isSchedule?: boolean) => {
     content,
     memberIds: $rStore.$state.selectedRecipients.map((re) => re.ID),
     date,
+    timeZone: timeZoneSelect.value || '',
+    sendNow: !date ? true : false,
   }
+
   const resp = await sendNowEmail(data, isSchedule)
 
   if (resp)
@@ -844,12 +990,31 @@ const onSelectImg = (img: string) => {
 }
 
 /**========================================================================
- *                           send later data
+ *                            data
  *========================================================================**/
 const dateValue = ref('')
 const timeValue = ref('')
+
+const isValidDateValue = computed<boolean>(() => {
+  if (!dateValue.value || !timeValue.value) return true
+  const currentDate = new Date().getTime() + 20 * 60 * 1000
+  const selectedDate =
+    turnTimeAndDate({
+      dateValue: dateValue.value,
+      timeValue: timeValue.value,
+      timeZone: timeZoneSelect.value,
+    })?.getTime() || 0
+  return selectedDate > currentDate
+})
+
 const regenerateBefore = ref(false)
 const sendLaterFlag = ref(false)
+
+const resetDateForm = () => {
+  dateValue.value = ''
+  timeValue.value = ''
+  regenerateBefore.value = false
+}
 
 const dateRules = [(value: string) => isValidDate(value) || 'Invalid date']
 const timeRules = [
@@ -857,6 +1022,51 @@ const timeRules = [
     return isValidTime(value) || 'Invalid time'
   },
 ]
+
+// const dateOptionsFn = (day: string) => {
+//   const today = dateUtils.formatDate(new Date(), 'YYYY/MM/DD')
+//   return day >= today
+// }
+
+// const timeOptionsFn = (hr: number, min: number | null) => {
+//   const now = new Date()
+//   const currentHour = now.getHours()
+//   const currentMinute = now.getMinutes()
+
+//   if (hr > currentHour) return true
+
+//   if (hr === currentHour && min !== null && min >= currentMinute) return true
+
+//   return false
+// }
+
+const checkIfRecipients = () => {
+  if ($rStore.$state.selectedRecipients.length) return true
+  $q.notify({
+    color: 'blue',
+    textColor: 'black',
+    icon: 'error',
+    message: 'Not Recipients Selected',
+  })
+  return false
+}
+
+/**========================================================================
+ *                           time zone selector
+ *========================================================================**/
+const timeZones: string[] = Intl.supportedValuesOf('timeZone') || []
+// const timeZoneOptions = ref<string[]>(timeZones)
+const filteredTimeZoneOptions = ref<string[]>(['pepe', 'juan'])
+const userTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone || ''
+const timeZoneSelect = ref(userTimeZone)
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const timeZoneFilterFn = (val: string, update: any) => {
+  update(() => {
+    const needle = val.toLowerCase()
+    filteredTimeZoneOptions.value = timeZones.filter((v) => v.toLowerCase().indexOf(needle) > -1)
+  })
+}
 
 /**========================================================================
  *                           get initial data

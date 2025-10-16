@@ -75,7 +75,7 @@
       </div>
 
       <div class="custom-dialog-body-container q-pa-lg">
-        <div v-html="emailContent"></div>
+        <div v-html="emailContent" />
       </div>
 
       <q-card-actions class="custom-dialog-footer-container" align="right">
@@ -169,7 +169,8 @@ const columns: QTableColumn<EmailToBeSentInterface>[] = [
 
 const openEmailContent = async (id: number | string) => {
   if (!id) return
-  emailContent.value = await getScheduledEmailContent(id)
+  const resp = await getScheduledEmailContent(id)
+  emailContent.value = resp
   show.value = true
 }
 

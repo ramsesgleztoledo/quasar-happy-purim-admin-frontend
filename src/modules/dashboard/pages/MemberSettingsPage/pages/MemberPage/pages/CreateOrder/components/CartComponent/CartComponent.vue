@@ -1,4 +1,12 @@
 <template>
+  <div class="row">
+    <h5 style="margin: 0px; margin-bottom: 2px; color: #1863b0">Shopping Cart</h5>
+  </div>
+  <div class="row">
+    <div class="col-12">
+      <q-separator spaced inset style="margin: 0px; margin-bottom: 5px; height: 2px" />
+    </div>
+  </div>
   <div class="row q-mb-md">
     <div class="col-12">
       <CartItems />
@@ -25,50 +33,59 @@
         <div style="color: #1863b0">$ {{ convertWithCommas(data.totalBefore || 0) }}</div>
       </div> -->
 
-      <div v-if="data.totalBefore">
-        <!-- discounts  -->
-        <div v-if="data.discount" class="row w-full justify-content-space-between q-mb-sm d-flex">
-          <div class="row cursor-pointer">
-            <div class="row">
-              <div class="col-12 q-mr-sm">{{ data.discount.name }}</div>
-              <!-- <div v-if="discount.description" class="col-12 q-mr-sm mini-text">
-              ( {{ discount.description }} )
-            </div> -->
-            </div>
+      <!-- discounts  -->
 
-            <div>
-              <q-icon size="large" name="contact_support" style="color: var(--happypurim)" />
-              <q-tooltip
-                style="background-color: var(--happypurim); font-size: 16px"
-                transition-show="flip-right"
-                transition-hide="flip-left"
-                ><div>
-                  Donation to charity are
-                  {{ `${data.discount.excludeCharity ? 'exclude' : 'include'}` }} in discounted
-                  price
-                </div>
-              </q-tooltip>
+      <div
+        v-if="data.discount?.value"
+        class="row w-full justify-content-space-between q-mb-sm d-flex"
+      >
+        <div class="row cursor-pointer">
+          <div class="row">
+            <div class="col-12 q-mr-sm">{{ data.discount.name }}</div>
+            <div v-if="data.discount?.name" class="col-12 q-mr-sm mini-text">
+              ( {{ data.discount?.name }} )
             </div>
           </div>
 
-          <div style="color: green">$ -{{ convertWithCommas(data.discount.value) }}</div>
+          <div>
+            <q-icon size="large" name="contact_support" style="color: var(--happypurim)" />
+            <q-tooltip
+              style="background-color: var(--happypurim); font-size: 16px"
+              transition-show="flip-right"
+              transition-hide="flip-left"
+              ><div>
+                Donation to charity are
+                {{ `${data.discount.excludeCharity ? 'exclude' : 'include'}` }} in discounted price
+              </div>
+            </q-tooltip>
+          </div>
         </div>
-        <!-- fee percent -->
-        <!-- <div
-          v-if="$moStore.getFee"
-          class="row w-full justify-content-space-between q-mb-sm d-flex"
-          style="color: var(--happypurim)"
-        >
-          <div class="row cursor-pointer">
-            <div class="q-mr-sm">
-              <b> {{ $moStore.getFee.description }} </b>
-            </div>
-          </div>
 
-          <div>$ +{{ convertWithCommas(data.fee) }}</div>
-        </div> -->
-        <!-- fee per transaction -->
-        <div
+        <div style="color: green">
+          {{ data.discount.value ? $moStore.getSymbol : '' }} -
+          {{ convertWithCommas(data.discount.value) }}
+        </div>
+      </div>
+      <!-- fee percent -->
+      <div
+        v-if="data.fees.fee || data.fees.perTransactionFee"
+        class="row w-full justify-content-space-between q-mb-sm d-flex"
+        style="color: var(--happypurim)"
+      >
+        <div class="row cursor-pointer">
+          <div class="q-mr-sm">
+            <b> {{ $moStore.getFee.description }} </b>
+          </div>
+        </div>
+
+        <div>
+          {{ $moStore.getSymbol }} +{{
+            convertWithCommas(data.fees.fee + data.fees.perTransactionFee)
+          }}
+        </div>
+      </div>
+      <!-- fee per transaction -->
+      <!-- <div
           v-if="$moStore.getFee?.perTransactionFee"
           class="row w-full justify-content-space-between q-mb-sm d-flex"
           style="color: var(--happypurim)"
@@ -80,31 +97,31 @@
           </div>
 
           <div>$ +{{ convertWithCommas($moStore.getFee?.perTransactionFee) }}</div>
-        </div>
-        <div
-          v-if="data.feePerperson"
-          class="row w-full justify-content-space-between q-mb-sm d-flex"
-          style="color: var(--happypurim)"
-        >
-          <div class="row cursor-pointer">
-            <div class="q-mr-sm">
-              <b> Fee per person </b>
-            </div>
+        </div> -->
+      <div
+        v-if="data.fees.feePerperson"
+        class="row w-full justify-content-space-between q-mb-sm d-flex"
+        style="color: var(--happypurim)"
+      >
+        <div class="row cursor-pointer">
+          <div class="q-mr-sm">
+            <b> Fee per person </b>
           </div>
-
-          <div>$ +{{ convertWithCommas(data.feePerperson) }}</div>
         </div>
+
+        <div>  {{ data.fees.feePerperson ? $moStore.getSymbol : '' }} +{{ convertWithCommas(data.fees.feePerperson) }}</div>
       </div>
 
       <!-- final total -->
-      <div
-        v-if="orderTotal"
-        class="row w-full justify-content-space-between q-mb-sm"
-        style="color: #cc0505"
-      >
+
+      <!-- {{ data.finalTotal }}
+      {{ $moStore.$state.totalFromBackend }}
+      {{ data.totalPriceMembers }} -->
+      <div class="row w-full justify-content-space-between q-mb-sm" style="color: #cc0505">
         <b>ORDER TOTAL </b>
-        <b>$ {{ convertWithCommas(orderTotal) }}</b>
+        <b>{{ $moStore.getSymbol }} {{ convertWithCommas(orderTotal) }}</b>
       </div>
+      <q-separator />
     </div>
   </div>
 </template>
@@ -119,7 +136,7 @@ import { computed } from 'vue'
 
 const $moStore = useMemberOrderStore()
 const data = computed(() => $moStore.getCartData)
-const orderTotal = computed(() => data.value.finalTotal || 0)
+const orderTotal = computed(() => data.value.total)
 </script>
 
 <style scoped lang="scss"></style>

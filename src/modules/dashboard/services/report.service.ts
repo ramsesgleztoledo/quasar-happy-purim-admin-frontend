@@ -74,6 +74,16 @@ export const useReportsService = () => {
         data
       })
     },
+    getReportRecipientsByReportIdWithSQL: async (data: RecipientDataFormInterface, extraOptions?: ExtraOptionsInterface): Promise<ApiCallResponseInterface<RecipientDataInterface>> => {
+      const nextUrl = `/Basic-and-Advanced/run-and-display-report/${data.id}`;
+      const url = `${baseUrl}${nextUrl}`;
+      return await apiCall({
+        url,
+        extraOptions,
+        method: 'POST',
+        data
+      })
+    },
     getReportRecipientsByReportIdCustom: async (reportId: number | string, extraOptions?: ExtraOptionsInterface): Promise<ApiCallResponseInterface<RecipientDataInterface>> => {
       const nextUrl = `/Custom-Reports/get-report-data-and-filter?reportId=${reportId}`;
       const url = `${baseUrl}${nextUrl}`;
@@ -81,6 +91,16 @@ export const useReportsService = () => {
         url,
         extraOptions,
 
+      })
+    },
+    getReportRecipientsByReportIdCustomWithSQL: async (data: RecipientDataFormInterface, extraOptions?: ExtraOptionsInterface): Promise<ApiCallResponseInterface<RecipientDataInterface>> => {
+      const nextUrl = `/Custom-Reports/run-and-get-report/${data.id}`;
+      const url = `${baseUrl}${nextUrl}`;
+      return await apiCall({
+        url,
+        extraOptions,
+        method: 'POST',
+        data
       })
     },
     getZipCodeFilters: async (extraOptions?: ExtraOptionsInterface): Promise<ApiCallResponseInterface<string[]>> => {
@@ -129,6 +149,15 @@ export const useReportsService = () => {
       return await apiCall({
         url,
         extraOptions,
+      })
+    },
+    downloadRouteReport: async (extraOptions?: ExtraOptionsInterface): Promise<ApiCallResponseInterface<unknown>> => {
+      const nextUrl = `/route-report`;
+      const url = `${baseUrl}${nextUrl}`;
+      return await apiCall({
+        url,
+        extraOptions,
+        responseType: 'arraybuffer',
       })
     },
 

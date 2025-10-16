@@ -32,24 +32,31 @@
 // }
 
 .dashboard-page-container {
-  padding-left: 300px !important;
+  padding-left: 230px !important;
 }
 
 .dashboard-breadcrumbs-container {
-  position: relative;
-  padding: 20px;
+  position: fixed;
+  padding: 8px;
+  padding-bottom: 3px;
   z-index: 99;
   background-color: white;
   box-shadow: 0 5px 5px -3px rgb(203 192 192);
+  width: calc(100% - 234px);
+  top: 50px;
+  right: 0px;
 }
 
 .dashboard-router-view {
   padding: 20px;
-  height: calc(100vh - 170px);
-  overflow-y: auto;
+  overflow: auto;
+  padding-top: 50px;
+  padding-bottom: 50px;
+  // height: calc(100vh - 180px);
+  // padding-bottom: 30px;
+  // margin-bottom: 100px;
 }
 
 .dashboard-layout-container {
   overflow: hidden;
 }
-

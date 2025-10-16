@@ -64,6 +64,7 @@ export interface MemberOrderItemsInterface {
 export interface AddRemoveMemberFormInterface {
   receiver: number;
   tempcode: string;
+  price: number;
 }
 
 export interface MemberOrderOrgSettingInterface {
@@ -240,6 +241,7 @@ export interface AttributeCustomShippingItemInterface {
 
 export interface UpdateShippingItemFormInterface {
   shippingItemGuid: string;
+  shippingItemId: number;
   recipient: string;
   address: string;
   address2: string;
@@ -399,3 +401,10 @@ export interface ShulSettingInterface {
   sReciprocityprice: number;
 }
 
+
+export interface LocalDeliveryInterface {
+  localDeliveryPrice: number;
+  localDeliveryText:  string;
+  enabled:            boolean;
+  zipCode:            string;
+}

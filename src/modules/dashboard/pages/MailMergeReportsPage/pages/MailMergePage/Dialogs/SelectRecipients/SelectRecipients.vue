@@ -15,7 +15,6 @@
           multiple
           :options="filtersOptions"
           use-chips
-          stack-label
           clearable
           label="Filter By"
         />

@@ -4,7 +4,8 @@
       <b> Gift Basket Program </b>
     </div>
   </div>
-  <div class="row">
+
+  <div class="row q-mt-md">
     <div class="col-12">
       <b>Date and Time</b>
     </div>
@@ -12,46 +13,6 @@
   <div class="row">
     <div class="col-12">
       <p style="color: #797979">Last date/time your members can login to place orders.</p>
-    </div>
-  </div>
-  <div v-if="!basicSettingsState.settings?.hasCustomPricing">
-    <div class="row">
-      <div class="col-12 q-pl-sm q-pr-sm q-mt-md">
-        <q-input
-          v-model="realForm.costPerPerson.value"
-          outlined
-          label="Cost Per Person $ *"
-          lazy-rules
-          :rules="[lazyRules.required(), lazyRules.greaterThan(0, true)]"
-          type="number"
-        />
-      </div>
-    </div>
-    <div class="row">
-      <div class="col-12 q-pl-sm q-pr-sm q-mt-md">
-        <q-input
-          v-model="realForm.maximumCharge.value"
-          outlined
-          label="Maximum Charge $ *"
-          lazy-rules
-          :rules="[lazyRules.required(), lazyRules.greaterThan(0, true)]"
-          type="number"
-          hint="(0 = no limit)"
-        />
-      </div>
-    </div>
-    <div class="row">
-      <div class="col-12 q-pl-sm q-pr-sm q-mt-md">
-        <q-input
-          v-model="realForm.reciprocityCharge.value"
-          outlined
-          label="Reciprocity Price $ *"
-          lazy-rules
-          :rules="[lazyRules.required(), lazyRules.greaterThan(0, true)]"
-          type="number"
-          :hint="`$${realForm.reciprocityCharge.value} per Greeting/Person`"
-        />
-      </div>
     </div>
   </div>
   <div class="row">
@@ -112,6 +73,46 @@
           </q-icon>
         </template>
       </q-input>
+    </div>
+  </div>
+  <div v-if="!basicSettingsState.settings?.hasCustomPricing">
+    <div class="row">
+      <div class="col-12 q-pl-sm q-pr-sm q-mt-md">
+        <q-input
+          v-model="realForm.costPerPerson.value"
+          outlined
+          label="Cost Per Person $ *"
+          lazy-rules
+          :rules="[lazyRules.required(), lazyRules.greaterThan(0, true)]"
+          type="number"
+        />
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-12 q-pl-sm q-pr-sm q-mt-md">
+        <q-input
+          v-model="realForm.maximumCharge.value"
+          outlined
+          label="Maximum Charge $ *"
+          lazy-rules
+          :rules="[lazyRules.required(), lazyRules.greaterThan(0, true)]"
+          type="number"
+          hint="(0 = no limit)"
+        />
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-12 q-pl-sm q-pr-sm q-mt-md">
+        <q-input
+          v-model="realForm.reciprocityCharge.value"
+          outlined
+          label="Reciprocity Price $ *"
+          lazy-rules
+          :rules="[lazyRules.required(), lazyRules.greaterThan(0, true)]"
+          type="number"
+          :hint="`$${realForm.reciprocityCharge.value} per Greeting/Person`"
+        />
+      </div>
     </div>
   </div>
   <div class="row">

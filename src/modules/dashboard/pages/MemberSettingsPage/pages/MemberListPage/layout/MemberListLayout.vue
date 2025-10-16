@@ -1,19 +1,16 @@
 <template>
-  <div class="row">
+  <div class="row w-full top-title-col justify-content-space-between">
     <div
-      class="top-title-col"
       :class="{
-        'col-4': !isMobile,
         'col-12': isMobile,
+        'justify-content-space-between': !isMobile,
       }"
     >
       <p class="page-main-title">Upload Member List</p>
       <div class="separator-right q-mr-sm q-ml-sm"></div>
     </div>
     <div
-      class="top-title-col"
       :class="{
-        'col-8': !isMobile,
         'col-12': isMobile,
       }"
     >
@@ -48,7 +45,11 @@
         </template>
 
         <!-- STEP 2 SELECT SHEET-->
-        <template v-if="step === 2">
+        <template
+          v-if="
+            step === 2 && step_one_data?.sheetNames?.length && step_one_data?.sheetNames?.length > 1
+          "
+        >
           <div class="row q-pa-lg">
             <div class="col-12 q-pa-lg q-item-bordered">
               <div class="row q-mb-sm justify-content-center">
@@ -105,6 +106,14 @@
 
                 <div class="row">
                   <div class="col-12">
+                    <div class="row q-mb-md">
+                      <div class="col-3">
+                        <b> Import Fields </b>
+                      </div>
+                      <div class="col-3">
+                        <b> Destination Fields </b>
+                      </div>
+                    </div>
                     <div class="row q-mb-md" v-for="item in matchedFields" :key="item.matchedMapID">
                       <div class="col-3">
                         <label class="q-mr-sm"> {{ item.importField }}</label>
@@ -119,7 +128,12 @@
                           :options="useFieldOptions"
                           label="field"
                           filled
-                          @update:model-value="item.oldValue = false"
+                          @update:model-value="
+                            ;() => {
+                              item.oldValue = false
+                            }
+                            step_three_resp.success = true
+                          "
                         />
                       </div>
                       <div class="col">
@@ -144,7 +158,8 @@
             <div class="col-12 q-pa-lg q-item-bordered">
               <div class="row q-mb-sm">
                 <h6 style="margin: 0px">
-                  Identify the Field you would like to use as your key (this needs to be unique to each row)
+                  Identify the Field you would like to use as your key (this needs to be unique to
+                  each row)
                 </h6>
               </div>
               <div v-if="!step_four_resp.success" class="row q-ma-sm" style="color: red">
@@ -156,6 +171,11 @@
                   <div class="row">
                     <div class="col-6 q-pa-sm">
                       <q-select
+                        @update:model-value="
+                          () => {
+                            step_four_resp.success = true
+                          }
+                        "
                         popup-content-class="q-menu-300"
                         v-model="sourceField"
                         :options="matchedFields.map((item) => item.importField)"
@@ -165,6 +185,11 @@
                     </div>
                     <div class="col-6 q-pa-sm">
                       <q-select
+                        @update:model-value="
+                          () => {
+                            step_four_resp.success = true
+                          }
+                        "
                         popup-content-class="q-menu-300"
                         v-model="destinationField"
                         :options="destinationKeys.map((item) => item.fieldName)"
@@ -245,7 +270,7 @@
 
     <div class="row q-mt-lg cancel-save-btn-container">
       <div class="col-12">
-        <div v-if="step !== 7" @click="goToTop(divContainer)">
+        <div v-if="step !== 7" @click="goToTop(divContainer, 300)">
           <q-btn
             outline
             label="CANCEL"
@@ -263,6 +288,12 @@
             @click="
               () => {
                 step--
+                if (
+                  step === 2 &&
+                  (!step_one_data?.sheetNames?.length ||
+                    (step_one_data?.sheetNames?.length && step_one_data?.sheetNames?.length === 1))
+                )
+                  step--
               }
             "
             :disable="loading"
@@ -337,7 +368,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, onMounted, ref } from 'vue'
+import { computed, onMounted, ref, watch } from 'vue'
 import UploaderComponent from 'src/components/UploaderComponent/UploaderComponent.vue'
 import { useUI } from 'src/modules/UI/composables'
 import { useUploadList } from 'src/modules/dashboard/composables/useUploadList'
@@ -350,8 +381,8 @@ import type {
   UploadFileResponseInterface,
 } from 'src/modules/dashboard/interfaces/upload-list.interfaces'
 import PreviewNewMemberList from './components/PreviewNewMemberList.vue'
-import { QBtn } from 'quasar'
-import { useRouter } from 'vue-router'
+import { QBtn, useQuasar } from 'quasar'
+import { useRoute, useRouter } from 'vue-router'
 
 interface StepResponseInterface {
   success: boolean
@@ -359,6 +390,8 @@ interface StepResponseInterface {
 }
 
 const $router = useRouter()
+const $route = useRoute()
+const $q = useQuasar()
 
 const { isMobile, goToTop } = useUI()
 const {
@@ -428,6 +461,7 @@ const allDone = ref(false)
 
 //! step 1 functions
 const step_one = async () => {
+  $q.loading.show({ message: 'Loading ...' })
   loading.value = true
   step_two_reset_data()
   const step_one_response = await uploadMemberList(fileModel.value[0]!)
@@ -435,11 +469,17 @@ const step_one = async () => {
   if (step_one_response) {
     step_one_data.value = step_one_response
     step.value++
+    if (step_one_data.value?.sheetNames?.length === 1) {
+      sheet.value = step_one_data.value?.sheetNames[0] || ''
+      await step_two()
+    }
   }
+  $q.loading.hide()
 }
 
 //! step 2 functions
 const step_two = async () => {
+  $q.loading.show({ message: 'Loading ...' })
   step_three_reset_data()
   loading.value = true
   const resp = await processAndMatch({
@@ -458,6 +498,7 @@ const step_two = async () => {
     })) || []
   loading.value = false
   step.value++
+  $q.loading.hide()
 }
 
 const step_three_resp = ref<StepResponseInterface>({
@@ -466,6 +507,7 @@ const step_three_resp = ref<StepResponseInterface>({
 })
 
 const step_three = async () => {
+  $q.loading.show({ message: 'Loading ...' })
   loading.value = true
   step_four_reset_data()
   step_three_resp.value = (
@@ -479,6 +521,8 @@ const step_three = async () => {
   ).data as unknown as StepResponseInterface
   loading.value = false
   if (step_three_resp.value.success) step.value++
+
+  $q.loading.hide()
 }
 
 const step_four_resp = ref<StepResponseInterface>({
@@ -487,6 +531,7 @@ const step_four_resp = ref<StepResponseInterface>({
 })
 
 const step_four = async () => {
+  $q.loading.show({ message: 'Loading ...' })
   loading.value = true
   step_four_resp.value = (
     await checkMatchSrcDestKey({
@@ -498,13 +543,17 @@ const step_four = async () => {
   loading.value = false
 
   if (step_four_resp.value.success) step.value++
+
+  $q.loading.hide()
 }
 
 const step_five = async () => {
+  $q.loading.show({ message: 'Loading, This may take a few moments' })
   loading.value = true
   await saveSelectionOptions(stepFiveData.value)
   loading.value = false
   step.value++
+  $q.loading.hide()
 }
 
 const destinationKeys = ref<DestinationKeyInterface[]>([])
@@ -516,6 +565,8 @@ const dictsRef = ref<{ label: string; quantity: number }[]>([])
 
 const onContinueAndUpload = async () => {
   if (!previewNewMemberList.value) return
+
+  $q.loading.show({ message: 'Loading ...' })
 
   const dicts = previewNewMemberList.value.onSave() as unknown as {
     updateMembers: MemberRecordInterface
@@ -542,6 +593,8 @@ const onContinueAndUpload = async () => {
   if (resp) {
     step.value++
   }
+
+  $q.loading.hide()
 }
 
 const revertBack = async () => {
@@ -589,6 +642,13 @@ onMounted(async () => {
   fieldOptions.value = resp[0]
   destinationKeys.value = resp[1]
 })
+
+watch(
+  () => $route.query.force,
+  () => {
+    step.value = 1
+  },
+)
 </script>
 
 <style scoped lang="scss" src="./MemberListLayout.scss" />

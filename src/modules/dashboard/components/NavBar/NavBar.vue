@@ -13,28 +13,57 @@
           aria-label="Menu"
           @click="toggleLeftDrawer"
         />
-        <q-btn flat round icon="arrow_back" aria-label="back" @click="goBack" />
-        <q-btn flat round icon="arrow_forward" aria-label="forward" @click="goForward" />
+        <div v-if="isMobile">
+          <q-btn flat round icon="arrow_back" aria-label="back" @click="goBack" />
+          <q-btn flat round icon="arrow_forward" aria-label="forward" @click="goForward" />
+        </div>
 
         <q-toolbar-title
           :class="{ 'dashboard-layout-title-mobile': isMobile }"
           class="dashboard-layout-title"
         >
           <div class="row">
-            <div class="col dashboard-happypurim-logo user-select-none">
-              <p
-                @click="
-                  () =>
-                    $router.push({
-                      name: 'dashboard-DashboardPage',
-                    })
-                "
+            <div
+              @click="
+                () =>
+                  $router.push({
+                    name: 'dashboard-DashboardPage',
+                  })
+              "
+              class="col dashboard-happypurim-logo user-select-none"
+              style="max-width: 300px"
+            >
+              <div
+                class="row"
+                :style="{
+                  marginLeft: isMobile ? '12px' : '8px',
+                }"
               >
-                <!-- HappyPurim.com -->
-                HappyRoshHashanah.com
-              </p>
+                <p>
+                  HappyPurim.com
+                  <!-- HappyRoshHashanah.com -->
+                </p>
+              </div>
+              <div class="row">
+                <p
+                  style="
+                    color: #919191;
+                    font-size: 15px;
+                    margin-left: 62px;
+                    font-family: 'Open Sans', sans-serif;
+                  "
+                  :style="{
+                    marginLeft: isMobile ? '78px' : '72px',
+                    fontSize: isMobile ? '9px' : '15px',
+                    marginTop: isMobile ? '-8px' : '-11px',
+                  }"
+                >
+                  Gift giving just got easier
+                  <!-- HappyRoshHashanah.com -->
+                </p>
+              </div>
             </div>
-            <div class="col" v-if="!isMobile">
+            <div class="col" v-if="!isMobile" style="display: flex; justify-content: flex-end">
               <SearchComponent />
             </div>
           </div>

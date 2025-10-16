@@ -8,7 +8,7 @@
   >
     <WidGet
       icon="discount"
-      :first-p="`$${convertWithCommas(dailyTotal.total)}`"
+      :first-p="`$${convertWithCommas(dailyTotal.total, true)}`"
       second-p="Daily Total:"
       :third-p="`${convertToTextDate(dailyTotal.date)}`"
       icon-color="#3cd856"
@@ -16,15 +16,16 @@
     />
   </div>
   <div
-    class="q-mb-sm"
+    class="q-mb-sm justify-content-center"
     :class="{
       'col-4': !isMobile,
       'col-12': isMobile,
     }"
   >
     <WidGet
+      class-name="justify-content-center"
       icon="signal_cellular_alt"
-      :first-p="`$${convertWithCommas(runningTotal.total)}`"
+      :first-p="`$${convertWithCommas(runningTotal.total, true)}`"
       second-p="Running Total:"
       :third-p="`${convertToTextDate(runningTotal.date)}`"
       icon-color="#5A65FA"
@@ -32,13 +33,14 @@
     />
   </div>
   <div
-    class="q-mb-sm"
+    class="q-mb-sm justify-content-end"
     :class="{
       'col-4': !isMobile,
       'col-12': isMobile,
     }"
   >
     <WidGet
+      class-name="justify-content-end w-full"
       icon="group_add"
       :first-p="`${participationRate.today}%`"
       second-p="Participation Rate: "

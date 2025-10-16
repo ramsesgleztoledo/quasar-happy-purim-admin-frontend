@@ -27,7 +27,7 @@ export const useEmailSchedulerService = () => {
         extraOptions
       })
     },
-    getScheduledEmailContent: async (emailId: number | string, extraOptions?: ExtraOptionsInterface): Promise<ApiCallResponseInterface<{ body: string }>> => {
+    getScheduledEmailContent: async (emailId: number | string, extraOptions?: ExtraOptionsInterface): Promise<ApiCallResponseInterface<string>> => {
       const nextUrl = `/view-email-body/${emailId}`;
       const url = `${baseUrl}${nextUrl}`;
       return await apiCall({

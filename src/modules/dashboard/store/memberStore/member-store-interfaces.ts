@@ -1,6 +1,6 @@
-import type { MembershipStatusInterface } from "src/services/api-interfaces";
+
 import type { MemberCategoryInterface } from "../../interfaces/category-interfaces";
-import type { AlternativeMemberAddress, MemberDataInterface, MemberDonateBasketOptionInterface, MemberOptionsInterface, MemberProfileQuestionInterface, MembersResponseInterface, MemberTransactionInterface } from "../../interfaces/member-interfaces";
+import type { AlternativeMemberAddress, MemberDataInterface, MemberDonateBasketOptionInterface, MemberOptionsInterface, MemberProfileQuestionInterface, MembershipStatusInterface, MembersResponseInterface, MemberTransactionInterface } from "../../interfaces/member-interfaces";
 import type { NoneType } from "../../services/service-interfaces";
 
 
@@ -21,6 +21,7 @@ export interface MemberStateInterface {
   };
   membershipSettings: MembershipStatusInterface;
   showRecordPaymentBtn: boolean;
+  showClearCart: boolean;
 }
 
 

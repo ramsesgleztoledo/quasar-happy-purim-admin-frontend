@@ -279,3 +279,33 @@ export interface MemberProfileQuestionInterface {
   optionId: number;
   isChecked: 0 | 1;
 }
+
+
+export interface SearchedMemberInterface {
+  MemberId: number;
+  MemberGuid: string;
+  FirstName: null;
+  LastName: string;
+  SpouseFirstName: string;
+  SpouseLastName: null;
+  DisplayAs: null;
+  Address: string;
+  Address2: null;
+  City: string;
+  State: string;
+  Zip: string;
+  Phone: null;
+  Email: null;
+  Email2: null;
+}
+
+export interface DoorManStatusInterface {
+  showKJRow: boolean;
+  rbl24HourSelectedIndex: number;
+}
+
+
+export interface MembershipStatusInterface {
+  visible: boolean;
+  checkedStatus: boolean;
+}

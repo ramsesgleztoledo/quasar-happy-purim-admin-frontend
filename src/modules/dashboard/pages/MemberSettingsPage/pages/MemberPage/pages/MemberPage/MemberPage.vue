@@ -12,7 +12,7 @@
       v-if="memberState.isPendingDeletion"
       class="q-mb-md q-mt-md"
       type="error"
-      text="This member is pending for deletion"
+      text="This member is flagged for deletion"
     />
 
     <div class="q-mb-md">
@@ -20,8 +20,12 @@
         <!--=============================== if desktop =============================-->
 
         <div v-if="!isMobile" class="col-12 top-title-col">
+          <q-icon name="person" class="q-mr-sm" size="large" />
           <p class="MemberPage-user-title">
             {{ memberState.selectedMember?.lastName }}, {{ memberState.selectedMember?.firstName }}
+            {{
+              `${memberState.selectedMember?.spouseFirstName ? `& ${memberState.selectedMember?.spouseFirstName}` : ''}`
+            }}
           </p>
           <div class="separator-right q-mr-sm q-ml-sm"></div>
           <p
@@ -47,10 +51,13 @@
             class="col-12 MemberPage-user-title-col"
             style="display: flex; justify-content: space-between"
           >
-            <p class="MemberPage-user-title">
-              {{ memberState.selectedMember?.lastName }},
-              {{ memberState.selectedMember?.firstName }}
-            </p>
+            <div class="MemberPage-user-title d-flex align-items-center">
+              <q-icon name="person" class="q-mr-sm" size="large" />
+              <p>
+                {{ memberState.selectedMember?.lastName }},
+                {{ memberState.selectedMember?.firstName }}
+              </p>
+            </div>
             <q-btn-dropdown icon="edit" color="primary" label="Actions">
               <q-list>
                 <q-item clickable v-close-popup>
@@ -59,7 +66,7 @@
                       icon="add"
                       outline
                       label="CREATE ORDER"
-                      :to="{ name: 'MemberLayout-CreateOrderPage' }"
+                      @click="goToCreateOrder(false)"
                       class="q-mr-sm q-mt-sm"
                     />
                   </q-item-section>
@@ -70,12 +77,12 @@
                       icon="add"
                       outline
                       label="CREATE ORDER BY CODE"
-                      :to="{ name: 'MemberLayout-CreateOrderPageByCode' }"
+                      @click="goToCreateOrder(true)"
                       class="q-mr-sm q-mt-sm"
                     />
                   </q-item-section>
                 </q-item>
-                <q-item clickable v-close-popup>
+                <q-item clickable v-close-popup v-if="memberState.showClearCart">
                   <q-item-section>
                     <q-btn
                       icon="close"
@@ -177,7 +184,7 @@
               icon="add"
               outline
               label="CREATE ORDER"
-              :to="{ name: 'MemberLayout-CreateOrderPage' }"
+              @click="goToCreateOrder(false)"
               class="q-mr-sm q-mt-sm"
             />
             <q-btn
@@ -185,10 +192,11 @@
               outline
               icon="add"
               label="CREATE ORDER BY CODE"
-              :to="{ name: 'MemberLayout-CreateOrderPageByCode' }"
+              @click="goToCreateOrder(true)"
               class="q-mr-sm q-mt-sm"
             />
             <q-btn
+              v-if="memberState.showClearCart"
               outline
               icon="close"
               label="CLEAR CART"
@@ -238,7 +246,7 @@
       text="This member is hidden, and does not show up on the order form."
     />
     <!-- eslint-disable -->
-    <form action="" class="q-mt-lg">
+    <form action="" class="">
       <div class="row">
         <!--=============================== member left=============================-->
         <div
@@ -273,12 +281,12 @@
               />
             </div>
           </div>
-          <div class="row q-mt-md">
+          <!-- <div class="row q-mt-md">
             <div class="col-6 q-pl-sm q-pr-sm">
               <q-input v-model="realForm.spouseTitle.value" outlined label=" Spouse Title" />
             </div>
-          </div>
-          <div class="row q-mt-md">
+          </div> -->
+          <div class="row">
             <div class="col-6 q-pl-sm q-pr-sm">
               <q-input
                 v-model="realForm.spouseFirstName.value"
@@ -325,7 +333,7 @@
             </div>
           </div>
 
-          <div class="row q-mt-md">
+          <div class="row">
             <div class="col-6 q-pl-sm q-pr-sm">
               <q-input
                 v-model="realForm.phone.value"
@@ -347,7 +355,7 @@
               />
             </div>
           </div>
-          <div class="row q-mt-md">
+          <div class="row">
             <div class="col-6 q-pl-sm q-pr-sm">
               <q-input
                 v-model="realForm.email.value"
@@ -368,7 +376,7 @@
               />
             </div>
           </div>
-          <div class="row q-mt-md">
+          <div class="row">
             <div class="col-6 q-pl-sm q-pr-sm">
               <q-input
                 v-model="realForm.misc.value"
@@ -382,14 +390,14 @@
               <q-input v-model="realForm.misc2.value" outlined label="Misc 2" />
             </div>
           </div>
-          <div class="row q-mt-md">
+          <div class="row">
             <div class="col-12 q-pl-sm q-pr-sm">
               <q-input
                 v-model="realForm.displayAs.value"
                 outlined
-                label="Display Name *"
+                label="Display Name"
                 lazy-rules
-                :rules="[lazyRules.required()]"
+                :rules="[]"
               />
             </div>
           </div>
@@ -405,6 +413,19 @@
                 v-model="realForm.children.value"
                 outlined
                 label="Children"
+                autogrow
+                input-style="max-height: 50px; overflow: auto;"
+              />
+            </div>
+          </div>
+          <div class="row q-mt-md">
+            <div class="col-12 q-pl-sm q-pr-sm">
+              <q-input
+                v-model="realForm.salutation.value"
+                outlined
+                label="Salutation"
+                lazy-rules
+                :rules="[]"
               />
             </div>
           </div>
@@ -431,15 +452,22 @@
             'col-12': isMobile,
           }"
         >
-          <div class="row q-mt-md">
+          <div v-if="categories.length" class="row q-mt-md">
             <div class="col-12 q-pl-sm q-pr-sm">
-              <q-input
-                v-model="realForm.salutation.value"
-                outlined
-                label="Salutation"
-                lazy-rules
-                :rules="[]"
-              />
+              <div class="border-container">
+                <label> Select Categories</label>
+                <div class="q-mt-md">
+                  <div class="row">
+                    <div class="col-3 q-mb-sm" v-for="(item, index) in categories" :key="index">
+                      <q-checkbox
+                        style="overflow-wrap: anywhere"
+                        v-model="item.value"
+                        :label="item.label"
+                      />
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
           <div class="row q-mt-md">
@@ -450,6 +478,8 @@
                 outlined
                 label="Notes"
                 lazy-rules
+                autogrow
+                input-style="max-height: 50px; overflow: auto;"
                 :rules="[lazyRules.maxCharacters(255)]"
                 :hint="`${realForm.notes.value.length}/255 character limit`"
               />
@@ -523,9 +553,10 @@
             <div
               class="q-pl-sm q-pr-sm q-mb-md"
               :class="{
-                'col-6': !isMobile,
+                'col-4': !isMobile,
                 'col-12': isMobile,
               }"
+              v-if="options.length"
             >
               <div class="border-container">
                 <label>Options</label>
@@ -537,9 +568,9 @@
               </div>
             </div>
             <div
-              class="q-pl-sm q-pr-sm"
+              class="q-pl-sm q-pr-sm q-mb-md"
               :class="{
-                'col-6': !isMobile,
+                'col-4': !isMobile,
                 'col-12': isMobile,
               }"
               v-if="profileQuestions.length"
@@ -553,34 +584,19 @@
                 </div>
               </div>
             </div>
-          </div>
-          <div v-if="!!memberState.memberDonateBasketOption?.visible" class="row q-mt-md">
             <div
               class="q-pl-sm q-pr-sm q-mb-md"
               :class="{
-                'col-6': !isMobile,
+                'col-4': !isMobile,
                 'col-12': isMobile,
               }"
+              v-if="!!memberState.memberDonateBasketOption?.visible"
             >
               <div v-if="otherOptions.length" class="border-container">
                 <label>Other Options</label>
                 <div class="q-mt-md">
                   <div v-for="(item, index) in otherOptions" :key="index" class="row q-mb-sm">
                     <q-checkbox v-model="item.value" :label="item.label" />
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div v-if="categories.length" class="row q-mt-md">
-            <div class="col-12 q-pl-sm q-pr-sm">
-              <div class="border-container">
-                <label> Select Categories</label>
-                <div class="q-mt-md">
-                  <div class="row">
-                    <div class="col-6 q-mb-sm" v-for="(item, index) in categories" :key="index">
-                      <q-checkbox v-model="item.value" :label="item.label" />
-                    </div>
                   </div>
                 </div>
               </div>
@@ -674,7 +690,11 @@ import DialogAlert from 'src/components/DialogAlert/DialogAlert.vue'
 import OrderHistoryTable from '../../components/OrderHistoryTable/OrderHistoryTable.vue'
 import RecordPaymentDialog from '../../components/RecordPaymentDialog/RecordPaymentDialog.vue'
 import EmailLoginCodeDialog from '../../components/EmailLoginCodeDialog/EmailLoginCodeDialog.vue'
-import { lazyRules, useForm, validations } from 'src/composables'
+import {
+  lazyRules,
+  useForm,
+  // validations
+} from 'src/composables'
 import { ref, watch } from 'vue'
 import { useUI } from 'src/modules/UI/composables'
 import { statesOptions } from 'src/modules/dashboard/data'
@@ -730,8 +750,8 @@ const profileQuestions = ref<CheckboxItemInterface[]>([])
 
 const { realForm, resetForm, getFormValue, isValidForm } = useForm({
   title: { value: '' },
-  firstName: { value: '', required: true },
-  lastName: { value: '', required: true },
+  firstName: { value: '', required: false },
+  lastName: { value: '', required: false },
   spouseTitle: { value: '' },
   spouseFirstName: { value: '' },
   spouseLastName: { value: '' },
@@ -739,14 +759,29 @@ const { realForm, resetForm, getFormValue, isValidForm } = useForm({
   address2: { value: '' },
   city: { value: '' },
   state: { value: '' },
-  zip: { value: '', validations: [validations.minCharacters(5), validations.maxCharacters(5)] },
-  phone: { value: '', validations: [validations.minNumberDigitOnly(10)] },
-  phone2: { value: '', validations: [validations.minNumberDigitOnly(10)] },
-  email: { value: '', validations: [validations.isEmail] },
-  email2: { value: '', validations: [validations.isEmail] },
-  misc: { value: '', required: true },
+  zip: {
+    value: '',
+    // validations: [validations.minCharacters(5), validations.maxCharacters(5)]
+  },
+  phone: {
+    value: '',
+    // validations: [validations.minNumberDigitOnly(10)]
+  },
+  phone2: {
+    value: '',
+    // validations: [validations.minNumberDigitOnly(10)]
+  },
+  email: {
+    value: '',
+    //  validations: [validations.isEmail]
+  },
+  email2: {
+    value: '',
+    // validations: [validations.isEmail]
+  },
+  misc: { value: '', required: false },
   misc2: { value: '' },
-  displayAs: { value: '', required: true },
+  displayAs: { value: '' },
   // foods: { value: '', validations: [] },
   salutation: { value: '' },
   notes: { value: '' },
@@ -759,14 +794,14 @@ const {
   getFormValue: getAltAddressFormValue,
   resetForm: altAddressResetForm,
 } = useForm({
-  name: { value: '', validations: [validations.required] },
-  address: { value: '', validations: [validations.required] },
-  address2: { value: '', validations: [] },
-  city: { value: '', validations: [validations.required] },
-  state: { value: '', validations: [validations.required] },
+  name: { value: '' },
+  address: { value: '' },
+  address2: { value: '' },
+  city: { value: '' },
+  state: { value: '' },
   zip: {
     value: '',
-    validations: [validations.required, validations.minCharacters(5), validations.maxCharacters(5)],
+    // validations: [validations.required, validations.minCharacters(5), validations.maxCharacters(5)],
   },
 })
 
@@ -852,13 +887,13 @@ const resetAllForm = (showNotify: boolean = false) => {
       label: 'Reciprocity',
     })
 
-  if (memberState.value.membershipSettings.visible)
+  if (memberState.value.membershipSettings.visible) {
     options.value.push({
       id: 2,
       value: memberState.value.membershipSettings.checkedStatus,
       label: 'Membership',
     })
-
+  }
   //categories
   categories.value = memberState.value.memberCategories.map((cat) => ({
     id: cat.categoryId,
@@ -886,7 +921,7 @@ const resetAllForm = (showNotify: boolean = false) => {
       color: 'blue',
       textColor: 'black',
       icon: 'error',
-      message: '"Data Reset"',
+      message: 'Data Reset',
     })
 }
 
@@ -909,7 +944,7 @@ const onUpdateMember = async () => {
   const data: MemberUpdateAllDataForm = {
     hidden: !!options.value.find((item) => item.id === 0)?.value,
     reciprocity: !!options.value.find((item) => item.id === 1)?.value,
-    membershipValue: !!options.value.find((item) => item.id === 1)?.value,
+    membershipValue: !!options.value.find((item) => item.id === 2)?.value,
     memberData: memberData as unknown as MemberUpdateFormInterface,
     donate: otherOptions.value.length ? otherOptions.value[0]!.value : undefined,
     profileQuestions: profileQuestions.value.map((proQ) => ({
@@ -920,12 +955,39 @@ const onUpdateMember = async () => {
     doorManValue: hasDoorman.value,
   }
 
+  console.log({ data })
+
   await updateMember_Co(id, data)
 }
 
 const onResetLoginCode = () => {
   const id = memberState.value.selectedMember?.memberId
   if (id) resetMemberLoginCode_Co(id)
+}
+
+const goToCreateOrder = (isByCode: boolean = false) => {
+  if (!memberState.value.selectedMember?.displayAs)
+    return $q.notify({
+      color: 'blue',
+      message: 'Display Name is required before creating an order',
+      textColor: 'black',
+      icon: 'error',
+    })
+
+  if (!isByCode)
+    return $router.push({
+      name: 'MemberLayout-CreateOrderPage',
+      params: {
+        memberId: memberState.value.selectedMember?.memberId,
+      },
+    })
+
+  return $router.push({
+    name: 'MemberLayout-CreateOrderPageByCode',
+    params: {
+      memberId: memberState.value.selectedMember?.memberId,
+    },
+  })
 }
 
 watch(

@@ -55,7 +55,7 @@ export const useUI = () => {
 
   const updateIsMobile = () => {
 
-    if (window.innerWidth <= 1200) {
+    if (window.innerWidth <= 1400) {
       if (isMobile.value) return
       isMobile.value = true
     }
@@ -89,10 +89,15 @@ export const useUI = () => {
     $router.go(0)
   }
   const goBack = () => {
-    if ($router.options.history.state.back) {
+
+    const from = document.referrer; // The URL form source
+    const isSameDomain = from.startsWith(window.location.origin);
+    const stateBack = $router.options.history.state.back;
+
+    if ((!from || (from && isSameDomain)) && stateBack) {
       $router.back();
     } else {
-      $router.push('/');
+      $router.push({ name: 'DashboardLayout' });
     }
   }
   const goForward = () => {
@@ -150,7 +155,7 @@ export const useUI = () => {
         color: 'blue',
         textColor: 'black',
         icon: 'error',
-        message: '“File Downloaded”',
+        message: 'File Downloaded',
       })
 
     },
@@ -174,18 +179,25 @@ export const useUI = () => {
       }
     },
 
-    goToTop(element: HTMLElement | undefined | null, behavior?: ScrollBehavior) {
+    goToTop(element: HTMLElement | undefined | null, delay?: number, behavior?: ScrollBehavior) {
+
       if (!element) return
-      element.scrollIntoView({ behavior: behavior ? behavior : 'smooth', block: 'start' })
+
+      setTimeout(() => {
+        element.scrollIntoView({ behavior: behavior ? behavior : 'smooth', block: 'start' })
+      }, delay ? delay : 0);
+
     },
 
     showLoading(text?: string) {
       $q.loading.show({
-        message: text ? text : `loading ...`,
+        message: text ? text : `Loading ...`,
         spinnerColor: '#f36b09',
         messageColor: '#f36b09',
       })
     },
+
+
     stopLoading() {
       $q.loading.hide()
     }

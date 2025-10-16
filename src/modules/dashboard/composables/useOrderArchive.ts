@@ -19,7 +19,7 @@ export const useOrderArchive = () => {
     async getOrdersArchive() {
       const orders = await getOrdersArchive({
         loading: {
-          message: 'loading...'
+          message: 'Loading ...'
         }
       })
       $oStore.setOrders(orders.ok ? orders.data : []);
@@ -40,7 +40,7 @@ export const useOrderArchive = () => {
             useCache: true,
             goBackIn400Error: true,
             loading: {
-              message: 'Loading...',
+              message: 'Loading ...',
             }
           });
       $oStore.setSelectedOrderReceipt(resp.ok ? resp.data : undefined)

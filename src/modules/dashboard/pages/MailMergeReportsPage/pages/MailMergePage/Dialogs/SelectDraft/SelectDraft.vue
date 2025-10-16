@@ -1,40 +1,54 @@
 <template>
   <q-dialog v-model="show" persistent>
-    <q-card v-if="isReady" :style="{ width: isMobile ? '100vw' : '500px' }">
+    <q-card :style="{ width: isMobile ? '100vw' : '500px' }">
       <div class="row dialog-header custom-dialog-header-container">
         <div class="col-12">
           <p>Select a Draft</p>
         </div>
       </div>
-
-      <div v-if="drafts.length" class="custom-dialog-body-container q-pa-lg">
-        <q-item v-for="draft in drafts" :key="draft.draftId" class="q-item-bordered q-mb-sm">
-          <q-item-section>
-            <q-item-label>{{ draft.documentTitle }}</q-item-label>
-            <q-item-label caption lines="2">{{ draft.documentDescription }}</q-item-label>
-          </q-item-section>
-          <q-item-section side>
-            <div class="row">
-              <q-btn
-                class="q-mr-sm"
-                padding="3px"
-                color="primary"
-                icon="delete"
-                @click="onDeleteDraft(draft)"
-              />
-              <q-btn
-                padding="3px"
-                color="primary"
-                icon="check"
-                label="Select"
-                @click="() => $emit('onSelectDraft', draft)"
-                v-close-popup
-              />
-            </div>
-          </q-item-section>
-        </q-item>
+      <div v-if="!isReady" style="min-height: 300px">
+        <q-inner-loading :showing="!isReady" label="Loading ..." />
       </div>
-      <div v-else class="q-ma-md q-pa-md">no drafts to show...</div>
+      <div v-if="isReady">
+        <div v-if="drafts.length" class="custom-dialog-body-container q-pa-lg">
+          <q-item v-for="draft in drafts" :key="draft.draftId" class="q-item-bordered q-mb-sm">
+            <q-item-section>
+              <q-item-label>{{ draft.documentTitle }}</q-item-label>
+              <q-item-label caption lines="2"
+                >Saved by: {{ draft.adminName }} -
+                {{ convertToUSDate(draft.dateAdded) }}</q-item-label
+              >
+              <q-separator
+                v-if="draft.documentDescription"
+                spaced
+                inset
+                dark
+                style="background-color: #ded9d9"
+              />
+              <q-item-label caption lines="2">{{ draft.documentDescription }}</q-item-label>
+            </q-item-section>
+            <q-item-section side>
+              <div class="row">
+                <q-btn
+                  class="q-mr-sm"
+                  padding="3px"
+                  color="primary"
+                  icon="delete"
+                  @click="onDeleteDraft(draft)"
+                />
+                <q-btn
+                  padding="5px"
+                  color="primary"
+                  label="Select"
+                  @click="() => $emit('onSelectDraft', draft)"
+                  v-close-popup
+                />
+              </div>
+            </q-item-section>
+          </q-item>
+        </div>
+        <div v-else class="q-ma-md q-pa-md">no drafts to show...</div>
+      </div>
       <q-card-actions class="custom-dialog-footer-container" align="right">
         <q-btn
           outline
@@ -48,6 +62,7 @@
 </template>
 
 <script setup lang="ts">
+import { convertToUSDate } from 'src/helpers'
 import { useDraft } from 'src/modules/dashboard/composables/useDraft'
 import type { DraftInterface } from 'src/modules/dashboard/interfaces/draft.interfaces'
 import { useUI } from 'src/modules/UI/composables'

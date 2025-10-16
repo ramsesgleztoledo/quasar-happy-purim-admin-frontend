@@ -16,7 +16,7 @@ import { useBasicSettingsStore } from "src/modules/dashboard/store/basicSettings
 import { useMemberOrderStore } from "src/modules/dashboard/store/memberOrderStore/memberOrderStore";
 import { useReportStore } from "src/modules/dashboard/store/ReportStore/reportStore";
 import type { ApiCallResponseInterface } from "src/services/api-interfaces";
-import { useUI } from "src/modules/UI/composables";
+
 
 export const useAuth = () => {
 
@@ -31,7 +31,7 @@ export const useAuth = () => {
   const $oStore = useOrderArchiveStore()
   const $rStore = useReportStore()
   const $aStore = useAuthStore()
-  const { showToast } = useUI()
+
 
   const { login: authLogin, loginWithUserAndPass: loginWithUserAndPass_se } = useAuthService()
 
@@ -73,7 +73,7 @@ export const useAuth = () => {
     if (delay > 0) {
       clearTimeout(tokenTimeOut);
       tokenTimeOut = setTimeout(() => {
-        console.log('======== token if going to expire, refreshing ========');
+        console.warn('======== token if going to expire, refreshing ========');
         // $q.notify({
         //   color: 'green',
         //   textColor: 'black',
@@ -85,12 +85,12 @@ export const useAuth = () => {
       }, delay);
 
     } else {
-      console.log('======== token expired, login out ========');
+      console.warn('======== Your session has expired, please login again ========');
       $q.notify({
         color: 'red',
-        textColor: 'white',
+        textColor: 'black',
         icon: 'error',
-        message: 'token expired, login out',
+        message: 'Your session has expired, please login again',
 
       })
       return logOut()
@@ -169,13 +169,18 @@ export const useAuth = () => {
     const result = await loginWithUserAndPass_se(data, {
       loading: {
         message: 'Loading ...'
-      }
+      },
+      dontRedirect: true,
+      useRespAsError: true
     })
     if (!result || !result.ok)
-      return logOut()
-
-    showToast(result.ok, 'Admin User Logged In Successfully ', 'Incorrect username and/or password')
-
+      return
+    $q.notify({
+      color: 'green',
+      textColor: 'black',
+      icon: 'error',
+      message: 'Logged In Successfully ...',
+    })
     processLogin(result)
   }
 

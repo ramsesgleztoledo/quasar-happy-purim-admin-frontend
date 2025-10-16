@@ -29,13 +29,13 @@
         <div class="col-12">
           <q-item class="MailMergeReportsPage-item">
             <q-item-section
-              ><q-item-label>
+              ><q-item-label class="q-mb-sm">
                 <div class="row">
-                  {{ item.name }}
+                  <div v-html="item.name" />
                 </div>
               </q-item-label>
-              <q-item-label caption> {{ item.description }} </q-item-label></q-item-section
-            >
+              <q-item-label caption> <div v-html="item.description" /> </q-item-label
+            ></q-item-section>
             <q-item-section side>
               <div class="row">
                 <q-btn
@@ -60,19 +60,20 @@
   <div class="row">
     <div class="col-12 MailMergeReportsPage-container">
       <div class="row q-mb-sm" v-for="item in reports" :key="item.reportID">
-        <div class="col-12">
+        <div class="col-12" v-if="item.reportID != '19'">
           <q-item class="MailMergeReportsPage-item">
             <q-item-section
-              ><q-item-label>
+              ><q-item-label class="q-mb-sm">
                 <div class="row">
-                  {{ item.name }}
+                  <div v-html="item.name" />
                 </div>
               </q-item-label>
-              <q-item-label caption> {{ item.summary }} </q-item-label></q-item-section
-            >
+              <q-item-label caption> <div class="" v-html="item.summary" /> </q-item-label
+            ></q-item-section>
             <q-item-section side>
               <div class="row">
                 <q-btn
+                  v-if="!item.downloadOnly"
                   class="q-mr-sm"
                   padding="none"
                   color="primary"
@@ -105,6 +106,7 @@
                   </q-tooltip>
                 </q-btn>
                 <q-btn
+                  v-if="!item.viewOnly && !item.downloadOnly"
                   class="q-mr-sm"
                   padding="none"
                   color="primary"
@@ -123,6 +125,7 @@
                   </q-tooltip>
                 </q-btn>
                 <q-btn
+                  v-if="!item.viewOnly && !item.downloadOnly"
                   class="q-mr-sm"
                   padding="none"
                   color="primary"
@@ -138,6 +141,36 @@
                 >
                   <q-tooltip>
                     <div>Print Report</div>
+                  </q-tooltip>
+                </q-btn>
+              </div>
+            </q-item-section>
+          </q-item>
+        </div>
+
+        <!--=============================== if reportID is 19, it is different =============================-->
+        <div class="col-12" v-else>
+          <q-item class="MailMergeReportsPage-item">
+            <q-item-section
+              ><q-item-label class="q-mb-sm">
+                <div class="row">
+                  <div v-html="item.name" />
+                </div>
+              </q-item-label>
+              <q-item-label caption> <div class="" v-html="item.summary" /> </q-item-label
+            ></q-item-section>
+            <q-item-section side>
+              <div class="row">
+                <q-btn
+                  class="q-mr-sm"
+                  padding="none"
+                  color="primary"
+                  flat
+                  icon="download"
+                  @click="downloadRouteReport"
+                >
+                  <q-tooltip>
+                    <div>Download Report</div>
                   </q-tooltip>
                 </q-btn>
               </div>
@@ -162,7 +195,7 @@ import { useReportStore } from 'src/modules/dashboard/store/ReportStore/reportSt
 
 const $route = useRoute()
 const $router = useRouter()
-const { downloadReportExcelByReportId } = useReport()
+const { downloadReportExcelByReportId, downloadRouteReport } = useReport()
 const $rStore = useReportStore()
 
 const reports = computed<ReportDataInterface[]>(() => {

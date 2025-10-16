@@ -35,12 +35,16 @@ export const useLabelsAndOrdersheet = () => {
           name = 'Order-Sheet-By-Category'
           break;
         case 3:
-          fetch = downloadNameLabels
-          name = 'Name-Labels'
-          break;
-        default:
           fetch = downloadMailingLabels
           name = 'Mailing-Labels'
+          break;
+        case 4:
+          fetch = downloadMailingLabels
+          name = 'Mailing-Labels'
+          break;
+        default:
+          fetch = downloadNameLabels
+          name = 'Name-Labels'
           break;
       }
 
@@ -51,16 +55,8 @@ export const useLabelsAndOrdersheet = () => {
         extension: 'docx'
       }
 
-      if (id != 4)
-        await downloadFile(async () => await fetch({
-          dontRedirect: true,
-          loading: {
-            message: 'Downloading'
-          }
-        }), {
-          ...docData
-        })
-      else {
+
+      if (id === 3)
         await downloadFile(async () => await fetch('Regular', {
           dontRedirect: true,
           loading: {
@@ -70,6 +66,8 @@ export const useLabelsAndOrdersheet = () => {
           ...docData,
           fileName: docData.fileName + '-Regular'
         })
+
+      else if (id === 4)
         await downloadFile(async () => await fetch('Alternate', {
           dontRedirect: true,
           loading: {
@@ -80,7 +78,15 @@ export const useLabelsAndOrdersheet = () => {
           fileName: docData.fileName + '-Alternate'
         })
 
-      }
+      else
+        await downloadFile(async () => await fetch({
+          dontRedirect: true,
+          loading: {
+            message: 'Downloading'
+          }
+        }), {
+          ...docData
+        })
 
 
     }

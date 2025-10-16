@@ -1,5 +1,5 @@
 export const _fundraiserClosedHTML = `<p>
-      Your fundraiser is currently closed and can not accept orders from members, please
+      Your fundraiser is currently closed and cannot accept orders from members, please
      <a id="fundraiserClosedHTML" style="cursor: pointer; color: blue;  text-decoration: underline;">
      click here
      </a>

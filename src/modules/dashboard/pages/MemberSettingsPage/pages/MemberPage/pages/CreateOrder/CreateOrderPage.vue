@@ -1,7 +1,8 @@
 <template>
-  <q-inner-loading :showing="!isReady" label="Loading..." />
+  <q-inner-loading :showing="!isReady" label="Loading ..." />
   <div v-if="isReady">
-    <div ref="createOrderPageContainerRef" class="CreateOrderPage-container">
+    <!-- ref="createOrderPageContainerRef" -->
+    <div class="CreateOrderPage-container">
       <div class="CreateOrderPage-top">
         <div class="row">
           <div class="col-12 top-title-col">
@@ -13,9 +14,13 @@
           <div class="col-12 top-title-col">
             <!-- eslint-disable-next-line no-irregular-whitespace -->
             <p class="CreateOrderPage-title-3">
+              <q-icon name="person" size="large" class="q-mr-sm " />
               <b>
                 {{ memberState.selectedMember?.lastName }},
                 {{ memberState.selectedMember?.firstName }}
+                {{
+                  `${memberState.selectedMember?.spouseFirstName ? `& ${memberState.selectedMember?.spouseFirstName}` : ''}`
+                }}
                 <!-- - 0 baskets selected. -->
               </b>
             </p>
@@ -71,17 +76,7 @@
               @click="cancelOrderDialogFlag = true"
             />
             <q-btn class="q-mr-sm" label="SAVE FOR LATER" @click="saveForLater" />
-            <q-btn
-              v-if="step > 1"
-              class="q-mr-sm"
-              label="BACK"
-              @click="
-                () => {
-                  step--
-                  goToTop(createOrderPageContainerRef)
-                }
-              "
-            />
+            <q-btn v-if="step > 1" class="q-mr-sm" label="BACK" @click="goBack()" />
             <q-btn
               v-if="step === 1"
               class="q-mr-sm"
@@ -90,7 +85,9 @@
               @click="onNext"
             />
             <q-btn
-              :disable="!orderTotal && !$moStore.totalFromBackend"
+              :disable="
+                !orderTotal && !$moStore.totalFromBackend && !$moStore.getCartData.totalPriceMembers
+              "
               v-if="step === 2"
               class="q-mr-sm"
               style="background: var(--happypurim); color: white"
@@ -126,7 +123,7 @@
       @on-finish="
         (value) => {
           step++
-          goToTop(createOrderPageContainerRef)
+          goToTop(createOrderPageContainerRef, 300)
         }
       "
       dont-show-icon
@@ -157,7 +154,7 @@ import { useCalculate } from 'src/modules/dashboard/composables/useCalculate'
 
 const $router = useRouter()
 const $moStore = useMemberOrderStore()
-const { isMobile, goToTop } = useUI()
+const { isMobile, goToTop, showLoading, stopLoading } = useUI()
 const { memberState } = useMember()
 const { getInitialData, updateCart, setUpdatedPromotions, orderTotal, placeOrder } =
   useMemberOrder()
@@ -170,16 +167,20 @@ const step = ref(1)
 const isReady = ref(false)
 const stepOneCreateOrderRef = ref<StepOneCreateOrderInterface | undefined>(undefined)
 
-const createOrderPageContainerRef = ref<HTMLDivElement | undefined>(undefined)
+const createOrderPageContainerRef = ref<HTMLElement | undefined | null>(undefined)
+
 onMounted(() => {
   getInitialData()
     .then(() => {
       isReady.value = true
     })
     .catch(console.error)
+  const qApp = document.getElementById('q-app')
+  createOrderPageContainerRef.value = qApp
 })
 
 const saveForLater = async () => {
+  showLoading()
   await saveStepOne()
   $router.push({
     name: 'MemberLayout',
@@ -187,6 +188,7 @@ const saveForLater = async () => {
       memberId: memberState.value.selectedMember?.memberId,
     },
   })
+  stopLoading()
 }
 
 const saveStepOne = async () => {
@@ -197,16 +199,26 @@ const saveStepOne = async () => {
 }
 
 const onNext = async () => {
+  showLoading()
   await saveStepOne()
   step.value++
-  goToTop(createOrderPageContainerRef.value)
+  stopLoading()
   setBackendTotal()
+  goToTop(createOrderPageContainerRef.value, 600)
+
+  if (!$moStore.hasExtraOptions) step.value++
 }
 
 const continueToPayment = () => {
   // addReciprocityDialogFlag.value = true
   step.value++
-  goToTop(createOrderPageContainerRef.value)
+  goToTop(createOrderPageContainerRef.value, 300)
+}
+
+const goBack = () => {
+  step.value--
+  if (step.value === 2 && !$moStore.hasExtraOptions) step.value--
+  goToTop(createOrderPageContainerRef.value, 300)
 }
 </script>
 

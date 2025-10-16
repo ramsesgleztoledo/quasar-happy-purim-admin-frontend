@@ -1,5 +1,5 @@
 .user-client-title {
-  font-family: Open Sans;
+  // font-family: Open Sans;
   font-size: 20px;
   font-weight: 700;
   line-height: 27.24px;
@@ -9,10 +9,10 @@
 }
 
 .DashboardPage-right-container {
-  padding: 5px;
+  padding: 7px;
 }
 .DashboardPage-left-container {
-  padding: 5px;
+  // padding: 7px;
 }
 
 .DashboardPage-members-stats-container {
@@ -21,7 +21,7 @@
   overflow: auto;
   width: 98%;
   padding: 5px;
-  max-height: 248px;
+  height: 100%;
   overflow: auto;
 }
 .DashboardPage-members-stats-container-2 {
@@ -34,7 +34,7 @@
   // height: 400px;
   border-radius: 5px;
   overflow: auto;
-  width: 99%;
+  
 }
 
 .DashboardPage-basket-statistics-container {

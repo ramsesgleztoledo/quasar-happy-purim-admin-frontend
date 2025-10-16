@@ -51,7 +51,7 @@
             </div>
           </div>
 
-          <div class="row q-mt-md">
+          <div class="row">
             <div class="col-6 q-pl-sm q-pr-sm">
               <q-input v-model="realForm.spouse.value" outlined label="Spouse First Name" />
             </div>
@@ -64,9 +64,9 @@
               <q-input
                 v-model="realForm.displayName.value"
                 outlined
-                label="Display Name *"
+                label="Display Name"
                 lazy-rules
-                :rules="[lazyRules.required()]"
+                :rules="[]"
               />
             </div>
           </div>
@@ -127,7 +127,7 @@
               />
             </div>
           </div>
-          <div class="row q-mt-md">
+          <div class="row">
             <div class="col-6 q-pl-sm q-pr-sm">
               <q-input
                 v-model="realForm.email.value"
@@ -148,7 +148,7 @@
               />
             </div>
           </div>
-          <div class="row q-mt-md">
+          <div class="row">
             <div class="col-6 q-pl-sm q-pr-sm">
               <q-input
                 v-model="realForm.misc.value"
@@ -162,7 +162,7 @@
               <q-input v-model="realForm.misc2.value" outlined label="Misc 2" />
             </div>
           </div>
-          <div class="row q-mt-md">
+          <div class="row">
             <div class="col-6 q-pl-sm q-pr-sm">
               <q-input v-model="realForm.route.value" outlined label="Route Code" />
             </div>
@@ -178,11 +178,18 @@
                 v-model="realForm.children.value"
                 outlined
                 label="Children"
+                autogrow
+                input-style="max-height: 50px; overflow: auto;"
               />
             </div>
             <!-- lazy-rules
             :rules="[lazyRules.required(), lazyRules.maxCharacters(255)]"
             :hint="`${realForm.children.value.length}/255 character limit`" -->
+          </div>
+          <div class="row q-mt-md">
+            <div class="col-12 q-pl-sm q-pr-sm">
+              <q-input v-model="realForm.salutation.value" outlined label="Salutation" />
+            </div>
           </div>
         </div>
         <!--=========================== END OF SECTION ===========================-->
@@ -194,19 +201,6 @@
             'col-12': isMobile,
           }"
         >
-          <div class="row q-mt-md">
-            <div class="col-12 q-pl-sm q-pr-sm">
-              <q-input v-model="realForm.salutation.value" outlined label="Salutation" />
-            </div>
-          </div>
-          <div class="row q-mt-md">
-            <div class="col-12 q-pl-sm q-pr-sm">
-              <q-input type="textarea" v-model="realForm.notes.value" outlined label="Notes" />
-              <!-- lazy-rules
-              :rules="[lazyRules.required(), lazyRules.maxCharacters(255)]"
-              :hint="`${realForm.notes.value.length}/255 character limit`" -->
-            </div>
-          </div>
           <div class="row q-mt-md">
             <div class="col-12 q-pl-sm q-pr-sm">
               <q-select
@@ -222,6 +216,23 @@
               />
             </div>
           </div>
+
+          <div class="row q-mt-md">
+            <div class="col-12 q-pl-sm q-pr-sm">
+              <q-input
+                type="textarea"
+                v-model="realForm.notes.value"
+                outlined
+                label="Notes"
+                autogrow
+                input-style="max-height: 50px; overflow: auto;"
+              />
+              <!-- lazy-rules
+              :rules="[lazyRules.required(), lazyRules.maxCharacters(255)]"
+              :hint="`${realForm.notes.value.length}/255 character limit`" -->
+            </div>
+          </div>
+
           <!-- TODO: alt options to edit -->
           <!-- <div class="row q-mt-md">
           <div class="col-12">
@@ -461,7 +472,7 @@ const { realForm, isValidForm, getFormValue, resetForm } = useForm<CreateMemberF
   lastName: { value: '', required: true },
   firstName: { value: '', required: true },
   misc: { value: '', required: true },
-  displayName: { value: '', required: true },
+  displayName: { value: '' },
   spouse: { value: '', validations: [] },
   title: { value: '', validations: [] },
   address1: { value: '', validations: [] },
@@ -514,7 +525,7 @@ const onAddMember = async (dontAddNewOne?: boolean) => {
   const resp = await addMember_Co(data)
   if (!resp.ok) return
   resetForm()
-  goToTop(formContainer.value)
+  goToTop(formContainer.value, 300)
 
   if (dontAddNewOne) $router.push({ name: 'MemberLayout', params: { memberId: resp.id } })
 }

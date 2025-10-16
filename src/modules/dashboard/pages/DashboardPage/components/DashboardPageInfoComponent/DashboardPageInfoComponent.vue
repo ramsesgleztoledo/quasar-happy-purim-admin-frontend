@@ -1,5 +1,5 @@
 <template>
-  <div class="row">
+  <div class="row full-width">
     <div
       class="col-12"
       v-for="(info, index) in totalsRaised"
@@ -11,8 +11,8 @@
     >
       <q-item>
         <q-item-section>
-          <q-item-label>
-            <b> {{ info.text }} </b>
+          <q-item-label style="font-weight: 800; font-size: 16px">
+            {{ info.text }}
           </q-item-label>
           <q-item-label caption>{{ info.caption }}</q-item-label>
         </q-item-section>
@@ -22,6 +22,7 @@
               :style="{
                 color: info.color,
                 'text-decoration': !!info.redirect ? 'underline' : 'none',
+                fontSize: '16px',
               }"
             >
               {{ info.number }}
@@ -56,8 +57,8 @@ interface TotalsRaisedInterface {
 const totalsRaised = computed<TotalsRaisedInterface[]>(() => [
   {
     text: 'Total Funds Raised',
-    caption: `from reciprocity - ($${convertWithCommas(dStore.totalsRaised?.totalFundsFromReciprocity || 0)})`,
-    number: `$${convertWithCommas(dStore.totalsRaised?.totalFunds || 0)}`,
+    caption: `(Without Reciprocity) - ($${convertWithCommas(dStore.totalsRaised?.totalFundsFromReciprocity || 0, true)})`,
+    number: `$${convertWithCommas(dStore.totalsRaised?.totalFunds || 0, true)}`,
     color: 'var(--c-color1)',
     redirect: {
       name: 'dashboard-transactionPage',
@@ -65,8 +66,8 @@ const totalsRaised = computed<TotalsRaisedInterface[]>(() => [
   },
   {
     text: 'Charitable Contributions',
-    caption: 'Global',
-    number: `$${convertWithCommas(dStore.totalsRaised?.totalCharity || 0)}`,
+    caption: '(Included in Total Funds Raised)',
+    number: `$${convertWithCommas(dStore.totalsRaised?.totalCharity || 0, true)}`,
     color: 'var(--c-color2)',
     redirect: {
       name: 'dashboard-donationPage',
@@ -74,8 +75,8 @@ const totalsRaised = computed<TotalsRaisedInterface[]>(() => [
   },
   {
     text: 'Total Reciprocity',
-    caption: 'Global',
-    number: `$${convertWithCommas(dStore.totalsRaised?.totalReciprocity || 0)}`,
+    caption: '*Estimated to Date',
+    number: `$${convertWithCommas(dStore.totalsRaised?.totalReciprocity || 0, true)}`,
     color: 'var(--c-color3)',
     // redirect: {
     //   name: 'dashboard-reciprocityChargePage',

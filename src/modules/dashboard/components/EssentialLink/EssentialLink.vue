@@ -4,7 +4,7 @@
     :disable="disabled"
     clickable
     class="user-select-none"
-    @click="navigateTo(name)"
+    @click="navigateTo(name, force)"
     :class="{
       'selected-item': isSelected(name, routeClass).value,
       'dropdown-selected-in-route': isInRoute,
@@ -40,8 +40,8 @@
       :key="i"
       :disable="disabled"
       clickable
-      class="user-select-none"
-      @click="navigateTo(child.name)"
+      class="user-select-none q-pl-lg"
+      @click="navigateTo(child.name, child.force)"
       :class="{
         'selected-item': isSelected(child.name, child.routeClass).value,
       }"
@@ -67,11 +67,12 @@ const $props = defineProps<LinksDataInterface>()
 const $router = useRouter()
 const $route = useRoute()
 
-const navigateTo = (to?: string) => {
-  if (to)
-    $router.push({
-      name: to,
-    })
+const navigateTo = (name: string, force?: boolean) => {
+  if (!name) return
+
+  if (force) return $router.replace({ name, query: { force: `${new Date().getTime()}` } })
+
+  return $router.push({ name })
 }
 
 const expanded = ref<boolean>(false)

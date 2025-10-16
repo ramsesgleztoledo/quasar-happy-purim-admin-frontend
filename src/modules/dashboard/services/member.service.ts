@@ -1,6 +1,6 @@
-import type { ApiCallResponseInterface, DoorManStatusInterface, ExtraOptionsInterface, MembershipStatusInterface } from "../../../services/api-interfaces";
+import type { ApiCallResponseInterface, ExtraOptionsInterface } from "../../../services/api-interfaces";
 import { useApiCall } from "../../../services/apiCall";
-import type { AlternativeMemberAddress, AlternativeMemberAddressFormInterface, BasketReceivedInterface, EmailLoginCodeInfoInterface, MemberAddFormInterface, MemberAddResponseInterface, MemberDataInterface, MemberDonateBasketOptionInterface, MemberHiddenInterface, MemberPersonalBasketInterface, MemberProfileQuestionInterface, MemberReciprocityInterface, MembersLoggedInterface, MembersResponseInterface, MemberTransactionInterface, MemberUpdateFormInterface, PendingDeletionInterface } from "../interfaces/member-interfaces";
+import type { AlternativeMemberAddress, AlternativeMemberAddressFormInterface, BasketReceivedInterface, DoorManStatusInterface, EmailLoginCodeInfoInterface, MemberAddFormInterface, MemberAddResponseInterface, MemberDataInterface, MemberDonateBasketOptionInterface, MemberHiddenInterface, MemberPersonalBasketInterface, MemberProfileQuestionInterface, MemberReciprocityInterface, MembershipStatusInterface, MembersLoggedInterface, MembersResponseInterface, MemberTransactionInterface, MemberUpdateFormInterface, PendingDeletionInterface, SearchedMemberInterface } from "../interfaces/member-interfaces";
 
 
 
@@ -11,8 +11,8 @@ export const useMemberService = () => {
   const { apiCall } = useApiCall()
 
   return {
-    getMembersList: async (filters: { search: string, category: string | number }, extraOptions?: ExtraOptionsInterface): Promise<ApiCallResponseInterface<MembersResponseInterface>> => {
-      const nextUrl = `?search=${filters.search}&category=${filters.category}`;
+    getMembersList: async (filters: { search: string, categories: string | number }, extraOptions?: ExtraOptionsInterface): Promise<ApiCallResponseInterface<MembersResponseInterface>> => {
+      const nextUrl = `?search=${filters.search}&categories=${filters.categories}`;
       const url = `${baseUrl}${nextUrl}`;
 
       return await apiCall({
@@ -319,6 +319,22 @@ export const useMemberService = () => {
         url,
         extraOptions,
         method: 'PUT',
+      })
+    },
+    getShowClearCart: async (memberId: number, extraOptions?: ExtraOptionsInterface): Promise<ApiCallResponseInterface<boolean>> => {
+      const nextUrl = `/${memberId}/show-cart`;
+      const url = `${baseUrl}${nextUrl}`;
+      return await apiCall({
+        url,
+        extraOptions,
+      })
+    },
+    searchMembers: async (query: string, extraOptions?: ExtraOptionsInterface): Promise<ApiCallResponseInterface<SearchedMemberInterface[]>> => {
+      const nextUrl = `/search-members?query=${query}`;
+      const url = `${baseUrl}${nextUrl}`;
+      return await apiCall({
+        url,
+        extraOptions,
       })
     },
 

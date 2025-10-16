@@ -48,7 +48,7 @@ export const useMailMergeService = () => {
 
     getMergedContentByReportId: async (data: {
       reportId: number | string;
-      emailOption: 'Primary' | 'Primary & Alternate';
+      emailOption: 'Primary' | 'primary_alternate';
       data: {
         template: string;
         memberIds: number[]
@@ -92,9 +92,10 @@ export const useMailMergeService = () => {
       })
     },
 
-    queueBulkEmails: async (data: QueueBulkEmailsFormInterface, extraOptions?: ExtraOptionsInterface): Promise<ApiCallResponseInterface<unknown>> => {
-      const nextUrl = `/queue-bulk-emails`;
+    queueBulkEmails: async (data: QueueBulkEmailsFormInterface & { timeZone?: string }, extraOptions?: ExtraOptionsInterface): Promise<ApiCallResponseInterface<unknown>> => {
+      const nextUrl = `/queue-bulk-emails?timeZone=${data.timeZone ? data.timeZone : ''}&sendNow=${data.sendNow}`;
       const url = `${baseUrl}${nextUrl}`;
+
       return await apiCall({
         url,
         extraOptions,
@@ -115,7 +116,14 @@ export const useMailMergeService = () => {
       })
     },
 
-
+    getCustomTokensByReportId: async (extraOptions?: ExtraOptionsInterface): Promise<ApiCallResponseInterface<string[]>> => {
+      const nextUrl = `/get-custom-merge-fields`;
+      const url = `${baseUrl}${nextUrl}`;
+      return await apiCall({
+        url,
+        extraOptions
+      })
+    },
 
   }
 

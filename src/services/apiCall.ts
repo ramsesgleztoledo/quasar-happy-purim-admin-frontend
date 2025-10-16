@@ -8,11 +8,14 @@ import type { ApiCallInterface, ApiCallResponseInterface } from "./api-interface
 import type { ExtraOptionsInterface, CacheItemInterface } from './api-interfaces';
 import type { authStateInterface } from "src/modules/auth/store/auth-store-interfaces";
 import Dexie, { type Table } from 'dexie';
+import { useUI } from "src/modules/UI/composables";
 
 
 
 
 export const useApiCall = () => {
+
+  const { goBack } = useUI()
 
   const $q = useQuasar();
   const $router = useRouter();
@@ -31,14 +34,18 @@ export const useApiCall = () => {
 
     const options = {
       color: 'red',
-      textColor: 'white',
+      textColor: 'black',
       icon: 'error',
       message: '',
 
     }
-    if (extraOptions?.errorMsg) 
+    if (extraOptions?.errorMsg)
       options.message = extraOptions.errorMsg
 
+    if (extraOptions?.toastByErrorCode) {
+      const msg = extraOptions.toastByErrorCode[status] || extraOptions.toastByErrorCode.default || 'Unknown Error ...'
+      options.message = msg
+    }
 
 
 
@@ -47,7 +54,7 @@ export const useApiCall = () => {
         if (!options.message)
           options.message = 'Unauthorized'
         if (!extraOptions?.dontShowToast) $q.notify(options)
-        return $router.push({ name: 'LogOutPage' });
+        return extraOptions?.dontRedirect ? null : $router.push({ name: 'LogOutPage' });
 
       case 500:
         if (!options.message)
@@ -59,8 +66,8 @@ export const useApiCall = () => {
       case 404:
         if (!options.message)
           options.message = `You don't have permission to check this information`
-        $q.notify(options)
-        return extraOptions?.goBackIn400Error ? $router.back() : null
+        if (!extraOptions?.dontShowToast) $q.notify(options)
+        return extraOptions?.goBackIn400Error ? goBack() : null
 
       default:
         if (!options.message)
@@ -163,19 +170,25 @@ export const useApiCall = () => {
 
     } catch (error: AxiosError | any) {
 
-
-
-
       if (error instanceof AxiosError) {
-        if (!extraOptions?.dontUseErrorAction)
-
+        if (!extraOptions?.dontUseErrorAction) {
+          let respError = ''
           if (extraOptions?.useRespAsError)
-            extraOptions.errorMsg = error.response?.data
-        errorAction(error.status!, extraOptions)
+            respError = error.response?.data
+
+          if (extraOptions && respError && typeof respError === 'string')
+            extraOptions.errorMsg = respError
+
+          errorAction(error.status!, extraOptions)
+
+        }
       }
 
 
       else {
+
+
+
         if (!extraOptions?.dontUseErrorAction)
           errorAction(500.1, extraOptions)
       }

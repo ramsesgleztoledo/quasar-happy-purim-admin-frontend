@@ -29,7 +29,7 @@ export const useEmailScheduler = () => {
           message: 'Loading ...',
         },
       })
-      return resp.ok ? resp.data?.body : ""
+      return resp.ok ? resp.data : ""
     },
     async cancelCampaign(campaignId: string | number) {
       const resp = await cancelCampaign(campaignId, {

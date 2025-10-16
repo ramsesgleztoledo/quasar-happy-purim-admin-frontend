@@ -5,6 +5,7 @@ import { useReportStore } from "src/modules/dashboard/store/ReportStore/reportSt
 import type { LinksDataInterface, routeDataInterface, routeParamInterface } from "./breadcrumbs.interfaces";
 import { useMemberStore } from "src/modules/dashboard/store/memberStore/memberStore";
 import { computed } from "vue";
+import { cutName } from "src/helpers/cutName";
 
 export const useBreadcrumb = () => {
 
@@ -59,7 +60,7 @@ export const useBreadcrumb = () => {
     },
     {
       title: 'Members',
-      icon: 'group',
+      icon: 'groups',
       name: 'MembersSettingsPage',
       children: [
         {
@@ -80,7 +81,7 @@ export const useBreadcrumb = () => {
           title: 'Upload Member List',
           icon: 'upload',
           name: 'MembersSettingsPage-MemberListLayout',
-
+          force: true,
         },
       ],
 
@@ -331,6 +332,7 @@ export const useBreadcrumb = () => {
       title: 'Order Archive',
       icon: 'archive',
       name: 'OrderArchivePage-orders',
+      dontShow: true,
     },
     {
 
@@ -376,7 +378,7 @@ export const useBreadcrumb = () => {
       params: ['reportId'],
       titleParam: (
         // value?: routeParamInterface
-      ) => `${$rStore.getReportSelectedName}`
+      ) => cutName($rStore.getReportSelectedReportData?.name || 'Report', 33)
       // - ${value?.reportId}`
     },
     {
@@ -420,6 +422,7 @@ export const useBreadcrumb = () => {
       title: 'Email Stats',
       icon: 'query_stats',
       name: 'EmailStatsPage-Email',
+      dontShow: true,
 
     },
     {

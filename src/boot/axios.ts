@@ -17,6 +17,7 @@ declare module 'vue' {
 
 // const basUrlDev = 'https://localhost:7126/api'
 const basUrlProd = 'https://api.happypurim.dev/api'
+// const basUrlProd = 'https://localhost:5001/api'
 
 const api = axios.create({ baseURL: basUrlProd });
 

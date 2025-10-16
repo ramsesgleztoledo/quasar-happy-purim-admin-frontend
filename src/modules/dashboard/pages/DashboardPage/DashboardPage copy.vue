@@ -9,119 +9,91 @@
 
     <InfoAlert
       v-if="fundraiserStatus.fundraiserClosed"
-      class="q-mb-md q-mt-md q-pa-sm"
+      class="q-mb-md q-mt-md"
       type="error"
       :inner-h-t-m-l="fundraiserClosedHTML"
     />
     <InfoAlert
       v-if="fundraiserStatus.hasReciprocityTrans"
-      class="q-mb-md q-mt-md q-pa-sm"
+      class="q-mb-md q-mt-md"
       type="warning"
       :inner-h-t-m-l="fundraiserReciprocityHTML"
     />
-
-    <div class="row">
-      <div
-        class="q-pa-sm"
-        :class="{
-          'col-8': !isMobile,
-          'col-12': isMobile,
-        }"
-        style="display: flex; flex-direction: column; justify-content: space-between"
-      >
-        <div class="row" style="width: 99%; height: 100%">
-          <div class="row w-full">
-            <WidGetsComponent />
-          </div>
-
-          <div class="row w-full">
-            <div
-              :class="{
-                'col-6': !isMobile,
-                'col-12': isMobile,
-                'q-mb-sm': isMobile,
-              }"
-            >
-              <div
-                class="DashboardPage-members-stats-container"
-                :style="{ width: isMobile ? '100%' : '98%' }"
-              >
-                <DashboardPageStatsComponent />
-              </div>
-            </div>
-            <div
-              class="justify-content-end"
-              :class="{
-                'col-6': !isMobile,
-                'col-12': isMobile,
-                'q-mb-sm': isMobile,
-              }"
-            >
-              <div
-                :style="{ width: isMobile ? '100%' : '98%' }"
-                class="DashboardPage-members-stats-container DashboardPage-members-stats-container-2"
-              >
-                <DashboardPageInfoComponent />
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div
-        style="padding: 7px"
-        :class="{
-          'col-4': !isMobile,
-          'col-12': isMobile,
-        }"
-      >
-        <DashboardPageChartsComponent />
-      </div>
-    </div>
-
     <div class="row q-mt-sm">
+      <div class="col-12">
+        <div class="row q-mb-md">
+          <DashboardPageChartsComponent />
+        </div>
+      </div>
       <div
-        class="DashboardPage-left-container q-pa-sm"
+        class="DashboardPage-left-container"
         :class="{
           'col-8': !isMobile,
           'col-12': isMobile,
         }"
       >
-        <!-- <div class="row">
-          <div class="col-12 q-mb-sm align-content-center">-->
-        <div class="DashboardPage-recent-orders-table" style="width: 99%">
-          <RecentOrdersComponents />
+        <div class="row">
+          <WidGetsComponent />
         </div>
-        <!-- </div>
-        </div> -->
+        <div class="row">
+          <div
+            class="q-mb-sm align-content-center"
+            :class="{
+              'col-6': !isMobile,
+              'col-12': isMobile,
+            }"
+          >
+            <div class="DashboardPage-members-stats-container ">
+              <DashboardPageStatsComponent />
+            </div>
+          </div>
+          <div
+            class="q-mb-sm align-content-center"
+            :class="{
+              'col-6': !isMobile,
+              'col-12': isMobile,
+            }"
+          >
+            <div
+              class="DashboardPage-members-stats-container DashboardPage-members-stats-container-2 "
+            >
+              <DashboardPageInfoComponent />
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-12 q-mb-sm align-content-center">
+            <div class="DashboardPage-recent-orders-table" style="">
+              <RecentOrdersComponents />
+            </div>
+          </div>
+        </div>
       </div>
       <div
-        class="DashboardPage-right-container q-pa-sm"
+        class="DashboardPage-right-container"
         :class="{
           'col-4': !isMobile,
           'col-12': isMobile,
         }"
       >
-        <div style="width: 100%; height: 100%">
-          <div class="row q-mb-sm">
-            <div class="col-12">
-              <div class="DashboardPage-basket-statistics-container">
-                <BasketStatisticsComponent />
-              </div>
+        <div class="row q-mb-sm">
+          <div class="col-12">
+            <div class="DashboardPage-basket-statistics-container">
+              <BasketStatisticsComponent />
             </div>
           </div>
-          <div class="row q-mb-sm">
-            <div class="col-12">
-              <div class="DashboardPage-basket-statistics-container">
-                <MembersSummaryComponent />
-              </div>
+        </div>
+        <div class="row q-mb-sm">
+          <div class="col-12">
+            <div class="DashboardPage-basket-statistics-container">
+              <MembersSummaryComponent />
             </div>
           </div>
-          <div class="row q-mb-sm">
-            <div class="col-12">
-              <div class="DashboardPage-basket-statistics-container">
-                <OtherOrderItemsComponent />
-              </div>
+        </div>
+        <div class="row q-mb-sm">
+          <div class="col-12">
+            <div class="DashboardPage-basket-statistics-container">
+              <OtherOrderItemsComponent />
             </div>
           </div>
         </div>

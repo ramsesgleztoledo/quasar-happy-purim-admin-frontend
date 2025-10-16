@@ -11,3 +11,26 @@
   align-items: flex-end;
   justify-content: flex-end;
 }
+
+.card-person-container {
+  height: 48px;
+  border: solid 1px #e2e2e2;
+}
+
+.checkbox-member-container {
+  overflow: hidden;
+  flex: 1;
+}
+
+.row-member-container {
+  width: 100%;
+  display: flex;
+}
+
+.b-member-container {
+  display: inline-block;
+  width: calc(100% - 40px);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}

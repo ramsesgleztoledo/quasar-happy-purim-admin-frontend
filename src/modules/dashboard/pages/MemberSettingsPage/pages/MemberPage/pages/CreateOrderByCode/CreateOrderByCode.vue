@@ -8,8 +8,13 @@
   <div class="row">
     <div class="col-12 top-title-col">
       <!-- eslint-disable-next-line no-irregular-whitespace -->
+      <q-icon name="person" size="large" class="q-mr-sm" />
       <p class="CreateOrderPage-title-3">
-        {{ memberState.selectedMember?.lastName }}, {{ memberState.selectedMember?.firstName }} -
+        {{ memberState.selectedMember?.lastName }}, {{ memberState.selectedMember?.firstName }}
+        {{
+          `${memberState.selectedMember?.spouseFirstName ? `& ${memberState.selectedMember?.spouseFirstName}` : ''}`
+        }}
+        -
         <b>{{ rows.length }} baskets</b>
       </p>
     </div>

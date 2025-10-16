@@ -15,6 +15,10 @@ export interface ExtraOptionsInterface {
   useCache?: boolean | undefined | null;
   ttl?: number | undefined | null;
   useRespAsError?: boolean | undefined | null;
+  toastByErrorCode?: {
+    [code: number]: string;
+    default?: string;
+  } | undefined | null;
 }
 
 export type AxiosMethod = 'GET' | 'POST' | 'PUT' | 'DELETE' | 'HEAD' | 'OPTIONS' | 'PATCH';
@@ -43,16 +47,7 @@ export interface ApiCallResponseInterface<T> {
   data: T
 }
 
-export interface DoorManStatusInterface {
-  showKJRow: boolean;
-  rbl24HourSelectedIndex: number;
-}
 
-
-export interface MembershipStatusInterface {
-  visible: boolean;
-  checkedStatus: boolean;
-}
 
 
 

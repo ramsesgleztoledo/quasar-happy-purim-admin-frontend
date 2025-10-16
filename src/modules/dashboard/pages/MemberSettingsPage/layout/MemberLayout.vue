@@ -10,7 +10,7 @@ const { getMembers_Co } = useMember()
 
 onMounted(() => {
   getMembers_Co({
-    category: '',
+    categories: '',
     search: '',
   }).catch(console.error)
 })

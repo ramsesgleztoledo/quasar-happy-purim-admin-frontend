@@ -1,7 +1,7 @@
 
 import { defineStore, acceptHMRUpdate } from 'pinia';
 import type { DashboardStateInterface } from './dashboard-store-interfaces';
-import type { FundraiserStatusInterface, MemberSummaryInterface } from 'src/modules/dashboard/interfaces/dashboard-interfaces';
+import type { FundraiserStatusInterface, FundraiserTotalsInterface, MemberSummaryInterface, ParticipationRateInterface } from 'src/modules/dashboard/interfaces/dashboard-interfaces';
 import type { NoneType } from '../../services/service-interfaces';
 
 
@@ -42,6 +42,12 @@ export const useDashboardStore = defineStore('dashBoardStore', {
     },
     setFundraiserStatus(fundraiserStatus: FundraiserStatusInterface | NoneType) {
       this.fundraiserStatus = fundraiserStatus
+    },
+    setFundraiserTotals(fundraiserTotals: FundraiserTotalsInterface | NoneType) {
+      this.fundraiserTotals = fundraiserTotals
+    },
+    setParticipationRate(participationRate: ParticipationRateInterface | NoneType) {
+      this.participationRate = participationRate
     },
 
   }

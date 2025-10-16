@@ -1,5 +1,5 @@
 <template>
-  <div v-if="isReady" style="height: 100%;">
+  <div v-if="isReady" style="height: 100%">
     <router-view />
   </div>
 </template>
@@ -10,7 +10,7 @@ import { onMounted, ref, watch } from 'vue'
 import { useRoute } from 'vue-router'
 
 const $route = useRoute()
-const { getMemberDataById_Co } = useMember()
+const { getMemberDataById_Co, getShowCart_co } = useMember()
 
 const isReady = ref<boolean>(false)
 
@@ -39,6 +39,14 @@ watch(
     {
       isReady.value = false
       loadData()
+    },
+)
+watch(
+  () => $route.name,
+  () =>
+    // newVal, oldVal
+    {
+      getShowCart_co().catch(console.error)
     },
 )
 </script>

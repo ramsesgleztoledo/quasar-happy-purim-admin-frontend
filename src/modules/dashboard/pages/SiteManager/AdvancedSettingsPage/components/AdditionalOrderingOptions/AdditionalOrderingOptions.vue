@@ -170,20 +170,20 @@
           <div class="row">
             <div class="col-12">
               <div class="separator-bottom q-mb-sm"></div>
-              <InfoAlert
+              <!-- <InfoAlert
                 v-if="isMobile"
                 type="info"
                 :text="infoAlertText"
                 icon="fullscreen"
                 icon-color="#f36b09"
-              />
+              /> -->
               <InfoAlert
                 type="error"
                 text="Do not enter more than one item with the same description"
               />
 
               <div
-                class="row q-pa-sm ProfileOptions-table-content"
+                class="row white-container q-pa-sm ProfileOptions-table-content"
                 :class="{ fullscreen: isFullScreen }"
               >
                 <div class="col-12">
@@ -230,7 +230,10 @@
                             </q-td>
 
                             <q-td key="price" :props="props">
-                              <div>${{ convertWithCommas(Number(props.row.price) || 0) }}</div>
+                              <div>
+                                {{ props.row.price ? '$' : ''
+                                }}{{ convertWithCommas(Number(props.row.price) || 0) }}
+                              </div>
                             </q-td>
                             <q-td key="sortOrder" :props="props">
                               <q-badge color="primary">
@@ -332,7 +335,7 @@ import { lazyRules } from 'src/composables'
 import { convertWithCommas } from 'src/helpers'
 import { useAdvancedSettings } from 'src/modules/dashboard/composables/useAdvancedSettings'
 import type { Tab2AdditionalItemInterface } from 'src/modules/dashboard/interfaces/advanced-settings.interfaces'
-import { useUI } from 'src/modules/UI/composables'
+// import { useUI } from 'src/modules/UI/composables'
 import { onMounted, ref } from 'vue'
 
 const {
@@ -346,8 +349,8 @@ const {
   updateAdditionalOrderingItem,
 } = useAdvancedSettings()
 
-const { isMobile } = useUI()
-const infoAlertText = `To handle "Additional Profile Questions/Options" we strongly recommend to use yor phone or tablet in landscape and the fullscreen mode`
+// const { isMobile } = useUI()
+// const infoAlertText = `To handle "Additional Profile Questions/Options" we strongly recommend to use yor phone or tablet in landscape and the fullscreen mode`
 
 // Charity
 const solicitDotationFlag = ref(false)

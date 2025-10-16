@@ -18,6 +18,7 @@ const initialState: reportStateInterface = {
   isCustom: false,
   advancedReportsSpecial: [],
   customReportsSpecial: [],
+  isLoadingReportData: true,
 }
 
 export const useReportStore = defineStore('reportStore', {
@@ -26,20 +27,20 @@ export const useReportStore = defineStore('reportStore', {
   }),
 
   getters: {
-    getReportSelectedName(state: reportStateInterface) {
+    getReportSelectedReportData(state: reportStateInterface) {
       const basic = state.basicReports.find(rp => rp.reportID == state.reportId)
       if (basic)
-        return basic.name
+        return basic
 
       const advanced = state.advancedReports.find(rp => rp.reportID == state.reportId)
       if (advanced)
-        return advanced.name
+        return advanced
 
       const custom = state.customReports.find(rp => rp.reportID == state.reportId)
       if (custom)
-        return custom.name
+        return custom
 
-      return "None-name"
+      return undefined
 
     },
     showExtraFilters(state: reportStateInterface) {
@@ -85,6 +86,9 @@ export const useReportStore = defineStore('reportStore', {
     },
     setIsCustom(isCustom: boolean) {
       this.isCustom = isCustom
+    },
+    setIsLoadingReportData(isLoadingReportData: boolean) {
+      this.isLoadingReportData = isLoadingReportData
     },
   }
 });
