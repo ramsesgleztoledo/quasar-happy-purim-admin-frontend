@@ -113,10 +113,7 @@
                   <!-- <q-icon v-else color="primary" size="large" name="visibility" /> -->
                 </div>
 
-                <div
-                  v-else
-                  style="cursor: pointer; overflow: hidden; text-overflow: ellipsis; width: 100px"
-                >
+                <div v-else style="cursor: pointer; overflow: hidden; text-overflow: ellipsis">
                   {{ col.value }}
                   <q-tooltip>
                     {{ col.value }}
@@ -173,11 +170,19 @@ const goToMember = (memberId: number) => {
   })
 }
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-const auxColumns: { label: string; field: string; format?: any }[] = [
+const auxColumns: {
+  label: string
+  field: string
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  format?: any
+  style?: string
+  headerStyle?: string
+}[] = [
   {
     label: 'Hidden',
     field: 'm_hidden',
+    style: 'width: 100px; overflow: hidden; text-overflow: ellipsis',
+    headerStyle: 'width: 100px; overflow: hidden; text-overflow: ellipsis',
   },
   {
     label: 'Last Name',
@@ -199,6 +204,8 @@ const auxColumns: { label: string; field: string; format?: any }[] = [
   {
     field: 'm_Address1',
     label: 'Address',
+    style: 'min-width: 150px; overflow: hidden; text-overflow: ellipsis',
+    headerStyle: 'min-width: 150px; overflow: hidden; text-overflow: ellipsis',
   },
   {
     field: 'm_City',
@@ -210,7 +217,7 @@ const auxColumns: { label: string; field: string; format?: any }[] = [
   },
   {
     field: 'm_phone',
-    label: 'Phone#',
+    label: 'Phone',
   },
   {
     field: 'm_email',
@@ -228,13 +235,17 @@ const auxColumns: { label: string; field: string; format?: any }[] = [
     label: 'Date Added',
     field: 'm_added',
     format: (date: string) => convertToUSDate(date),
+    style: 'min-width: 150px; overflow: hidden; text-overflow: ellipsis',
+    headerStyle: 'min-width: 150px; overflow: hidden; text-overflow: ellipsis',
   },
 ]
 
 const columns: QTableColumn[] = auxColumns.map((co) => ({
   ...co,
-  style: 'max-width: 150px; overflow: hidden; text-overflow: ellipsis',
-  headerStyle: 'max-width: 150px; overflow: hidden; text-overflow: ellipsis',
+  style: co.style ? co.style : 'max-width: 100px; overflow: hidden; text-overflow: ellipsis',
+  headerStyle: co.headerStyle
+    ? co.headerStyle
+    : 'max-width: 100px; overflow: hidden; text-overflow: ellipsis',
   required: true,
   sortable: true,
   align: 'left',

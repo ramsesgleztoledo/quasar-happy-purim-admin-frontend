@@ -40,11 +40,11 @@
                   <div v-if="col.name === 'campaignId'">
                     <div class="row" style="min-width: 250px">
                       <q-btn
-                        class="q-mr-sm q-mt-sm"
+                        class="q-mr-sm q-mt-sm btn-mr-i-sm"
                         style="background-color: var(--happypurim); color: white; font-size: 12px"
                         label="view"
                         icon="visibility"
-                        padding="5px"
+                        padding="6px"
                         size="sm"
                         flat
                         @click="
@@ -63,11 +63,11 @@
                         </q-tooltip>
                       </q-btn>
                       <q-btn
-                        class="q-mr-sm q-mt-sm"
+                        class="q-mr-sm q-mt-sm btn-mr-i-sm"
                         style="background-color: var(--happypurim); color: white; font-size: 12px"
                         label="cancel"
                         icon="close"
-                        padding="5px"
+                        padding="6px"
                         size="sm"
                         flat
                         @click="
@@ -310,4 +310,10 @@ onMounted(() => {
 })
 </script>
 
-<style scoped lang="scss"></style>
+<style scoped lang="scss">
+:deep(.btn-mr-i-sm) {
+  i {
+    margin-right: 5px;
+  }
+}
+</style>

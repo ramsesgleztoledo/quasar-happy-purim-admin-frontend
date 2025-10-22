@@ -1,13 +1,11 @@
 <template>
-  <div class="row q-mb-md">
-    <div class="col-12 top-title-col">
-      <p class="page-main-title">Baskets</p>
-      <div class="separator-right q-mr-sm q-ml-sm"></div>
-    </div>
-  </div>
 
-  <div class="row q-mb-md">
-    <div class="col-12 d-flex justify-content-end">
+    <div class="row">
+    <div class="col-12 top-title-col justify-content-space-between">
+      <div style="height: 100%; display: flex">
+        <p class="page-main-title">Baskets</p>
+        <div class="separator-right q-mr-sm q-ml-sm"></div>
+      </div>
       <q-btn
         :disable="exportDisabled"
         label="Export to Excel"
@@ -18,6 +16,19 @@
       />
     </div>
   </div>
+
+  <!-- <div class="row q-mb-md">
+    <div class="col-12 d-flex justify-content-end">
+      <q-btn
+        :disable="exportDisabled"
+        label="Export to Excel"
+        color="primary"
+        icon="import_export"
+        @click="onExportToExcel"
+        :loading="exportDisabled"
+      />
+    </div>
+  </div> -->
 
   <div class="row table-white-container" :class="{ fullscreen: isFullScreen }">
     <div class="col-12">

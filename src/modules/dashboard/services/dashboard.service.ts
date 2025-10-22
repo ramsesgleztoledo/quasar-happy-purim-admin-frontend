@@ -11,7 +11,8 @@ import type {
   BasketSizeBreakdownInterface,
   BasketInfoInterface,
   OrderItemsInterface,
-  MemberSummaryInterface
+  MemberSummaryInterface,
+  PercentageRunningTotalInterface
 } from "src/modules/dashboard/interfaces/dashboard-interfaces";
 import type { ApiCallResponseInterface, ExtraOptionsInterface } from "../../../services/api-interfaces";
 import { useApiCall } from "../../../services/apiCall";
@@ -129,12 +130,20 @@ export const useDashboardService = () => {
       return await apiCall({
         url,
         extraOptions,
-      }) 
+      })
     },
 
     getMemberSummary: async (extraOptions?: ExtraOptionsInterface): Promise<ApiCallResponseInterface<MemberSummaryInterface>> => {
 
       const nextUrl = '/member-summary';
+      const url = `${baseUrl}${nextUrl}`;
+      return await apiCall({
+        url,
+        extraOptions,
+      })
+    },
+    getPercentageOfRunningTotal: async (extraOptions?: ExtraOptionsInterface): Promise<ApiCallResponseInterface<PercentageRunningTotalInterface>> => {
+      const nextUrl = '/percentage-of-running-total-raised-today';
       const url = `${baseUrl}${nextUrl}`;
       return await apiCall({
         url,

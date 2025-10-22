@@ -210,7 +210,7 @@ export const useBreadcrumb = () => {
     },
     {
 
-      title: 'Member Logged',
+      title: 'Members Logged In',
       icon: 'person',
       name: 'dashboard-memberLoggedPage',
 

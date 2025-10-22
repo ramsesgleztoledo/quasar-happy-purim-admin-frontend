@@ -1,16 +1,16 @@
 <template>
-  <div class="row q-mb-md">
+  <div class="row q-mb-md q-pl-sm">
     <div class="col-12">
       <b> Gift Basket Program </b>
     </div>
   </div>
 
-  <div class="row q-mt-md">
+  <div class="row q-mt-md q-pl-sm">
     <div class="col-12">
       <b>Date and Time</b>
     </div>
   </div>
-  <div class="row">
+  <div class="row q-pl-sm">
     <div class="col-12">
       <p style="color: #797979">Last date/time your members can login to place orders.</p>
     </div>
@@ -131,9 +131,9 @@
       />
     </div>
   </div>
-  <div class="row q-mt-sm q-mb-sm">
+  <div class="row q-mt-sm q-mb-sm ">
     <div class="col-12">
-      <label> <b>Selected Options</b></label>
+      <label class="q-pl-sm"> <b>Selected Options</b></label>
       <div class="q-mt-md">
         <div v-for="(item, index) in options" :key="index" class="row q-mb-sm">
           <q-checkbox disable v-model="item.value" :label="item.label" />

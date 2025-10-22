@@ -18,6 +18,7 @@ export default defineConfig((ctx) => {
       'code-mirror',
       'chars',
       'dev-tools',
+      'status-bar'
     ],
 
     // https://v2.quasar.dev/quasar-cli-vite/quasar-config-file#css
@@ -203,7 +204,8 @@ export default defineConfig((ctx) => {
       // specify the debugging port to use for the Electron app when running in development mode
       inspectPort: 5858,
 
-      bundler: 'packager', // 'packager' or 'builder'
+      // bundler: 'packager', // 'packager' or 'builder'
+      bundler: 'builder', // 'packager' or 'builder'
 
       packager: {
         // https://github.com/electron-userland/electron-packager/blob/master/docs/api.md#options
@@ -217,12 +219,28 @@ export default defineConfig((ctx) => {
         // Windows only
         // win32metadata: { ... }
       },
-
       builder: {
-        // https://www.electron.build/configuration/configuration
-
-        appId: 'quasar-happy-purim-admin-frontend'
+        appId: 'com.yourcompany.hpadmin', // packageId único
+        productName: 'HP Admin',          // nombre visible
+        mac: {
+          target: ['dmg', 'zip'],         // genera .app empaquetado en .dmg y .zip
+        },
+        win: {
+          target: ['nsis', 'zip'],        // genera instalador .exe y zip
+          icon: 'src-electron/icons/win/icon.ico', // icono de Windows
+        },
+        linux: {
+          target: ['AppImage', 'deb', 'rpm'], // opcional si quieres Linux
+          icon: 'src-electron/icons/png',     // iconos para Linux
+        },
       }
+
+
+      // builder: {
+      //   // https://www.electron.build/configuration/configuration
+
+      //   appId: 'HP-Admin'
+      // }
     },
 
     // Full list of options: https://v2.quasar.dev/quasar-cli-vite/developing-browser-extensions/configuring-bex

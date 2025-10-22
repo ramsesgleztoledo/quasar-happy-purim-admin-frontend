@@ -146,12 +146,14 @@ import { _fundraiserClosedHTML, _fundraiserReciprocityHTML } from 'src/static-da
 import { useRouter } from 'vue-router'
 import { useAuthStore } from 'src/modules/auth/store/auth.store'
 import MembersSummaryComponent from './components/MembersSumaryComponent/MembersSummaryComponent.vue'
+import { useDashboard } from '../../composables/useDashboard'
 
 const { isMobile } = useUI()
 const $router = useRouter()
 
 const $dStore = useDashboardStore()
 const $aStore = useAuthStore()
+const { updateDataMountedDashboard } = useDashboard()
 
 const fundraiserStatus = computed(() => ({
   fundraiserClosed: $dStore.fundraiserStatus?.fundraiserClosed || false,
@@ -175,6 +177,7 @@ const prepareClickEvents = () => {
 
 onMounted(() => {
   prepareClickEvents()
+  updateDataMountedDashboard()
 })
 </script>
 

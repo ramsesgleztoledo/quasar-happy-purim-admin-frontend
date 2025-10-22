@@ -1,37 +1,27 @@
 <template>
   <div v-if="report">
-    <div class="row q-mb-sm">
-      <div class="top-title-col col-12">
-        <p class="page-main-title">{{ $rStore.getReportSelectedReportData?.name }}</p>
-        <div class="separator-right q-mr-sm q-ml-sm"></div>
+    <div class="row">
+      <div class="col-12 top-title-col justify-content-space-between">
+        <div style="height: 100%; display: flex">
+          <p class="page-main-title">{{ $rStore.getReportSelectedReportData?.name }}</p>
+          <div class="separator-right q-mr-sm q-ml-sm"></div>
+        </div>
+        <q-btn
+          v-if="!$rStore.getReportSelectedReportData?.viewOnly"
+          color="primary"
+          icon="check"
+          label="Create Mail Merge"
+          :to="{
+            name: 'MailMergeReportsPage-MailMergePage',
+            params: { reportId },
+          }"
+        />
       </div>
-    </div>
-
-    <div class="row justify-content-end">
-      <q-btn
-        style="min-width: 180.28px"
-        class="q-mr-sm q-mt-sm"
-        outline
-        icon="close"
-        label="Clear Filters"
-        @click="clearFilters"
-      />
-      <q-btn
-        v-if="!$rStore.getReportSelectedReportData?.viewOnly"
-        class="q-mr-sm q-mt-sm"
-        color="primary"
-        icon="check"
-        label="Email or Print"
-        :to="{
-          name: 'MailMergeReportsPage-MailMergePage',
-          params: { reportId },
-        }"
-      />
     </div>
 
     <div
       v-if="$rStore.$state.isCustom && $rStore.getReportSelectedReportData?.reportID != '12'"
-      class="row q-pl-md"
+      class="row"
     >
       <div class="col-12">
         <div class="row q-mb-sm">
@@ -47,20 +37,12 @@
           </p>
         </div>
       </div>
-      <div class="row">
-        <q-checkbox class="q-mr-sm" v-model="filter.yesOnly" label="Show Yes Only" />
-        <q-checkbox class="q-mr-sm" v-model="filter.hideNL" label="Hide (N/L) = Not Logged In" />
-      </div>
     </div>
 
-    <div v-else class="ViewReport-filters-container q-pl-sm q-pr-sm">
-      <div class="row q-mt-sm justify-content-space-between">
-        <h6>Filters:</h6>
-      </div>
-
-      <div class="row">
+    <div class="ViewReport-filters-container">
+      <div class="row q-mt-sm">
         <q-input
-          class="q-ma-sm"
+          class="q-mr-sm q-mb-sm"
           :style="{ width: isMobile ? '100%' : '250px' }"
           v-model="filter.searchTerm"
           outlined
@@ -69,9 +51,12 @@
         />
 
         <q-select
-          v-if="$dStore.categories.length"
+          v-if="
+            $dStore.categories.length &&
+            (!$rStore.$state.isCustom || $rStore.getReportSelectedReportData?.reportID == '12')
+          "
           popup-content-class="q-menu-300"
-          class="q-ma-sm"
+          class="q-mr-sm q-mb-sm"
           :style="{ width: isMobile ? '100%' : '250px' }"
           outlined
           v-model="filter.categories"
@@ -82,55 +67,88 @@
           clearable
           label="Filter By Categories"
         />
+        <template v-if="showMoreFilters">
+          <div
+            v-if="$rStore.$state.isCustom && $rStore.getReportSelectedReportData?.reportID != '12'"
+          >
+            <q-checkbox class="q-mr-sm" v-model="filter.yesOnly" label="Show Yes Only" />
+            <q-checkbox
+              class="q-mr-sm"
+              v-model="filter.hideNL"
+              label="Hide (N/L) = Not Logged In"
+            />
+          </div>
 
-        <template v-if="$rStore.showExtraFilters">
-          <q-select
-            popup-content-class="q-menu-300"
-            clearable
-            multiple
-            class="q-ma-sm"
-            :style="{ width: isMobile ? '100%' : '150px' }"
-            v-model="filter.basketSize"
-            outlined
-            label="Basket Size"
-            :options="filterOptions.basketSize"
-          />
+          <template v-if="!$rStore.$state.isCustom">
+            <template v-if="$rStore.showExtraFilters">
+              <q-select
+                popup-content-class="q-menu-300"
+                clearable
+                multiple
+                class="q-mr-sm q-mb-sm"
+                :style="{ width: isMobile ? '100%' : '150px' }"
+                v-model="filter.basketSize"
+                outlined
+                label="Basket Size"
+                :options="filterOptions.basketSize"
+              />
 
-          <q-select
-            popup-content-class="q-menu-300"
-            clearable
-            class="q-ma-sm"
-            :style="{ width: isMobile ? '100%' : '150px' }"
-            v-model="filter.donateBasket"
-            outlined
-            label="Donate Basket"
-            :options="filterOptions.donate"
-          />
+              <q-select
+                popup-content-class="q-menu-300"
+                clearable
+                class="q-mr-sm q-mb-sm"
+                :style="{ width: isMobile ? '100%' : '150px' }"
+                v-model="filter.donateBasket"
+                outlined
+                label="Donate Basket"
+                :options="filterOptions.donate"
+              />
 
-          <q-select
-            popup-content-class="q-menu-300"
-            clearable
-            multiple
-            class="q-ma-sm"
-            :style="{ width: isMobile ? '100%' : '150px' }"
-            v-model="filter.routeCode"
-            outlined
-            label="Route Code"
-            :options="filterOptions.routeCode"
-          />
+              <q-select
+                popup-content-class="q-menu-300"
+                clearable
+                multiple
+                class="q-mr-sm q-mb-sm"
+                :style="{ width: isMobile ? '100%' : '150px' }"
+                v-model="filter.routeCode"
+                outlined
+                label="Route Code"
+                :options="filterOptions.routeCode"
+              />
 
-          <q-select
-            popup-content-class="q-menu-300"
-            clearable
-            multiple
-            class="q-ma-sm"
-            :style="{ width: isMobile ? '100%' : '150px' }"
-            v-model="filter.zipCode"
-            outlined
-            label="Zip Code"
-            :options="filterOptions.zipCode"
-          />
+              <q-select
+                popup-content-class="q-menu-300"
+                clearable
+                multiple
+                class="q-mr-sm q-mb-sm"
+                :style="{ width: isMobile ? '100%' : '150px' }"
+                v-model="filter.zipCode"
+                outlined
+                label="Zip Code"
+                :options="filterOptions.zipCode"
+              />
+            </template>
+          </template>
         </template>
+        <q-btn
+          class="q-mr-sm q-mb-sm"
+          style="max-height: 42px"
+          :style="{ width: isMobile ? '100%' : '' }"
+          outline
+          icon="close"
+          @click="clearFilters"
+        />
+        <!-- label="Clear Filters" -->
+
+        <q-checkbox
+          v-if="
+            !showMoreFilters &&
+            ($rStore.showExtraFilters ||
+              ($rStore.$state.isCustom && $rStore.getReportSelectedReportData?.reportID != '12'))
+          "
+          v-model="showMoreFilters"
+          label="Show More Filters ..."
+        />
       </div>
     </div>
 
@@ -138,7 +156,7 @@
       <div class="row white-container" :class="{ fullscreen: isFullScreen }">
         <div class="col-12">
           <div class="row">
-            <div class="col-12 justify-content-space-between q-pa-sm">
+            <div class="col-12 justify-content-space-between">
               <h6>
                 {{
                   `Recipients: (${$rStore.$state.selectedRecipients.length}/
@@ -286,6 +304,7 @@ const $dStore = useDashboardStore()
 const $rStore = useReportStore()
 const { isMobile } = useUI()
 const $router = useRouter()
+const notFirstTime = ref(false)
 
 const allRowSelected = computed(() => {
   if ($rStore.$state.selectedRecipients.length === rows.value.length && rows.value.length > 0)
@@ -300,6 +319,8 @@ const selectUnselectAllRows = () => {
 }
 
 const isFullScreen = ref(false)
+const showMoreFilters = ref(false)
+
 const isTableLoading = ref(false)
 const report = ref<RecipientDataInterface | NoneType>($rStore.$state.report)
 
@@ -383,7 +404,9 @@ const getInitialData = async () => {
       categories: filter.value.categories?.map((ca) => `${(ca as any).categoryID}`) || [],
     },
     $rStore.$state.isCustom,
+    notFirstTime.value,
   )
+  notFirstTime.value = true
   report.value = res
   isTableLoading.value = false
   goToPageWithFilters()

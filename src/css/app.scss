@@ -9,6 +9,12 @@
 // }
 
 // h
+// html,
+// body,
+// #q-app {
+//   padding-top: env(safe-area-inset-top);
+//   box-sizing: border-box;
+// }
 
 :where(h1, h2, h3, h4, h5, h6) {
   margin: 0px;
@@ -187,6 +193,7 @@ hr {
 }
 
 .top-title-col {
+  min-height: 48px;
   border-bottom: solid 2px #e3e3e3;
   padding: 5px;
   display: flex;
@@ -211,6 +218,8 @@ hr {
 }
 .page-main-title {
   // font-family: Open Sans;
+  display: flex;
+  align-items: center;
   font-size: 20px;
   font-weight: 700;
   line-height: 27.24px;

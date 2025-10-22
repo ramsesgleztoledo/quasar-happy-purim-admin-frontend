@@ -22,7 +22,7 @@
         }
       "
     >
-      <template v-slot:top="props">
+      <template v-if="showFullScreen" v-slot:top="props">
         <div class="q-table__title" style="padding: 2px">{{ title }}</div>
 
         <q-space />
@@ -54,6 +54,7 @@ interface TablePropsInterface {
   rowsPerPage?: number
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   tableRowStyleFn?: ((row: any) => string) | undefined
+  showFullScreen?: boolean
 }
 
 defineEmits(['onRowClicked'])

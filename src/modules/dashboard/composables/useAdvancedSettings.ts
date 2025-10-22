@@ -55,7 +55,7 @@ export const useAdvancedSettings = () => {
     async getAdvancedSettings() {
 
       $q.loading.show({
-        message: 'Loading advanced settings...',
+        message: 'Loading ...',
         spinnerColor: '#f36b09',
         messageColor: '#f36b09',
       })

@@ -1,7 +1,7 @@
 
 import { defineStore, acceptHMRUpdate } from 'pinia';
 import type { DashboardStateInterface } from './dashboard-store-interfaces';
-import type { FundraiserStatusInterface, FundraiserTotalsInterface, MemberSummaryInterface, ParticipationRateInterface, TopTransactionsInterface } from 'src/modules/dashboard/interfaces/dashboard-interfaces';
+import type { FundraiserStatusInterface, FundraiserTotalsInterface, MembersOrdersGraphInterface, MemberSummaryInterface, OrderGraphInterface, ParticipationInfoGraphInterface, ParticipationRateInterface, PercentageRunningTotalInterface, TopTransactionsInterface } from 'src/modules/dashboard/interfaces/dashboard-interfaces';
 import type { NoneType } from '../../services/service-interfaces';
 
 
@@ -21,7 +21,8 @@ const initialState: DashboardStateInterface = {
   memberSummary: undefined,
   membersLogged: undefined,
   showCreateOrderByCode: false,
-  categories: []
+  categories: [],
+  percentageRunningTotal: undefined,
 }
 
 export const useDashboardStore = defineStore('dashBoardStore', {
@@ -51,6 +52,18 @@ export const useDashboardStore = defineStore('dashBoardStore', {
     },
     setTopTransactions(topTransactions: TopTransactionsInterface[]) {
       this.topTransactions = topTransactions
+    },
+    setPercentageRunningTotal(percentageRunningTotal: PercentageRunningTotalInterface | NoneType) {
+      this.percentageRunningTotal = percentageRunningTotal
+    },
+    setOrderTotalGraph(orderTotalGraph: OrderGraphInterface[]) {
+      this.orderTotalGraph = orderTotalGraph
+    },
+    setMembersOrdersGraph(membersOrdersGraph: MembersOrdersGraphInterface[]) {
+      this.membersOrdersGraph = membersOrdersGraph
+    },
+    setParticipationInfoGraph(participationInfoGraph: ParticipationInfoGraphInterface | NoneType) {
+      this.participationInfoGraph = participationInfoGraph
     },
 
   }

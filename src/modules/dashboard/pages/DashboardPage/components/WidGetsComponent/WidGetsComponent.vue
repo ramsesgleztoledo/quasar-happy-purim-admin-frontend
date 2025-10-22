@@ -27,7 +27,7 @@
       icon="signal_cellular_alt"
       :first-p="`$${convertWithCommas(runningTotal.total, true)}`"
       second-p="Running Total:"
-      :third-p="`${convertToTextDate(runningTotal.date)}`"
+      :third-p="`${dashboardStore.percentageRunningTotal?.percentageIncrease || 0}% Up From Yesterday`"
       icon-color="#5A65FA"
       background-color="#E2EAFF"
     />
@@ -40,11 +40,11 @@
     }"
   >
     <WidGet
-      class-name="justify-content-end w-full"
+      class-name="justify-content-end  w-full"
       icon="group_add"
       :first-p="`${participationRate.today}%`"
       second-p="Participation Rate: "
-      :third-p="`${participationRate.yesterday}% from yesterday`"
+      :third-p="`${participationRate.yesterday}% From Yesterday`"
       icon-color="#BF83FF"
       background-color="#F3E8FF"
     />

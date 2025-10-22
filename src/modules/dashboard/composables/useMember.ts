@@ -191,7 +191,8 @@ export const useMember = () => {
 
     const response = await deleteMemberById(memberId, {
       loading: {
-        message: `${isPending ? 'restoring' : 'deleting'} member${memberId}...`
+        // message: `${isPending ? 'restoring' : 'deleting'} member${memberId}...`
+        message: 'Loading ...'
       },
       dontRedirect: true,
       dontShowToast: true,
@@ -394,11 +395,11 @@ export const useMember = () => {
   const addMember_Co = async (data: MemberAddFormInterface) => {
     const resp = await addMember(data, {
       loading: {
-        message: 'Adding member...'
+        message: 'Loading ...'
       }
     })
 
-    showToast(resp.ok, 'Member added', `something went wrong adding a new member`)
+    showToast(resp.ok, 'Member Added', `Something went wrong adding a new member`)
 
     let id: number | string | undefined = undefined
     if (resp.ok || resp.data?.member?.length) {
@@ -416,7 +417,7 @@ export const useMember = () => {
   const resetMemberLoginCode_Co = async (memberId: number) => {
     const resp = await resetMemberLoginCode(memberId, {
       loading: {
-        message: 'Resetting Code...'
+        message: 'Loading ...'
       }
     })
 
@@ -433,7 +434,7 @@ export const useMember = () => {
     const resp = await emailReceiptByTransactionId(transactionId, {
       dontRedirect: true,
       loading: {
-        message: 'Sending email...'
+        message: 'Loading ...'
       }
     })
     return resp.data
@@ -462,7 +463,7 @@ export const useMember = () => {
     const resp = await searchMembers(query, {
       dontRedirect: true,
       dontShowToast: true,
-      
+
     });
 
     return resp.ok ? resp.data : []

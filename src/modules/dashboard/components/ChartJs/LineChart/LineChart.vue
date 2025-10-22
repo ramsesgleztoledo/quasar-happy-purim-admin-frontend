@@ -44,6 +44,13 @@ watch(
   () => [$props.showLabel, $props.charData],
   () => {
     option.value = {
+      grid: {
+        top: 12,
+        // bottom: 0,
+        left: 80,
+        // right: 0,
+        containLabel: false,
+      },
       xAxis: {
         type: 'category',
         boundaryGap: false,

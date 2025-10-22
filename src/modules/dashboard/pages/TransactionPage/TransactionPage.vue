@@ -10,7 +10,7 @@
     <div class="">
       <div class="row table-white-container" :class="{ fullscreen: isFullScreen }">
         <div class="col-12">
-          <div class="row">
+          <div class="row q-mb-sm">
             <div class="col-12 justify-content-space-between">
               <q-input outlined v-model="searchText" label="Search">
                 <template v-slot:append>
@@ -30,7 +30,6 @@
             :pagination="{
               rowsPerPage: 0,
             }"
-            title="Transactions"
             :style="{ height: isFullScreen ? '800px' : '600px' }"
             class="table-sticky-header-column-table"
             flat

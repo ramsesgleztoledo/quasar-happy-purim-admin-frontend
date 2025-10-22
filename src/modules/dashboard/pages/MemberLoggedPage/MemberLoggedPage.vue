@@ -1,17 +1,10 @@
 <template>
   <div v-if="!!dashboardState.membersLogged">
-    <div class="row q-mb-md">
-      <div class="col-12 top-title-col">
-        <p class="page-main-title">List of members who have been logged in</p>
-        <div class="separator-right q-mr-sm q-ml-sm"></div>
-      </div>
-    </div>
-
-    <div class="row q-mb-md">
-      <div class="col-12 d-flex justify-content-space-between">
-        <div class="text-h6">
-          Of the {{ dashboardState.membersLogged.rows.length }} who have logged on.
-          {{ dashboardState.membersLogged.totalOrdered }} have placed orders.
+    <div class="row">
+      <div class="col-12 top-title-col justify-content-space-between">
+        <div style="height: 100%; display: flex">
+          <p class="page-main-title">Logged In Members</p>
+          <div class="separator-right q-mr-sm q-ml-sm"></div>
         </div>
         <q-btn
           :disable="exportDisabled"
@@ -25,7 +18,27 @@
     </div>
 
     <div class="row">
+      <div class="col-12 d-flex">
+        <div class="text-h6">
+          Out of the {{ dashboardState.membersLogged.rows.length }} members who have logged in,
+          {{ dashboardState.membersLogged.totalOrdered }} have placed orders.
+        </div>
+      </div>
+    </div>
+
+    <div class="row white-container" :class="{ fullscreen: isFullScreen }">
       <div class="col-12">
+        <div class="row">
+          <div class="col-12 justify-content-end">
+            <q-btn
+              flat
+              round
+              color="primary"
+              :icon="isFullScreen ? 'fullscreen_exit' : 'fullscreen'"
+              @click="isFullScreen = !isFullScreen"
+            />
+          </div>
+        </div>
         <TableCustom
           class-name="table-sticky-header-column-table table-cursor-pointer-custom"
           styles="height: 628px"
@@ -59,6 +72,7 @@ import { ref } from 'vue'
 const { dashboardState } = useDashboard()
 const { downloadMembersLogged_Co } = useMember()
 const exportDisabled = ref(false)
+const isFullScreen = ref(false)
 
 const columns: QTableColumn<MemberLoggedInterface>[] = [
   {

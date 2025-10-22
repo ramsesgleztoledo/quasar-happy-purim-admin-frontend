@@ -5,37 +5,38 @@
       <div class="separator-right q-mr-sm q-ml-sm"></div>
     </div>
   </div>
-  <div class="row">
-    <div class="col-12">
-      <div class="row">
-        <q-input outlined v-model="searchText" label="Search">
-          <template v-slot:append>
-            <q-icon name="search" />
-          </template>
-        </q-input>
-      </div>
-      <div class="row">
-        <div class="col-12">
-          <TableCustom
-            class-name="table-sticky-header-column-table table-cursor-pointer-custom sticky-2-column-table"
-            styles="height: 628px"
-            :rows
-            :columns="columns"
-            row-key="id"
-            @onRowClicked="
-              ({ row }: any) => {
-                $router.push({
-                  name: 'OrderArchivePage-orderDetails',
-                  params: {
-                    orderId: row.orderNum,
-                  },
-                })
-              }
-            "
-          />
-        </div>
-      </div>
+  <div class="white-100-container" :class="{ fullscreen: isFullScreen }">
+    <div class="row q-mb-sm" style="justify-content: space-between">
+      <q-input outlined v-model="searchText" label="Search">
+        <template v-slot:append>
+          <q-icon name="search" />
+        </template>
+      </q-input>
+      <q-btn
+        flat
+        round
+        color="primary"
+        :icon="isFullScreen ? 'fullscreen_exit' : 'fullscreen'"
+        @click="isFullScreen = !isFullScreen"
+      />
     </div>
+    <TableCustom
+      class-name="table-sticky-header-column-table table-cursor-pointer-custom sticky-1-column-table"
+      styles="height: 628px"
+      :rows
+      :columns="columns"
+      row-key="id"
+      @onRowClicked="
+        ({ row }: any) => {
+          $router.push({
+            name: 'OrderArchivePage-orderDetails',
+            params: {
+              orderId: row.orderNum,
+            },
+          })
+        }
+      "
+    />
   </div>
 </template>
 
@@ -50,6 +51,7 @@ import { useOrderArchive } from '../../../../composables/useOrderArchive'
 const { getOrdersArchive, ordersArchiveState } = useOrderArchive()
 
 const searchText = ref('')
+const isFullScreen = ref(false)
 
 const rows = computed(() =>
   ordersArchiveState.value.orders.filter((item) =>
@@ -57,26 +59,25 @@ const rows = computed(() =>
   ),
 )
 
-onMounted(() => {
-  getOrdersArchive()
-})
+onMounted(() => getOrdersArchive())
 
 const columns: QTableColumn[] = [
-  {
-    name: 'orderNum',
-    required: true,
-    label: 'Order#',
-    align: 'left',
-    field: 'orderNum',
-    // format: (val: any) => `${val}`,
-    sortable: true,
-  },
   {
     name: 'memberName',
     required: true,
     label: 'Member Name',
     align: 'left',
     field: 'memberName',
+    sortable: true,
+    style: 'max-width: 150px; overflow: hidden; text-overflow: ellipsis',
+  },
+  {
+    name: 'orderNum',
+    required: true,
+    label: 'Order #',
+    align: 'left',
+    field: 'orderNum',
+    // format: (val: any) => `${val}`,
     sortable: true,
   },
   {

@@ -3,7 +3,7 @@ import { computed } from "vue";
 import { useDashboardStore } from "../store/dashboardStore/dashboardStore";
 import { useDashboardService } from "src/modules/dashboard/services/dashboard.service";
 import { useQuasar } from "quasar";
-import type { BasketInfoInterface, BasketSizeBreakdownInterface, FundraiserStatusInterface, FundraiserTotalsInterface, MembersOrdersGraphInterface, MemberSummaryInterface, OrderGraphInterface, OrderItemsInterface, ParticipationInfoGraphInterface, ParticipationRateInterface, TopTransactionsInterface, TotalsRaisedInterface } from "../interfaces/dashboard-interfaces";
+import type { BasketInfoInterface, BasketSizeBreakdownInterface, FundraiserStatusInterface, FundraiserTotalsInterface, MembersOrdersGraphInterface, MemberSummaryInterface, OrderGraphInterface, OrderItemsInterface, ParticipationInfoGraphInterface, ParticipationRateInterface, PercentageRunningTotalInterface, TopTransactionsInterface, TotalsRaisedInterface } from "../interfaces/dashboard-interfaces";
 import type { ApiCallResponseInterface } from "src/services/api-interfaces";
 import { useMemberService } from "../services/member.service";
 import type { MembersLoggedInterface } from "../interfaces/member-interfaces";
@@ -17,7 +17,7 @@ export const useDashboard = () => {
   const $dStore = useDashboardStore();
   const $q = useQuasar()
 
-  const { getBasketInfo, getBasketSizeBreakdown, getFundraiserStatus, getFundraiserTotals, getMembersOrdersGraph, getMemberSummary, getOrderItems, getOrderTotalGraph, getParticipationInfoGraph, getParticipationRate, getTopTransactions, getTotalsRaised } = useDashboardService()
+  const { getBasketInfo, getBasketSizeBreakdown, getFundraiserStatus, getFundraiserTotals, getMembersOrdersGraph, getMemberSummary, getOrderItems, getOrderTotalGraph, getParticipationInfoGraph, getParticipationRate, getTopTransactions, getTotalsRaised, getPercentageOfRunningTotal } = useDashboardService()
   const { getMembersLogged } = useMemberService()
   const { getShulCategories } = useCategoryService()
   const { getShowOrderByCode } = useBasicSettingsService()
@@ -48,7 +48,8 @@ export const useDashboard = () => {
         memberSummary,
         membersLogged,
         categories,
-        showCreateOrderByCode
+        showCreateOrderByCode,
+        percentageRunningTotal
       ]:
         [
           ApiCallResponseInterface<OrderGraphInterface[]>,
@@ -66,6 +67,7 @@ export const useDashboard = () => {
           ApiCallResponseInterface<MembersLoggedInterface>,
           ApiCallResponseInterface<ShulCategoryInterface[]>,
           ApiCallResponseInterface<boolean>,
+          ApiCallResponseInterface<PercentageRunningTotalInterface>,
 
         ]
         = await Promise.all([
@@ -84,6 +86,7 @@ export const useDashboard = () => {
           getMembersLogged(),
           getShulCategories(),
           getShowOrderByCode(),
+          getPercentageOfRunningTotal(),
         ])
 
 
@@ -104,7 +107,7 @@ export const useDashboard = () => {
         membersLogged: membersLogged.ok ? membersLogged.data : undefined,
         categories: categories.ok ? categories.data : [],
         showCreateOrderByCode: showCreateOrderByCode.ok ? !!showCreateOrderByCode.data : false,
-
+        percentageRunningTotal: percentageRunningTotal.ok ? percentageRunningTotal.data : undefined,
       })
 
       $q.loading.hide()
@@ -112,18 +115,19 @@ export const useDashboard = () => {
     async getMemberSummary() {
       try {
         // console.log('====== UPDATING INFORMATION ======');
-        const resp = await Promise.all([getMemberSummary({
-          dontRedirect: true,
-          dontShowToast: true
-        }),
-        getFundraiserTotals({
-          dontRedirect: true,
-          dontShowToast: true
-        }),
-        getParticipationRate({
-          dontRedirect: true,
-          dontShowToast: true
-        }),])
+        const resp = await Promise.all([
+          getMemberSummary({
+            dontRedirect: true,
+            dontShowToast: true
+          }),
+          getFundraiserTotals({
+            dontRedirect: true,
+            dontShowToast: true
+          }),
+          getParticipationRate({
+            dontRedirect: true,
+            dontShowToast: true
+          }),])
 
 
 
@@ -141,7 +145,86 @@ export const useDashboard = () => {
           message: `We can't update the member logged at this moment`,
         })
       }
+    },
 
+    async updateDataMountedDashboard() {
+      const resp = await Promise.all([
+        getMemberSummary({
+          dontRedirect: true,
+          dontShowToast: true
+        }),
+        getFundraiserTotals({
+          dontRedirect: true,
+          dontShowToast: true
+        }),
+        getParticipationRate({
+          dontRedirect: true,
+          dontShowToast: true
+        }),
+
+        getOrderTotalGraph({
+          dontRedirect: true,
+          dontShowToast: true
+        }),
+        getMembersOrdersGraph({
+          dontRedirect: true,
+          dontShowToast: true
+        }),
+        getParticipationInfoGraph({
+          dontRedirect: true,
+          dontShowToast: true
+        }),
+        getFundraiserStatus({
+          dontRedirect: true,
+          dontShowToast: true
+        }),
+        getTopTransactions({
+          dontRedirect: true,
+          dontShowToast: true
+        }),
+        getTotalsRaised({
+          dontRedirect: true,
+          dontShowToast: true
+        }),
+        getBasketSizeBreakdown({
+          dontRedirect: true,
+          dontShowToast: true
+        }),
+        getBasketInfo({
+          dontRedirect: true,
+          dontShowToast: true
+        }),
+        getOrderItems({
+          dontRedirect: true,
+          dontShowToast: true
+        }),
+        getMembersLogged({
+          dontRedirect: true,
+          dontShowToast: true
+        }),
+        getPercentageOfRunningTotal({
+          dontRedirect: true,
+          dontShowToast: true
+        }),
+
+      ])
+
+      $dStore.$patch({
+        memberSummary: resp[0].ok ? resp[0].data : undefined,
+        fundraiserTotals: resp[1].ok ? resp[1].data : undefined,
+        participationRate: resp[2].ok ? resp[2].data : undefined,
+        orderTotalGraph: resp[3].ok ? resp[3].data : [],
+        membersOrdersGraph: resp[4].ok ? resp[4].data : [],
+        participationInfoGraph: resp[5].ok ? resp[5].data : undefined,
+        fundraiserStatus: resp[6].ok ? resp[6].data : undefined,
+        topTransactions: resp[7].ok ? resp[7].data : [],
+        totalsRaised: resp[8].ok ? resp[8].data : undefined,
+        basketSizeBreakdown: resp[9].ok ? resp[9].data : [],
+        basketInfo: resp[10].ok ? resp[10].data : [],
+        orderItems: resp[11].ok ? resp[11].data : [],
+        membersLogged: resp[12].ok ? resp[12].data : undefined,
+        percentageRunningTotal: resp[13].ok ? resp[13].data : undefined,
+      })
     },
 
 

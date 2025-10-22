@@ -28,7 +28,7 @@ export const useBasicSettings = () => {
     async getSettings() {
 
       $q.loading.show({
-        message: 'Loading settings...',
+        message: 'Loading ...',
         spinnerColor: '#f36b09',
         messageColor: '#f36b09',
       })
@@ -54,7 +54,7 @@ export const useBasicSettings = () => {
     async getFiles() {
       const files = await getFiles({
         loading: {
-          message: 'Loading files...'
+          message: 'Loading ...'
         }
       })
       return files.ok ? files.data : []
@@ -113,7 +113,7 @@ export const useBasicSettings = () => {
     async uploadFiles(files: File[]) {
 
       $q.loading.show({
-        message: 'uploading files...',
+        message: 'Loading ...',
         spinnerColor: '#f36b09',
         messageColor: '#f36b09',
       })
@@ -155,7 +155,7 @@ export const useBasicSettings = () => {
 
       const resp = await deleteFile(name, {
         loading: {
-          message: 'deleting file'
+          message: 'Loading ...'
         },
         dontRedirect: true
       })

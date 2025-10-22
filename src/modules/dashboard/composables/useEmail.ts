@@ -17,7 +17,7 @@ export const useEmail = () => {
     async getEmails() {
       const campaigns = await getEmails({
         loading: {
-          message: 'loading emails...'
+          message: 'Loading ...'
         }
       })
       $eStore.setCampaigns(campaigns.ok ? campaigns.data : []);
@@ -25,7 +25,7 @@ export const useEmail = () => {
     async getCampaignDetailById(id: number) {
       const campaignsDetails = await getCampaignDetailById(id, {
         loading: {
-          message: 'loading campaign details...'
+          message: 'Loading ...'
         }
       })
       $eStore.setSelectedCampaign(campaignsDetails.ok ? campaignsDetails.data : undefined);
@@ -35,7 +35,7 @@ export const useEmail = () => {
 
       const emailContent = await getEmailContentByEmailId(id, {
         loading: {
-          message: 'loading email content...'
+          message: 'Loading ...'
         },
         useCache: true
       })

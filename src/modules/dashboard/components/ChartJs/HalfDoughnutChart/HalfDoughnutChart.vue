@@ -36,6 +36,13 @@ const option = ref<ECBasicOption>({
   //   text: 'Traffic Sources',
   //   left: 'center',
   // },
+  // grid: {
+  //   top: 0,
+  //   bottom: 0,
+  //   left: 0,
+  //   right: 0,
+  //   containLabel: false,
+  // },
   tooltip: {
     trigger: 'item',
     // formatter: '{a} <br/>{b} : {c} ({d}%)',
@@ -53,7 +60,7 @@ const option = ref<ECBasicOption>({
     {
       // name: 'Traffic Sources',
       type: 'pie',
-      radius: ['40%', '70%'],
+      radius: ['40%', '100%'],
       center: ['50%', '70%'],
       // adjust the start and end angle
       startAngle: 180,

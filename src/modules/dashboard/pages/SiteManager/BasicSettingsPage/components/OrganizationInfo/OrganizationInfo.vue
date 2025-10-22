@@ -1,5 +1,5 @@
 <template>
-  <div class="row q-mb-sm">
+  <div class="row q-mb-sm q-pl-sm">
     <div class="col-12">
       <b> Organization Information </b>
     </div>

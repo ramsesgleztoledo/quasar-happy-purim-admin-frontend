@@ -1,13 +1,16 @@
 <template>
-  <div class="row q-mb-md">
+  <!-- <div class="row q-mb-md">
     <div class="col-12 top-title-col">
       <p class="page-main-title">Charity Breakdown</p>
       <div class="separator-right q-mr-sm q-ml-sm"></div>
     </div>
-  </div>
-
-  <div class="row q-mb-md" v-if="donations.length">
-    <div class="col-12 d-flex justify-content-end">
+  </div> -->
+  <div class="row">
+    <div class="col-12 top-title-col justify-content-space-between">
+      <div style="height: 100%; display: flex">
+        <p class="page-main-title">Charity Breakdown</p>
+        <div class="separator-right q-mr-sm q-ml-sm"></div>
+      </div>
       <q-btn
         :disable="exportDisabled"
         label="Export to Excel"
@@ -19,8 +22,32 @@
     </div>
   </div>
 
-  <div class="row">
+  <!-- <div class="row q-mb-md" v-if="donations.length">
+    <div class="col-12 d-flex justify-content-end">
+      <q-btn
+        :disable="exportDisabled"
+        label="Export to Excel"
+        color="primary"
+        icon="import_export"
+        @click="onExportToExcel"
+        :loading="exportDisabled"
+      />
+    </div>
+  </div> -->
+
+  <div class="row RecentOrders-container" :class="{ fullscreen: isFullScreen }">
     <div class="col-12">
+      <div class="row">
+        <div class="col-12 justify-content-end">
+          <q-btn
+            flat
+            round
+            color="primary"
+            :icon="isFullScreen ? 'fullscreen_exit' : 'fullscreen'"
+            @click="isFullScreen = !isFullScreen"
+          />
+        </div>
+      </div>
       <TableCustom
         v-if="donations.length"
         class-name="table-sticky-header-column-table table-cursor-pointer-custom"
@@ -39,7 +66,7 @@
           }
         "
       />
-      <div v-else>“No Charity Donations”</div>
+      <div v-else>No Charity Donations ...</div>
     </div>
   </div>
 </template>
@@ -51,6 +78,8 @@ import { useTransaction } from '../../composables/useTransaction'
 import type { DonationInterface } from '../../interfaces/transaction-interfaces'
 import { convertWithCommas } from 'src/helpers'
 import TableCustom from 'src/components/TableCustom/TableCustom.vue'
+
+const isFullScreen = ref(false)
 
 const columns: QTableColumn<DonationInterface>[] = [
   {

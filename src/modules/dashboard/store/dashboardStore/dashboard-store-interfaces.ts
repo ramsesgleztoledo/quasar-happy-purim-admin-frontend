@@ -1,4 +1,4 @@
-import type { BasketInfoInterface, BasketSizeBreakdownInterface, FundraiserStatusInterface, FundraiserTotalsInterface, MembersOrdersGraphInterface, MemberSummaryInterface, OrderGraphInterface, OrderItemsInterface, ParticipationInfoGraphInterface, ParticipationRateInterface, TopTransactionsInterface, TotalsRaisedInterface } from 'src/modules/dashboard/interfaces/dashboard-interfaces';
+import type { BasketInfoInterface, BasketSizeBreakdownInterface, FundraiserStatusInterface, FundraiserTotalsInterface, MembersOrdersGraphInterface, MemberSummaryInterface, OrderGraphInterface, OrderItemsInterface, ParticipationInfoGraphInterface, ParticipationRateInterface, PercentageRunningTotalInterface, TopTransactionsInterface, TotalsRaisedInterface } from 'src/modules/dashboard/interfaces/dashboard-interfaces';
 import type { NoneType } from '../../services/service-interfaces';
 import type { MembersLoggedInterface } from '../../interfaces/member-interfaces';
 import type { ShulCategoryInterface } from '../../interfaces/category-interfaces';
@@ -17,6 +17,7 @@ export interface DashboardStateInterface {
   orderItems: OrderItemsInterface[];
   memberSummary: MemberSummaryInterface | NoneType;
   membersLogged: MembersLoggedInterface | NoneType;
-  showCreateOrderByCode: boolean,
-  categories: ShulCategoryInterface[]
+  showCreateOrderByCode: boolean;
+  categories: ShulCategoryInterface[];
+  percentageRunningTotal: PercentageRunningTotalInterface | NoneType;
 }

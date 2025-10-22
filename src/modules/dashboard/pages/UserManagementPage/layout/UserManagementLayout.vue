@@ -5,23 +5,18 @@
       <div class="separator-right q-mr-sm q-ml-sm"></div>
     </div>
   </div>
-  <div class="row">
+  <div class="row justify-content-space-between">
     <q-input outlined v-model="searchText" label="Search">
       <template v-slot:append>
         <q-icon name="search" />
       </template>
     </q-input>
+    <q-btn outline icon="add" label="add new user" @click="createUserAdminComponentFlag = true" />
   </div>
   <div class="row table-white-container" :class="{ fullscreen: isFullScreen }">
     <div class="col-12">
-      <div class="row q-mb-md q-mt-md">
-        <div class="col-12 justify-content-space-between">
-          <q-btn
-            outline
-            icon="add"
-            label="add new user"
-            @click="createUserAdminComponentFlag = true"
-          />
+      <div class="row">
+        <div class="col-12 justify-content-end">
           <q-btn
             flat
             round

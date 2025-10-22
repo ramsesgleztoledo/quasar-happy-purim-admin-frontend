@@ -39,5 +39,6 @@
     "tempcode",
     "trancctype",
     "trantotalcharge"
-  ]
+  ],
+  "java.configuration.updateBuildConfiguration": "interactive"
 }

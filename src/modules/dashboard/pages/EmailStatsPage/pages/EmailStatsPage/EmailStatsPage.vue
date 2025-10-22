@@ -5,38 +5,40 @@
       <div class="separator-right q-mr-sm q-ml-sm"></div>
     </div>
   </div>
-  <div class="row">
-    <div class="col-12">
-      <div class="row">
-        <q-input outlined v-model="searchText" label="Search">
-          <template v-slot:append>
-            <q-icon name="search" />
-          </template>
-        </q-input>
-      </div>
-      <div class="row">
-        <div class="col-12">
-          <TableCustom
-            class-name="table-sticky-header-column-table table-cursor-pointer-custom"
-            styles="height: 628px"
-            :rows
-            :columns="columns"
-            row-key="id"
-            title="Campaigns"
-            @onRowClicked="
-              ({ row }: any) => {
-                $router.push({
-                  name: 'EmailStatsPage-campaign',
-                  params: {
-                    campaignId: row.campaignID,
-                  },
-                })
-              }
-            "
-          />
-        </div>
-      </div>
+
+  <div class="white-100-container" :class="{ fullscreen: isFullScreen }">
+    <div class="row q-mb-sm" style="justify-content: space-between">
+      <q-input outlined v-model="searchText" label="Search">
+        <template v-slot:append>
+          <q-icon name="search" />
+        </template>
+      </q-input>
+      <q-btn
+        flat
+        round
+        color="primary"
+        :icon="isFullScreen ? 'fullscreen_exit' : 'fullscreen'"
+        @click="isFullScreen = !isFullScreen"
+      />
     </div>
+    <TableCustom
+      class-name="table-sticky-header-column-table table-cursor-pointer-custom"
+      styles="height: 628px"
+      :rows
+      :columns="columns"
+      row-key="id"
+      title="Campaigns"
+      @onRowClicked="
+        ({ row }: any) => {
+          $router.push({
+            name: 'EmailStatsPage-campaign',
+            params: {
+              campaignId: row.campaignID,
+            },
+          })
+        }
+      "
+    />
   </div>
 </template>
 
@@ -51,6 +53,7 @@ import { useEmail } from 'src/modules/dashboard/composables/useEmail'
 const { getEmails, emailState } = useEmail()
 
 const searchText = ref('')
+const isFullScreen = ref(false)
 
 const rows = computed(() =>
   emailState.value.campaigns.filter((item) =>
@@ -66,7 +69,7 @@ const columns: QTableColumn[] = [
   {
     name: 'campaignID',
     required: true,
-    label: 'campaign ID',
+    label: 'Campaign ID',
     align: 'left',
     field: 'campaignID',
     // format: (val: any) => `${val}`,

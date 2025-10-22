@@ -4,7 +4,7 @@
     :class="{ fullscreen: isFullScreen }"
     style="display: flex; flex-direction: column"
   >
-    <div class="row q-mb-sm" style="justify-content: flex-end">
+    <div class="row" style="justify-content: flex-end">
       <q-btn
         style="font-size: 10px"
         flat
@@ -28,7 +28,7 @@
 
     <div class="row" v-for="(dataAux, i) in charData" :key="i">
       <div class="col-12 WidgetChart-earned" :style="{ color: dataAux.color }">
-        <div class="row">
+        <div class="row" style="margin-left: 28px">
           <p>{{ dataAux.label }}</p>
           <p v-if="showLastValue" style="margin-left: 8px !important">
             ( {{ preFix ? preFix : ' '
@@ -41,8 +41,11 @@
         {{ dataAux.data[dataAux.data.length - 1]?.label }}
       </div>
     </div>
-    <div class="row" style="flex: 1; align-items: flex-end">
-      <div class="col-12 WidgetChart-graph" :style="{ height: isFullScreen ? '600px' : '210px' }">
+    <div class="row q-mt-sm" style="flex: 1; align-items: flex-end">
+      <div
+        class="col-12 WidgetChart-graph"
+        :style="{ minHeight: isFullScreen ? '600px' : '310px', width: '100%' }"
+      >
         <BarChart showLabel :charData="charData" v-if="typeChart === 'bar'" />
         <LineChart showLabel :charData="charData" v-if="typeChart === 'line'" />
       </div>

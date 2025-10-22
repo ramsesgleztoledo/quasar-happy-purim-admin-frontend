@@ -74,3 +74,10 @@ export interface MemberSummaryInterface {
   membersOnlineNames: string;
 }
 
+
+export interface PercentageRunningTotalInterface {
+  dailyTotal:         number;
+  runningTotal:       number;
+  percentageIncrease: number;
+}
+

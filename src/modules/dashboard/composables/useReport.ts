@@ -21,6 +21,7 @@ export const useReport = () => {
     // getReportRecipientsByReportIdCustom,
     getCustomSpecialReports,
     getAdvancedSpecialReports,
+    getReportRecipientsByReportIdFilterOnly,
   } = useReportsService()
   const { getTokensByReportId, getCustomTokensByReportId } = useMailMergeService()
   const $rStore = useReportStore()
@@ -199,18 +200,29 @@ export const useReport = () => {
     },
 
 
-    async getReportData(data: RecipientDataFormInterface, isCustom: boolean) {
+    async getReportData(data: RecipientDataFormInterface, isCustom: boolean, isFirstTime?: boolean) {
 
+
+      console.log({ data, isCustom, isFirstTime });
 
 
       let resp = undefined
 
-      if (!isCustom)
-        resp = await getReportRecipientsByReportIdWithSQL(data, {
-          // loading: {
-          //   message: 'Loading ...'
-          // }
-        })
+      if (!isCustom) {
+        if (!isFirstTime)
+          resp = await getReportRecipientsByReportIdWithSQL(data, {
+            // loading: {
+            //   message: 'Loading ...'
+            // }
+          })
+        else
+          resp = await getReportRecipientsByReportIdFilterOnly(data, {
+            // loading: {
+            //   message: 'Loading ...'
+            // }
+          })
+
+      }
 
 
       else {
@@ -219,11 +231,22 @@ export const useReport = () => {
         //   //   message: 'Loading ...'
         //   // }
         // }))
-        resp = await getReportRecipientsByReportIdCustomWithSQL(data, {
-          // loading: {
-          //   message: 'Loading ...'
-          // }
-        })
+        // if (data.id == 12)
+        //   resp = (await getReportRecipientsByReportIdCustom(data.id, {
+        //     categories: (data.categories || []).join(', '),
+        //     searchTerm: data.searchTerm || "",
+        //   }, {
+        //     loading: {
+        //       message: 'Loading ...'
+        //     }
+        //   }))
+        // else
+          resp = await getReportRecipientsByReportIdCustomWithSQL(data, {
+            // loading: {
+            //   message: 'Loading ...'
+            // }
+          })
+
 
 
       }

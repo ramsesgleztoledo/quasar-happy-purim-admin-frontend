@@ -132,7 +132,7 @@
             <div class="col-6">
               <b>Total Amount Due: </b>
             </div>
-            <div class="col-6">item.totalPrice {{ convertWithCommas(receipt.amountDue || 0) }}</div>
+            <div class="col-6">{{ convertWithCommas(receipt.amountDue || 0) }}</div>
           </div>
         </div>
       </div>

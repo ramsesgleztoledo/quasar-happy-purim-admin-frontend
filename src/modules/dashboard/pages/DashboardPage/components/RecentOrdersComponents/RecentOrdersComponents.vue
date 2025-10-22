@@ -16,7 +16,7 @@
         </div>
         <q-table
           :style="{ height: isFullScreen ? '100%' : '' }"
-          class="table-sticky-header-column-table sticky-2-column-table"
+          class="table-sticky-header-column-table sticky-1-column-table"
           flat
           bordered
           ref="tableRef"
@@ -85,20 +85,20 @@ const isFullScreen = ref<boolean>(false)
 
 const auxColumns: QTableColumn[] = [
   {
+    name: 'member',
+    required: true,
+    label: 'Member',
+    align: 'left',
+    field: 'member',
+    sortable: true,
+  },
+  {
     name: 'id',
     required: true,
     label: 'Order #',
     align: 'left',
     field: 'id',
     // format: (val: any) => `${val}`,
-    sortable: true,
-  },
-  {
-    name: 'member',
-    required: true,
-    label: 'Member',
-    align: 'left',
-    field: 'member',
     sortable: true,
   },
   {

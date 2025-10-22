@@ -61,6 +61,7 @@
     <div class="col-12 MailMergeReportsPage-container">
       <div class="row q-mb-sm" v-for="item in reports" :key="item.reportID">
         <div class="col-12" v-if="item.reportID != '19'">
+          <div class="row"></div>
           <q-item class="MailMergeReportsPage-item">
             <q-item-section
               ><q-item-label class="q-mb-sm">
@@ -111,7 +112,7 @@
                   padding="none"
                   color="primary"
                   flat
-                  icon="email"
+                  icon="draw"
                   :to="{
                     name: 'MailMergeReportsPage-MailMergePage',
                     params: { reportId: item.reportID },
@@ -121,10 +122,11 @@
                   }"
                 >
                   <q-tooltip>
-                    <div>Email Report</div>
+                    <!-- <div>Email Report</div> -->
+                    <div>Create Mail Merge</div>
                   </q-tooltip>
                 </q-btn>
-                <q-btn
+                <!-- <q-btn
                   v-if="!item.viewOnly && !item.downloadOnly"
                   class="q-mr-sm"
                   padding="none"
@@ -142,7 +144,7 @@
                   <q-tooltip>
                     <div>Print Report</div>
                   </q-tooltip>
-                </q-btn>
+                </q-btn> -->
               </div>
             </q-item-section>
           </q-item>

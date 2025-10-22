@@ -437,7 +437,9 @@ const changeFontSize = (size: number) => {
   fontSizeRef.value?.hide()
   edit.caret.restore()
   edit.runCmd('fontSize', `${size}`)
-  edit.focus()
+  setTimeout(() => {
+    edit.focus()
+  }, 300)
 }
 const add = (name: string) => {
   if (!editorRef.value) return
@@ -448,7 +450,9 @@ const add = (name: string) => {
     'insertHTML',
     `&nbsp;<div class="EditorCustom-token editor_token row inline items-center" contenteditable="false">&nbsp;<span>${name}</span>&nbsp;<i class="q-icon material-icons cursor-pointer" onclick="this.parentNode.parentNode.removeChild(this.parentNode)">close</i></div>&nbsp;`,
   )
-  edit.focus()
+  setTimeout(() => {
+    edit.focus()
+  }, 300)
 }
 const addTokenText = (name: string) => {
   if (!editorRef.value) return
@@ -456,7 +460,9 @@ const addTokenText = (name: string) => {
   stringTokenRef.value?.hide()
   edit.caret.restore()
   edit.runCmd('insertHTML', `{{${name}}}&nbsp;`)
-  edit.focus()
+  setTimeout(() => {
+    edit.focus()
+  }, 300)
 }
 const addHTML = (value: string) => {
   if (!editorRef.value) return
@@ -464,7 +470,9 @@ const addHTML = (value: string) => {
   attacherRef.value?.hide()
   edit.caret.restore()
   edit.runCmd('insertHTML', value)
-  edit.focus()
+  setTimeout(() => {
+    edit.focus()
+  }, 300)
 }
 
 const onColorPicked = (clear?: boolean) => {
@@ -473,7 +481,9 @@ const onColorPicked = (clear?: boolean) => {
   const edit = editorRef.value
   edit.caret.restore()
   edit.runCmd('foreColor', clear ? 'black' : colorPicked.value)
-  edit.focus()
+  setTimeout(() => {
+    edit.focus()
+  }, 300)
 }
 const onColorPickedBackground = (clear?: boolean) => {
   if (popRefColorPickerBackground.value) popRefColorPickerBackground.value.hide()
@@ -481,7 +491,9 @@ const onColorPickedBackground = (clear?: boolean) => {
   const edit = editorRef.value
   edit.caret.restore()
   edit.runCmd('backColor', clear ? 'transparent' : colorPickerBackground.value)
-  edit.focus()
+  setTimeout(() => {
+    edit.focus()
+  }, 300)
 }
 
 const selectedFile = ref<string>('')
@@ -497,26 +509,83 @@ const insertInternalFile = () => {
 }
 
 const insertFile = (file: string, prop?: { width: string; height: string }) => {
-  if (!file) return
-  if (!editorRef.value) return
+  if (!file || !editorRef.value) return
   const edit = editorRef.value
   edit.caret.restore()
-  edit.runCmd(
-    'insertHTML',
-    `&nbsp;
-<div
-  class="editable-div" style="display: inline-block; width: ${prop?.width ? prop.width : '200px'}; height: ${prop?.height ? prop.height : '200px'}">
-  <img
-    src="${file}"
-    style="width: 100%; height: 100%; pointer-events: none;"
-  />
-  </div>
 
+  const html = `&nbsp;<div class="editable-div"
+      style="display:inline-block; width:${prop?.width || '200px'}; height:${prop?.height || '200px'}">
+      <img src="${file}" style="width:100%; height:100%; pointer-events:none;"/></div>&nbsp;`
 
-    &nbsp;`,
-  )
-  edit.focus()
+  edit.runCmd('insertHTML', html)
+
+  setTimeout(() => {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const rootEl = (edit as any).$el || (edit as any)
+    const contentEl: HTMLElement | null =
+      rootEl?.querySelector?.('.q-editor__content') ||
+      rootEl?.querySelector?.('[contenteditable="true"]') ||
+      (rootEl?.shadowRoot && rootEl.shadowRoot.querySelector('.q-editor__content')) ||
+      null
+    if (!contentEl) {
+      try {
+        edit.focus?.()
+      } catch {
+        console.log()
+      }
+      return
+    }
+    contentEl.focus()
+
+    requestAnimationFrame(() => {
+      const sel = window.getSelection()
+      if (!sel) {
+        edit.focus?.()
+        return
+      }
+      const range = document.createRange()
+      try {
+        range.selectNodeContents(contentEl)
+        range.collapse(false)
+        sel.removeAllRanges()
+        sel.addRange(range)
+      } catch (e: unknown) {
+        console.log(e)
+        const last = contentEl.childNodes[contentEl.childNodes.length - 1]
+        if (last) {
+          sel.removeAllRanges()
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          sel.collapse(last, (last.nodeValue || '').length || (last as any).childNodes?.length || 1)
+        }
+      }
+      try {
+        edit.focus?.()
+      } catch {
+        console.log('error')
+      }
+    })
+  }, 100)
 }
+
+// const insertFile = (file: string, prop?: { width: string; height: string }) => {
+//   if (!file) return
+//   if (!editorRef.value) return
+//   const edit = editorRef.value
+//   edit.caret.restore()
+//   edit.runCmd(
+//     'insertHTML',
+//     `&nbsp;<div
+//   class="editable-div" style="display: inline-block; width: ${prop?.width ? prop.width : '200px'}; height: ${prop?.height ? prop.height : '200px'}">
+//   <img
+//     src="${file}"
+//     style="width: 100%; height: 100%; pointer-events: none;"
+//   />
+//   </div>&nbsp;`,
+//   )
+//   setTimeout(() => {
+//     edit.focus()
+//   }, 300)
+// }
 
 const getEditorValue = () => {
   const contentEl = editorRef.value?.$el.querySelector('.q-editor__content') as HTMLElement

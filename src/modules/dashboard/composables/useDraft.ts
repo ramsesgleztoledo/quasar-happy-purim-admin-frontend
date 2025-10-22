@@ -20,11 +20,11 @@ export const useDraft = () => {
     async deleteDraft(draft: DraftInterface) {
       const resp = await deleteDrafts(draft.draftId, {
         loading: {
-          message: 'Deleting draft ...',
+          message: 'Loading ...',
         },
       })
-      showToast(resp.ok, 'Draft deleted successfully',
-        'something went wrong deleting the draft')
+      showToast(resp.ok, 'Draft Deleted',
+        'Something went wrong deleting the draft')
 
       return resp.ok
     },
@@ -34,12 +34,12 @@ export const useDraft = () => {
         {
           dontRedirect: true,
           loading: {
-            message: 'Adding Draft',
+            message: 'Loading ...',
           },
         },
       )
-      showToast(resp.ok, 'Draft added',
-        'something went wrong adding the draft')
+      showToast(resp.ok, 'Draft Saved',
+        'Something went wrong adding the draft')
 
     },
 

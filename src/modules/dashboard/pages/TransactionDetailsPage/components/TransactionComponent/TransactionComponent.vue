@@ -127,23 +127,25 @@
       </div>
 
       <hr />
-      <div
-        class="row q-mb-sm"
-        v-for="(item, i) in transactionDetails.additionalOrderItems"
-        :key="i"
-      >
-        <div class="col-2">{{ item.quantity }}</div>
-        <div class="col-4">{{ item.itemName }}</div>
-        <div class="col-6">
-          <div class="row">
-            <div class="col-6"></div>
-            <div class="col-6">
-              {{ item.price ? '$' : '' }}{{ convertWithCommas(item.price || 0) }}
+      <template v-if="transactionDetails.additionalOrderItems.length">
+        <div
+          class="row q-mb-sm"
+          v-for="(item, i) in transactionDetails.additionalOrderItems"
+          :key="i"
+        >
+          <div class="col-2">{{ item.quantity }}</div>
+          <div class="col-4">{{ item.itemName }}</div>
+          <div class="col-6">
+            <div class="row">
+              <div class="col-6"></div>
+              <div class="col-6">
+                {{ item.price ? '$' : '' }}{{ convertWithCommas(item.price || 0) }}
+              </div>
             </div>
           </div>
         </div>
-      </div>
-      <hr />
+        <hr />
+      </template>
       <div class="row q-mb-sm">
         <div class="col-6"></div>
         <div class="col-6">

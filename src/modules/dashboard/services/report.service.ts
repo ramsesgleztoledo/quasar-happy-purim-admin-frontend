@@ -84,8 +84,12 @@ export const useReportsService = () => {
         data
       })
     },
-    getReportRecipientsByReportIdCustom: async (reportId: number | string, extraOptions?: ExtraOptionsInterface): Promise<ApiCallResponseInterface<RecipientDataInterface>> => {
-      const nextUrl = `/Custom-Reports/get-report-data-and-filter?reportId=${reportId}`;
+    getReportRecipientsByReportIdCustom: async (reportId: number | string, query?: {
+      customOption?: string;
+      categories?: string;
+      searchTerm?: string;
+    }, extraOptions?: ExtraOptionsInterface): Promise<ApiCallResponseInterface<RecipientDataInterface>> => {
+      const nextUrl = `/Custom-Reports/get-report-data-and-filter?reportId=${reportId}&customOption=${query?.customOption ? query?.customOption : ''}&categories=${query?.categories ? query?.categories : ''}&searchTerm=${query?.searchTerm ? query?.searchTerm : ''}`;
       const url = `${baseUrl}${nextUrl}`;
       return await apiCall({
         url,
@@ -94,7 +98,7 @@ export const useReportsService = () => {
       })
     },
     getReportRecipientsByReportIdCustomWithSQL: async (data: RecipientDataFormInterface, extraOptions?: ExtraOptionsInterface): Promise<ApiCallResponseInterface<RecipientDataInterface>> => {
-      const nextUrl = `/Custom-Reports/run-and-get-report/${data.id}`;
+      const nextUrl = `/Custom-Reports/run-and-get-report/${data.id}?searchTerm=${data.searchTerm || ""}`;
       const url = `${baseUrl}${nextUrl}`;
       return await apiCall({
         url,
@@ -158,6 +162,17 @@ export const useReportsService = () => {
         url,
         extraOptions,
         responseType: 'arraybuffer',
+      })
+    },
+
+    getReportRecipientsByReportIdFilterOnly: async (data: RecipientDataFormInterface, extraOptions?: ExtraOptionsInterface): Promise<ApiCallResponseInterface<RecipientDataInterface>> => {
+      const nextUrl = `/Basic-and-Advanced/filterReport/${data.id}`;
+      const url = `${baseUrl}${nextUrl}`;
+      return await apiCall({
+        url,
+        extraOptions,
+        method: 'POST',
+        data
       })
     },
 
