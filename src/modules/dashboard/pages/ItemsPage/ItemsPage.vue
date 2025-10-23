@@ -1,14 +1,8 @@
 <template>
   <div class="row q-mb-sm">
     <div class="col-12 top-title-col">
-      <p class="page-main-title">Items table</p>
+      <p class="page-main-title">{{ description || 'Items' }}</p>
       <div class="separator-right q-mr-sm q-ml-sm"></div>
-    </div>
-  </div>
-
-  <div v-if="!!description" class="row">
-    <div class="col-12 text-h5">
-      <b> {{ description }} </b>
     </div>
   </div>
 
@@ -59,8 +53,6 @@ const { getItemTableByItemId, ordersArchiveState } = useOrderArchive()
 const $route = useRoute()
 const description = ref<string>('')
 const isFullScreen = ref(false)
-
-console.log(ordersArchiveState)
 
 onMounted(async () => {
   const itemId = $route.params.itemId

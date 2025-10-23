@@ -531,7 +531,7 @@ const insertFile = (file: string, prop?: { width: string; height: string }) => {
       try {
         edit.focus?.()
       } catch {
-        console.log()
+        console.error()
       }
       return
     }
@@ -550,7 +550,7 @@ const insertFile = (file: string, prop?: { width: string; height: string }) => {
         sel.removeAllRanges()
         sel.addRange(range)
       } catch (e: unknown) {
-        console.log(e)
+        console.error(e)
         const last = contentEl.childNodes[contentEl.childNodes.length - 1]
         if (last) {
           sel.removeAllRanges()
@@ -561,7 +561,7 @@ const insertFile = (file: string, prop?: { width: string; height: string }) => {
       try {
         edit.focus?.()
       } catch {
-        console.log('error')
+        console.error('error')
       }
     })
   }, 100)

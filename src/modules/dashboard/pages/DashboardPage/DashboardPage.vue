@@ -9,13 +9,13 @@
 
     <InfoAlert
       v-if="fundraiserStatus.fundraiserClosed"
-      class="q-mb-md q-mt-md q-pa-sm"
+      class="q-pa-sm"
       type="error"
       :inner-h-t-m-l="fundraiserClosedHTML"
     />
     <InfoAlert
       v-if="fundraiserStatus.hasReciprocityTrans"
-      class="q-mb-md q-mt-md q-pa-sm"
+      class="q-pa-sm"
       type="warning"
       :inner-h-t-m-l="fundraiserReciprocityHTML"
     />

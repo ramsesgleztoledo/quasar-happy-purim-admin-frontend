@@ -9,7 +9,7 @@
         <q-btn
           v-if="!$rStore.getReportSelectedReportData?.viewOnly"
           color="primary"
-          icon="check"
+          icon="draw"
           label="Create Mail Merge"
           :to="{
             name: 'MailMergeReportsPage-MailMergePage',
@@ -396,6 +396,7 @@ const columns = computed(() => {
 })
 
 const getInitialData = async () => {
+  goToPageWithFilters()
   const res = await getReportData(
     {
       ...filter.value,
@@ -409,7 +410,6 @@ const getInitialData = async () => {
   notFirstTime.value = true
   report.value = res
   isTableLoading.value = false
-  goToPageWithFilters()
 }
 
 const goToPageWithFilters = () => {
@@ -432,11 +432,14 @@ const goToPageWithFilters = () => {
       isCustom: 'true',
     }
 
-  $router.push({
-    name: 'MailMergeReportsPage-ViewReport',
-    params: { reportId },
+  $router.replace({
     query,
   })
+  // $router.push({
+  //   name: 'MailMergeReportsPage-ViewReport',
+  //   params: { reportId },
+  //   query,
+  // })
 }
 
 const clearFilters = () => {

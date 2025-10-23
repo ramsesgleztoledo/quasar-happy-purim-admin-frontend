@@ -537,7 +537,6 @@ const {
 const creditFormDateRule = [
   (value: string) => {
     try {
-      console.log('date value ', { value })
       if (value.length !== 7) return true
 
       const year = Number(value.slice(-4))

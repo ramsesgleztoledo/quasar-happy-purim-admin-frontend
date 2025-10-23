@@ -202,10 +202,6 @@ export const useReport = () => {
 
     async getReportData(data: RecipientDataFormInterface, isCustom: boolean, isFirstTime?: boolean) {
 
-
-      console.log({ data, isCustom, isFirstTime });
-
-
       let resp = undefined
 
       if (!isCustom) {
@@ -241,11 +237,11 @@ export const useReport = () => {
         //     }
         //   }))
         // else
-          resp = await getReportRecipientsByReportIdCustomWithSQL(data, {
-            // loading: {
-            //   message: 'Loading ...'
-            // }
-          })
+        resp = await getReportRecipientsByReportIdCustomWithSQL(data, {
+          // loading: {
+          //   message: 'Loading ...'
+          // }
+        })
 
 
 

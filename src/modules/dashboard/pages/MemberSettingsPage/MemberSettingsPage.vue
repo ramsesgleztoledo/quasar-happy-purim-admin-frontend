@@ -242,10 +242,10 @@ const auxColumns: {
 
 const columns: QTableColumn[] = auxColumns.map((co) => ({
   ...co,
-  style: co.style ? co.style : 'max-width: 100px; overflow: hidden; text-overflow: ellipsis',
+  style: co.style ? co.style : 'max-width: 150px; overflow: hidden; text-overflow: ellipsis',
   headerStyle: co.headerStyle
     ? co.headerStyle
-    : 'max-width: 100px; overflow: hidden; text-overflow: ellipsis',
+    : 'max-width: 150px; overflow: hidden; text-overflow: ellipsis',
   required: true,
   sortable: true,
   align: 'left',
@@ -285,8 +285,6 @@ const getCategoriesIdAsString = () => {
 }
 
 onMounted(() => {
-  console.log('mounting page')
-
   loadPage()
   // getMembers_Co({
   //   categories: getCategoriesIdAsString(),

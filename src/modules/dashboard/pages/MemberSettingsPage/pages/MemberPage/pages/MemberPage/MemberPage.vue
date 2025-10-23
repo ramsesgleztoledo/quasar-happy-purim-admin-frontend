@@ -955,8 +955,6 @@ const onUpdateMember = async () => {
     doorManValue: hasDoorman.value,
   }
 
-  console.log({ data })
-
   await updateMember_Co(id, data)
 }
 

@@ -9,13 +9,11 @@
 
     <InfoAlert
       v-if="fundraiserStatus.fundraiserClosed"
-      class="q-mb-md q-mt-md"
       type="error"
       :inner-h-t-m-l="fundraiserClosedHTML"
     />
     <InfoAlert
       v-if="fundraiserStatus.hasReciprocityTrans"
-      class="q-mb-md q-mt-md"
       type="warning"
       :inner-h-t-m-l="fundraiserReciprocityHTML"
     />
@@ -43,7 +41,7 @@
               'col-12': isMobile,
             }"
           >
-            <div class="DashboardPage-members-stats-container ">
+            <div class="DashboardPage-members-stats-container">
               <DashboardPageStatsComponent />
             </div>
           </div>
@@ -55,7 +53,7 @@
             }"
           >
             <div
-              class="DashboardPage-members-stats-container DashboardPage-members-stats-container-2 "
+              class="DashboardPage-members-stats-container DashboardPage-members-stats-container-2"
             >
               <DashboardPageInfoComponent />
             </div>

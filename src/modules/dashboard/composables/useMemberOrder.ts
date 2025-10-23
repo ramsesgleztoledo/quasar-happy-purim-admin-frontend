@@ -402,10 +402,6 @@ export const useMemberOrder = () => {
           message: `Loading ...`
         }
       })
-
-      console.log({ data: resp.data });
-
-
       if (resp.ok)
         setCustomShippingItems(resp.data)
 

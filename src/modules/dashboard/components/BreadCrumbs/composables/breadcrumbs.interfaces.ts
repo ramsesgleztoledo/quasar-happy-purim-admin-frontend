@@ -19,6 +19,7 @@ export interface routeDataInterface {
   icon: string;
   title: string;
   params?: string[];
+  queryParams?: string[];
   titleParam?: ((value?: routeParamInterface) => string);
   dontShow?: boolean;
 }

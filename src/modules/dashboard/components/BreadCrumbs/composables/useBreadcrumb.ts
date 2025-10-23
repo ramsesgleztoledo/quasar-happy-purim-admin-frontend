@@ -6,12 +6,14 @@ import type { LinksDataInterface, routeDataInterface, routeParamInterface } from
 import { useMemberStore } from "src/modules/dashboard/store/memberStore/memberStore";
 import { computed } from "vue";
 import { cutName } from "src/helpers/cutName";
+import { useRoute } from "vue-router";
 
 export const useBreadcrumb = () => {
 
 
   const $rStore = useReportStore()
   const $mStore = useMemberStore()
+  const $route = useRoute()
 
 
   const memberDname = computed(() => `${$mStore.selectedMember?.lastName}, ${$mStore.selectedMember?.firstName}`)
@@ -203,9 +205,11 @@ export const useBreadcrumb = () => {
       icon: 'inventory',
       name: 'dashboard-itemDetailsPage',
       params: ['itemId'],
+      queryParams: ['description'],
       titleParam: (
         // value?: routeParamInterface
-      ) => `Item`
+      ) => `${$route.query.description || "Items"}`
+      // `Items`
       //  - ${value?.itemId}`
     },
     {

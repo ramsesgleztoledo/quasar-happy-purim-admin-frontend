@@ -77,7 +77,8 @@
         <div class="row table-white-container" :class="{ fullscreen: isFullScreen }">
           <div class="col-12">
             <div class="row">
-              <div class="col-12 justify-content-end">
+              <div class="col-12 justify-content-space-between">
+                <div class="text-h6 d-flex align-items-center">Emails:</div>
                 <q-btn
                   flat
                   round
@@ -91,7 +92,6 @@
               :pagination="{
                 rowsPerPage: 0,
               }"
-              title="Emails"
               :style="{ height: isFullScreen ? '800px' : '400px' }"
               class="table-sticky-header-column-table"
               flat

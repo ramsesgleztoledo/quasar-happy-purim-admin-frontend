@@ -17,19 +17,14 @@
       </div>
     </div>
 
-    <div class="row">
-      <div class="col-12 d-flex">
-        <div class="text-h6">
-          Out of the {{ dashboardState.membersLogged.rows.length }} members who have logged in,
-          {{ dashboardState.membersLogged.totalOrdered }} have placed orders.
-        </div>
-      </div>
-    </div>
-
     <div class="row white-container" :class="{ fullscreen: isFullScreen }">
       <div class="col-12">
         <div class="row">
-          <div class="col-12 justify-content-end">
+          <div class="col-12 justify-content-space-between">
+            <div class="text-h6 d-flex align-items-center">
+              Out of the {{ dashboardState.membersLogged.rows.length }} members who have logged in,
+              {{ dashboardState.membersLogged.totalOrdered }} have placed orders.
+            </div>
             <q-btn
               flat
               round
