@@ -74,6 +74,7 @@
         v-close-popup
       />
       <q-btn
+        @click="sendEmail"
         class="q-mr-sm q-mt-sm"
         style="background: var(--happypurim); color: white"
         label="send email"
@@ -90,6 +91,11 @@ import EditorCustom from 'src/components/EditorCustom/EditorCustom.vue'
 import { onMounted, ref } from 'vue'
 import { useMember } from 'src/modules/dashboard/composables/useMember'
 import { useRoute } from 'vue-router'
+import { useEmail } from 'src/modules/dashboard/composables/useEmail'
+import type { EmailDataFormInterface } from 'src/modules/dashboard/interfaces/email-interfaces'
+
+const { sendAEmail } = useEmail()
+
 const {
   getEmailLoginCodeInfo_Co,
   memberState: {
@@ -144,6 +150,7 @@ const {
   realForm,
   resetForm,
   isValidForm: isValidRealForm,
+  getFormValue,
 } = useForm<FormInterface>({
   fromName: { value: '', validations: [validations.required] },
   fromEmail: { value: '', validations: [validations.required, validations.isEmail] },
@@ -170,6 +177,23 @@ const isValidForm = () => {
   if (!emailContent.value) return false
   if (!isValidRealForm()) return false
   return true
+}
+
+const sendEmail = async () => {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const formData = getFormValue() as any
+
+  const data: EmailDataFormInterface = {
+    bcc: [],
+    isBodyHtml: true,
+    encoding: 'utf-8',
+    cc: [],
+    replyTo: '',
+    ...formData,
+    body: emailContent.value,
+  }
+
+  await sendAEmail(data)
 }
 </script>
 

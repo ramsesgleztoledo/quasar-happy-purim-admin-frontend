@@ -21,7 +21,7 @@ export const useBreadcrumb = () => {
 
   const linksDataDev: LinksDataInterface[] = [];
 
-  // if (process.env.NODE_ENV === 'development')
+  if (process.env.NODE_ENV === 'development')
   linksDataDev.push({
     title: 'go to Accounts (dev)',
     icon: 'person',

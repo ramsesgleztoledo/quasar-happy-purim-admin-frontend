@@ -114,8 +114,7 @@ export const useUI = () => {
     reloadPage,
     goBack,
     goForward,
-    isDev: computed(() => true
-      //  process.env.NODE_ENV === 'development'
+    isDev: computed(() => process.env.NODE_ENV === 'development'
     ),
     version: computed(() => process.env.VERSION || ''),
 

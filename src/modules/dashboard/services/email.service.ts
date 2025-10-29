@@ -1,6 +1,6 @@
 import type { ApiCallResponseInterface, ExtraOptionsInterface } from "../../../services/api-interfaces";
 import { useApiCall } from "../../../services/apiCall";
-import type { CampaignDetailsInterface, CampaignInterface, EmailContentInterface } from "../interfaces/email-interfaces";
+import type { CampaignDetailsInterface, CampaignInterface, EmailContentInterface, EmailDataFormInterface } from "../interfaces/email-interfaces";
 
 
 
@@ -17,7 +17,7 @@ export const useEmailService = () => {
       return await apiCall({
         url,
         extraOptions
-      }) 
+      })
     },
 
     getCampaignDetailById: async (campaignId: number, extraOptions?: ExtraOptionsInterface): Promise<ApiCallResponseInterface<CampaignDetailsInterface>> => {
@@ -42,6 +42,17 @@ export const useEmailService = () => {
       return await apiCall({
         url,
         extraOptions
+      })
+    },
+
+    sendAEmail: async (data: EmailDataFormInterface, extraOptions?: ExtraOptionsInterface): Promise<ApiCallResponseInterface<CampaignDetailsInterface>> => {
+      const nextUrl = `/send-email`;
+      const url = `${baseUrl}${nextUrl}`;
+      return await apiCall({
+        url,
+        extraOptions,
+        method: 'POST',
+        data
       })
     },
 

@@ -52,16 +52,18 @@
         label="ADD MEMBER "
         class="q-mr-sm"
         :to="{ name: 'MembersSettingsPage-AddMemberPage' }"
+        style="height: 42px"
       />
       <q-btn
         outline
         label="UPLOAD MEMBER LIST"
         :to="{ name: 'MembersSettingsPage-MemberListLayout' }"
+        style="height: 42px"
       />
     </div>
   </div>
   <div class="">
-    <div class="row RecentOrders-container" :class="{ fullscreen: isFullScreen }">
+    <div class="row white-container RecentOrders-container" :class="{ fullscreen: isFullScreen }">
       <div class="col-12">
         <div class="row">
           <div class="col-12 justify-content-end white-container">
@@ -78,7 +80,7 @@
         <q-table
           @update:pagination="onPaginationUpdate"
           :style="{ height: isFullScreen ? '800px' : '630px' }"
-          class="table-sticky-header-column-table sticky-2-column-table"
+          class="table-sticky-header-column-table sticky-2-column-table-copy"
           flat
           bordered
           ref="tableRef"
@@ -103,7 +105,7 @@
               :props="props"
             >
               <q-td v-for="col in props.cols" :key="col.name" :props="props">
-                <div v-if="col.name === 'm_hidden'" style="width: 100px">
+                <div v-if="col.name === 'm_hidden'">
                   <q-icon
                     v-if="props.row.m_hidden"
                     color="primary"
@@ -181,8 +183,8 @@ const auxColumns: {
   {
     label: 'Hidden',
     field: 'm_hidden',
-    style: 'width: 100px; overflow: hidden; text-overflow: ellipsis',
-    headerStyle: 'width: 100px; overflow: hidden; text-overflow: ellipsis',
+    style: 'width: 30px; overflow: hidden; text-overflow: ellipsis',
+    headerStyle: 'width: 30px; overflow: hidden; text-overflow: ellipsis',
   },
   {
     label: 'Last Name',

@@ -302,7 +302,7 @@ const onAddCustomShippingOption = async () => {
 
     await addCustomShippingItem(dataAux)
     await addOrRemoveItem(true, {
-      description: 'Shipping Gift Basket to',
+      description: 'Shipping Gift Basket',
       itemId: 2,
       sessionId: authState.value?.token?.token || '',
       quantity: 1,

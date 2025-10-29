@@ -38,9 +38,9 @@
               <q-tr :props="props">
                 <q-td v-for="col in props.cols" :key="col.name" :props="props">
                   <div v-if="col.name === 'campaignId'">
-                    <div class="row" style="min-width: 250px">
+                    <div class="row" style="min-width: 170px">
                       <q-btn
-                        class="q-mr-sm q-mt-sm btn-mr-i-sm"
+                        class="q-mr-sm q-mt-sm q-btn-non-mr"
                         style="background-color: var(--happypurim); color: white; font-size: 12px"
                         label="view"
                         icon="visibility"
@@ -63,7 +63,7 @@
                         </q-tooltip>
                       </q-btn>
                       <q-btn
-                        class="q-mr-sm q-mt-sm btn-mr-i-sm"
+                        class="q-mr-sm q-mt-sm q-btn-non-mr"
                         style="background-color: var(--happypurim); color: white; font-size: 12px"
                         label="cancel"
                         icon="close"

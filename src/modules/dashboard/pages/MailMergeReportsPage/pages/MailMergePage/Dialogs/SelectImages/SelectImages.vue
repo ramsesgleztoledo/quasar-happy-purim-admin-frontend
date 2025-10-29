@@ -35,7 +35,7 @@
           <q-inner-loading :showing="!isReady" label="Loading ..." />
         </div>
       </div>
-      <div v-else class="q-pa-lg q-ma-lg">No images to show...</div>
+      <div v-else class="q-pa-lg q-ma-lg">No images to show</div>
       <q-card-actions class="custom-dialog-footer-container" align="right">
         <q-btn
           outline

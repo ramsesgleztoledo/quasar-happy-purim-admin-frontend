@@ -430,6 +430,7 @@ export const useMemberOrder = () => {
         cardType: "",
         checkOrCCNumber: "",
         paymentMethod: "Invoice",
+        paymentType: "Invoice",
         firstName: "",
         lastName: "",
         cardCode: "",
@@ -463,6 +464,7 @@ export const useMemberOrder = () => {
             cardExpirationMonth: date![0] || "",
             cardExpirationYear: date![1] || "",
             paymentType: "Credit Card",
+            paymentMethod: "Credit Card",
           } as unknown as MemberCreateOrderFormInterface
           break;
         }
@@ -475,11 +477,13 @@ export const useMemberOrder = () => {
             ...data,
             ...formData,
             paymentType: "Check",
+            paymentMethod: "Check",
           } as unknown as MemberCreateOrderFormInterface
           break;
         }
         default: {
           data.paymentMethod = "Invoice";
+          data.paymentType = "Invoice";
           break;
         }
 

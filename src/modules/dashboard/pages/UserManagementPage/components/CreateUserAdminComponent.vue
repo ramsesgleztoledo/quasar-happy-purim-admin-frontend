@@ -9,7 +9,7 @@
       </div>
 
       <div class="custom-dialog-body-container q-pa-lg">
-        <div v-if="user" class="row q-mb-sm justify-content-end">
+        <div v-if="user" class="row q-mb-sm justify-content-end q-pr-sm">
           <q-btn
             color="primary"
             icon="history"
@@ -19,7 +19,7 @@
         </div>
         <div class="row">
           <!--=============================== member left=============================-->
-          <div class="q-pr-lg col-12">
+          <div class="col-12">
             <div class="row q-mt-md">
               <div
                 :class="{
@@ -239,7 +239,7 @@
       <div class="custom-dialog-body-container q-pa-lg">
         <div class="row">
           <!--=============================== member left=============================-->
-          <div class="q-pr-lg col-12">
+          <div class="col-12">
             <div class="row q-mt-md">
               <div class="q-pl-sm q-pr-sm col-12">
                 <q-input

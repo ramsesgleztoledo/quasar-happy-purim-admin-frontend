@@ -56,3 +56,17 @@ export interface SendEmailInterface {
   isBodyHtml: boolean;
   encoding: string;
 }
+
+
+export interface EmailDataFormInterface {
+  toEmail: string;
+  fromEmail: string;
+  fromName: string;
+  subject: string;
+  body: string;
+  replyTo: string;
+  bcc: string[];
+  cc: string[];
+  isBodyHtml: boolean;
+  encoding: string;
+}

@@ -1,6 +1,7 @@
 import { defineBoot } from '#q-app/wrappers';
 import axios, { type AxiosInstance } from 'axios';
 
+
 declare module 'vue' {
   interface ComponentCustomProperties {
     $axios: AxiosInstance;
@@ -15,11 +16,18 @@ declare module 'vue' {
 // "export default () => {}" function below (which runs individually
 // for each client)
 
-// const basUrlDev = 'https://localhost:7126/api'
-const basUrlProd = 'https://api.happypurim.dev/api'
-// const basUrlProd = 'https://localhost:5001/api'
 
-const api = axios.create({ baseURL: basUrlProd });
+// const basUrlDev = 'https://api.happypurim.dev/api'
+// const basUrlSta = 'https://api-staging.happypurim.dev/api'
+
+
+
+const baseURL = 'https://api-staging.happypurim.dev/api'
+// const baseURL = import.meta.env.VITE_API_BASE_URL || "";
+
+
+
+const api = axios.create({ baseURL });
 
 export default defineBoot(({ app }) => {
   // for use inside Vue files (Options API) through this.$axios and this.$api

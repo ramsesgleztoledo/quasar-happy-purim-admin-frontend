@@ -64,8 +64,9 @@
                   <div class="col-12">
                     <div class="mini-text">Address:</div>
                     <div class="mini-text">
-                      {{ item.address }} {{ `${item.address2 ? `, ${item.address2}` : ''}` }},
-                      {{ item.city }}, {{ item.state }}, {{ item.zip }}
+                      {{
+                        `${item.address}${item.address2 ? `, ${item.address2}` : ''}${item.city}, ${item.state}, ${item.zip}`
+                      }}
                     </div>
                   </div>
                 </div>

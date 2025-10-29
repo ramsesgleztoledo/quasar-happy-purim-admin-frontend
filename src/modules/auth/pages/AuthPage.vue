@@ -80,7 +80,7 @@ onMounted(() => {
   // if (!token) return logOut()
 
   if (token) {
-    $q.loading.show({ message: 'authenticating ...' })
+    $q.loading.show({ message: 'Authenticating ...' })
     login(token as string)
     $q.loading.hide()
   } else isReady.value = true

@@ -67,18 +67,13 @@
           clearable
           label="Filter By Categories"
         />
+        <div
+          v-if="$rStore.$state.isCustom && $rStore.getReportSelectedReportData?.reportID != '12'"
+        >
+          <q-checkbox class="q-mr-sm" v-model="filter.yesOnly" label="Show Yes Only" />
+          <q-checkbox class="q-mr-sm" v-model="filter.hideNL" label="Hide (N/L) = Not Logged In" />
+        </div>
         <template v-if="showMoreFilters">
-          <div
-            v-if="$rStore.$state.isCustom && $rStore.getReportSelectedReportData?.reportID != '12'"
-          >
-            <q-checkbox class="q-mr-sm" v-model="filter.yesOnly" label="Show Yes Only" />
-            <q-checkbox
-              class="q-mr-sm"
-              v-model="filter.hideNL"
-              label="Hide (N/L) = Not Logged In"
-            />
-          </div>
-
           <template v-if="!$rStore.$state.isCustom">
             <template v-if="$rStore.showExtraFilters">
               <q-select
@@ -139,15 +134,17 @@
           @click="clearFilters"
         />
         <!-- label="Clear Filters" -->
-
-        <q-checkbox
+        <q-btn
           v-if="
-            !showMoreFilters &&
-            ($rStore.showExtraFilters ||
-              ($rStore.$state.isCustom && $rStore.getReportSelectedReportData?.reportID != '12'))
+            !showMoreFilters && $rStore.showExtraFilters && !$rStore.$state.isCustom
+            // ($rStore.showExtraFilters ||
+            //   ($rStore.$state.isCustom && $rStore.getReportSelectedReportData?.reportID != '12'))
           "
-          v-model="showMoreFilters"
-          label="Show More Filters ..."
+          style="max-height: 42px"
+          color="primary"
+          icon="filter_alt"
+          label="Show More Filters"
+          @click="showMoreFilters = true"
         />
       </div>
     </div>
@@ -177,7 +174,7 @@
             <div class="col-12">
               <q-table
                 :style="{ height: isFullScreen ? '800px' : '628px' }"
-                class="table-sticky-header-column-table sticky-2-1-column-table"
+                class="table-sticky-header-column-table sticky-2-column-table-copy"
                 flat
                 bordered
                 :rows="rows"
@@ -198,7 +195,7 @@
                       <q-checkbox
                         v-model="allRowSelected"
                         @click="selectUnselectAllRows"
-                        style="width: 100px"
+                        style="width: 56px"
                       />
                     </q-th>
                     <q-th v-for="col in props.cols" :key="col.name" :props="props">
@@ -218,7 +215,12 @@
                     :icon="props.expand ? 'remove' : 'add'"
                   />
                 </q-td> -->
-                    <q-td auto-width v-if="!$rStore.getReportSelectedReportData?.viewOnly">
+                    <q-td
+                      style="width: 56px"
+                      auto-width
+                      v-if="!$rStore.getReportSelectedReportData?.viewOnly"
+                    >
+                      <div></div>
                       <q-checkbox
                         :model-value="props.selected"
                         @update:model-value="(val) => (props.selected = val)"
@@ -271,7 +273,7 @@
           </div>
           <div v-else>
             <div class="row">
-              <h6>No members found...</h6>
+              <h6>No members found</h6>
             </div>
           </div>
         </div>
@@ -382,15 +384,21 @@ const areFilterInApplied = () => {
 const timeOut = ref<NodeJS.Timeout | undefined>(undefined)
 
 const columns = computed(() => {
-  const columns: QTableColumn[] = $rStore.$state.tokens.map((token) => ({
+  const columns: QTableColumn[] = $rStore.$state.tokens.map((token, index) => ({
     name: token,
     required: true,
     label: token,
     align: 'left',
     field: token,
     sortable: true,
-    style: 'width: 100px; overflow: hidden; text-overflow: ellipsis',
-    headerStyle: 'width: 100px; overflow: hidden; text-overflow: ellipsis',
+    style:
+      index == 0
+        ? 'width: 56px; overflow: hidden; text-overflow: ellipsis'
+        : 'width: 100px; overflow: hidden; text-overflow: ellipsis',
+    headerStyle:
+      index == 0
+        ? 'width: 56px; overflow: hidden; text-overflow: ellipsis'
+        : 'width: 100px; overflow: hidden; text-overflow: ellipsis',
   }))
   return columns
 })

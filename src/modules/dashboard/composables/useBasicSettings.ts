@@ -139,7 +139,7 @@ export const useBasicSettings = () => {
           color: 'red',
           textColor: 'black',
           icon: 'error',
-          message: `something went wrong uploading the files`,
+          message: `Something went wrong uploading the files`,
         })
       }
 
@@ -160,8 +160,8 @@ export const useBasicSettings = () => {
         dontRedirect: true
       })
       showToast(resp.ok,
-        'file deleted',
-        'something went wrong deleting the file'
+        'File Deleted',
+        'Something went wrong deleting the file'
       )
 
       return resp.ok

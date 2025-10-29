@@ -42,6 +42,11 @@ export default defineConfig((ctx) => {
 
     // Full list of options: https://v2.quasar.dev/quasar-cli-vite/quasar-config-file#build
     build: {
+      env: {
+        API_BASE_URL_DEV: 'https://api.happypurim.dev/api',
+        API_BASE_URL_STA: 'https://api-staging.happypurim.dev/api',
+        API_BASE_URL_PROD: 'https://api.happypurim.com/api',
+      },
       target: {
         browser: ['es2022', 'firefox115', 'chrome115', 'safari14'],
         node: 'node20'

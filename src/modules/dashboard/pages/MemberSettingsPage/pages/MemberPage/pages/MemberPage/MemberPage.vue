@@ -131,7 +131,12 @@
                   <q-item-section>
                     <q-btn
                       :icon="`${memberState.isPendingDeletion ? 'close' : 'delete'}`"
-                      @click="deleteMemberDialogFlag = true"
+                      @click="
+                        () => {
+                          if (memberState.isPendingDeletion) setDeleteMember()
+                          else deleteMemberDialogFlag = true
+                        }
+                      "
                       outline
                       :label="`${memberState.isPendingDeletion ? 'Remove delete flag' : 'DELETE'}`"
                       class="q-mr-sm q-mt-sm"
@@ -181,6 +186,7 @@
             }"
           >
             <q-btn
+              padding="8px"
               icon="add"
               outline
               label="CREATE ORDER"
@@ -188,6 +194,7 @@
               class="q-mr-sm q-mt-sm"
             />
             <q-btn
+              padding="8px"
               v-if="dashboardState.showCreateOrderByCode"
               outline
               icon="add"
@@ -196,6 +203,7 @@
               class="q-mr-sm q-mt-sm"
             />
             <q-btn
+              padding="8px"
               v-if="memberState.showClearCart"
               outline
               icon="close"
@@ -204,6 +212,7 @@
               @click="clearCartMemberDialogFlag = true"
             />
             <q-btn
+              padding="8px"
               icon="restart_alt"
               class="q-mr-sm q-mt-sm"
               style="background: var(--happypurim); color: white"
@@ -211,6 +220,7 @@
               @click="confirmResetLoginDialogFlag = true"
             />
             <q-btn
+              padding="8px"
               icon="email"
               class="q-mr-sm q-mt-sm"
               style="background: var(--happypurim); color: white"
@@ -218,6 +228,7 @@
               @click="emailLoginCodeDialogFlag = true"
             />
             <q-btn
+              padding="8px"
               v-if="memberState.showRecordPaymentBtn"
               icon="credit_card"
               class="q-mr-sm q-mt-sm"
@@ -227,8 +238,14 @@
             />
           </div>
           <q-btn
+            padding="8px"
             :icon="`${memberState.isPendingDeletion ? 'close' : 'delete'}`"
-            @click="deleteMemberDialogFlag = true"
+            @click="
+              () => {
+                if (memberState.isPendingDeletion) setDeleteMember()
+                else deleteMemberDialogFlag = true
+              }
+            "
             outline
             :label="`${memberState.isPendingDeletion ? 'Remove delete flag' : 'DELETE'}`"
             class="q-mr-sm q-mt-sm"

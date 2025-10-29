@@ -452,7 +452,7 @@
             <p>No Debts</p>
           </div>
         </div>
-        <q-card-section>There are no debts to pay... </q-card-section>
+        <q-card-section>There are no debts to pay </q-card-section>
         <q-card-actions class="custom-dialog-footer-container" align="right">
           <q-btn
             class="q-mr-sm q-mt-sm"

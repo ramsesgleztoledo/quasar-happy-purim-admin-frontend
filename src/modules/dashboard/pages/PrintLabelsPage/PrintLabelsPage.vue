@@ -4,14 +4,10 @@
       <div class="col-12 top-title-col">
         <p class="page-main-title">Print & Labels</p>
         <div class="separator-right q-mr-sm q-ml-sm"></div>
-      </div>
-    </div>
-    <div class="row">
-      <div class="col-12">
         <p>In this section, you can <b> download </b> reports for printing.</p>
       </div>
     </div>
-    <div class="separator-bottom q-mb-md"></div>
+
     <div class="row q-mb-sm" v-for="(item, index) in labels" :key="item.id">
       <div class="col-12">
         <q-item class="PrintLabelsPage-item">

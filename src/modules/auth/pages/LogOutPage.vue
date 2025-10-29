@@ -10,7 +10,7 @@ const $q = useQuasar()
 const { logOut } = useAuth()
 
 onMounted(() => {
-  $q.loading.show({ message: 'login you out ...' })
+  $q.loading.show({ message: 'Login you out ...' })
   logOut()
   $q.loading.hide()
 })

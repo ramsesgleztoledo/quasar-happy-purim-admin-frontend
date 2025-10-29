@@ -1,4 +1,10 @@
 <template>
+  <div class="row">
+    <div class="col-12 top-title-col">
+      <p class="page-main-title">Scheduled Emails</p>
+      <div class="separator-right q-mr-sm q-ml-sm"></div>
+    </div>
+  </div>
   <div class="row q-mb-sm">
     <div class="col-12">
       <div class="row table-white-container" :class="{ fullscreen: isFullScreen }">
@@ -18,7 +24,6 @@
             :pagination="{
               rowsPerPage: 0,
             }"
-            title="Scheduled Emails"
             class="table-sticky-header-column-table"
             flat
             bordered
@@ -34,9 +39,9 @@
                   <div v-if="col.name === 'id'">
                     <div class="row">
                       <q-btn
-                        class="q-mr-sm"
+                        class="q-mr-sm q-btn-non-mr"
                         style="background-color: var(--happypurim); color: white; font-size: 12px"
-                        padding="5px"
+                        padding="6px"
                         size="sm"
                         label="view"
                         flat

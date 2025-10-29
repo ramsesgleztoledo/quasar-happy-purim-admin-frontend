@@ -17,7 +17,7 @@
       <template v-slot:option="scope">
         <div v-bind="scope.itemProps">
           <div class="q-pa-md" style="display: none" v-if="scope.opt.routeName === 'none'">
-            nothing found...
+            nothing found
           </div>
           <q-item v-else @click="goTo(scope.opt)" clickable>
             <q-item-section avatar>
@@ -55,13 +55,20 @@ import { pagesForSearch } from '../data/search-data'
 import { useRouter } from 'vue-router'
 import { useMember } from 'src/modules/dashboard/composables/useMember'
 
+const emptyData = {
+  icon: '',
+  phrases: [],
+  routeName: 'none',
+  title: 'Nothing found',
+}
+
 const selected = ref<PagesForSearchInterface | undefined>(undefined)
 const searched = ref<PagesForSearchInterface[]>([
   {
     icon: '',
     phrases: [],
     routeName: 'none',
-    title: 'Nothing found ...',
+    title: 'Nothing Found',
   },
 ])
 const $router = useRouter()
@@ -96,32 +103,15 @@ const searchMembers = async (val: string) => {
 const filterOptions = (val: string) => {
   selected.value = undefined
   if (!val) {
-    searched.value = [
-      {
-        icon: '',
-        phrases: [],
-        routeName: 'none',
-        title: 'Nothing found ...',
-      },
-    ]
+    searched.value = [emptyData]
     return [
-      {
-        icon: '',
-        phrases: [],
-        routeName: 'none',
-        title: 'Nothing found ...',
-      },
+      emptyData
     ]
   } else {
     let result = fuse.search(val.toLowerCase()).map((result) => result.item)
     if (!result.length)
       result = [
-        {
-          icon: '',
-          phrases: [],
-          routeName: 'none',
-          title: 'Nothing found ...',
-        },
+     emptyData
       ]
 
     searched.value = result

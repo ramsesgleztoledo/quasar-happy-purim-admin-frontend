@@ -2,13 +2,14 @@
 import { computed } from "vue";
 import { useEmailStore } from "../store/emailStore/emailStore";
 import { useEmailService } from "../services/email.service";
+import type { EmailDataFormInterface } from "../interfaces/email-interfaces";
 
 
 export const useEmail = () => {
 
 
   const $eStore = useEmailStore()
-  const { getEmails, getCampaignDetailById, getEmailContentByEmailId } = useEmailService()
+  const { getEmails, getCampaignDetailById, getEmailContentByEmailId, sendAEmail } = useEmailService()
 
 
 
@@ -40,6 +41,20 @@ export const useEmail = () => {
         useCache: true
       })
       return emailContent.ok ? (emailContent.data.body || "") : ""
+    },
+
+    async sendAEmail(data: EmailDataFormInterface) {
+
+      const resp = await sendAEmail(data, {
+        loading: {
+          message: 'Loading ...',
+        },
+        dontRedirect: true,
+        useRespAsError: true
+      })
+
+      console.log({ resp });
+
     },
 
   }

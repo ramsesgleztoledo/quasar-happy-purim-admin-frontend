@@ -136,6 +136,8 @@ export interface CustomShippingOptionInterface {
   maxQuantity: number;
   hasAttributes: boolean;
   shippingOptionGuid?: string,
+  shippingItemGuid?: string,
+  shippingOptionsGUID?: string,
   clientId?: number,
   deleted?: boolean,
   dateAdded?: Date,
@@ -337,6 +339,7 @@ export interface MemberCreateOrderFormInterfaceOld {
 
 export interface MemberCreateOrderFormInterface {
   paymentMethod: 'Credit Card' | 'Invoice' | 'Check';
+  paymentType: 'Credit Card' | 'Invoice' | 'Check';
   cardType: 'v' | 'm' | 'a' | 'd' | '';
   firstName: string;
   lastName: string;
@@ -404,7 +407,7 @@ export interface ShulSettingInterface {
 
 export interface LocalDeliveryInterface {
   localDeliveryPrice: number;
-  localDeliveryText:  string;
-  enabled:            boolean;
-  zipCode:            string;
+  localDeliveryText: string;
+  enabled: boolean;
+  zipCode: string;
 }

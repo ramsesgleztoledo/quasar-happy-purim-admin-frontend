@@ -66,7 +66,7 @@
           }
         "
       />
-      <div v-else>No Charity Donations ...</div>
+      <div v-else>No Charity Donations</div>
     </div>
   </div>
 </template>

@@ -104,7 +104,7 @@ const columns: QTableColumn[] = [
   {
     name: 'sent',
     field: 'sent',
-    label: '#Sent',
+    label: '# Sent',
     align: 'left',
     required: true,
     sortable: true,
@@ -112,7 +112,7 @@ const columns: QTableColumn[] = [
   {
     name: 'processed',
     field: 'processed',
-    label: '#Processed',
+    label: '# Processed',
     align: 'left',
     required: true,
     sortable: true,
@@ -120,7 +120,7 @@ const columns: QTableColumn[] = [
   {
     name: 'dropped',
     field: 'dropped',
-    label: '#Dropped',
+    label: '# Dropped',
     align: 'left',
     required: true,
     sortable: true,
@@ -128,7 +128,7 @@ const columns: QTableColumn[] = [
   {
     name: 'deferred',
     field: 'deferred',
-    label: '#Deferred',
+    label: '# Deferred',
     align: 'left',
     required: true,
     sortable: true,
@@ -136,7 +136,7 @@ const columns: QTableColumn[] = [
   {
     name: 'delivered',
     field: 'delivered',
-    label: '#Delivered',
+    label: '# Delivered',
     align: 'left',
     required: true,
     sortable: true,
@@ -144,7 +144,7 @@ const columns: QTableColumn[] = [
   {
     name: 'bounced',
     field: 'bounced',
-    label: '#Bounced',
+    label: '# Bounced',
     align: 'left',
     required: true,
     sortable: true,

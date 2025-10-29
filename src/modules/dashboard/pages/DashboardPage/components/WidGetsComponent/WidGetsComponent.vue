@@ -44,7 +44,7 @@
       icon="group_add"
       :first-p="`${participationRate.today}%`"
       second-p="Participation Rate: "
-      :third-p="`${participationRate.yesterday}% From Yesterday`"
+      :third-p="`${participationRate.yesterday}% Up From Yesterday`"
       icon-color="#BF83FF"
       background-color="#F3E8FF"
     />

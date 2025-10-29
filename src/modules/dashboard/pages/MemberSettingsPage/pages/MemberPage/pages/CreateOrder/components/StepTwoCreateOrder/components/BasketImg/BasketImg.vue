@@ -1,17 +1,17 @@
 <template>
   <div style="width: 100%; height: 100%; display: flex; flex-direction: column">
     <div class="row q-pa-sm justify-content-center">{{ item.description }}</div>
-    <div class="row" style="flex: 1">
+    <div class="row" style="flex: 1; width: 100%; height: 80%">
       <div class="col-12" style="width: 100%; height: 100%">
         <div class="basket-img-container">
           <!-- <i class="fa fa-search" aria-hidden="true"></i> -->
 
           <img
-            v-if="item.shippingOptionGuid"
-            :src="`${imStartUrl + item.shippingOptionGuid}`"
-            alt="this basket does not have image"
+            v-if="item.shippingOptionsGUID || item.shippingOptionGuid"
+            :src="`${imStartUrl + `${item.shippingOptionsGUID ? item.shippingOptionsGUID : item.shippingOptionsGUID}`}`"
+            alt="Image not found ..."
           />
-          <div v-else class="no-img-basket">No img ...</div>
+          <div v-else class="no-img-basket">No img</div>
         </div>
       </div>
     </div>

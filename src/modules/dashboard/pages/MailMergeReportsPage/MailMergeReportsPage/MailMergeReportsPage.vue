@@ -3,12 +3,6 @@
     <div class="col-12 top-title-col">
       <p class="page-main-title">Mail Merge & Reports</p>
       <div class="separator-right q-mr-sm q-ml-sm"></div>
-    </div>
-  </div>
-  <div class="row q-mb-md">
-    <div class="col-12 top-title-col">
-      <p class="page-main-title">Reports</p>
-      <div class="separator-right q-mr-sm q-ml-sm"></div>
       <p>
         In this section, you can view reports and start the
         <b> Mail Merge </b>
@@ -19,7 +13,7 @@
       </p>
     </div>
   </div>
-
+ 
   <div class="row q-mb-md">
     <q-btn-toggle v-model="pageView" spread no-caps :options="pageOption" style="width: 445px" />
   </div>

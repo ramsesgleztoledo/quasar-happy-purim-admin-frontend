@@ -33,7 +33,7 @@
             lazy-rules
             :rules="[
               lazyRules.required(),
-              lazyRules.minCharacters(19, 'card number needs to be 16 digits'),
+              lazyRules.minCharacters(19, 'Card number needs to be 16 digits'),
               ...cardNumberRules,
             ]"
             mask="#### #### #### ####"
@@ -66,6 +66,7 @@
                     default-view="Years"
                     minimal
                     :options="() => false"
+                    :navigation-min-year-month="getCurrentYearMonth"
                     v-model="paymentForm.realForm.value.date.value"
                   >
                     <div class="row items-center justify-end">
@@ -216,7 +217,7 @@ const cardTypeValidation = ({ value }: { value: string }) => {
   if (found) return null
   else
     return {
-      invalidCard: `Incorrect card, we only accept: ${cardTypes}`,
+      invalidCard: `Incorrect card, we only accept: ${cardTypes.join(', ')}`,
     }
 }
 
@@ -314,9 +315,13 @@ const cardNumberRules = ref([
 
     const found = cardTypes.find((item) => item == cardType)
 
-    return !!found || `Incorrect card, we only accept: ${cardTypes}`
+    return !!found || `Incorrect card, we only accept: ${cardTypes.join(', ')}`
   },
 ])
+
+const getCurrentYearMonth = computed(
+  () => `${new Date().getFullYear()}/${new Date().getMonth() + 1}`,
+)
 
 onMounted(() => {
   $moStore.setPaymentForm(paymentForm)

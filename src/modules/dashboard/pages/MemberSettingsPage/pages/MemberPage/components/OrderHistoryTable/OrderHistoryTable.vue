@@ -66,7 +66,7 @@
   </div>
   <div v-else>
     <div class="row">
-      <h6>No Transactions ...</h6>
+      <h6>No Transactions</h6>
     </div>
   </div>
 </template>

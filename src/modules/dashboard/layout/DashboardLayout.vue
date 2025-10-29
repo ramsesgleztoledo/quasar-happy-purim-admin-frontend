@@ -59,7 +59,7 @@
         </div>
       </div>
     </q-page-container>
-    <q-footer reveal elevated>
+    <q-footer reveal elevated style="left: 0px">
       <q-toolbar style="min-height: 5px !important">
         <p class="d-flex justify-content-end w-full" style="margin: 0px">
           2025 Happy Purim LLC, All Rights Reserved. | HappyPurim Admin Panel (v{{ version }})

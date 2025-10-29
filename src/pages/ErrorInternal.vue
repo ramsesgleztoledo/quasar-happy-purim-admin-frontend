@@ -4,7 +4,7 @@
       <div style="font-size: 30vh">500</div>
 
       <div class="text-h2" style="opacity: 0.4">
-        Oops. Something went wrong, please try again later...
+        Oops. Something went wrong, please try again later
       </div>
 
       <q-btn

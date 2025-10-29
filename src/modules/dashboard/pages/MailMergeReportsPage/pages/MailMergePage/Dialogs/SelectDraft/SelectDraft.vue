@@ -40,7 +40,7 @@
             </q-item-section>
           </q-item>
         </div>
-        <div v-else class="q-ma-md q-pa-md">no drafts to show...</div>
+        <div v-else class="q-ma-md q-pa-md">No drafts to show</div>
       </div>
       <q-card-actions class="custom-dialog-footer-container" align="right">
         <q-btn

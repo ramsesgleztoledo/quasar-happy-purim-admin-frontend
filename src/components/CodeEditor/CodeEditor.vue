@@ -1,7 +1,7 @@
 <template>
   <codemirror
     v-model="codeText"
-    placeholder="Code goes here..."
+    placeholder="Code goes here"
     :autofocus="true"
     :indent-with-tab="true"
     :tab-size="2"

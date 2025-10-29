@@ -4,6 +4,7 @@
     :content-style="{
       backgroundColor: '#f1f1f1',
       height: fullscreenClass ? '100%' : height ? height : '190px',
+      
     }"
     v-model="text"
     :class="{ fullscreen: fullscreenClass }"
@@ -298,7 +299,9 @@
                 class="EditorCustom-img-container"
                 @click="() => onFileSelected(item)"
                 :style="{ backgroundImage: ` url(${EDITOR_START_IMG_URL}${item})` }"
-              ></div>
+              >
+                <!-- <img :src="`${EDITOR_START_IMG_URL}${item}`" alt="No img" /> -->
+              </div>
               <div class="row">
                 <div class="col-12">
                   <q-btn

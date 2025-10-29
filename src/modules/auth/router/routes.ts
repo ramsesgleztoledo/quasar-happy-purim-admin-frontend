@@ -3,7 +3,7 @@ import type { RouteRecordRaw } from 'vue-router';
 
 const accountPage: RouteRecordRaw[] = []
 
-// if (process.env.NODE_ENV === 'development')
+if (process.env.NODE_ENV === 'development')
   accountPage.push({
     path: '/accounts',
     component: () => import(/* webpackChunkName: "account-page" */ '../pages/AccountsPage.vue'),

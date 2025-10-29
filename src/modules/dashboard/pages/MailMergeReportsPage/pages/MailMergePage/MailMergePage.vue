@@ -329,7 +329,7 @@
               :disable="!email"
               class="q-mr-sm"
               style="background: var(--happypurim); color: white"
-              label="Send Email "
+              label="Schedule or Send Email"
               @click="
                 () => {
                   if (checkIfRecipients()) sendEmailFlag = true
@@ -343,7 +343,7 @@
   </div>
   <!-- <div v-else>
     <div class="row">
-      <h6>No members found...</h6>
+      <h6>No members found</h6>
     </div>
   </div> -->
   <!--=============================== dialogs =============================-->
@@ -478,7 +478,7 @@
         <q-btn-dropdown
           v-if="!preview"
           :disable="!isValidForm() || !email"
-          label="Send Email "
+          label="Schedule or Send Email"
           style="background: var(--happypurim); color: white"
         >
           <q-list>
@@ -585,7 +585,7 @@
             >
               <template v-slot:no-option>
                 <q-item>
-                  <q-item-section class="text-grey"> No results ... </q-item-section>
+                  <q-item-section class="text-grey"> No results</q-item-section>
                 </q-item>
               </template>
               <template v-slot:option="scope">
@@ -687,7 +687,7 @@ const $router = useRouter()
 const $q = useQuasar()
 const $rStore = useReportStore()
 const $dStore = useDashboardStore()
-const { getFilteredRecipients } = useReport()
+const { getReportData } = useReport()
 
 const categoryFiltered = ref<ShulCategoryInterface[] | undefined>(undefined)
 
@@ -751,11 +751,14 @@ watch(
       }
 
       isRecipientsTableLoading.value = true
-      const resp = await getFilteredRecipients({
-        id: $rStore.$state.reportId,
-        categories: value.map((cat) => `${cat.categoryID}`),
-      })
-      rows.value = resp
+      const resp = await getReportData(
+        {
+          id: $rStore.$state.reportId,
+          categories: value.map((cat) => `${cat.categoryID}`),
+        },
+        $rStore.$state.isCustom,
+      )
+      rows.value = resp?.members || []
       isRecipientsTableLoading.value = false
     }, 600)
   },
