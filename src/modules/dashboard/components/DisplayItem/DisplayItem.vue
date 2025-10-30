@@ -10,6 +10,12 @@
         <div v-html="item.label" class="displayItemContainer" />
 
         <p
+          @mouseenter="
+            () => {
+              if (item.hover && !item.showOnHover) menu = true
+            }
+          "
+
           @click="() => onItemCLicked(item)"
           :style="{
             color: item.color ? item.color : 'black',
@@ -18,13 +24,36 @@
           }"
         >
           {{ item.value }}
-          <q-tooltip
-            style="background-color: var(--happypurim); font-size: 16px"
-            v-if="item.hover"
-            transition-show="flip-right"
-            transition-hide="flip-left"
-            ><div v-html="item.hover"></div>
-          </q-tooltip>
+          <template v-if="item.hover">
+            <q-tooltip
+              anchor="bottom middle"
+              self="bottom middle"
+              persistent
+              style="background-color: var(--happypurim); font-size: 16px"
+              v-if="item.showOnHover"
+              transition-show="flip-right"
+              transition-hide="flip-left"
+              ><div v-html="item.hover"></div>
+            </q-tooltip>
+            <q-menu
+              v-else
+
+              style="
+                background-color: var(--happypurim);
+                font-size: 16px;
+                color: white;
+                padding: 8px;
+              "
+              v-model="menu"
+              anchor="bottom middle"
+              self="top middle"
+              :cover="false"
+              transition-show="flip-right"
+              transition-hide="flip-left"
+            >
+              <div v-html="item.hover"></div>
+            </q-menu>
+          </template>
         </p>
       </div>
     </div>
@@ -44,7 +73,7 @@
 <script setup lang="ts">
 import { useRouter } from 'vue-router'
 import type { ItemBasketInterface } from '../../interfaces/item-interfaces'
-import { onMounted } from 'vue'
+import { onMounted, ref } from 'vue'
 import { backendRoutes } from '../../data/backend-routes-redirection'
 
 interface DisplayItemPropsInterface {
@@ -55,6 +84,7 @@ interface DisplayItemPropsInterface {
   items: ItemBasketInterface[]
 }
 
+const menu = ref(false)
 const $router = useRouter()
 
 defineProps<DisplayItemPropsInterface>()

@@ -7,7 +7,8 @@ export const getCardType = (cardNumber: string | number): string | undefined => 
 
   if (
     /^5[1-5]\d{14}$/.test(number) ||
-    /^2(2[2-9][1-9]|2[3-9]\d{2}|[3-6]\d{3}|7([01]\d{2}|20))\d{12}$/.test(number)
+    /^2(?:2[2-9][0-9]{2}|[3-6][0-9]{3}|7(?:[01][0-9]{2}|20))\d{12}$/
+      .test(number)
   ) {
     return 'MasterCard';
   }
@@ -17,7 +18,8 @@ export const getCardType = (cardNumber: string | number): string | undefined => 
   }
 
   if (
-    /^6(?:011|5\d{2}|4[4-9]\d|22(?:1[2-9]|[2-8]\d|9[01]))\d{12}$/.test(number)
+    /^6(?:011|5\d{2}|4[4-9]\d|22(?:12[6-9]|1[3-9]\d|[2-8]\d{2}|9[0-1]\d|92[0-5]))\d{12}$/
+      .test(number)
   ) {
     return 'Discover';
   }

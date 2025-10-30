@@ -497,7 +497,9 @@ export const useMemberOrder = () => {
         dontRedirect: true,
         loading: {
           message: `Placing order ...`
-        }
+        },
+        useRespAsError: true,
+        dontShowToast:true
       })
 
 

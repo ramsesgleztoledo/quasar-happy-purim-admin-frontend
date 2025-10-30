@@ -23,6 +23,8 @@ import type { ItemBasketInterface } from 'src/modules/dashboard/interfaces/item-
 
 const $dStore = useDashboardStore()
 
+const membersOnline = computed(() => $dStore.memberSummary?.membersOnlineNames || [])
+
 const orderItems = computed<ItemBasketInterface[]>(() => [
   {
     label: 'Total Members',
@@ -40,7 +42,22 @@ const orderItems = computed<ItemBasketInterface[]>(() => [
     label: 'Members Currently Online',
     value: $dStore.memberSummary?.membersOnline || 0,
     color: '#3c5ce0',
-    hover: `<p> ${$dStore.memberSummary?.membersOnlineNames || ''} </p>`,
+    hover: membersOnline.value.length
+      ? `
+    <div class="row q-mb-sm">
+    Members who have been online in the past 8 minutes:
+    </div>
+    <ul style="max-height: 120px; overflow: auto;">
+    ${membersOnline.value
+      .map(
+        (name) =>
+          `<li>${name}</li>
+    `,
+      )
+      .join('')}
+
+    </ul>`
+      : undefined,
   },
 ])
 </script>

@@ -23,7 +23,7 @@
   <!-- v-if="$rStore.$state.report?.members?.length" -->
   <div class="row">
     <div class="col-12">
-      <div style="display: flex; flex-direction: column; height: 80vh">
+      <div style="display: flex; flex-direction: column">
         <div class="row" style="flex: 1">
           <div class="col-12">
             <template v-if="!preview">

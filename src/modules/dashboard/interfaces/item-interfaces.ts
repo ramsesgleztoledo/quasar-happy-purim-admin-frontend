@@ -5,5 +5,6 @@ export interface ItemBasketInterface {
   value: number | string;
   color?: string | undefined;
   redirectTo?: RouteLocationRaw | null | undefined;
-  hover?: string;
+  hover?: string | undefined;
+  showOnHover?: boolean
 }

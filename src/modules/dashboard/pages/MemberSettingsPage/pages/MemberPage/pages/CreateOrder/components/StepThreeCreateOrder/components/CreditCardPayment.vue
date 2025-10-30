@@ -31,12 +31,12 @@
             outlined
             label="Card Number *"
             lazy-rules
+            @update:model-value="(value) => formatCardNumber(value ? `${value}` : '')"
             :rules="[
               lazyRules.required(),
-              lazyRules.minCharacters(19, 'Card number needs to be 16 digits'),
+              minCharacters(12, 'Card number needs to be 12 digits min'),
               ...cardNumberRules,
             ]"
-            mask="#### #### #### ####"
           />
         </div>
       </div>
@@ -221,6 +221,26 @@ const cardTypeValidation = ({ value }: { value: string }) => {
     }
 }
 
+const formatCardNumber = (val: string) => {
+  const numbers = val.replace(/\D/g, '')
+  let replaced = numbers.replace(/\s+/g, '')
+  if (replaced.length > 19) replaced = replaced.slice(0, 19)
+  const formatted = replaced.replace(/(.{4})/g, '$1 ').trim()
+  paymentForm.realForm.value.checkOrCCNumber.value = formatted
+}
+
+const minCharactersCardForm =
+  (min: number) =>
+  ({ value }: { value: string }) => {
+    if (!value) return null
+    const stringValue = `${value}`.replace(/\s+/g, '')
+    if (stringValue.length >= min) {
+      return null
+    } else {
+      return { minCharacters: min }
+    }
+  }
+
 const paymentForm = useForm({
   firstName: { value: '', validations: [validations.required] },
   lastName: { value: '', validations: [validations.required] },
@@ -231,7 +251,7 @@ const paymentForm = useForm({
   },
   checkOrCCNumber: {
     value: '',
-    validations: [validations.required, validations.minCharacters(19), cardTypeValidation],
+    validations: [validations.required, minCharactersCardForm(12), cardTypeValidation],
   },
   billAddress1: { value: '', validations: [validations.required] },
   billAddress2: { value: '', validations: [] },
@@ -306,6 +326,10 @@ const cardImg = (type: PaymentMethodTypeInterface) =>
         return ''
     }
   })
+
+const minCharacters = (min: number, msg: string) => (value: string) => {
+  return value.replace(/\s+/g, '').length >= min || msg
+}
 
 const cardNumberRules = ref([
   (value: string) => {

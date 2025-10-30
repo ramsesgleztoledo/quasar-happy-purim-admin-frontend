@@ -71,7 +71,7 @@ export interface MemberSummaryInterface {
   totalMembers: number;
   membersLoggedIn: number;
   membersOnline: number;
-  membersOnlineNames: string;
+  membersOnlineNames: string[];
 }
 
 
