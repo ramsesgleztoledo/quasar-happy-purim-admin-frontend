@@ -18,7 +18,7 @@ export const useEmail = () => {
     async getEmails() {
       const campaigns = await getEmails({
         loading: {
-          message: 'Loading ...'
+          message: 'Loading...'
         }
       })
       $eStore.setCampaigns(campaigns.ok ? campaigns.data : []);
@@ -26,7 +26,7 @@ export const useEmail = () => {
     async getCampaignDetailById(id: number) {
       const campaignsDetails = await getCampaignDetailById(id, {
         loading: {
-          message: 'Loading ...'
+          message: 'Loading...'
         }
       })
       $eStore.setSelectedCampaign(campaignsDetails.ok ? campaignsDetails.data : undefined);
@@ -36,7 +36,7 @@ export const useEmail = () => {
 
       const emailContent = await getEmailContentByEmailId(id, {
         loading: {
-          message: 'Loading ...'
+          message: 'Loading...'
         },
         useCache: true
       })
@@ -47,7 +47,7 @@ export const useEmail = () => {
 
       const resp = await sendAEmail(data, {
         loading: {
-          message: 'Loading ...',
+          message: 'Loading...',
         },
         dontRedirect: true,
         useRespAsError: true
@@ -57,5 +57,8 @@ export const useEmail = () => {
 
     },
 
+    
   }
 };
+
+

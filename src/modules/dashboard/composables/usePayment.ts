@@ -13,7 +13,7 @@ export const usePayment = () => {
 
 
   const showPaymentResult = (ok: boolean) => {
-    showToast(ok, 'Payment Recorded', 'something went wrong recording the payment')
+    showToast(ok, 'Payment Recorded')
   }
 
 
@@ -42,17 +42,38 @@ export const usePayment = () => {
 
 
     async recordCheckPayment(memberId: number, data: RecordCheckPaymentFormInterface) {
-      const resp = await recordCheckPayment(memberId, data);
+      const resp = await recordCheckPayment(memberId, data, {
+        loading: {
+          message: 'Loading...',
+        },
+        dontRedirect: true,
+        dontShowToast: true,
+        useRespAsError: true,
+      });
 
       showPaymentResult(resp.ok)
     },
     async recordCreditPayment(memberId: number, data: RecordCheckPaymentFormInterface) {
-      const resp = await recordCreditPayment(memberId, data);
+      const resp = await recordCreditPayment(memberId, data, {
+        loading: {
+          message: 'Loading...',
+        },
+        dontRedirect: true,
+        dontShowToast: true,
+        useRespAsError: true,
+      });
 
       showPaymentResult(resp.ok)
     },
     async recordCCPayment(memberId: number, data: RecordCCPaymentFormInterface) {
-      const resp = await recordCCPayment(memberId, data);
+      const resp = await recordCCPayment(memberId, data, {
+        loading: {
+          message: 'Loading...',
+        },
+        dontRedirect: true,
+        // dontShowToast: true,
+        useRespAsError: true,
+      });
       showPaymentResult(resp.ok)
     }
 

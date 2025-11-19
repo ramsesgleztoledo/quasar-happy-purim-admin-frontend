@@ -8,14 +8,26 @@
         </div>
       </div>
 
-      <div class="custom-dialog-body-container q-pa-lg">
-        <div v-if="user" class="row q-mb-sm justify-content-end q-pr-sm">
-          <q-btn
-            color="primary"
-            icon="history"
-            label="set new password"
-            @click="setPasswordFlag = true"
-          />
+      <div
+        class="custom-dialog-body-container q-pa-lg"
+        :style="{ width: !isMobile ? '800px' : '' }"
+      >
+        <div v-if="user" class="row q-mb-sm">
+          <div
+            :class="{
+              'col-6': !isMobile,
+              'col-12': isMobile,
+            }"
+            class="q-pl-sm q-pr-sm"
+          >
+            <q-btn
+              class="w-full"
+              color="primary"
+              icon="history"
+              label="set new password"
+              @click="setPasswordFlag = true"
+            />
+          </div>
         </div>
         <div class="row">
           <!--=============================== member left=============================-->
@@ -379,7 +391,7 @@ const onAddUser = async () => {
 
   showToast(
     resp.ok,
-    'User Added Successfully',
+    'Admin Added Successfully',
     `Something went wrong adding the user (${resp.msg})`,
   )
   if (resp.ok) {

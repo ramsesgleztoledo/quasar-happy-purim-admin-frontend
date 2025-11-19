@@ -88,7 +88,9 @@ const columns: QTableColumn<DonationInterface>[] = [
     label: 'Amount',
     align: 'left',
     field: 'amount',
-    format: (amount: number) => `$${convertWithCommas(amount)}`,
+    format: (amount: number) => `$${convertWithCommas(amount,{
+              dontAllowZero: true
+            })}`,
     sortable: true,
   },
   {

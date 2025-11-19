@@ -44,7 +44,7 @@ export const useMemberOrder = () => {
   const { getMemberListMemberGuid } = useMemberListService()
   const { getOrderItemsByMemberGuid, addOrRemoveOrderItemsByMemberGuid } = useOrderItemService()
   const { authState } = useAuth()
-  const { memberState } = useMember()
+  const { memberState, showRecordPaymentBtn_co } = useMember()
   const $q = useQuasar()
   const { addMember, removeMember } = useShaliachService()
   const { getOrganizationSettings } = useOrgSettingsService()
@@ -89,7 +89,7 @@ export const useMemberOrder = () => {
 
     if (showLoading)
       $q.loading.show({
-        message: 'Loading ...',
+        message: 'Loading...',
         spinnerColor: '#f36b09',
         messageColor: '#f36b09',
       })
@@ -107,7 +107,7 @@ export const useMemberOrder = () => {
         color: 'red',
         textColor: 'black',
         icon: 'error',
-        message: 'something went wrong adding an item to the cart, please refresh the app and try again',
+        message: 'Something went wrong adding an item to the cart, please refresh the page and try again',
 
       })
 
@@ -318,7 +318,7 @@ export const useMemberOrder = () => {
 
       const resp = await getOrderItemsByMemberGuid(mGuid.value, {
         loading: {
-          message: 'loading order items...'
+          message: 'Loading...'
         }
       })
       $moStore.setOrderItems(resp.ok ? resp.data : [])
@@ -362,7 +362,7 @@ export const useMemberOrder = () => {
         }],
         {
           loading: {
-            message: 'Loading ...'
+            message: 'Loading...'
           }
         }
       )
@@ -376,7 +376,7 @@ export const useMemberOrder = () => {
     async getAttributesByCustomShippingOptionId(id: number): Promise<CustomShippingOptionAttributeType[]> {
       const attributes = await getAttributesByCustomShippingOptionId(id, mGuid.value, {
         loading: {
-          message: `Loading ...`
+          message: `Loading...`
         }
       })
 
@@ -390,7 +390,7 @@ export const useMemberOrder = () => {
     async addCustomShippingItem(data: CustomShippingItemFormInterface) {
       const resp = await addCustomShippingItem(mGuid.value, data, {
         loading: {
-          message: `adding custom shipping item ...`
+          message: `Loading...`
         }
       })
       if (resp.ok)
@@ -399,7 +399,7 @@ export const useMemberOrder = () => {
     async updateCustomShippingItem(data: UpdateShippingItemFormInterface) {
       const resp = await updateCustomShippingItem(mGuid.value, data, {
         loading: {
-          message: `Loading ...`
+          message: `Loading...`
         }
       })
       if (resp.ok)
@@ -409,7 +409,7 @@ export const useMemberOrder = () => {
     async deleteCustomShippingItem(data: UpdateShippingItemFormInterface) {
       const resp = await deleteCustomShippingItem(mGuid.value, data, {
         loading: {
-          message: `Loading ...`
+          message: `Loading...`
         }
       })
       if (resp.ok)
@@ -496,16 +496,18 @@ export const useMemberOrder = () => {
       }, data, {
         dontRedirect: true,
         loading: {
-          message: `Placing order ...`
+          message: `Loading...`
         },
         useRespAsError: true,
-        dontShowToast:true
+        dontShowToast: true
       })
 
 
       // const isSuccess = resp.ok && resp.data.toLowerCase().includes('success')
 
-      showToast(resp.ok, `Order placed, an email was sent to ${emailTo}`, resp.data ? `${resp.data}` : 'something went wrong placing the order, please try again later')
+      showToast(resp.ok,
+        resp.data ? resp.data :
+          `Order placed`, resp.data ? `${resp.data}` : 'Something went wrong placing the order, please try again later')
 
       if (resp.ok) {
         $moStore.resetPaymentForm()
@@ -513,7 +515,8 @@ export const useMemberOrder = () => {
         //TODO: remove this if transaction is returned
         const [transactions, topTransactions] = await Promise.all([
           getTransactionsByMemberId($mStore.selectedMember?.memberId || 0),
-          getTopTransactions()
+          getTopTransactions(),
+          showRecordPaymentBtn_co(Number(memberId.value))
         ])
 
 

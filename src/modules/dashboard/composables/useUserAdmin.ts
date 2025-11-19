@@ -11,7 +11,7 @@ export const useUserAdmin = () => {
   const getUsers = async () => {
     const resp = await getAllAdmins({
       loading: {
-        message: 'Loading ...'
+        message: 'Loading...'
       }
     })
     $uaStore.$patch({
@@ -26,7 +26,7 @@ export const useUserAdmin = () => {
       const resp = await addAdmin(data, {
         dontRedirect: true,
         loading: {
-          message: 'Loading ...'
+          message: 'Loading...'
         }
 
       })
@@ -48,10 +48,10 @@ export const useUserAdmin = () => {
       const resp = await editAdmin(data, {
         dontRedirect: true,
         loading: {
-          message: 'Loading ...'
+          message: 'Loading...'
         }
       })
-      showToast(resp.ok, 'User edited Successfully', 'Something went wrong editing the user')
+      showToast(resp.ok, 'Admin Updated Successfully', 'Something went wrong updating the admin')
 
       if (resp.ok)
         await getUsers()
@@ -66,7 +66,7 @@ export const useUserAdmin = () => {
       const resp = await setNewPassword(data, {
         dontRedirect: true,
         loading: {
-          message: 'Loading ...'
+          message: 'Loading...'
         }
       })
       showToast(resp.ok, 'Password Updated', 'Something went wrong updating the password')
@@ -77,10 +77,10 @@ export const useUserAdmin = () => {
       const resp = await deleteUser(userId, {
         dontRedirect: true,
         loading: {
-          message: 'Loading ...'
+          message: 'Loading...'
         }
       })
-      showToast(resp.ok, 'User Deleted', 'Something went wrong deleting the user')
+      showToast(resp.ok, 'Admin Deleted', 'Something went wrong deleting the user')
       if (resp.ok)
         $uaStore.setUsers($uaStore.users.filter(item => item.uId !== userId))
 

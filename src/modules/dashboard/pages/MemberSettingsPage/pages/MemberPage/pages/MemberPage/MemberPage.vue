@@ -166,7 +166,7 @@
               <b> {{ memberState.selectedMember?.signOnLink }}</b> <q-icon name="copy_all" />
             </p>
           </div>
-          <div class="row separator-bottom q-mt-sm"></div>
+          <!-- <div class="row separator-bottom q-mt-sm"></div> -->
         </template>
 
         <!--=========================== END OF SECTION ===========================-->
@@ -233,7 +233,7 @@
               icon="credit_card"
               class="q-mr-sm q-mt-sm"
               style="background: var(--happypurim); color: white"
-              label="RECORD PAYMENT"
+              label="RECORD PAYMENT "
               @click="recordPaymentDialogFlag = true"
             />
           </div>
@@ -475,7 +475,7 @@
                 <label> Select Categories</label>
                 <div class="q-mt-md">
                   <div class="row">
-                    <div class="col-3 q-mb-sm" v-for="(item, index) in categories" :key="index">
+                    <div class="q-mb-sm q-mr-md" v-for="(item, index) in categories" :key="index">
                       <q-checkbox
                         style="overflow-wrap: anywhere"
                         v-model="item.value"
@@ -489,6 +489,8 @@
           </div>
           <div class="row q-mt-md">
             <div class="col-12 q-pl-sm q-pr-sm">
+              <!-- :rules="[lazyRules.maxCharacters(255)]" -->
+              <!-- :hint="`${realForm.notes.value.length}/255 character limit`" -->
               <q-input
                 type="textarea"
                 v-model="realForm.notes.value"
@@ -497,8 +499,6 @@
                 lazy-rules
                 autogrow
                 input-style="max-height: 50px; overflow: auto;"
-                :rules="[lazyRules.maxCharacters(255)]"
-                :hint="`${realForm.notes.value.length}/255 character limit`"
               />
             </div>
           </div>
@@ -510,10 +510,16 @@
             </div>
           </div>
 
-          <div class="q-pa-sm" v-if="memberState.memberAlternativeAddress?.showAlternateDelivery">
-            <div class="border-container row q-mt-md">
+          <div
+            class="q-pr-sm q-pl-sm q-mt-md"
+            v-if="memberState.memberAlternativeAddress?.showAlternateDelivery"
+          >
+            <div class="border-container row">
               <div class="col-12">
                 <div class="row q-mt-md">
+                  <div class="col-12">
+                    <div class="row q-mb-sm">Alternate Address</div>
+                  </div>
                   <div class="col-12">
                     <q-checkbox
                       v-model="altAddress"
@@ -566,55 +572,34 @@
               </div>
             </div>
           </div>
-          <div class="row q-mt-md">
-            <div
-              class="q-pl-sm q-pr-sm q-mb-md"
-              :class="{
-                'col-4': !isMobile,
-                'col-12': isMobile,
-              }"
-              v-if="options.length"
-            >
-              <div class="border-container">
-                <label>Options</label>
-                <div class="q-mt-md">
-                  <div v-for="(item, index) in options" :key="index" class="row q-mb-sm">
-                    <q-checkbox v-model="item.value" :label="item.label" />
-                  </div>
+
+          <div class="q-mt-md q-pl-sm q-pr-sm q-mb-md row" v-if="options.length">
+            <div class="border-container" style="width: 100%">
+              <label>Options</label>
+              <div class="row q-mt-md">
+                <div v-for="(item, index) in options" :key="index" class="row q-mb-sm q-mr-lg">
+                  <q-checkbox v-model="item.value" :label="item.label" />
                 </div>
               </div>
             </div>
-            <div
-              class="q-pl-sm q-pr-sm q-mb-md"
-              :class="{
-                'col-4': !isMobile,
-                'col-12': isMobile,
-              }"
-              v-if="profileQuestions.length"
-            >
-              <div class="border-container">
-                <label>Profile Questions</label>
-                <div class="q-mt-md">
-                  <div v-for="(item, index) in profileQuestions" :key="index" class="row q-mb-sm">
-                    <q-checkbox v-model="item.value" :label="item.label" />
-                  </div>
+          </div>
+          <div class="q-mt-md q-pl-sm q-pr-sm q-mb-md row" v-if="profileQuestions.length">
+            <div class="border-container" style="width: 100%">
+              <label>Profile Questions </label>
+              <div class="q-mt-md row">
+                <div
+                  v-for="(item, index) in otherOptions"
+                  :key="index"
+                  class="q-mr-sm q-mb-sm profile-question-check-box"
+                >
+                  <q-checkbox v-model="item.value" :label="item.label" />
                 </div>
-              </div>
-            </div>
-            <div
-              class="q-pl-sm q-pr-sm q-mb-md"
-              :class="{
-                'col-4': !isMobile,
-                'col-12': isMobile,
-              }"
-              v-if="!!memberState.memberDonateBasketOption?.visible"
-            >
-              <div v-if="otherOptions.length" class="border-container">
-                <label>Other Options</label>
-                <div class="q-mt-md">
-                  <div v-for="(item, index) in otherOptions" :key="index" class="row q-mb-sm">
-                    <q-checkbox v-model="item.value" :label="item.label" />
-                  </div>
+                <div
+                  v-for="(item, index) in profileQuestions"
+                  :key="index"
+                  class="q-mr-sm q-mb-sm profile-question-check-box"
+                >
+                  <q-checkbox v-model="item.value" :label="item.label" />
                 </div>
               </div>
             </div>
@@ -984,7 +969,7 @@ const goToCreateOrder = (isByCode: boolean = false) => {
   if (!memberState.value.selectedMember?.displayAs)
     return $q.notify({
       color: 'blue',
-      message: 'Display Name is required before creating an order',
+      message: 'Please add and save a display name before creating an order',
       textColor: 'black',
       icon: 'error',
     })

@@ -24,7 +24,9 @@
                     class="col-4"
                   >
                     Customization ({{ totalCustomization(item).value ? $moStore.getSymbol : ''
-                    }}{{ convertWithCommas(totalCustomization(item).value) }})
+                    }}{{ convertWithCommas(totalCustomization(item).value,{
+              dontAllowZero: true
+            }) }})
                   </div>
                   <div class="col-2 justify-content-end">
                     <q-icon
@@ -92,7 +94,9 @@
                                   <p style="margin: 0px">
                                     <b> {{ attribute.promptText }}: </b>
                                     {{ attribute.value }} - ({{ $moStore.getSymbol
-                                    }}{{ convertWithCommas(attribute.price || 0) }})
+                                    }}{{ convertWithCommas(attribute.price || 0,{
+              dontAllowZero: true
+            }) }})
                                   </p>
                                 </li>
                               </div>

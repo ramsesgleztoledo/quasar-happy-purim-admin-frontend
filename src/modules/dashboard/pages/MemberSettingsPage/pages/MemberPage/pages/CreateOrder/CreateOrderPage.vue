@@ -1,5 +1,5 @@
 <template>
-  <q-inner-loading :showing="!isReady" label="Loading ..." />
+  <q-inner-loading :showing="!isReady" label="Loading..." />
   <div v-if="isReady">
     <!-- ref="createOrderPageContainerRef" -->
     <div class="CreateOrderPage-container">
@@ -14,7 +14,7 @@
           <div class="col-12 top-title-col">
             <!-- eslint-disable-next-line no-irregular-whitespace -->
             <p class="CreateOrderPage-title-3">
-              <q-icon name="person" size="large" class="q-mr-sm " />
+              <q-icon name="person" size="large" class="q-mr-sm" />
               <b>
                 {{ memberState.selectedMember?.lastName }},
                 {{ memberState.selectedMember?.firstName }}
@@ -116,14 +116,14 @@
             })
         }
       "
-      msg="Are you sure you want to cancel this order?"
+      msg="Are you sure you want to leave this page? Your cart will be lost unless you save it for later"
       v-model="cancelOrderDialogFlag"
     />
     <DialogAlert
       @on-finish="
         (value) => {
           step++
-          goToTop(createOrderPageContainerRef, 300)
+          goToTop({ delay: 300 })
         }
       "
       dont-show-icon
@@ -167,16 +167,12 @@ const step = ref(1)
 const isReady = ref(false)
 const stepOneCreateOrderRef = ref<StepOneCreateOrderInterface | undefined>(undefined)
 
-const createOrderPageContainerRef = ref<HTMLElement | undefined | null>(undefined)
-
 onMounted(() => {
   getInitialData()
     .then(() => {
       isReady.value = true
     })
     .catch(console.error)
-  const qApp = document.getElementById('q-app')
-  createOrderPageContainerRef.value = qApp
 })
 
 const saveForLater = async () => {
@@ -204,7 +200,7 @@ const onNext = async () => {
   step.value++
   stopLoading()
   setBackendTotal()
-  goToTop(createOrderPageContainerRef.value, 600)
+  goToTop({ delay: 600 })
 
   if (!$moStore.hasExtraOptions) step.value++
 }
@@ -212,13 +208,13 @@ const onNext = async () => {
 const continueToPayment = () => {
   // addReciprocityDialogFlag.value = true
   step.value++
-  goToTop(createOrderPageContainerRef.value, 300)
+  goToTop({ delay: 300 })
 }
 
 const goBack = () => {
   step.value--
   if (step.value === 2 && !$moStore.hasExtraOptions) step.value--
-  goToTop(createOrderPageContainerRef.value, 300)
+  goToTop({ delay: 300 })
 }
 </script>
 

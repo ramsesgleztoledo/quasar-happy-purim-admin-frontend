@@ -20,7 +20,7 @@ export const useDraft = () => {
     async deleteDraft(draft: DraftInterface) {
       const resp = await deleteDrafts(draft.draftId, {
         loading: {
-          message: 'Loading ...',
+          message: 'Loading...',
         },
       })
       showToast(resp.ok, 'Draft Deleted',
@@ -34,7 +34,7 @@ export const useDraft = () => {
         {
           dontRedirect: true,
           loading: {
-            message: 'Loading ...',
+            message: 'Loading...',
           },
         },
       )

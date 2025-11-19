@@ -168,7 +168,7 @@ export const useAuth = () => {
   const loginWithUserAndPass = async (data: { username: string, password: string }) => {
     const result = await loginWithUserAndPass_se(data, {
       loading: {
-        message: 'Loading ...'
+        message: 'Loading...'
       },
       dontRedirect: true,
       useRespAsError: true
@@ -179,7 +179,7 @@ export const useAuth = () => {
       color: 'green',
       textColor: 'black',
       icon: 'error',
-      message: 'Logged In Successfully ...',
+      message: 'Logged in successfully',
     })
     processLogin(result)
   }

@@ -350,7 +350,7 @@
                         :pagination="{
                           rowsPerPage: 0,
                         }"
-                        :style="{ height: isFullScreen ? '800px' : '400px' }"
+                        :style="{ height: isFullScreen ? '800px' : '628px' }"
                         class="table-sticky-header-column-table"
                         flat
                         bordered
@@ -360,7 +360,9 @@
                         row-key="OrderNumber"
                         selection="multiple"
                         v-model:selected="selected"
-                        :title="`Total due: $${convertWithCommas(totalDue)}`"
+                        :title="`Total due: $${convertWithCommas(totalDue, {
+                          dontAllowZero: true,
+                        })}`"
                       >
                         <template v-slot:header="props">
                           <q-tr :props="props">
@@ -584,21 +586,30 @@ const columns: QTableColumn<InvoiceUnpaidOrderInterface>[] = [
     label: 'Order Total',
     field: 'OrderTotal',
     sortable: true,
-    format: (amount: number) => `$${convertWithCommas(amount)}`,
+    format: (amount: number) =>
+      `$${convertWithCommas(amount, {
+        dontAllowZero: true,
+      })}`,
   },
   {
     name: 'paid',
     label: 'Paid',
     field: 'Paid',
     sortable: true,
-    format: (amount: number) => `$${convertWithCommas(amount)}`,
+    format: (amount: number) =>
+      `$${convertWithCommas(amount, {
+        dontAllowZero: true,
+      })}`,
   },
   {
     name: 'due',
     label: 'Due',
     field: 'Due',
     sortable: true,
-    format: (amount: number) => `$${convertWithCommas(amount)}`,
+    format: (amount: number) =>
+      `$${convertWithCommas(amount, {
+        dontAllowZero: true,
+      })}`,
   },
 ]
 
@@ -697,37 +708,25 @@ const isAmountAppliedDisabled = (row: InvoiceUnpaidOrderInterface) =>
 const onAmountChange = (value: string | number | null) => {
   const isInf = value === 'inf'
 
-  let available = Number(value) || 0
+  let available = Number(value) || 0.0
+  const param = {
+    target: {
+      name: 'amount',
+      value: `0.00`,
+    },
+  }
 
   if (available > totalDue.value) {
     available = totalDue.value
-    onFieldChangeCheckForm({
-      target: {
-        name: 'amount',
-        value: `${available}`,
-      },
-    })
-    onFieldChangeOtherForm({
-      target: {
-        name: 'amount',
-        value: `${available}`,
-      },
-    })
+    param.target.value = `${convertWithCommas(available, { goDown: true })}`
+
+    onFieldChangeCheckForm(param)
+    onFieldChangeOtherForm(param)
   }
   if (available < 0) {
     available = 0
-    onFieldChangeCheckForm({
-      target: {
-        name: 'amount',
-        value: `0`,
-      },
-    })
-    onFieldChangeOtherForm({
-      target: {
-        name: 'amount',
-        value: `0`,
-      },
-    })
+    onFieldChangeCheckForm(param)
+    onFieldChangeOtherForm(param)
   }
 
   selected.value.forEach((item) => {
@@ -736,10 +735,10 @@ const onAmountChange = (value: string | number | null) => {
     const calculated = available - item.Due
 
     if (calculated >= 0 || isInf) {
-      element.amountApplied = element.Due
+      element.amountApplied = `${convertWithCommas(element.Due, { goDown: true })}` || '0.00'
       available -= element.Due
     } else {
-      element.amountApplied = available
+      element.amountApplied = `${convertWithCommas(available, { goDown: true })}` || '0.0-'
       available = 0
     }
   })
@@ -756,17 +755,17 @@ const onCheckboxClicked = (value: boolean, row: InvoiceUnpaidOrderInterface) => 
 
 const getAmountByTab = () => {
   const tab = paymentType.value
-  let amount = '0'
+  let amount = '0.00'
   switch (tab) {
     case 0:
-      amount = ((checkForm.value.amount as FormField).value as string) || '0'
+      amount = ((checkForm.value.amount as FormField).value as string) || '0.00'
       break
     case 1:
       amount = 'inf'
       break
 
     default:
-      amount = ((otherForm.value.amount as FormField).value as string) || '0'
+      amount = ((otherForm.value.amount as FormField).value as string) || '0.00'
       break
   }
 

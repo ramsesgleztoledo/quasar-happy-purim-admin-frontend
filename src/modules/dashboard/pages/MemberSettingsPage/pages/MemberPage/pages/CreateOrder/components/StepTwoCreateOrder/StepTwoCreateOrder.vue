@@ -167,7 +167,9 @@
                       lazyRules.greaterThan(0, false),
                       ...(aItem.maxQuantity ? [lazyRules.lowerThan(aItem.maxQuantity, true)] : []),
                     ]"
-                    :hint="`${memberOrderState.orgSettings?.symbol || '$'}${convertWithCommas(aItem.price || 0)} ea. (${aItem.maxQuantity ? aItem.maxQuantity + ' max' : ''})`"
+                    :hint="`${memberOrderState.orgSettings?.symbol || '$'}${convertWithCommas(aItem.price || 0,{
+              dontAllowZero: true
+            })} ea. (${aItem.maxQuantity ? aItem.maxQuantity + ' max' : ''})`"
                   />
 
                   <q-btn

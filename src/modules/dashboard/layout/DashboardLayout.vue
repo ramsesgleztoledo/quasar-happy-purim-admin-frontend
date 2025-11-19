@@ -15,23 +15,27 @@
       bordered
     >
       <div v-if="isMobile">
-        <div class="row justify-content-end q-pa-sm">
-          <q-btn flat round color="primary" icon="logout" @click="logOut(true)" />
-        </div>
-        <div class="q-mr-sm q-pa-sm">
-          <div class="row">
-            <div class="col-12">{{ $aStore.$state.shul?.shulName }}</div>
-          </div>
-          <div class="row">
-            <div class="col-12 dashboard-user-info">
-              {{ $aStore.$state.user?.firstName }} {{ $aStore.$state.user?.lastName }}
+        <div class="row justify-content-space-between q-pa-sm">
+          <div class="q-mr-sm q-pa-sm">
+            <div class="row">
+              <div class="col-12">{{ $aStore.$state.shul?.shulName }}</div>
+            </div>
+            <div class="row">
+              <div class="col-12 dashboard-user-info">
+                {{ $aStore.$state.user?.firstName }} {{ $aStore.$state.user?.lastName }}
+              </div>
             </div>
           </div>
+          <q-btn flat round color="primary" icon="logout" @click="logOut(true)">
+            <q-tooltip transition-show="flip-right" transition-hide="flip-left">
+              Log Out
+            </q-tooltip>
+          </q-btn>
         </div>
       </div>
       <q-list>
         <!-- style="margin-bottom: 60px" -->
-        <q-item-label header style="margin-bottom: 20px"> </q-item-label>
+        <q-item-label v-if="!isMobile" header style="margin-bottom: 20px"> </q-item-label>
 
         <EssentialLink v-for="link in linksList" :key="link.title" v-bind="link" />
       </q-list>

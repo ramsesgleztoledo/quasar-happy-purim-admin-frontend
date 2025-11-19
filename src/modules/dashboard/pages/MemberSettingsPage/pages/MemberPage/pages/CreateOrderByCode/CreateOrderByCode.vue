@@ -5,7 +5,7 @@
       <div class="separator-right q-mr-sm q-ml-sm"></div>
     </div>
   </div>
-  <div class="row">
+  <div class="row q-mb-m">
     <div class="col-12 top-title-col">
       <!-- eslint-disable-next-line no-irregular-whitespace -->
       <q-icon name="person" size="large" class="q-mr-sm" />
@@ -20,21 +20,21 @@
     </div>
   </div>
 
-  <div style="display: flex; flex-direction: column; height: 90%">
+  <div class="" style="display: flex; flex-direction: column; height: 90%">
     <div style="flex: 1">
-      <div class="row q-mt-md">
+      <div class="row q-mt-sm q-mb-sm">
         <q-input v-model="code" outlined label="Code Number" />
         <q-btn
           :disable="!code"
           class="q-ml-sm"
           style="background: var(--happypurim); color: white"
-          label="add order"
+          label="Add Member To Cart"
           @click="onAdd"
         />
       </div>
 
       <div class="row">
-        <div class="col-12 q-pa-lg" style="height: 460px">
+        <div class="col-12" style="height: 460px">
           <q-table
             :pagination="{
               rowsPerPage: 0,
@@ -49,7 +49,7 @@
             row-key="id"
           >
             <template v-slot:top="props">
-              <div class="q-table__title" style="padding: 2px">Orders</div>
+              <div class="q-table__title">Members In Cart</div>
 
               <q-space />
 
@@ -118,7 +118,7 @@
         id = undefined
       }
     "
-    msg="Are you sure you want to delete this row?"
+    msg="Are you sure you want to remove this member?"
     v-model="deleteOrderDialogFlag"
   />
   <!--* confirm cancel --->

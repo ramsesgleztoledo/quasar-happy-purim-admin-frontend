@@ -28,7 +28,7 @@ export const useDashboard = () => {
 
     async loadStartedData() {
       $q.loading.show({
-        message: 'Loading ...',
+        message: 'Loading...',
         spinnerColor: '#f36b09',
         messageColor: '#f36b09',
       })
@@ -127,23 +127,39 @@ export const useDashboard = () => {
           getParticipationRate({
             dontRedirect: true,
             dontShowToast: true
-          }),])
+          }),
+          getOrderTotalGraph({
+            dontRedirect: true,
+            dontShowToast: true
+          }),
+          getMembersOrdersGraph({
+            dontRedirect: true,
+            dontShowToast: true
+          }),
+          getParticipationInfoGraph({
+            dontRedirect: true,
+            dontShowToast: true
+          }),
+        ])
 
 
 
         $dStore.setMemberSummary(resp[0].ok ? resp[0].data : undefined);
         $dStore.setFundraiserTotals(resp[1].ok ? resp[1].data : undefined)
         $dStore.setParticipationRate(resp[2].ok ? resp[2].data : undefined)
+        $dStore.setOrderTotalGraph(resp[3].ok ? resp[3].data : [])
+        $dStore.setMembersOrdersGraph(resp[4].ok ? resp[4].data : [])
+        $dStore.setParticipationInfoGraph(resp[5].ok ? resp[5].data : undefined)
 
       } catch (error) {
         console.error(error);
 
-        $q.notify({
-          color: 'blue',
-          textColor: 'white',
-          icon: 'error',
-          message: `We can't update the member logged at this moment`,
-        })
+        // $q.notify({
+        //   color: 'blue',
+        //   textColor: 'white',
+        //   icon: 'error',
+        //   message: `We can't update the member logged information at this moment`,
+        // })
       }
     },
 

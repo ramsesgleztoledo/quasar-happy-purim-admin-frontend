@@ -149,7 +149,7 @@
               <q-tr :props="props" v-else>
                 <q-td key="option" :props="props">
                   <q-input
-                    label="option"
+                    label="Option"
                     v-model="rowEdit!.optionText"
                     outlined
                     lazy-rules

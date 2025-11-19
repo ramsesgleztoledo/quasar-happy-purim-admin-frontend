@@ -46,7 +46,7 @@ export const useMailMerge = () => {
     async getData() {
 
       $q.loading.show({
-        message: 'Loading ...',
+        message: 'Loading...',
         spinnerColor: '#f36b09',
         messageColor: '#f36b09',
       })
@@ -129,6 +129,15 @@ export const useMailMerge = () => {
       memberIds: number[]
     }) {
 
+      const not = $q.notify({
+        message: `Generating PDF, this can take a while, please don't refresh the app`,
+        color: 'primary',
+        position: 'bottom-right',
+        timeout: 0,
+        actions: [
+          { label: 'Close', color: 'white', handler: () => not() }
+        ]
+      })
       const resp = await getMergedContentPrintByReportId({
         reportId: reportId.value,
         data: {
@@ -143,10 +152,7 @@ export const useMailMerge = () => {
       const result: MergedContentPrintInterface[] = resp.ok ? resp.data : []
 
 
-
-      if (!result.length) return
-
-      downloadFile(async () => await generatePDF({
+      await downloadFile(async () => await generatePDF({
         title: data.title,
         items: result.map(da => ({
           memberId: da.memberId,
@@ -155,15 +161,14 @@ export const useMailMerge = () => {
       }, {
         dontRedirect: true,
         useRespAsError: true,
-        loading: {
-          message: 'Generating PDF, this can take a while ...'
-        }
+
       }), {
         fileType: 'pdf',
         fileName: data.title,
         extension: 'pdf'
       })
 
+      not()
     },
 
     async sendNowEmail(data: {
@@ -202,17 +207,17 @@ export const useMailMerge = () => {
 
       const resp = await queueBulkEmails(queueEmail, {
         loading: {
-          message: 'Loading ...'
+          message: 'Loading...'
         },
         dontRedirect: true,
         useRespAsError: true,
       })
       if (!isSchedule)
-        showToast(resp.ok, 'All emails were sent',
-          'something went wrong sending the emails')
+        showToast(resp.ok, 'Your emails have been queued and will be sent in 15 minutes',
+          'Something went wrong sending the emails, please try again')
       else
         showToast(resp.ok, 'All emails were scheduled',
-          'something went wrong scheduling the emails')
+          'Something went wrong scheduling the emails, please try again')
 
       return resp.ok
 
@@ -227,7 +232,7 @@ export const useMailMerge = () => {
       },
       content: string;
       timeZone: string;
-      date: Date;
+      date: Date | string;
     }) {
       const resp = await addUnmergedEmailJobToTable(reportId.value, {
         addedBy: Number(userId.value || 0),
@@ -242,13 +247,13 @@ export const useMailMerge = () => {
         dontRedirect: true,
         useRespAsError: true,
         loading: {
-          message: 'Scheduling emails'
+          message: 'Loading...'
         }
       })
 
 
       showToast(resp.ok, 'All emails were scheduled',
-        'something went wrong scheduling the emails')
+        'Something went wrong scheduling the emails, please try again')
 
       return resp.ok
     }

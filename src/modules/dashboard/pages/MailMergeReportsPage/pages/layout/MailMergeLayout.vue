@@ -2,7 +2,7 @@
   <div v-if="isReady">
     <router-view />
   </div>
-  <q-inner-loading v-else :showing="true" label="Loading ..." />
+  <q-inner-loading v-else :showing="true" label="Loading..." />
 </template>
 
 <script setup lang="ts">

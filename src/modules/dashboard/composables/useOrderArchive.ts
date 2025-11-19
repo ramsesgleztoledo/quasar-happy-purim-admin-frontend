@@ -19,7 +19,7 @@ export const useOrderArchive = () => {
     async getOrdersArchive() {
       const orders = await getOrdersArchive({
         loading: {
-          message: 'Loading ...'
+          message: 'Loading...'
         }
       })
       $oStore.setOrders(orders.ok ? orders.data : []);
@@ -27,7 +27,7 @@ export const useOrderArchive = () => {
     async getItemTableByItemId(itemId: number) {
       const items = await getItemTableByItemId(itemId, {
         loading: {
-          message: 'loading items...'
+          message: 'Loading...'
         }
       })
       $oStore.setItemDetails(items.ok ? items.data : []);
@@ -40,7 +40,7 @@ export const useOrderArchive = () => {
             useCache: true,
             goBackIn400Error: true,
             loading: {
-              message: 'Loading ...',
+              message: 'Loading...',
             }
           });
       $oStore.setSelectedOrderReceipt(resp.ok ? resp.data : undefined)

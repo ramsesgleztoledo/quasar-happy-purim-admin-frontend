@@ -55,7 +55,7 @@ export interface AddToUnmergedTableFormInterface {
   fromEmail: string;
   toEmail: string;
   subject: string;
-  sendDate: Date;
+  sendDate: Date | string;
   timeZone: string;
 }
 

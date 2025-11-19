@@ -111,7 +111,7 @@ const columns: QTableColumn[] = [
     field: 'total',
     label: 'Total',
     align: 'left',
-    format: (total: number) => `$${convertWithCommas(total, true)}`,
+    format: (total: number) => `$${convertWithCommas(total)}`,
     required: true,
     sortable: true,
   },

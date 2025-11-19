@@ -1,5 +1,36 @@
 import { DateTime } from "luxon";
 
+
+export const getFormattedStringDate = (value: {
+  dateValue: string,
+  timeValue: string,
+  timeZone?: string
+}) => {
+
+  const { hour, minute } = parseTime12h(value.timeValue);
+
+
+
+  const dateValue = value.dateValue.split('/')
+
+
+
+  const year = dateValue[0] || '00'
+  const month = dateValue[1] || '00'
+  const day = dateValue[2] || '00'
+
+  const hourAux = hour && (hour < 10) ? `0${hour}` : (hour || '00')
+  const minuteAux = minute && (minute < 10) ? `0${minute}` : (minute || '00')
+
+
+
+
+
+  return `${year}-${month}-${day}T${hourAux}:${minuteAux}`
+
+
+};
+
 export const turnTimeAndDate = (value: {
   dateValue: string,
   timeValue: string,
@@ -12,11 +43,20 @@ export const turnTimeAndDate = (value: {
 
   const dateValue = value.dateValue.split('/')
 
+
+
+  const year = Number(dateValue[0] || 0)
+  const month = Number(dateValue[1] || 0)
+  const day = Number(dateValue[2] || 0)
+
+
+
+
   const dtInZone = DateTime.fromObject(
     {
-      year: Number(dateValue[0] || 0),
-      month: Number(dateValue[1] || 0),
-      day: Number(dateValue[2] || 0),
+      year,
+      month,
+      day,
       hour,
       minute,
     },

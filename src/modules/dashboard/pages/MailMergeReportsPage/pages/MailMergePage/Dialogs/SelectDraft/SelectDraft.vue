@@ -7,7 +7,7 @@
         </div>
       </div>
       <div v-if="!isReady" style="min-height: 300px">
-        <q-inner-loading :showing="!isReady" label="Loading ..." />
+        <q-inner-loading :showing="!isReady" label="Loading..." />
       </div>
       <div v-if="isReady">
         <div v-if="drafts.length" class="custom-dialog-body-container q-pa-lg">
@@ -15,7 +15,7 @@
             <q-item-section>
               <q-item-label>{{ draft.documentTitle }}</q-item-label>
               <q-item-label caption lines="2"
-                >{{ draft.adminName }} - {{ convertToUSDate(draft.dateAdded,true) }}</q-item-label
+                >{{ draft.adminName }} - {{ convertToUSDate(draft.dateAdded, true) }}</q-item-label
               >
 
               <q-item-label caption lines="2">{{ draft.documentDescription }}</q-item-label>

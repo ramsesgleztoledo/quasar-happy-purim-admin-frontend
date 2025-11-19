@@ -281,7 +281,7 @@
     </div>
   </div>
   <div v-else>
-    <q-inner-loading :showing="true" label="Loading ..."> </q-inner-loading>
+    <q-inner-loading :showing="true" label="Loading..."> </q-inner-loading>
   </div>
 </template>
 

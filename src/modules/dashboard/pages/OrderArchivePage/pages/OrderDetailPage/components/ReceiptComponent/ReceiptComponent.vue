@@ -106,7 +106,9 @@
             </div>
             <div class="col-6">
               {{ receipt.dueFromBaskets ? '$' : '' }}
-              {{ convertWithCommas(receipt.dueFromBaskets || 0) }}
+              {{ convertWithCommas(receipt.dueFromBaskets || 0,{
+              dontAllowZero: true
+            }) }}
             </div>
           </div>
         </div>
@@ -119,7 +121,9 @@
           <div class="row">
             <div class="col-6"></div>
             <div class="col-6">
-              {{ item.totalPrice ? '$' : '' }}{{ convertWithCommas(item.totalPrice || 0) }}
+              {{ item.totalPrice ? '$' : '' }}{{ convertWithCommas(item.totalPrice || 0,{
+              dontAllowZero: true
+            }) }}
             </div>
           </div>
         </div>
@@ -132,7 +136,9 @@
             <div class="col-6">
               <b>Total Amount Due: </b>
             </div>
-            <div class="col-6">{{ convertWithCommas(receipt.amountDue || 0) }}</div>
+            <div class="col-6">{{ convertWithCommas(receipt.amountDue || 0,{
+              dontAllowZero: true
+            }) }}</div>
           </div>
         </div>
       </div>
@@ -146,7 +152,9 @@
             </div>
             <div class="col-6">
               {{ receipt.totalAmountPaid ? '$' : '' }}
-              {{ convertWithCommas(receipt.totalAmountPaid || 0) }}
+              {{ convertWithCommas(receipt.totalAmountPaid || 0,{
+              dontAllowZero: true
+            }) }}
             </div>
           </div>
         </div>

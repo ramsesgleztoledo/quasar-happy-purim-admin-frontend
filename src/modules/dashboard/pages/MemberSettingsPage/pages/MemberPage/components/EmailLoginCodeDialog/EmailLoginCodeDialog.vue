@@ -107,7 +107,7 @@ const $route = useRoute()
 const attacherForEdit = ref([
   {
     name: 'code',
-    label: 'code',
+    label: 'Login Code',
     icon: 'code',
     value: `
   <b>${selectedMember?.loginCode}</b>
@@ -115,7 +115,7 @@ const attacherForEdit = ref([
   },
   {
     name: 'token-link',
-    label: 'token-link',
+    label: 'Sign On Link',
     icon: 'link',
     value: `
   <a href="${selectedMember?.signOnLink}" target="_blank">${selectedMember?.signOnLink}</a>
@@ -123,7 +123,7 @@ const attacherForEdit = ref([
   },
   {
     name: 'name',
-    label: 'first and last name',
+    label: 'First and Last Name',
     icon: 'person',
     value: `
   <p >${selectedMember?.firstName} ${selectedMember?.lastName}</p>
@@ -131,8 +131,8 @@ const attacherForEdit = ref([
   },
   {
     name: 'nameSpouse',
-    label: 'Spouse first and last name',
-    icon: 'person',
+    label: 'Spouse First and Last Name',
+    icon: 'group',
     value: `
   <p >${selectedMember?.spouseFirstName} ${selectedMember?.spouseLastName}</p>
 `,

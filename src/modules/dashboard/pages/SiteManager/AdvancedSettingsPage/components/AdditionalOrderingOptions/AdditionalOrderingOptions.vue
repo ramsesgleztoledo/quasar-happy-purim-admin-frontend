@@ -232,7 +232,9 @@
                             <q-td key="price" :props="props">
                               <div>
                                 {{ props.row.price ? '$' : ''
-                                }}{{ convertWithCommas(Number(props.row.price) || 0) }}
+                                }}{{ convertWithCommas(Number(props.row.price) || 0,{
+              dontAllowZero: true
+            }) }}
                               </div>
                             </q-td>
                             <q-td key="sortOrder" :props="props">

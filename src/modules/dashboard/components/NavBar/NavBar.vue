@@ -80,7 +80,11 @@
                 </div>
               </div>
             </div>
-            <q-btn flat round color="primary" icon="logout" @click="logOut(true)" />
+            <q-btn flat round color="primary" icon="logout" @click="logOut(true)">
+              <q-tooltip transition-show="flip-right" transition-hide="flip-left">
+                Log Out
+              </q-tooltip>
+            </q-btn>
           </div>
 
           <div v-else class="dashboard-search-icon-mobile">

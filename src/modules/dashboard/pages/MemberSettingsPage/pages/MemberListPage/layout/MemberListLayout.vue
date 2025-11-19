@@ -32,8 +32,8 @@
     </div>
   </div>
 
-  <div style="display: flex; flex-direction: column; height: 90%" ref="divContainer">
-    <div class="row MemberListLayout-container q-mb-lg">
+  <div style="display: flex; flex-direction: column">
+    <div style="flex: 1" class="row MemberListLayout-container q-mb-lg">
       <div class="col-12 q-pa-md">
         <!-- STEP 1 UPLOAD LIST -->
         <template v-if="step === 1">
@@ -270,7 +270,7 @@
 
     <div class="row q-mt-lg cancel-save-btn-container">
       <div class="col-12">
-        <div v-if="step !== 7" @click="goToTop(divContainer, 300)">
+        <div v-if="step !== 7" @click="goToTop({ delay: 500 })">
           <q-btn
             outline
             label="CANCEL"
@@ -461,7 +461,7 @@ const allDone = ref(false)
 
 //! step 1 functions
 const step_one = async () => {
-  $q.loading.show({ message: 'Loading ...' })
+  $q.loading.show({ message: 'Loading...' })
   loading.value = true
   step_two_reset_data()
   const step_one_response = await uploadMemberList(fileModel.value[0]!)
@@ -475,11 +475,12 @@ const step_one = async () => {
     }
   }
   $q.loading.hide()
+  goToTop({ delay: 500 })
 }
 
 //! step 2 functions
 const step_two = async () => {
-  $q.loading.show({ message: 'Loading ...' })
+  $q.loading.show({ message: 'Loading...' })
   step_three_reset_data()
   loading.value = true
   const resp = await processAndMatch({
@@ -499,6 +500,7 @@ const step_two = async () => {
   loading.value = false
   step.value++
   $q.loading.hide()
+  goToTop({ delay: 500 })
 }
 
 const step_three_resp = ref<StepResponseInterface>({
@@ -507,7 +509,7 @@ const step_three_resp = ref<StepResponseInterface>({
 })
 
 const step_three = async () => {
-  $q.loading.show({ message: 'Loading ...' })
+  $q.loading.show({ message: 'Loading...' })
   loading.value = true
   step_four_reset_data()
   step_three_resp.value = (
@@ -523,6 +525,7 @@ const step_three = async () => {
   if (step_three_resp.value.success) step.value++
 
   $q.loading.hide()
+  goToTop({ delay: 500 })
 }
 
 const step_four_resp = ref<StepResponseInterface>({
@@ -531,7 +534,7 @@ const step_four_resp = ref<StepResponseInterface>({
 })
 
 const step_four = async () => {
-  $q.loading.show({ message: 'Loading ...' })
+  $q.loading.show({ message: 'Loading...' })
   loading.value = true
   step_four_resp.value = (
     await checkMatchSrcDestKey({
@@ -545,6 +548,7 @@ const step_four = async () => {
   if (step_four_resp.value.success) step.value++
 
   $q.loading.hide()
+  goToTop({ delay: 500 })
 }
 
 const step_five = async () => {
@@ -554,6 +558,7 @@ const step_five = async () => {
   loading.value = false
   step.value++
   $q.loading.hide()
+  goToTop({ delay: 500 })
 }
 
 const destinationKeys = ref<DestinationKeyInterface[]>([])
@@ -566,7 +571,7 @@ const dictsRef = ref<{ label: string; quantity: number }[]>([])
 const onContinueAndUpload = async () => {
   if (!previewNewMemberList.value) return
 
-  $q.loading.show({ message: 'Loading ...' })
+  $q.loading.show({ message: 'Loading...' })
 
   const dicts = previewNewMemberList.value.onSave() as unknown as {
     updateMembers: MemberRecordInterface
@@ -590,11 +595,10 @@ const onContinueAndUpload = async () => {
     dicts,
   }
   const resp = await backupAndUpload(data)
-  if (resp) {
-    step.value++
-  }
+  if (resp) step.value++
 
   $q.loading.hide()
+  goToTop({ delay: 500 })
 }
 
 const revertBack = async () => {
@@ -634,8 +638,6 @@ const isCheckOldValueDisabled = (item: MatchedFieldInterface) =>
     const value = item.value.mapID
     return value == '<ignore>' || value == 'm_hidden' || value.startsWith('C_')
   })
-
-const divContainer = ref<HTMLDivElement | undefined>(undefined)
 
 onMounted(async () => {
   const resp = await Promise.all([getFieldOptions(), getDestinationKeys()])

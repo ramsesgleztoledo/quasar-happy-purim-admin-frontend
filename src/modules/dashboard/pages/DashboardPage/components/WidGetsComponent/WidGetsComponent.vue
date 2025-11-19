@@ -8,7 +8,7 @@
   >
     <WidGet
       icon="discount"
-      :first-p="`$${convertWithCommas(dailyTotal.total, true)}`"
+      :first-p="`$${convertWithCommas(dailyTotal.total)}`"
       second-p="Daily Total:"
       :third-p="`${convertToTextDate(dailyTotal.date)}`"
       icon-color="#3cd856"
@@ -25,7 +25,7 @@
     <WidGet
       class-name="justify-content-center"
       icon="signal_cellular_alt"
-      :first-p="`$${convertWithCommas(runningTotal.total, true)}`"
+      :first-p="`$${convertWithCommas(runningTotal.total)}`"
       second-p="Running Total:"
       :third-p="`${dashboardStore.percentageRunningTotal?.percentageIncrease || 0}% Up From Yesterday`"
       icon-color="#5A65FA"

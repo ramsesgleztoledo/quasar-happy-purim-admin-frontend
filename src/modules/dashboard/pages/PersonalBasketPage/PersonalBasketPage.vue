@@ -47,7 +47,7 @@
         :pagination="{
           rowsPerPage: 0,
         }"
-        :style="{ height: isFullScreen ? '800px' : '400px' }"
+        :style="{ height: isFullScreen ? '800px' : '628px' }"
         class="table-sticky-header-column-table"
         flat
         bordered
@@ -55,7 +55,7 @@
         :rows="baskets"
         :columns="columns"
         row-key="id"
-        styles="height: 360px"
+        styles="height: 628px"
       >
         <template v-slot:body="props">
           <q-tr :props="props">

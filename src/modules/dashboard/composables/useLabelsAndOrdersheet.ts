@@ -13,7 +13,7 @@ export const useLabelsAndOrdersheet = () => {
     async getLabelOption() {
       const resp = await getLabelOption({
         loading: {
-          message: 'Loading ...'
+          message: 'Loading...'
         }
       })
       return resp.ok ? resp.data : []

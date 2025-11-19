@@ -31,7 +31,7 @@ export const useUI = () => {
           color: 'positive',
           textColor: 'black',
           icon: 'check',
-          message: 'Copied to clipboard',
+          message: 'Copied to Clipboard',
           timeout: 500,
         })
       } else {
@@ -44,7 +44,7 @@ export const useUI = () => {
         color: 'red',
         textColor: 'white',
         icon: 'error',
-        message: 'Failed to copy text',
+        message: 'Failed to Copy Text',
       })
     }
   }
@@ -159,7 +159,7 @@ export const useUI = () => {
 
     },
 
-    showToast(ok: boolean, successMsg: string, errorMsg: string) {
+    showToast(ok: boolean, successMsg: string, errorMsg?: string) {
       if (ok) {
         $q.notify({
           color: 'green',
@@ -169,28 +169,29 @@ export const useUI = () => {
         })
       }
       else {
-        $q.notify({
-          color: 'red',
-          textColor: 'black',
-          icon: 'error',
-          message: errorMsg,
-        })
+        if (errorMsg)
+          $q.notify({
+            color: 'red',
+            textColor: 'black',
+            icon: 'error',
+            message: errorMsg,
+          })
       }
     },
 
-    goToTop(element: HTMLElement | undefined | null, delay?: number, behavior?: ScrollBehavior) {
+    goToTop(params?: { element?: HTMLElement | undefined | null, delay?: number, behavior?: ScrollBehavior }) {
 
-      if (!element) return
+      const element = params?.element || document.body
 
       setTimeout(() => {
-        element.scrollIntoView({ behavior: behavior ? behavior : 'smooth', block: 'start' })
-      }, delay ? delay : 0);
+        element.scrollIntoView({ behavior: params?.behavior ? params.behavior : 'smooth', block: 'start' })
+      }, params?.delay ? params.delay : 0);
 
     },
 
     showLoading(text?: string) {
       $q.loading.show({
-        message: text ? text : `Loading ...`,
+        message: text ? text : `Loading...`,
         spinnerColor: '#f36b09',
         messageColor: '#f36b09',
       })

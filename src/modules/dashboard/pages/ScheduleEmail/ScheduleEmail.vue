@@ -120,7 +120,7 @@
               rowsPerPage: 0,
             }"
             title="Email Sent"
-            :style="{ height: isFullScreenEmailSent ? '800px' : '400px' }"
+            :style="{ height: isFullScreenEmailSent ? '800px' : '628px' }"
             class="table-sticky-header-column-table"
             flat
             bordered
@@ -178,7 +178,7 @@ import { onMounted, ref } from 'vue'
 import type { ScheduleEmailInterface } from '../../interfaces/schedule-email.interfaces'
 import { useEmailScheduler } from '../../composables/useEmailScheduler'
 import DialogAlert from 'src/components/DialogAlert/DialogAlert.vue'
-import { getDateByTimeZone } from 'src/helpers/getDateByTimeZone'
+// import { getDateByTimeZone } from 'src/helpers/getDateByTimeZone'
 
 const { getEmailScheduler, cancelCampaign } = useEmailScheduler()
 
@@ -236,8 +236,8 @@ const columnsQueue: QTableColumn<ScheduleEmailInterface>[] = [
     align: 'left',
     field: 'formattedSendingDate',
     sortable: true,
-    format: (date: string, row: ScheduleEmailInterface) =>
-      `${getDateByTimeZone(date + '.000Z', row.timeZone)}`,
+    // format: (date: string, row: ScheduleEmailInterface) =>
+    //   `${getDateByTimeZone(date + '.000Z', row.timeZone)}`,
   },
   {
     name: 'timeZone',

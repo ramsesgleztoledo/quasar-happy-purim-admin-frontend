@@ -27,7 +27,9 @@ const dStore = useDashboardStore()
 const orderItems = computed<ItemBasketInterface[]>(() => [
   ...dStore.orderItems.map((item) => ({
     label: item.itemDescription,
-    value: `$${convertWithCommas(item.itemTotal)}`,
+    value: `$${convertWithCommas(item.itemTotal, {
+      dontAllowZero: true,
+    })}`,
     redirectTo: {
       name: 'dashboard-itemDetailsPage',
       params: {

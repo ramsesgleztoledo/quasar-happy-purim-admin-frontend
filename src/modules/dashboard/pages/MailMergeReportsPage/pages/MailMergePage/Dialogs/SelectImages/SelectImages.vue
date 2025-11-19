@@ -32,7 +32,7 @@
               @click="() => $emit('onSelectImg', img)"
             />
           </div>
-          <q-inner-loading :showing="!isReady" label="Loading ..." />
+          <q-inner-loading :showing="!isReady" label="Loading..." />
         </div>
       </div>
       <div v-else class="q-pa-lg q-ma-lg">No images to show</div>

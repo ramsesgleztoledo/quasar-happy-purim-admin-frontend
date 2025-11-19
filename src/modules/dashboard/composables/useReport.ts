@@ -31,15 +31,15 @@ export const useReport = () => {
   return {
     async getReportList() {
       $q.loading.show({
-        message: 'Loading ...',
+        message: 'Loading...',
         spinnerColor: '#f36b09',
         messageColor: '#f36b09',
       })
       const resp = await Promise.all([
         getReportList(),
         getCustomReports(),
-        getCustomSpecialReports(),
         getAdvancedSpecialReports(),
+        getCustomSpecialReports(),
       ])
 
 
@@ -66,7 +66,7 @@ export const useReport = () => {
         await downloadFile(async () => downloadReportExcelByReportId(report.reportID, {
           dontRedirect: true,
           loading: {
-            message: 'Downloading report'
+            message: 'Loading...'
           }
         }), {
           fileType: 'excel',
@@ -79,7 +79,7 @@ export const useReport = () => {
         await downloadFile(async () => downloadCustomReportExcelByReportId(report.reportID, {
           dontRedirect: true,
           loading: {
-            message: 'Downloading report'
+            message: 'Loading...'
           }
         }), {
           fileType: 'excel',
@@ -140,14 +140,14 @@ export const useReport = () => {
       if (!isCustom)
         tokens = await getTokensByReportId(data.id, {
           // loading: {
-          //   message: 'Loading ...'
+          //   message: 'Loading...'
           // }
         })
 
       else
         tokens = await getCustomTokensByReportId({
           // loading: {
-          //   message: 'Loading ...'
+          //   message: 'Loading...'
           // }
         })
 
@@ -162,14 +162,14 @@ export const useReport = () => {
         //   dontRedirect: true,
         //   dontShowToast: true,
         //   // loading: {
-        //   //   message: 'Loading ...'
+        //   //   message: 'Loading...'
         //   // }
         // });
 
 
         resp = await getReportRecipientsByReportIdWithSQL(data, {
           // loading: {
-          //   message: 'Loading ...'
+          //   message: 'Loading...'
           // }
         })
       }
@@ -179,13 +179,13 @@ export const useReport = () => {
         //   dontRedirect: true,
         //   dontShowToast: true,
         //   // loading: {
-        //   //   message: 'Loading ...'
+        //   //   message: 'Loading...'
         //   // }
         // });
 
         resp = await getReportRecipientsByReportIdCustomWithSQL(data, {
           // loading: {
-          //   message: 'Loading ...'
+          //   message: 'Loading...'
           // }
         })
       }
@@ -208,13 +208,13 @@ export const useReport = () => {
         if (!isFirstTime)
           resp = await getReportRecipientsByReportIdWithSQL(data, {
             // loading: {
-            //   message: 'Loading ...'
+            //   message: 'Loading...'
             // }
           })
         else
           resp = await getReportRecipientsByReportIdFilterOnly(data, {
             // loading: {
-            //   message: 'Loading ...'
+            //   message: 'Loading...'
             // }
           })
 
@@ -224,7 +224,7 @@ export const useReport = () => {
       else {
         // resp = (await getReportRecipientsByReportIdCustomWithSQL(data.id, {
         //   // loading: {
-        //   //   message: 'Loading ...'
+        //   //   message: 'Loading...'
         //   // }
         // }))
         // if (data.id == 12)
@@ -233,13 +233,13 @@ export const useReport = () => {
         //     searchTerm: data.searchTerm || "",
         //   }, {
         //     loading: {
-        //       message: 'Loading ...'
+        //       message: 'Loading...'
         //     }
         //   }))
         // else
         resp = await getReportRecipientsByReportIdCustomWithSQL(data, {
           // loading: {
-          //   message: 'Loading ...'
+          //   message: 'Loading...'
           // }
         })
 
@@ -261,7 +261,7 @@ export const useReport = () => {
         dontShowToast: true,
         dontUseErrorAction: true,
         // loading: {
-        //   message: 'Loading ...'
+        //   message: 'Loading...'
         // }
       })
 
@@ -272,7 +272,7 @@ export const useReport = () => {
       await downloadFile(async () => downloadRouteReport({
         dontRedirect: true,
         loading: {
-          message: 'Downloading report'
+          message: 'Loading...'
         }
       }), {
         fileType: 'doc',

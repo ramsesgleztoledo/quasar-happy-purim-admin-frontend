@@ -10,14 +10,14 @@
       @click="() => onItemClicked(info)"
     >
       <q-item>
-        <q-item-section>
+        <div class="col-8">
           <q-item-label style="font-weight: 800; font-size: 16px">
             {{ info.text }}
           </q-item-label>
           <q-item-label caption>{{ info.caption }}</q-item-label>
-        </q-item-section>
+        </div>
         <q-item-section class="DashboardPageInfoComponent-number">
-          <q-item-label>
+          <div class="col-4">
             <p
               :style="{
                 color: info.color,
@@ -27,7 +27,7 @@
             >
               {{ info.number }}
             </p>
-          </q-item-label>
+          </div>
         </q-item-section>
       </q-item>
     </div>
@@ -57,8 +57,8 @@ interface TotalsRaisedInterface {
 const totalsRaised = computed<TotalsRaisedInterface[]>(() => [
   {
     text: 'Total Funds Raised',
-    caption: `(Without Reciprocity) - ($${convertWithCommas(dStore.totalsRaised?.totalFundsFromReciprocity || 0, true)})`,
-    number: `$${convertWithCommas(dStore.totalsRaised?.totalFunds || 0, true)}`,
+    caption: `(Without Reciprocity) - ($${convertWithCommas(dStore.totalsRaised?.totalFundsFromReciprocity || 0)})`,
+    number: `$${convertWithCommas(dStore.totalsRaised?.totalFunds || 0)}`,
     color: 'var(--c-color1)',
     redirect: {
       name: 'dashboard-transactionPage',
@@ -67,7 +67,7 @@ const totalsRaised = computed<TotalsRaisedInterface[]>(() => [
   {
     text: 'Charitable Contributions',
     caption: '(Included in Total Funds Raised)',
-    number: `$${convertWithCommas(dStore.totalsRaised?.totalCharity || 0, true)}`,
+    number: `$${convertWithCommas(dStore.totalsRaised?.totalCharity || 0)}`,
     color: 'var(--c-color2)',
     redirect: {
       name: 'dashboard-donationPage',
@@ -76,7 +76,7 @@ const totalsRaised = computed<TotalsRaisedInterface[]>(() => [
   {
     text: 'Total Reciprocity',
     caption: '*Estimated to Date',
-    number: `$${convertWithCommas(dStore.totalsRaised?.totalReciprocity || 0, true)}`,
+    number: `$${convertWithCommas(dStore.totalsRaised?.totalReciprocity || 0)}`,
     color: 'var(--c-color3)',
     // redirect: {
     //   name: 'dashboard-reciprocityChargePage',

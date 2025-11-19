@@ -28,7 +28,7 @@ export const useBasicSettings = () => {
     async getSettings() {
 
       $q.loading.show({
-        message: 'Loading ...',
+        message: 'Loading...',
         spinnerColor: '#f36b09',
         messageColor: '#f36b09',
       })
@@ -54,7 +54,7 @@ export const useBasicSettings = () => {
     async getFiles() {
       const files = await getFiles({
         loading: {
-          message: 'Loading ...'
+          message: 'Loading...'
         }
       })
       return files.ok ? files.data : []
@@ -74,24 +74,24 @@ export const useBasicSettings = () => {
     async updateFundraiserCoordinator(data: FundraiserCoordinatorFormInterface) {
       const resp = await updateFundraiserCoordinator(data, {
         loading: {
-          message: 'Updating Fundraiser Coordinator...'
+          message: 'Loading...'
         },
         dontRedirect: true
       })
 
-      showToast(resp.ok, 'Fundraiser Coordinator Updated', `something went wrong updating fundraiser coordinator`)
+      showToast(resp.ok, 'Fundraiser Coordinator Information Updated', `Something went wrong updating the fundraiser coordinator information`)
 
 
     },
     async updatePricingSettings(data: GiftBasketProgramFormInterface) {
       const resp = await updatePricingSettings(data, {
         loading: {
-          message: 'Loading ...'
+          message: 'Loading...'
         },
         dontRedirect: true
       })
 
-      showToast(resp.ok, 'Gift Basket Program Updated', `Something went wrong updating Gift Basket Program`)
+      showToast(resp.ok, 'Gift Basket Program Settings Updated', `Something went wrong updating the gift basket program settings`)
 
       if (!resp.ok) return
 
@@ -102,7 +102,7 @@ export const useBasicSettings = () => {
     async updateWelcomePage(html: string) {
       const resp = await updateWelcomePage(html, {
         loading: {
-          message: 'Updating welcome page...'
+          message: 'Loading...'
         },
         dontRedirect: true
       })
@@ -113,7 +113,7 @@ export const useBasicSettings = () => {
     async uploadFiles(files: File[]) {
 
       $q.loading.show({
-        message: 'Loading ...',
+        message: 'Loading...',
         spinnerColor: '#f36b09',
         messageColor: '#f36b09',
       })
@@ -121,6 +121,7 @@ export const useBasicSettings = () => {
       const promises = await Promise.all(files.map(file => uploadFile(file, {
         dontRedirect: true
       })))
+
       let failed = false
       promises.forEach((resp => {
         if (!resp.ok)
@@ -131,7 +132,7 @@ export const useBasicSettings = () => {
           color: 'green',
           textColor: 'black',
           icon: 'error',
-          message: 'All files were uploaded',
+          message: files.length === 1 ? 'File Uploaded' : 'Files Uploaded',
         })
       }
       else {
@@ -155,7 +156,7 @@ export const useBasicSettings = () => {
 
       const resp = await deleteFile(name, {
         loading: {
-          message: 'Loading ...'
+          message: 'Loading...'
         },
         dontRedirect: true
       })

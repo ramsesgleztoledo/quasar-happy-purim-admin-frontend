@@ -445,7 +445,7 @@ const onRemoveAll = () => {
   }))
   $q.notify({
     type: 'success',
-    message: 'All Row Removed',
+    message: 'All Rows Removed',
     color: 'blue',
     textColor: 'black',
   })
@@ -574,7 +574,7 @@ const onKeepAllOldValue = async () => {
   else
     $q.notify({
       type: 'success',
-      message: 'All Old Row Value are already Kept',
+      message: 'All Old Row Values Kept',
       color: 'blue',
       textColor: 'black',
     })

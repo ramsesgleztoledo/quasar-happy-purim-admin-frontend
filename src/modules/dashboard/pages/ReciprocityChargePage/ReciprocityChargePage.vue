@@ -36,7 +36,7 @@
         :pagination="{
           rowsPerPage: 0,
         }"
-        :style="{ height: isFullScreen ? '800px' : '400px' }"
+        :style="{ height: isFullScreen ? '800px' : '628px' }"
         class="table-sticky-header-column-table"
         flat
         bordered
@@ -156,7 +156,9 @@ const columns: QTableColumn<ReciprocityChargeInterface>[] = [
     required: true,
     align: 'left',
     sortable: true,
-    format: (amount: number) => `$${convertWithCommas(amount)}`,
+    format: (amount: number) => `$${convertWithCommas(amount,{
+              dontAllowZero: true
+            })}`,
   },
 ]
 

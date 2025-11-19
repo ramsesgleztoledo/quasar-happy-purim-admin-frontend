@@ -22,12 +22,10 @@ declare module 'vue' {
 
 
 
-const baseURL = 'https://api-staging.happypurim.dev/api'
-// const baseURL = import.meta.env.VITE_API_BASE_URL || "";
 
+const baseURL = import.meta.env.VITE_API_BASE_URL || "";
 
-
-const api = axios.create({ baseURL });
+const api = axios.create({ baseURL, timeout: 480000 });
 
 export default defineBoot(({ app }) => {
   // for use inside Vue files (Options API) through this.$axios and this.$api

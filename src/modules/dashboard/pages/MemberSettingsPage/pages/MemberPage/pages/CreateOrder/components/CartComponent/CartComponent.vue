@@ -63,7 +63,9 @@
 
         <div style="color: green">
           {{ data.discount.value ? $moStore.getSymbol : '' }} -
-          {{ convertWithCommas(data.discount.value) }}
+          {{ convertWithCommas(data.discount.value,{
+              dontAllowZero: true
+            }) }}
         </div>
       </div>
       <!-- fee percent -->
@@ -80,7 +82,9 @@
 
         <div>
           {{ $moStore.getSymbol }} +{{
-            convertWithCommas(data.fees.fee + data.fees.perTransactionFee)
+            convertWithCommas(data.fees.fee + data.fees.perTransactionFee,{
+              dontAllowZero: true
+            })
           }}
         </div>
       </div>
@@ -109,7 +113,9 @@
           </div>
         </div>
 
-        <div>  {{ data.fees.feePerperson ? $moStore.getSymbol : '' }} +{{ convertWithCommas(data.fees.feePerperson) }}</div>
+        <div>  {{ data.fees.feePerperson ? $moStore.getSymbol : '' }} +{{ convertWithCommas(data.fees.feePerperson,{
+              dontAllowZero: true
+            }) }}</div>
       </div>
 
       <!-- final total -->
@@ -119,7 +125,9 @@
       {{ data.totalPriceMembers }} -->
       <div class="row w-full justify-content-space-between q-mb-sm" style="color: #cc0505">
         <b>ORDER TOTAL </b>
-        <b>{{ $moStore.getSymbol }} {{ convertWithCommas(orderTotal) }}</b>
+        <b>{{ $moStore.getSymbol }} {{ convertWithCommas(orderTotal,{
+              dontAllowZero: true
+            }) }}</b>
       </div>
       <q-separator />
     </div>

@@ -151,7 +151,7 @@
                   :type="attribute.type"
                   outlined
                   lazy-rules
-                  label="enter value"
+                  label="Enter Value"
                   :rules="[lazyRules.required()]"
                   :disable="!attribute.selected"
                 />

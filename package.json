@@ -10,11 +10,11 @@
     "lint": "eslint -c ./eslint.config.js \"./src*/**/*.{ts,js,cjs,mjs,vue}\"",
     "format": "prettier --write \"**/*.{js,ts,vue,scss,html,md,json}\" --ignore-path .gitignore",
     "test": "echo \"No test specified\" && exit 0",
-    "dev": "quasar dev",
+    "dev": "env-cmd -f .env -f .env.staging quasar dev",
     "build": "quasar build",
-    "build:dev": "quasar build --mode development",
-    "build:sta": "quasar build -m staging",
-    "build:pro": "quasar build -m production",
+    "build:dev": "env-cmd -f .env -f .env.development quasar build",
+    "build:sta": "env-cmd -f .env -f .env.staging quasar build",
+    "build:pro": "env-cmd -f .env -f .env.production quasar build",
     "postinstall": "quasar prepare"
   },
   "dependencies": {
@@ -47,7 +47,8 @@
     "vue-codemirror": "^6.1.1",
     "vue-echarts": "^7.0.3",
     "vue-i18n": "^9.2.2",
-    "vue-router": "^4.0.12"
+    "vue-router": "^4.0.12",
+    "yarn": "^1.22.22"
   },
   "devDependencies": {
     "@electron/packager": "^18.3.2",
@@ -61,6 +62,7 @@
     "autoprefixer": "^10.4.2",
     "electron": "^38.3.0",
     "electron-builder": "^26.0.12",
+    "env-cmd": "^11.0.0",
     "eslint": "^9.14.0",
     "eslint-plugin-vue": "^9.30.0",
     "globals": "^15.12.0",

@@ -110,7 +110,9 @@
       <div class="row q-mb-sm" v-for="(people, i) in transactionDetails.recipients" :key="i">
         <div class="col-6">{{ people.sendingTo }}</div>
         <div class="col-6">
-          {{ people.price ? '$' : '' }}{{ convertWithCommas(people.price || 0) }}
+          {{ people.price ? '$' : '' }}{{ convertWithCommas(people.price || 0,{
+              dontAllowZero: true
+            }) }}
         </div>
       </div>
       <hr />
@@ -139,7 +141,9 @@
             <div class="row">
               <div class="col-6"></div>
               <div class="col-6">
-                {{ item.price ? '$' : '' }}{{ convertWithCommas(item.price || 0) }}
+                {{ item.price ? '$' : '' }}{{ convertWithCommas(item.price || 0,{
+              dontAllowZero: true
+            }) }}
               </div>
             </div>
           </div>

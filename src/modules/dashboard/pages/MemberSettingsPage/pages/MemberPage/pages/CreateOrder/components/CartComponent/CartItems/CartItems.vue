@@ -39,7 +39,11 @@
                 <div class="CartItems-text">
                   <b>
                     {{ $moStore.getSymbol
-                    }}{{ convertWithCommas($moStore.getCustomShippingItemsTotal) }}
+                    }}{{
+                      convertWithCommas($moStore.getCustomShippingItemsTotal, {
+                        dontAllowZero: true,
+                      })
+                    }}
                   </b>
                 </div>
               </div>
@@ -76,7 +80,11 @@
                 <div class="CartItems-text">
                   <b>
                     {{ $moStore.getSymbol
-                    }}{{ convertWithCommas(aItem.price * aItem.quantity || 0) }}
+                    }}{{
+                      convertWithCommas(aItem.price * aItem.quantity || 0, {
+                        dontAllowZero: true,
+                      })
+                    }}
                   </b>
                 </div>
               </div>
@@ -128,6 +136,9 @@
                       convertWithCommas(
                         additionalBasketForPersonalUse.price *
                           additionalBasketForPersonalUse.quantity || 0,
+                        {
+                          dontAllowZero: true,
+                        },
                       )
                     }}
                   </b>
@@ -184,7 +195,9 @@
                 <div class="CartItems-text">
                   <b>
                     {{ $moStore.getSymbol
-                    }}{{ convertWithCommas($moStore.getDonations?.donationUse.price || 0) }}
+                    }}{{ convertWithCommas($moStore.getDonations?.donationUse.price || 0,{
+              dontAllowZero: true
+            }) }}
                   </b>
                 </div>
               </div>
@@ -222,7 +235,9 @@
                 </div>
                 <div class="col-3">
                   <div class="CartItems-text">
-                    <b> {{ $moStore.getSymbol }}{{ convertWithCommas(item.value || 0) }} </b>
+                    <b> {{ $moStore.getSymbol }}{{ convertWithCommas(item.value || 0,{
+              dontAllowZero: true
+            }) }} </b>
                   </div>
                 </div>
 
@@ -268,7 +283,9 @@
               </div>
               <div class="col-3">
                 <div class="CartItems-text">
-                  <b> {{ $moStore.getSymbol }}{{ convertWithCommas(item.price || 0) }} </b>
+                  <b> {{ $moStore.getSymbol }}{{ convertWithCommas(item.price || 0,{
+              dontAllowZero: true
+            }) }} </b>
                 </div>
               </div>
 
@@ -345,7 +362,9 @@
                   <b v-if="$moStore.$state.totalFromBackend || data.totalPriceMembers">
                     {{ $moStore.getSymbol
                     }}{{
-                      convertWithCommas($moStore.$state.totalFromBackend || data.totalPriceMembers)
+                      convertWithCommas($moStore.$state.totalFromBackend || data.totalPriceMembers,{
+              dontAllowZero: true
+            })
                     }}
                   </b>
                 </div>
@@ -380,7 +399,9 @@
               <div class="col-3">
                 <div class="CartItems-text">
                   <b>
-                    {{ $moStore.getSymbol }}{{ convertWithCommas(disc.price * disc.quantity || 0) }}
+                    {{ $moStore.getSymbol }}{{ convertWithCommas(disc.price * disc.quantity || 0,{
+              dontAllowZero: true
+            }) }}
                   </b>
                 </div>
               </div>
@@ -427,7 +448,9 @@
               <div class="col-3">
                 <div class="CartItems-text">
                   <b>
-                    {{ $moStore.getSymbol }}{{ convertWithCommas(item.price * item.quantity || 0) }}
+                    {{ $moStore.getSymbol }}{{ convertWithCommas(item.price * item.quantity || 0,{
+              dontAllowZero: true
+            }) }}
                   </b>
                 </div>
               </div>
@@ -547,15 +570,18 @@ const removeDonate = async (charity: CharityType) => {
 const membersSelected = computed<OrderMemberListInterface[]>(() => {
   const members: OrderMemberListInterface[] = []
   const sel = $moStore.membersSelected
+
+  console.log({ allMembers: sel.length })
+
   for (let i = 0; i < sel.length; i++) {
     const me = sel[i]!
     let found = false
 
     for (let j = 0; j < promotions.value.length; j++) {
-      const foundAux = promotions.value[j]!.memberList.find((member) => member.id === me.id)
+      const foundAux = promotions.value[j]!.memberList.find((member) => member.id == me.id)
       if (foundAux) {
         found = true
-        break
+        j = promotions.value.length + 1
       }
     }
     if (!found) members.push({ ...me, price: me.price || $moStore.getSPrice })

@@ -104,11 +104,11 @@ export const useUploadList = () => {
 
       const resp = await backupAndUpload(data, {
         loading: {
-          message: 'Uploading data'
+          message: 'Loading...'
         }
       })
 
-      showToast(resp.ok, 'data uploaded', 'something went wrong uploading the data')
+      showToast(resp.ok, 'Data Uploaded', 'Something went wrong uploading the data, please try again')
       return resp.ok
 
     },
@@ -116,10 +116,10 @@ export const useUploadList = () => {
 
       const resp = await revertChanges({
         loading: {
-          message: 'Loading ...'
+          message: 'Loading...'
         }
       })
-      showToast(resp.ok, 'Data reverted', 'something went wrong reverting the data')
+      showToast(resp.ok, 'Data Reverted', 'Something went wrong reverting the data, please try again')
       return resp.ok
 
     },

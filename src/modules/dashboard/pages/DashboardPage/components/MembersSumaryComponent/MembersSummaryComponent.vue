@@ -48,8 +48,7 @@ const orderItems = computed<ItemBasketInterface[]>(() => [
     Members who have been online in the past 8 minutes:
     </div>
     <ul style="max-height: 120px; overflow: auto;">
-    ${membersOnline.value
-      .map(
+    ${membersOnline.value.map(
         (name) =>
           `<li>${name}</li>
     `,

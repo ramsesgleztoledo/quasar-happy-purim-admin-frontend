@@ -265,7 +265,7 @@ export const useMemberService = () => {
         method: 'PUT'
       })
     },
-    emailReceiptByTransactionId: async (transaction: number, extraOptions?: ExtraOptionsInterface): Promise<ApiCallResponseInterface<boolean>> => {
+    emailReceiptByTransactionId: async (transaction: number, extraOptions?: ExtraOptionsInterface): Promise<ApiCallResponseInterface<string>> => {
       const nextUrl = `/${transaction}/email-receipt`;
       const url = `${baseUrl}${nextUrl}`;
       return await apiCall({

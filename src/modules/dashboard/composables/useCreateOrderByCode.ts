@@ -16,7 +16,7 @@ export const useCreateOrderByCode = () => {
     async getOrdersByCode() {
       const resp = await getOrdersByCode(memberId.value, {
         loading: {
-          message: 'Loading ...'
+          message: 'Loading...'
         }
       })
       return resp.ok ? resp.data.receivers : []
@@ -26,20 +26,22 @@ export const useCreateOrderByCode = () => {
         dontRedirect: true,
         dontShowToast: true,
         loading: {
-          message: 'Loading ...'
+          message: 'Loading...'
         }
       })
-      showToast(resp.ok, 'success ...', `${resp.data ? resp.data : 'Something went wrong'}`)
+      showToast(resp.ok, 'Member Added', `${resp.data ? resp.data : 'Something went wrong'}`)
       return resp.ok
     },
     async deleteOrdersByCode(receiverId: number) {
       const resp = await deleteOrdersByCode(memberId.value, receiverId, {
         dontRedirect: true,
+        dontShowToast: true,
+        useRespAsError: true,
         loading: {
-          message: 'Loading ...'
+          message: 'Loading...'
         }
       })
-      showToast(resp.ok, 'deleted ...', 'something went wrong ...')
+      showToast(resp.ok, 'Member deleted from cart',)
       return resp.ok
     },
 

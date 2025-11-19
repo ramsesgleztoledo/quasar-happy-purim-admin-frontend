@@ -4,7 +4,6 @@
     :content-style="{
       backgroundColor: '#f1f1f1',
       height: fullscreenClass ? '100%' : height ? height : '190px',
-      
     }"
     v-model="text"
     :class="{ fullscreen: fullscreenClass }"
@@ -262,7 +261,7 @@
 
   <!-- Insert Img -->
   <q-dialog v-model="uploadInsertFileFlag" persistent>
-    <q-card :style="{ width: isMobile ? '100vw' : '600px' }">
+    <q-card :style="{ width: isMobile ? '100vw' : '80vw' }">
       <div class="row dialog-header custom-dialog-header-container">
         <div class="col-12">
           <p>Insert File</p>
@@ -279,32 +278,26 @@
             />
           </div>
         </div>
-        <div class="row" style="max-height: 500px; overflow-y: auto">
-          <div
-            v-for="item in files"
-            :key="item"
-            class="col-4 q-pa-md"
-            :class="{
-              'col-4': !isMobile,
-              'col-12': isMobile,
-            }"
-          >
+        <div class="row" style="max-height: 500px; overflow-y: auto; justify-content: center">
+          <div style="width: 230px" v-for="item in files" :key="item" class="q-pa-md">
             <div
               class="EditorCustom-file-container"
               :class="{
                 'EditorCustom-file-selected': item === selectedFile,
               }"
             >
-              <div
-                class="EditorCustom-img-container"
-                @click="() => onFileSelected(item)"
-                :style="{ backgroundImage: ` url(${EDITOR_START_IMG_URL}${item})` }"
-              >
-                <!-- <img :src="`${EDITOR_START_IMG_URL}${item}`" alt="No img" /> -->
+              <div class="EditorCustom-img-container" @click="() => onFileSelected(item)">
+                <!-- :style="{ backgroundImage: ` url(${EDITOR_START_IMG_URL}${item})` }" -->
+                <img
+                  style="width: 100%; height: 100%; position: absolute"
+                  :src="`${EDITOR_START_IMG_URL}${item}`"
+                  alt="No img"
+                />
               </div>
               <div class="row">
                 <div class="col-12">
                   <q-btn
+                    style="border-radius: 4px"
                     @click="() => onDeleteFile(item)"
                     color="primary"
                     icon="delete"

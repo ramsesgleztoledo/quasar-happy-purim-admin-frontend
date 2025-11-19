@@ -17,7 +17,7 @@ export const useShipment = () => {
     async getBasketsToBeShipped() {
       const resp = await getBasketsToBeShipped({
         loading: {
-          message: 'Loading baskets...'
+          message: 'Loading...'
         }
       })
       return resp.ok ? resp.data : []
@@ -39,7 +39,7 @@ export const useShipment = () => {
           color: 'blue',
           textColor: 'black',
           icon: 'error',
-          message: 'Shipment updated',
+          message: 'Shipment Updated',
         })
 
       else
@@ -47,7 +47,7 @@ export const useShipment = () => {
           color: 'red',
           textColor: 'white',
           icon: 'error',
-          message: `Something went wrong updating the shipment, please try again later`,
+          message: `Something went wrong updating the shipment, please refresh the page and try again`,
         })
 
 

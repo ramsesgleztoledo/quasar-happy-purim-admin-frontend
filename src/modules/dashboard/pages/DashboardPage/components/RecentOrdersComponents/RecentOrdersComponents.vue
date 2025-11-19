@@ -116,7 +116,7 @@ const auxColumns: QTableColumn[] = [
     label: 'Amount',
     align: 'left',
     field: 'amount',
-    format: (amount: number) => `$${convertWithCommas(amount || 0, true)}`,
+    format: (amount: number) => `$${convertWithCommas(amount || 0, )}`,
     sortable: true,
   },
   {

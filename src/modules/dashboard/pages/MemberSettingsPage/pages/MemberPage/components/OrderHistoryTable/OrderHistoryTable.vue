@@ -4,7 +4,7 @@
       <b> Transactions: </b>
     </h5>
   </div>
-  <div class="q-pa-md" v-if="memberState.memberTransactions.length">
+  <div v-if="memberState.memberTransactions.length">
     <div class="row RecentOrders-container white-container" :class="{ fullscreen: isFullScreen }">
       <div class="col-12">
         <div class="row">
@@ -19,7 +19,7 @@
           </div>
         </div>
         <q-table
-          :style="{ height: isFullScreen ? '800px' : '400px' }"
+          :style="{ height: isFullScreen ? '800px' : '628px' }"
           class="table-sticky-header-column-table"
           flat
           bordered
@@ -50,8 +50,13 @@
                   v-else-if="col.name === 'sendEmail'"
                   size="sm"
                   color="primary"
-                  label="send email"
-                  @click="() => emailReceiptByTransactionId_Co(col.value)"
+                  label="send email "
+                  @click="
+                    () => {
+                      onSendEmailFlag = true
+                      colValue = col.value
+                    }
+                  "
                 />
 
                 <div v-else>
@@ -69,6 +74,18 @@
       <h6>No Transactions</h6>
     </div>
   </div>
+
+  <DialogAlert
+    v-model="onSendEmailFlag"
+    @on-finish="
+      (result: boolean) => {
+        if (result) onSendEmail()
+      }
+    "
+    cancel-btn-text="Cancel"
+    ok-btn-text="Send"
+    msg="Are you sure you want email this receipt?"
+  />
 </template>
 
 <script setup lang="ts">
@@ -78,11 +95,20 @@ import { convertWithCommas } from 'src/helpers/convertWithCommas'
 import type { MemberTransactionInterface } from 'src/modules/dashboard/interfaces/member-interfaces'
 import { useMember } from 'src/modules/dashboard/composables/useMember'
 import { ref } from 'vue'
+import DialogAlert from 'src/components/DialogAlert/DialogAlert.vue'
 // import { useRouter } from 'vue-router'
 
 const { memberState, emailReceiptByTransactionId_Co } = useMember()
 const isFullScreen = ref(false)
+const onSendEmailFlag = ref(false)
+
+const colValue = ref<number | undefined>(undefined)
 // const $router = useRouter()
+
+const onSendEmail = async () => {
+  if (!colValue.value) return
+  await emailReceiptByTransactionId_Co(colValue.value)
+}
 
 const columns: QTableColumn<MemberTransactionInterface>[] = [
   {
@@ -149,7 +175,7 @@ const columns: QTableColumn<MemberTransactionInterface>[] = [
     required: true,
     align: 'left',
     sortable: true,
-    format: (amount: number) => `$${convertWithCommas(amount, true)}`,
+    format: (amount: number) => `$${convertWithCommas(amount)}`,
   },
   {
     field: 'paid',
@@ -158,7 +184,7 @@ const columns: QTableColumn<MemberTransactionInterface>[] = [
     required: true,
     align: 'left',
     sortable: true,
-    format: (amount: number) => `$${convertWithCommas(amount, true)}`,
+    format: (amount: number) => `$${convertWithCommas(amount)}`,
   },
   {
     field: 'balanceDue',
@@ -167,7 +193,7 @@ const columns: QTableColumn<MemberTransactionInterface>[] = [
     required: true,
     align: 'left',
     sortable: true,
-    format: (amount: number) => `$${convertWithCommas(amount, true)}`,
+    format: (amount: number) => `$${convertWithCommas(amount)}`,
   },
 ]
 </script>

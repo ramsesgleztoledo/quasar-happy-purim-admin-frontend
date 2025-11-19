@@ -392,7 +392,7 @@
         if (value) $router.push({ name: 'MembersSettingsPage' })
       }
     "
-    msg="Are you sure you want to cancel this member creation?"
+    msg="Are you sure you want to cancel? Any unsaved changes will be lost"
     v-model="cancelOrderDialogFlag"
   />
 
@@ -525,7 +525,9 @@ const onAddMember = async (dontAddNewOne?: boolean) => {
   const resp = await addMember_Co(data)
   if (!resp.ok) return
   resetForm()
-  goToTop(formContainer.value, 300)
+  goToTop({
+    delay: 300,
+  })
 
   if (dontAddNewOne) $router.push({ name: 'MemberLayout', params: { memberId: resp.id } })
 }

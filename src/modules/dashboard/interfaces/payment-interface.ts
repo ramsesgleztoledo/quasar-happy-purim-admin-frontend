@@ -9,18 +9,18 @@ export interface InvoiceUnpaidOrderInterface {
   OrderTotal: number;
   Paid: number;
   Due: number;
-  amountApplied: number | undefined
+  amountApplied: number | string | undefined
 }
 
 export interface RecordCheckOrCreditPaymentFormInterface {
   paymentMethodIndex: number;
-  checkAmount:        number;
-  checkDate:          string;
-  creditAmount:       number;
-  creditDate:         string;
-  checkNumber:        string;
-  memo:               string;
-  cMemo:              string;
+  checkAmount: number;
+  checkDate: string;
+  creditAmount: number;
+  creditDate: string;
+  checkNumber: string;
+  memo: string;
+  cMemo: string;
 }
 
 
@@ -34,29 +34,29 @@ export interface RecordCheckPaymentFormInterface {
 
 export interface RecordCheckPaymentInvoiceInterface {
   transactionID: number;
-  amount: number;
+  amount: number | string;
 }
 
 
 export interface RecordCCPaymentFormInterface {
   paymentMethodIndex: number;
-  total:              number;
-  invoiceList:        RecordCCPaymentInvoiceList[];
-  fullName:           string;
-  expiration:         string;
-  cardNumber:         string;
-  cvv:                string;
-  billingAddress:     string;
-  city:               string;
-  state:              string;
-  phone:              string;
-  postalCode:         string;
-  cardLast4:          string;
+  total: number;
+  invoiceList: RecordCCPaymentInvoiceList[];
+  fullName: string;
+  expiration: string;
+  cardNumber: string;
+  cvv: string;
+  billingAddress: string;
+  city: string;
+  state: string;
+  phone: string;
+  postalCode: string;
+  cardLast4: string;
 }
 
 export interface RecordCCPaymentInvoiceList {
   transactionId: number;
-  amountApplied: number;
+  amountApplied: number | string;
 }
 
 

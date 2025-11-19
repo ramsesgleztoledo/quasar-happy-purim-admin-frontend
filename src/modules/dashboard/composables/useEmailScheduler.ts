@@ -10,7 +10,7 @@ export const useEmailScheduler = () => {
     async getEmailScheduler() {
       const resp = await getEmailScheduler({
         loading: {
-          message: 'Loading ...',
+          message: 'Loading...',
         },
       })
       return resp.ok ? resp.data : []
@@ -18,7 +18,7 @@ export const useEmailScheduler = () => {
     async getEmailsByCampaignId(campaignId: string | number) {
       const resp = await getEmailsByCampaignId(campaignId, {
         loading: {
-          message: 'Loading ...',
+          message: 'Loading...',
         },
       })
       return resp.ok ? resp.data : []
@@ -26,7 +26,7 @@ export const useEmailScheduler = () => {
     async getScheduledEmailContent(emailId: string | number) {
       const resp = await getScheduledEmailContent(emailId, {
         loading: {
-          message: 'Loading ...',
+          message: 'Loading...',
         },
       })
       return resp.ok ? resp.data : ""
@@ -34,7 +34,7 @@ export const useEmailScheduler = () => {
     async cancelCampaign(campaignId: string | number) {
       const resp = await cancelCampaign(campaignId, {
         loading: {
-          message: 'Loading ...',
+          message: 'Loading...',
         },
       })
       showToast(resp.ok, 'Email Cancelled', 'Something went wrong cancelling the email')

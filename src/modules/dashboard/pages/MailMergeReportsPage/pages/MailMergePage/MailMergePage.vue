@@ -672,7 +672,7 @@ import { useDraft } from 'src/modules/dashboard/composables/useDraft'
 // import InnerViewRow from '../ViewReport/InnerViewRow.vue'
 import { useRouter } from 'vue-router'
 import { isValidDate, isValidTime } from 'src/helpers'
-import { turnTimeAndDate } from 'src/helpers/turnTimeAndDate'
+import { getFormattedStringDate, turnTimeAndDate } from 'src/helpers/turnTimeAndDate'
 import type { RecipientMemberInterface } from 'src/modules/dashboard/interfaces/report.interface'
 import { useQuasar, type QTableColumn } from 'quasar'
 import { sortArrayByField } from 'src/helpers/sortArrayByfield'
@@ -893,7 +893,7 @@ const onSendLaterEmail = async () => {
   if (!editorRef.value) return
   const content = editorRef.value.getEditorValue() || ''
 
-  const dateString = turnTimeAndDate({
+  const dateString = getFormattedStringDate({
     dateValue: dateValue.value,
     timeValue: timeValue.value,
     timeZone: timeZoneSelect.value,
@@ -958,7 +958,7 @@ const onSendLaterEmail = async () => {
 //   resetDateForm()
 // }
 
-const onSendEmail = async (date?: Date, isSchedule?: boolean) => {
+const onSendEmail = async (date?: Date | string, isSchedule?: boolean) => {
   if (!editorRef.value) return
   const content = editorRef.value.getEditorValue() || ''
   const formData = getFormValue()
@@ -1049,7 +1049,7 @@ const checkIfRecipients = () => {
     color: 'blue',
     textColor: 'black',
     icon: 'error',
-    message: 'Not Recipients Selected',
+    message: 'No Recipients Selected',
   })
   return false
 }

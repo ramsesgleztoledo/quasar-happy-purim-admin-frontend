@@ -32,7 +32,9 @@
           <p>{{ dataAux.label }}</p>
           <p v-if="showLastValue" style="margin-left: 8px !important">
             ( {{ preFix ? preFix : ' '
-            }}{{ convertWithCommas(dataAux.data[dataAux.data.length - 1]?.quantity)
+            }}{{ convertWithCommas(dataAux.data[dataAux.data.length - 1]?.quantity, {
+              dontAllowZero: true
+            })
             }}{{ subFix ? subFix : '' }} )
           </p>
         </div>

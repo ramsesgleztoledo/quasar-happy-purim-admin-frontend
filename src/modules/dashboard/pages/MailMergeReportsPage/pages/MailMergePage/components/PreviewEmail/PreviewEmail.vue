@@ -45,7 +45,7 @@
       </div>
     </div>
   </div>
-  <!-- <q-inner-loading :showing="isLoading" label="Loading ..." /> -->
+  <!-- <q-inner-loading :showing="isLoading" label="Loading..." /> -->
 </template>
 
 <script setup lang="ts">

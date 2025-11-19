@@ -71,7 +71,7 @@ export const useMember = () => {
   }) => {
     const members = await getMembersList(filters, {
       loading: {
-        message: 'Loading ...'
+        message: 'Loading...'
       }
     })
 
@@ -83,7 +83,7 @@ export const useMember = () => {
   const getMemberDataById_Co = async (memberId: number) => {
 
     $q.loading.show({
-      message: `Loading ...`,
+      message: `Loading...`,
       spinnerColor: '#f36b09',
       messageColor: '#f36b09',
     })
@@ -192,7 +192,7 @@ export const useMember = () => {
     const response = await deleteMemberById(memberId, {
       loading: {
         // message: `${isPending ? 'restoring' : 'deleting'} member${memberId}...`
-        message: 'Loading ...'
+        message: 'Loading...'
       },
       dontRedirect: true,
       dontShowToast: true,
@@ -222,7 +222,7 @@ export const useMember = () => {
   const updateMember_Co = async (memberId: number, data: MemberUpdateAllDataForm) => {
 
     $q.loading.show({
-      message: `Loading ...`,
+      message: `Loading...`,
       spinnerColor: '#f36b09',
       messageColor: '#f36b09',
     })
@@ -296,7 +296,7 @@ export const useMember = () => {
         color: 'red',
         textColor: 'black',
         icon: 'error',
-        message: 'Something went wrong updating part of this member, please try again later',
+        message: 'Oops! Something went wrong while updating this member, please try again shortly.',
       })
     }
     else
@@ -321,7 +321,7 @@ export const useMember = () => {
   const clearMemberCart_Co = async (memberId: number) => {
     try {
       $q.loading.show({
-        message: `Loading ...`,
+        message: `Loading...`,
         spinnerColor: '#f36b09',
         messageColor: '#f36b09',
       })
@@ -333,7 +333,7 @@ export const useMember = () => {
         color: 'blue',
         textColor: 'black',
         icon: 'error',
-        message: `Member's cart cleared`,
+        message: `Member’s Cart Cleared`,
       })
 
     } catch (error) {
@@ -344,7 +344,7 @@ export const useMember = () => {
   const getEmailLoginCodeInfo_Co = async (memberId: number): Promise<EmailLoginCodeInfoInterface> => {
     const emailCodeInfo = await getEmailLoginCodeInfo(memberId, {
       loading: {
-        message: `Loading ...`
+        message: `Loading...`
       },
     })
 
@@ -365,7 +365,7 @@ export const useMember = () => {
   const getBasketReceived_Co = async () => {
     const resp = await getBasketReceived({
       loading: {
-        message: 'Loading ...'
+        message: 'Loading...'
       }
     })
 
@@ -380,7 +380,7 @@ export const useMember = () => {
   const getMemberPersonalBasket_Co = async () => {
     const resp = await getMemberPersonalBasket({
       loading: {
-        message: 'Loading ...'
+        message: 'Loading...'
       }
     })
 
@@ -395,7 +395,7 @@ export const useMember = () => {
   const addMember_Co = async (data: MemberAddFormInterface) => {
     const resp = await addMember(data, {
       loading: {
-        message: 'Loading ...'
+        message: 'Loading...'
       }
     })
 
@@ -417,12 +417,12 @@ export const useMember = () => {
   const resetMemberLoginCode_Co = async (memberId: number) => {
     const resp = await resetMemberLoginCode(memberId, {
       loading: {
-        message: 'Loading ...'
+        message: 'Loading...'
       }
     })
 
     showToast(resp.ok, `The Login Code for this member has been reset
-`, `something went wrong resetting the code`)
+`, `Something went wrong resetting the login code for this member, please try again`)
 
     if (!resp.ok || !$mStore.selectedMember) return
 
@@ -434,10 +434,13 @@ export const useMember = () => {
     const resp = await emailReceiptByTransactionId(transactionId, {
       dontRedirect: true,
       loading: {
-        message: 'Loading ...'
+        message: 'Loading...'
       }
     })
-    return resp.data
+
+    showToast(resp.ok, resp.data ? resp.data : `Receipt email sent successfully`, resp.data ? resp.data : `Something went wrong sending the email, please try again`)
+
+
   };
 
 
@@ -458,17 +461,20 @@ export const useMember = () => {
 
   };
   const searchMembers_co = async (query: string) => {
-
-
     const resp = await searchMembers(query, {
       dontRedirect: true,
       dontShowToast: true,
 
     });
-
     return resp.ok ? resp.data : []
+  };
 
-
+  const showRecordPaymentBtn_co = async (memberId: number) => {
+    const resp = await getShowRecordPaymentBtn(memberId, {
+      dontRedirect: true,
+      dontShowToast: true,
+    });
+    $mStore.setShowRecordPaymentBtn(resp.ok ? resp.data.showRecordPaymentButton : false)
   };
 
 
@@ -491,6 +497,7 @@ export const useMember = () => {
     resetMemberLoginCode_Co,
     emailReceiptByTransactionId_Co,
     getTransactionsByMemberSelected_co,
-    getShowCart_co
+    getShowCart_co,
+    showRecordPaymentBtn_co
   };
 }

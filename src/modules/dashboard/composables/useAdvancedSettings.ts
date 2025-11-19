@@ -55,7 +55,7 @@ export const useAdvancedSettings = () => {
     async getAdvancedSettings() {
 
       $q.loading.show({
-        message: 'Loading ...',
+        message: 'Loading...',
         spinnerColor: '#f36b09',
         messageColor: '#f36b09',
       })
@@ -154,7 +154,7 @@ export const useAdvancedSettings = () => {
 
       const resp = await updateTab1DonateBasketEnabled(enabled, {
         loading: {
-          message: `Loading ...`,
+          message: `Loading...`,
         }
       });
 
@@ -168,7 +168,7 @@ export const useAdvancedSettings = () => {
     async updateDonationBasketPrompt(text: string) {
       const resp = await updateTab1DonateBasketPrompt(text, {
         loading: {
-          message: 'Loading ...',
+          message: 'Loading...',
         }
       })
       showToast(resp.ok,
@@ -182,7 +182,7 @@ export const useAdvancedSettings = () => {
 
       const resp = await updateTab1AlternativeDeliveryAddressEnabled(enabled, {
         loading: {
-          message: `Loading ...`,
+          message: `Loading...`,
         }
       });
 
@@ -196,7 +196,7 @@ export const useAdvancedSettings = () => {
     async updateTab1AlternativeDeliveryAddressPrompt(text: string) {
       const resp = await updateTab1AlternativeDeliveryAddressPrompt(text, {
         loading: {
-          message: 'Loading ...',
+          message: 'Loading...',
         }
       })
       showToast(resp.ok,
@@ -209,7 +209,7 @@ export const useAdvancedSettings = () => {
     async updateTab1AdditionalProfileQuestion(data: Tab1AdditionalProfileQuestionInterface) {
       const resp = await updateTab1AdditionalProfileQuestion(data, {
         loading: {
-          message: `Loading ...`,
+          message: `Loading...`,
         }
       })
       showToast(resp.ok,
@@ -222,7 +222,7 @@ export const useAdvancedSettings = () => {
     async deleteTab1AdditionalProfileQuestion(id: number) {
       const resp = await deleteTab1AdditionalProfileQuestion(id, {
         loading: {
-          message: `Loading ...`,
+          message: `Loading...`,
         }
       })
       showToast(resp.ok,
@@ -235,12 +235,12 @@ export const useAdvancedSettings = () => {
     async createTab1AdditionalProfileQuestion(data: Omit<Tab1AdditionalProfileQuestionInterface, "optId">) {
       const resp = await createTab1AdditionalProfileQuestion(data, {
         loading: {
-          message: `Loading ...`,
+          message: `Loading...`,
         }
       })
       showToast(resp.ok,
         `New Additional Profile Question Added`,
-        `Something went wrong adding a new addition profile question`
+        `Something went wrong adding a new additional profile question`
       )
 
       return {
@@ -255,7 +255,7 @@ export const useAdvancedSettings = () => {
     async updateDonationContent(data: CharitySettingsInterface) {
       const resp = await updateDonationContent(data, {
         loading: {
-          message: 'Loading ...'
+          message: 'Loading...'
         }
       })
       showToast(resp.ok,
@@ -266,7 +266,7 @@ export const useAdvancedSettings = () => {
     async updateAddon(data: Tab2AddonFormInterface) {
       const resp = await updateAddon(data, {
         loading: {
-          message: 'Loading ...'
+          message: 'Loading...'
         }
       })
       showToast(resp.ok,
@@ -277,23 +277,23 @@ export const useAdvancedSettings = () => {
     async updateSendOut(data: Tab2AllowMembersFormInterface) {
       const resp = await updateSendOut(data, {
         loading: {
-          message: 'Loading ...'
+          message: 'Loading...'
         }
       })
       showToast(resp.ok,
         'Send Out Settings Updated ',
-        'Something went wrong updating the Send Out Settings'
+        'Something went wrong updating the send out settings'
       )
     },
     async addAdditionalOrderingItems(data: Tab2AddOrderItemFormInterface) {
       const resp = await addAdditionalOrderingItems(data, {
         loading: {
-          message: 'adding new item'
+          message: 'Loading...'
         }
       })
       showToast(resp.ok,
         'New Order Item Added',
-        'Something went wrong adding a New Order Item'
+        'Something went wrong adding a new order item'
       )
       if (resp.ok)
         $asStore.addOrderingItem([resp.data])
@@ -306,12 +306,12 @@ export const useAdvancedSettings = () => {
         optionId
       }, {
         loading: {
-          message: 'Loading ...'
+          message: 'Loading...'
         }
       })
       showToast(resp.ok,
         'Order Item deleted',
-        'Something went wrong deleting the Order Item'
+        'Something went wrong deleting the order item'
       )
       return resp.ok
     },
@@ -320,12 +320,12 @@ export const useAdvancedSettings = () => {
     ) {
       const resp = await updateOrderItems(content, {
         loading: {
-          message: 'Loading ...'
+          message: 'Loading...'
         }
       })
       showToast(resp.ok,
         'Sell Additional Items Settings Updated ',
-        'Something went wrong updating the Sell Additional Items Settings'
+        'Something went wrong updating the sell additional items settings'
       )
     },
 
@@ -336,12 +336,12 @@ export const useAdvancedSettings = () => {
         sortOrder: item.sortOrder
       }, {
         loading: {
-          message: 'Loading ...'
+          message: 'Loading...'
         }
       })
       showToast(resp.ok,
         'Order Item Updated',
-        'Something went wrong updating the Order Item'
+        'Something went wrong updating the order item'
       )
 
     },
@@ -355,7 +355,7 @@ export const useAdvancedSettings = () => {
         data
         , {
           loading: {
-            message: 'Loading ...'
+            message: 'Loading...'
           }
         })
       showToast(resp.ok,
@@ -371,7 +371,7 @@ export const useAdvancedSettings = () => {
       const resp = await deleteTab3BasketSize(
         id, {
         loading: {
-          message: 'Loading ...'
+          message: 'Loading...'
         }
       })
       showToast(resp.ok,
@@ -393,24 +393,24 @@ export const useAdvancedSettings = () => {
 
       const resp = await updateTab4AdditionalReceiptText(value, {
         loading: {
-          message: 'updating the additional receipt text'
+          message: 'Loading...'
         }
       })
       showToast(resp.ok,
-        'additional receipt text updated',
-        'something went wrong updating the additional receipt text'
+        'Additional Receipt Text Updated',
+        'Something went wrong updating the additional receipt text'
       )
     },
     async updateTab4InvoiceText(value: string) {
 
       const resp = await updateTab4InvoiceText(value, {
         loading: {
-          message: 'updating the invoice text'
+          message: 'Loading...'
         }
       })
       showToast(resp.ok,
-        'invoice text updated',
-        'something went wrong updating the invoice text'
+        'Invoice Text Updated',
+        'Something went wrong updating the invoice text'
       )
     },
 

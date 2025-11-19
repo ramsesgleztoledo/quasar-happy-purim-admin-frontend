@@ -60,7 +60,7 @@
             :pagination="{
               rowsPerPage: 0,
             }"
-            :style="{ height: isFullScreen ? '800px' : '400px' }"
+            :style="{ height: isFullScreen ? '800px' : '628px' }"
             class="table-sticky-header-column-table"
             flat
             bordered
