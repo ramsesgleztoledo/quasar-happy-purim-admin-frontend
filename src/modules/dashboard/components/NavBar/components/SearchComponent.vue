@@ -1,57 +1,79 @@
 <template>
   <div style="position: relative; width: fit-content">
-    <q-select
-      popup-content-class="q-menu-300"
-      class="search-select-container"
-      v-model="selected"
-      :options="searched"
-      label="Search"
-      outlined
-      dense
-      clearable
-      use-input
-      input-debounce="300"
-      :filter="false"
-      @input-value="doFilterOptions"
-    >
-      <template v-slot:option="scope">
-        <div v-bind="scope.itemProps">
-          <div
-            class="q-pa-md"
-            :style="{ display: inputValue ? '' : 'none' }"
-            v-if="scope.opt.routeName === 'none' && searched.length === 1"
-          >
-            No Results Found...
-          </div>
-          <q-item v-if="scope.opt.routeName !== 'none'" @click="goTo(scope.opt)" clickable>
-            <q-item-section avatar>
-              <q-icon :name="scope.opt.icon" />
-            </q-item-section>
-            <q-item-section>
-              <q-item-label>{{ scope.opt.title }}</q-item-label>
-              <q-item-label caption>go to {{ scope.opt.title }} </q-item-label>
-            </q-item-section>
-          </q-item>
-        </div>
-      </template>
-    </q-select>
-    <q-icon
-      name="search"
-      style="
-        position: absolute;
-        z-index: 999;
-        right: 2px;
-        size: 40px;
-        display: flex;
-        color: #c9c9c9;
-        top: 9px;
-      "
-    />
+    <div class="row">
+      <div class="row">
+        <q-select
+          popup-content-class="q-menu-300"
+          class="search-select-container"
+          v-model="selected"
+          :options="searched"
+          label="Search"
+          outlined
+          dense
+          clearable
+          use-input
+          input-debounce="300"
+          :filter="false"
+          @input-value="doFilterOptions"
+          @keydown.enter="
+            () => {
+              if (!isSearchedMembersLoading) doSearch()
+            }
+          "
+        >
+          <template v-slot:input="scope">
+            <q-input v-bind="scope" disable dense label="hello" />
+          </template>
+          <template v-slot:option="scope">
+            <div v-bind="scope.itemProps">
+              <div
+                class="q-pa-md"
+                :style="{ display: inputValue ? '' : 'none' }"
+                v-if="scope.opt.routeName === 'none' && searched.length === 1"
+              >
+                No Results Found...
+              </div>
+              <q-item v-if="scope.opt.routeName !== 'none'" @click="goTo(scope.opt)" clickable>
+                <q-item-section avatar>
+                  <q-icon :name="scope.opt.icon" />
+                </q-item-section>
+                <q-item-section>
+                  <q-item-label>{{ scope.opt.title }}</q-item-label>
+                  <q-item-label caption>go to {{ scope.opt.title }} </q-item-label>
+                </q-item-section>
+              </q-item>
+            </div>
+          </template>
+        </q-select>
+
+        <q-icon
+          v-show="!isMobile"
+          name="search"
+          style="
+            position: absolute;
+            z-index: 999;
+            right: 69px;
+            size: 40px;
+            display: flex;
+            color: #c9c9c9;
+            top: 9px;
+          "
+        />
+      </div>
+      <q-btn
+        class="white-spinner"
+        :loading="isSearchedMembersLoading"
+        style="background-color: var(--happypurim); color: white; height: 38px"
+        dense
+        label="Search"
+        @click="doSearch"
+      />
+    </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { QSelect } from 'quasar'
+import { QSelect, useQuasar } from 'quasar'
 import { ref, watch } from 'vue'
 import Fuse from 'fuse.js'
 import type { PagesForSearchInterface } from '../data/search-data'
@@ -59,6 +81,7 @@ import { pagesForSearch } from '../data/search-data'
 import { useRouter } from 'vue-router'
 import { useMember } from 'src/modules/dashboard/composables/useMember'
 import type { SearchedMemberInterface } from 'src/modules/dashboard/interfaces/member-interfaces'
+import { useUI } from 'src/modules/UI/composables'
 
 const emptyData = {
   icon: '',
@@ -67,7 +90,12 @@ const emptyData = {
   title: 'Nothing found',
 }
 
+const { isMobile } = useUI()
+const $q = useQuasar()
+
 const inputValue = ref('')
+const isSearchedMembersLoading = ref(false)
+const searchedMembers = ref<SearchedMemberInterface[]>([])
 
 const selected = ref<PagesForSearchInterface | undefined>(undefined)
 const searched = ref<PagesForSearchInterface[]>([emptyData])
@@ -80,18 +108,22 @@ const fuse = new Fuse(pagesForSearch, {
 })
 
 const doFilterOptions = (val: string) => {
-  inputValue.value = val
+  if (val) inputValue.value = val
   filterOptions(val)
   searchMembers(val)
 }
 
 const searchMembers = async (val: string) => {
-  let resp: SearchedMemberInterface[] = []
+  // searchedMembers.value = []
 
-  if (val) resp = await searchMembers_co(val)
+  if (val) {
+    isSearchedMembersLoading.value = true
+    searchedMembers.value = await searchMembers_co(val)
+    isSearchedMembersLoading.value = false
+  }
 
   searched.value = [
-    ...resp.map((item) => ({
+    ...searchedMembers.value.map((item) => ({
       icon: 'person',
       routeName: 'MemberLayout-MemberPage',
       title: `${item.LastName}, ${item.FirstName}`,
@@ -134,6 +166,23 @@ const goTo = (value: PagesForSearchInterface) => {
 
   $router.push({ ...data })
 }
+
+const doSearch = () => {
+  if (searchedMembers.value.length)
+    $router.push({
+      name: 'MembersSettingsPage',
+      query: {
+        search: inputValue.value,
+      },
+    })
+  else
+    $q.notify({
+      color: 'blue',
+      textColor: 'black',
+      icon: 'error',
+      message: 'Nothing Found',
+    })
+}
 </script>
 
 <style scoped lang="scss">
@@ -147,5 +196,11 @@ const goTo = (value: PagesForSearchInterface) => {
 
 .search-select-container {
   width: 300px;
+}
+
+:deep(.white-spinner) {
+  .q-spinner-mat {
+    color: white !important;
+  }
 }
 </style>

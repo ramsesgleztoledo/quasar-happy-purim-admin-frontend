@@ -45,7 +45,7 @@ export const useShipment = () => {
       else
         $q.notify({
           color: 'red',
-          textColor: 'white',
+          textColor: 'black',
           icon: 'error',
           message: `Something went wrong updating the shipment, please refresh the page and try again`,
         })

@@ -156,7 +156,7 @@ export const useDashboard = () => {
 
         // $q.notify({
         //   color: 'blue',
-        //   textColor: 'white',
+        //   textColor: 'black',
         //   icon: 'error',
         //   message: `We can't update the member logged information at this moment`,
         // })

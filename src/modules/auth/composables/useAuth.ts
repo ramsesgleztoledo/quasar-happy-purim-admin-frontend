@@ -114,10 +114,11 @@ export const useAuth = () => {
           shulName: payload.shulName,
         },
         user: {
-          id: payload.u_id,
-          guid: payload.u_guid,
-          firstName: payload.fname,
-          lastName: payload.lname,
+          id: payload.u_id || "",
+          guid: payload.u_guid || "",
+          firstName: payload.fname || "",
+          lastName: payload.lname || "",
+          email: payload.email || "",
         },
         token: {
           token: result.data.accessToken,
@@ -143,7 +144,7 @@ export const useAuth = () => {
       console.error(error);
       $q.notify({
         color: 'red',
-        textColor: 'white',
+        textColor: 'black',
         icon: 'error',
         message: 'Error authorizing the user',
 

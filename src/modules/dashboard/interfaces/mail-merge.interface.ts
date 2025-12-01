@@ -24,6 +24,7 @@ export interface MergedResultInterface {
 
 export interface GeneratePDFFormInterface {
   title: string;
+  userEmail: string;
   items: MemberContentPDFInterface[];
 }
 

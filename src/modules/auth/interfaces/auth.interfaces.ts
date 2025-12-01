@@ -8,15 +8,16 @@ export interface LoginInterface {
 }
 
 export interface AuthJWTInterface {
-  sub:      string;
-  jti:      string;
-  u_id:     string;
-  u_guid:   string;
-  fname:    string;
-  lname:    string;
-  shulId:   string;
+  sub: string;
+  jti: string;
+  u_id: string;
+  u_guid: string;
+  fname: string;
+  lname: string;
+  shulId: string;
   shulName: string;
-  exp:      number;
-  iss:      string;
-  aud:      string;
+  email: string;
+  exp: number;
+  iss: string;
+  aud: string;
 }

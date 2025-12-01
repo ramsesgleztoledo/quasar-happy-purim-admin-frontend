@@ -13,6 +13,7 @@ export interface authUserInterface {
   guid: string;
   firstName: string;
   lastName: string;
+  email: string;
 };
 export interface authTokenInterface {
   token: string;

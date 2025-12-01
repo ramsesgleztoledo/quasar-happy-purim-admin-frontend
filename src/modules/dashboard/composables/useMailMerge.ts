@@ -12,7 +12,9 @@ import { useAuthStore } from "src/modules/auth/store/auth.store";
 export const useMailMerge = () => {
 
   const $q = useQuasar()
-  const { downloadFile, showToast } = useUI()
+  const {
+    // downloadFile,
+    showToast } = useUI()
   const $aStore = useAuthStore()
 
   const { getFormFields, getTemplates, getMergedContentByReportId, generatePDF, queueBulkEmails, addUnmergedEmailJobToTable, getImages, getMergedContentPrintByReportId } = useMailMergeService()
@@ -125,19 +127,20 @@ export const useMailMerge = () => {
 
     async generatePDF(data: {
       title: string;
+      userEmail: string;
       content: string;
       memberIds: number[]
     }) {
 
-      const not = $q.notify({
-        message: `Generating PDF, this can take a while, please don't refresh the app`,
-        color: 'primary',
-        position: 'bottom-right',
-        timeout: 0,
-        actions: [
-          { label: 'Close', color: 'white', handler: () => not() }
-        ]
-      })
+      // const not = $q.notify({
+      //   message: `Generating PDF, this can take a while, please don't refresh the app`,
+      //   color: 'primary',
+      //   position: 'bottom-right',
+      //   timeout: 0,
+      //   actions: [
+      //     { label: 'Close', color: 'white', handler: () => not() }
+      //   ]
+      // })
       const resp = await getMergedContentPrintByReportId({
         reportId: reportId.value,
         data: {
@@ -152,8 +155,17 @@ export const useMailMerge = () => {
       const result: MergedContentPrintInterface[] = resp.ok ? resp.data : []
 
 
-      await downloadFile(async () => await generatePDF({
+      $q.notify({
+        color: 'blue',
+        textColor: 'black',
+        icon: 'error',
+        message: `Your will receive a link to download your PDF at: "${data.userEmail}", please check your email regularly.`,
+      })
+
+      // await downloadFile(async () =>
+      await generatePDF({
         title: data.title,
+        userEmail: data.userEmail,
         items: result.map(da => ({
           memberId: da.memberId,
           content: da.body
@@ -162,13 +174,18 @@ export const useMailMerge = () => {
         dontRedirect: true,
         useRespAsError: true,
 
-      }), {
-        fileType: 'pdf',
-        fileName: data.title,
-        extension: 'pdf'
       })
+      //     , {
+      //   fileType: 'pdf',
+      //   fileName: data.title,
+      //   extension: 'pdf'
+      // }
 
-      not()
+      // )
+
+      // not()
+
+
     },
 
     async sendNowEmail(data: {

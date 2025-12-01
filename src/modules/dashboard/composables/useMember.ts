@@ -201,7 +201,7 @@ export const useMember = () => {
     if (response.ok) {
       $q.notify({
         color: 'blue',
-        textColor: 'white',
+        textColor: 'black',
         icon: 'error',
         message: !isPending ? `Member flagged for deletion` : 'Member is no longer flagged for deletion',
       })
@@ -210,7 +210,7 @@ export const useMember = () => {
     else {
       $q.notify({
         color: 'red',
-        textColor: 'white',
+        textColor: 'black',
         icon: 'error',
         message: `${response.data}`,
       })

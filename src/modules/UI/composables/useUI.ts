@@ -42,7 +42,7 @@ export const useUI = () => {
 
       $q.notify({
         color: 'red',
-        textColor: 'white',
+        textColor: 'black',
         icon: 'error',
         message: 'Failed to Copy Text',
       })
@@ -132,7 +132,7 @@ export const useUI = () => {
       if (!response.ok) {
         $q.notify({
           color: 'red',
-          textColor: 'white',
+          textColor: 'black',
           icon: 'error',
           message: 'Something went wrong downloading the file, please try again later',
         })

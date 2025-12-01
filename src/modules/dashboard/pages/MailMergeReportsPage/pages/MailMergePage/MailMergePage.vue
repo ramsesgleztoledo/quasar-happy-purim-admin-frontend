@@ -369,6 +369,17 @@
             />
           </div>
         </div>
+        <div class="row q-mb-sm">
+          <div class="col-12">
+            <q-input
+              v-model="userEmail"
+              outlined
+              label="Email *"
+              lazy-rules
+              :rules="[lazyRules.required()]"
+            />
+          </div>
+        </div>
         <div class="row">
           <div class="col-6">
             <q-select
@@ -402,7 +413,7 @@
           v-close-popup
         />
         <q-btn
-          :disable="!pdfTitle"
+          :disable="!pdfTitle || !userEmail"
           style="background: var(--happypurim); color: white"
           label="Generate"
           class="q-mr-sm q-mt-sm"
@@ -681,6 +692,7 @@ import type { ShulCategoryInterface } from 'src/modules/dashboard/interfaces/cat
 import DialogAlert from 'src/components/DialogAlert/DialogAlert.vue'
 import { useReport } from 'src/modules/dashboard/composables/useReport'
 import { cutName } from 'src/helpers/cutName'
+import { useAuth } from 'src/modules/auth/composables/useAuth'
 // import { date as dateUtils } from 'quasar'
 
 const $router = useRouter()
@@ -688,6 +700,7 @@ const $q = useQuasar()
 const $rStore = useReportStore()
 const $dStore = useDashboardStore()
 const { getReportData } = useReport()
+const { authState } = useAuth()
 
 const categoryFiltered = ref<ShulCategoryInterface[] | undefined>(undefined)
 
@@ -855,6 +868,7 @@ const onSaveDraft = async (form: { name: string; description: string }) => {
 }
 
 const pdfTitle = ref('')
+const userEmail = ref(authState.value?.user?.email || '')
 const orderByPDF = ref('')
 const isAsc = ref(false)
 const pdfTitleFlag = ref(false)
@@ -863,8 +877,9 @@ const sendEmailFlag = ref(false)
 const onGeneratePDF = async () => {
   if (!editorRef.value) return
   const content = editorRef.value.getEditorValue() || ''
-  await generatePDF({
+  generatePDF({
     title: pdfTitle.value,
+    userEmail: userEmail.value,
     content: content.replace(/\\+/g, ''),
     memberIds: (orderByPDF.value
       ? sortArrayByField(
@@ -875,7 +890,7 @@ const onGeneratePDF = async () => {
         )
       : $rStore.$state.selectedRecipients
     ).map((re) => re.ID),
-  })
+  }).catch(console.error)
 }
 
 watch(pdfTitleFlag, () => {
