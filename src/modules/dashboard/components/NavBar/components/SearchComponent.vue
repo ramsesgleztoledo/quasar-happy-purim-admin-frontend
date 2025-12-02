@@ -52,7 +52,7 @@
           style="
             position: absolute;
             z-index: 999;
-            right: 69px;
+            right: 78px;
             size: 40px;
             display: flex;
             color: #c9c9c9;
@@ -61,7 +61,7 @@
         />
       </div>
       <q-btn
-        class="white-spinner"
+        class="white-spinner q-ml-sm"
         :loading="isSearchedMembersLoading"
         style="background-color: var(--happypurim); color: white; height: 38px"
         dense

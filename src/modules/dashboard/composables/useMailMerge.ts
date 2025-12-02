@@ -154,6 +154,7 @@ export const useMailMerge = () => {
 
       const result: MergedContentPrintInterface[] = resp.ok ? resp.data : []
 
+      if (!resp.ok) return
 
       $q.notify({
         color: 'blue',
@@ -173,7 +174,8 @@ export const useMailMerge = () => {
       }, {
         dontRedirect: true,
         useRespAsError: true,
-
+        dontShowToast: true,
+        dontUseErrorAction: true,
       })
       //     , {
       //   fileType: 'pdf',

@@ -371,13 +371,19 @@
         </div>
         <div class="row q-mb-sm">
           <div class="col-12">
-            <q-input
-              v-model="userEmail"
-              outlined
-              label="Email *"
-              lazy-rules
-              :rules="[lazyRules.required()]"
-            />
+            <div class="row w-full">
+              <q-input
+                class="w-full"
+                v-model="userEmail"
+                outlined
+                label="Email *"
+                lazy-rules
+                :rules="[lazyRules.required(), lazyRules.isEmail()]"
+              />
+            </div>
+            <div class="row q-pl-sm q-pr-sm" style="color: red">
+              *A link to download your document will be sent to this email address.
+            </div>
           </div>
         </div>
         <div class="row">
@@ -396,9 +402,9 @@
               class="row"
               style="align-content: center; justify-content: center; align-items: center"
             >
-              <div>Ascendent</div>
-              <q-toggle v-model="isAsc" color="primary" keep-color />
-              <div>Descendent</div>
+              <div style="cursor: pointer" @click="isAsc = false">Ascendent</div>
+              <q-toggle class="unique-toggle" v-model="isAsc" color="primary" keep-color />
+              <div style="cursor: pointer" @click="isAsc = true">Descendent</div>
             </div>
           </div>
         </div>
