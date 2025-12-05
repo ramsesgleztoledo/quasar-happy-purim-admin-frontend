@@ -383,7 +383,7 @@ export const useBreadcrumb = () => {
       params: ['reportId'],
       titleParam: (
         // value?: routeParamInterface
-      ) => cutName($rStore.getReportSelectedReportData?.name || 'Report', 33)
+      ) => cutName($rStore.getReportSelectedReportData?.name || 'Report', 44)
       // - ${value?.reportId}`
     },
     {

@@ -25,6 +25,26 @@
     </div>
   </div>
   <q-separator />
+
+  <div
+    v-if="
+      $mStore.$state.memberOptions.reciprocity.showReciprocity &&
+      $mStore.$state.memberOptions.reciprocity.isReciprocal
+    "
+    class="q-pa-md"
+  >
+    <div
+      class="sidebar__box d-flex justify-content-between align-items-center q-pa-sm"
+      style="color: black; text-align: left; background-color: rgb(239, 242, 255)"
+    >
+      <p style="font-weight: 600; margin: 0px">
+        Note: YOU HAVE SELECTED RECIPROCITY: By selecting reciprocity you are authorizing us to
+        charge you for each and every basket that is sent on your behalf. You may receive from more
+        people than you anticipate, and will thus send to more people than you expect.
+      </p>
+    </div>
+    <q-separator />
+  </div>
   <div class="row q-mb-md q-mt-sm q-pa-md">
     <div class="col-12" style="font-size: 12px">
       <!-- total -->
@@ -63,9 +83,11 @@
 
         <div style="color: green">
           {{ data.discount.value ? $moStore.getSymbol : '' }} -
-          {{ convertWithCommas(data.discount.value,{
-              dontAllowZero: true
-            }) }}
+          {{
+            convertWithCommas(data.discount.value, {
+              dontAllowZero: true,
+            })
+          }}
         </div>
       </div>
       <!-- fee percent -->
@@ -82,8 +104,8 @@
 
         <div>
           {{ $moStore.getSymbol }} +{{
-            convertWithCommas(data.fees.fee + data.fees.perTransactionFee,{
-              dontAllowZero: true
+            convertWithCommas(data.fees.fee + data.fees.perTransactionFee, {
+              dontAllowZero: true,
             })
           }}
         </div>
@@ -113,9 +135,13 @@
           </div>
         </div>
 
-        <div>  {{ data.fees.feePerperson ? $moStore.getSymbol : '' }} +{{ convertWithCommas(data.fees.feePerperson,{
-              dontAllowZero: true
-            }) }}</div>
+        <div>
+          {{ data.fees.feePerperson ? $moStore.getSymbol : '' }} +{{
+            convertWithCommas(data.fees.feePerperson, {
+              dontAllowZero: true,
+            })
+          }}
+        </div>
       </div>
 
       <!-- final total -->
@@ -125,9 +151,14 @@
       {{ data.totalPriceMembers }} -->
       <div class="row w-full justify-content-space-between q-mb-sm" style="color: #cc0505">
         <b>ORDER TOTAL </b>
-        <b>{{ $moStore.getSymbol }} {{ convertWithCommas(orderTotal,{
-              dontAllowZero: true
-            }) }}</b>
+        <b
+          >{{ $moStore.getSymbol }}
+          {{
+            convertWithCommas(orderTotal, {
+              dontAllowZero: true,
+            })
+          }}</b
+        >
       </div>
       <q-separator />
     </div>
@@ -141,8 +172,11 @@ import CartIndividualSelection from './CartIndividualSelection/CartIndividualSel
 import CartItems from './CartItems/CartItems.vue'
 import { useMemberOrderStore } from 'src/modules/dashboard/store/memberOrderStore/memberOrderStore'
 import { computed } from 'vue'
+import { useMemberStore } from 'src/modules/dashboard/store/memberStore/memberStore'
 
 const $moStore = useMemberOrderStore()
+const $mStore = useMemberStore()
+
 const data = computed(() => $moStore.getCartData)
 const orderTotal = computed(() => data.value.total)
 </script>

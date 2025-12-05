@@ -219,6 +219,14 @@ export const useMember = () => {
 
   };
 
+  const updateReciprocityByMemberId_Co = async (memberId: number, value: boolean) => {
+    const resp = await updateReciprocityByMemberId(memberId, value, {
+      dontRedirect: true
+    })
+    return resp.ok
+  };
+
+
   const updateMember_Co = async (memberId: number, data: MemberUpdateAllDataForm) => {
 
     $q.loading.show({
@@ -498,6 +506,7 @@ export const useMember = () => {
     emailReceiptByTransactionId_Co,
     getTransactionsByMemberSelected_co,
     getShowCart_co,
-    showRecordPaymentBtn_co
+    showRecordPaymentBtn_co,
+    updateReciprocityByMemberId_Co
   };
 }

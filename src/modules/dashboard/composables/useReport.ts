@@ -145,7 +145,7 @@ export const useReport = () => {
         })
 
       else
-        tokens = await getCustomTokensByReportId({
+        tokens = await getCustomTokensByReportId(data.id,{
           // loading: {
           //   message: 'Loading...'
           // }

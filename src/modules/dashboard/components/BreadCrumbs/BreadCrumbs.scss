@@ -2,4 +2,26 @@
   background-color: #f2f2f2;
   border-radius: 5px;
   padding: 5px;
+  max-height: 31px;
+  // overflow: hidden;
+}
+:deep(.q-breadcrumbs) {
+  overflow: auto;
+}
+
+:deep(.q-breadcrumbs > div:first-of-type) {
+  max-height: 38px;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  overflow-x: auto;
+  overflow-y: hidden;
+  -webkit-overflow-scrolling: touch;
+}
+:deep(.q-breadcrumbs > div:first-of-type::-webkit-scrollbar) {
+  // display: none;
+  height: 1px;
+}
+:deep(.q-breadcrumbs > div:first-of-type > *) {
+  flex-shrink: 0;
 }

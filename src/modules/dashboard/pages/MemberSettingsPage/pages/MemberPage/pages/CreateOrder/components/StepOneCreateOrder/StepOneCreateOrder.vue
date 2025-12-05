@@ -79,6 +79,29 @@
             v-model="hidePaidOrders"
             label="Hide Paid Orders"
           />
+          <div v-if="$mStore.$state.memberOptions.reciprocity.showReciprocity" class="row">
+            <q-checkbox
+              @update:model-value="onUpdateReciprocity"
+              v-model="$mStore.$state.memberOptions.reciprocity.isReciprocal"
+              label="Reciprocity"
+            />
+            <div class="align-items-center q-ml-sm">
+              <q-icon size="large" name="contact_support" style="color: var(--happypurim)" />
+              <q-tooltip
+                style="background-color: var(--happypurim); font-size: 16px"
+                transition-show="flip-right"
+                transition-hide="flip-left"
+                ><div style="max-width: 300px">
+                  The reciprocity function enables you to automatically send Mishloach Manot to
+                  people that are sending to you. This is a great tool to ensure that you don’t
+                  inadvertently miss someone and that everyone that sends to you, gets a Mishloach
+                  Manot from you in return. Please DO NOT rely on this alone—if everyone just
+                  chooses reciprocity, and doesn’t select any recipients, no one will get any
+                  Mishloach Manot!
+                </div>
+              </q-tooltip>
+            </div>
+          </div>
         </div>
       </div>
       <div
@@ -268,8 +291,13 @@ import { checkDisabledPromotionHelper } from '../../helpers/member-order-helpers
 import { useDashboardStore } from 'src/modules/dashboard/store/dashboardStore/dashboardStore'
 import type { ShulCategoryInterface } from 'src/modules/dashboard/interfaces/category-interfaces'
 import RowStyle from './components/RowStyle.vue'
+import { useMemberStore } from 'src/modules/dashboard/store/memberStore/memberStore'
+import { useMember } from 'src/modules/dashboard/composables/useMember'
 
 const { isMobile, showLoading, stopLoading } = useUI()
+const $mStore = useMemberStore()
+const { updateReciprocityByMemberId_Co } = useMember()
+
 const {
   memberOrderState,
   setMemberListCopy,
@@ -312,9 +340,10 @@ const columns = ref<QTableColumn<OrderMemberListInterface>[]>([
     label: 'Amount',
     align: 'left',
     field: 'price',
-    format: (amount: number) => `$${convertWithCommas(amount || $moStore.getSPrice,{
-              dontAllowZero: true
-            })}`,
+    format: (amount: number) =>
+      `$${convertWithCommas(amount || $moStore.getSPrice, {
+        dontAllowZero: true,
+      })}`,
     sortable: true,
   },
 ])
@@ -464,6 +493,20 @@ const onHidePaidOrdersUpdated = (value: boolean) => {
   setMemberListCopy([
     ...memberOrderState.value.memberList.original.filter((member) => (value ? !member.paid : true)),
   ])
+}
+const onUpdateReciprocity = (value: boolean) => {
+  const id = $mStore.$state.selectedMember?.memberId
+  if (!id) {
+    $mStore.$state.memberOptions.reciprocity.isReciprocal =
+      !$mStore.$state.memberOptions.reciprocity.isReciprocal
+    return
+  }
+
+  updateReciprocityByMemberId_Co(id, value).then((resp) => {
+    if (!resp)
+      $mStore.$state.memberOptions.reciprocity.isReciprocal =
+        !$mStore.$state.memberOptions.reciprocity.isReciprocal
+  })
 }
 
 const getPromotionChanges = () => {

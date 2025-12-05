@@ -1,6 +1,6 @@
 <template>
   <q-dialog v-model="modelVisible">
-    <q-card class="">
+    <q-card :style="styleCard">
       <div class="row dialog-header custom-dialog-header-container">
         <div class="col-12">
           <p>{{ title }}</p>
@@ -41,6 +41,7 @@ interface DialogAlertPropsInterface {
   height?: string
   htmlContainerClasses?: string
   btnLabel?: string
+  styleCard?: string
 }
 
 const $props = withDefaults(defineProps<DialogAlertPropsInterface>(), {

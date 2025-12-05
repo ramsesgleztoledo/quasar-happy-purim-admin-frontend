@@ -7,9 +7,15 @@
         'col-12': isMobile,
       }"
     >
-      <p class="page-main-title">
-        {{ cutName($rStore.getReportSelectedReportData?.name || 'Report', 33) }}
-      </p>
+      <template v-if="$rStore.getReportSelectedReportData?.reportID">
+        <p v-if="$rStore.getReportSelectedReportData?.reportID != '12'" class="page-main-title">
+          {{ cutName($rStore.getReportSelectedReportData?.name || 'Report', 44) }}
+        </p>
+        <p v-else class="page-main-title">
+          {{ cutName('Members Who Chose the Donate Basket Option', 44) }}
+        </p>
+      </template>
+
       <div class="separator-right q-mr-sm q-ml-sm"></div>
     </div>
     <div
@@ -621,11 +627,16 @@
         <div v-if="!isValidDateValue" class="row q-pl-md" style="color: red">
           Invalid date, please select a date and time in the future (at least 20 min from now)
         </div>
-        <div class="row q-mb-sm q-pa-sm" style="align-items: center">
+
+        <!-- TODO: regenerate feature for future -->
+        <div class="row q-pa-sm" style="color: #ff00009c; font-weight: 100; font-style: italic">
+          Regenerate report feature coming soon
+        </div>
+        <!-- <div class="row q-mb-sm q-pa-sm" style="align-items: center">
           <div>Regenerate before sending:</div>
           <q-radio v-model="regenerateBefore" :val="true" label="Yes" />
           <q-radio v-model="regenerateBefore" :val="false" label="No" />
-        </div>
+        </div> -->
         <div v-if="regenerateBefore" class="row" style="color: red; font-weight: 600">
           Please note: Since the report will be regenerated before sending, any recipients that were
           deselected will still be included in the email

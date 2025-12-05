@@ -425,6 +425,9 @@ export const useMemberOrder = () => {
 
       const paymentType = $moStore.paymentForm.paymentType
 
+
+      const reciprocity = $mStore.$state.memberOptions.reciprocity.showReciprocity ? $mStore.$state.memberOptions.reciprocity.isReciprocal : false
+
       let data: MemberCreateOrderFormInterface = {
         phoneOrCheckDate: "",
         cardType: "",
@@ -442,7 +445,7 @@ export const useMemberOrder = () => {
         billState: "",
         billZip: "",
         specialInstructions: false,
-        reciprocity: false,
+        reciprocity,
         emailTo,
         tempCode: tokenSession.value,
         total: $moStore.getCartData?.total || 0,

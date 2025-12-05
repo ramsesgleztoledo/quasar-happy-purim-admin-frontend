@@ -1,9 +1,16 @@
 <template>
   <div v-if="report">
-    <div class="row">
+    <div class="row ">
       <div class="col-12 top-title-col justify-content-space-between">
         <div style="height: 100%; display: flex">
-          <p class="page-main-title">{{ $rStore.getReportSelectedReportData?.name }}</p>
+          <template v-if="$rStore.getReportSelectedReportData?.reportID">
+            <p v-if="$rStore.getReportSelectedReportData?.reportID != '12'" class="page-main-title">
+              {{ cutName($rStore.getReportSelectedReportData?.name || 'Report', 44) }}
+            </p>
+            <p v-else class="page-main-title">
+              {{ cutName('Members Who Chose the Donate Basket Option', 44) }}
+            </p>
+          </template>
           <div class="separator-right q-mr-sm q-ml-sm"></div>
         </div>
         <q-btn
@@ -299,6 +306,7 @@ import { useReportStore } from 'src/modules/dashboard/store/ReportStore/reportSt
 import type { NoneType } from 'src/modules/dashboard/services/service-interfaces'
 import { useUI } from 'src/modules/UI/composables'
 import type { QTableColumn } from 'quasar'
+import { cutName } from 'src/helpers/cutName'
 
 const { getFilterOptions, getReportData } = useReport()
 const { reportId } = useRoute().params

@@ -116,8 +116,8 @@ export const useMailMergeService = () => {
       })
     },
 
-    getCustomTokensByReportId: async (extraOptions?: ExtraOptionsInterface): Promise<ApiCallResponseInterface<string[]>> => {
-      const nextUrl = `/get-custom-merge-fields`;
+    getCustomTokensByReportId: async (id: string | number, extraOptions?: ExtraOptionsInterface): Promise<ApiCallResponseInterface<string[]>> => {
+      const nextUrl = `/get-custom-merge-fields?id=${id}`;
       const url = `${baseUrl}${nextUrl}`;
       return await apiCall({
         url,

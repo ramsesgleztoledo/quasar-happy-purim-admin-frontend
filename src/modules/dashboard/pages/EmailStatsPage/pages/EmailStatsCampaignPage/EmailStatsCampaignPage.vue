@@ -138,6 +138,7 @@
   </div>
 
   <InfoDialog
+    :style-card="`${isMobile ? 'min-width: 100vw' : 'min-width: 50vw'}`"
     v-model="emailContentDialogFlag"
     title="Email Content"
     :innerHTML="emailContent"
