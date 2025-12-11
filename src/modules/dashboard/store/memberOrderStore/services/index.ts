@@ -35,8 +35,13 @@ export const s_fee = (state: MemberOrderStateInterface) => {
 }
 
 export const s_isPaymentFormInvalid = (state: MemberOrderStateInterface) => {
+
+  const carData = s_cartData(state)
+
+  if (!carData.totalNoFee) return true
+
   const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  if (!regex.test(state.paymentForm.email)) return true
+  if (state.showEmailReceiptTo && !regex.test(state.paymentForm.email)) return true
   if (state.paymentForm.paymentType == 3) return false
 
   if (state.paymentForm.paymentType == 1) {
@@ -173,6 +178,7 @@ export const s_cartData = (state: MemberOrderStateInterface) => {
     totalCharities,
     totalPriceMembers,
     total,
+    totalNoFee: total - fee - fees.perTransactionFee - feePerperson,
     fees: {
       fee,
       perTransactionFee: fees.perTransactionFee,

@@ -90,26 +90,42 @@
           }}
         </div>
       </div>
-      <!-- fee percent -->
-      <div
-        v-if="data.fees.fee || data.fees.perTransactionFee"
-        class="row w-full justify-content-space-between q-mb-sm d-flex"
-        style="color: var(--happypurim)"
+
+      <template
+        v-if="
+          $moStore.paymentForm.paymentType == 1 &&
+          orderTotal &&
+          !!$moStore.$state.orgSettings?.feeActive
+        "
       >
-        <div class="row cursor-pointer">
-          <div class="q-mr-sm">
-            <b> {{ $moStore.getFee.description }} </b>
+        <!-- fee percent -->
+        <div class="row" v-if="!$moStore.$state.orgSettings?.feeRequired">
+          <q-checkbox
+            style="margin-left: -10px"
+            v-model="$moStore.showFee"
+            label="Required fee ?"
+          />
+        </div>
+        <div
+          v-if="(data.fees.fee || data.fees.perTransactionFee) && $moStore.showFee"
+          class="row w-full justify-content-space-between q-mb-sm d-flex"
+          style="color: var(--happypurim)"
+        >
+          <div class="row cursor-pointer">
+            <div class="q-mr-sm">
+              <b> {{ $moStore.getFee.description }} </b>
+            </div>
+          </div>
+
+          <div>
+            {{ $moStore.getSymbol }} +{{
+              convertWithCommas(data.fees.fee + data.fees.perTransactionFee, {
+                dontAllowZero: true,
+              })
+            }}
           </div>
         </div>
-
-        <div>
-          {{ $moStore.getSymbol }} +{{
-            convertWithCommas(data.fees.fee + data.fees.perTransactionFee, {
-              dontAllowZero: true,
-            })
-          }}
-        </div>
-      </div>
+      </template>
       <!-- fee per transaction -->
       <!-- <div
           v-if="$moStore.getFee?.perTransactionFee"
@@ -149,7 +165,11 @@
       <!-- {{ data.finalTotal }}
       {{ $moStore.$state.totalFromBackend }}
       {{ data.totalPriceMembers }} -->
-      <div class="row w-full justify-content-space-between q-mb-sm" style="color: #cc0505">
+      <div
+        v-if="orderTotal"
+        class="row w-full justify-content-space-between q-mb-sm"
+        style="color: #cc0505"
+      >
         <b>ORDER TOTAL </b>
         <b
           >{{ $moStore.getSymbol }}
@@ -176,9 +196,20 @@ import { useMemberStore } from 'src/modules/dashboard/store/memberStore/memberSt
 
 const $moStore = useMemberOrderStore()
 const $mStore = useMemberStore()
-
+const fees = computed(
+  () =>
+    (data.value.fees?.fee || 0) +
+    (data.value.fees?.feePerperson || 0) +
+    (data.value.fees?.perTransactionFee || 0),
+)
 const data = computed(() => $moStore.getCartData)
-const orderTotal = computed(() => data.value.total)
+const orderTotal = computed(() => {
+  const total = data.value.total
+  if ($moStore.paymentForm.paymentType == 1 && $moStore.showFee) {
+    if (total - fees.value == 0) return 0
+    return total
+  } else return total - fees.value
+})
 </script>
 
 <style scoped lang="scss"></style>

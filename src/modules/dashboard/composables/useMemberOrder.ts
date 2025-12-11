@@ -188,6 +188,8 @@ export const useMemberOrder = () => {
       }
       ) || []
 
+      const showFee = !!resp[3].data[0]?.feeActive && !!resp[3].data[0]?.feeRequired
+
       $moStore.$patch({
         memberList: {
           copy: resp[1].data,
@@ -213,7 +215,8 @@ export const useMemberOrder = () => {
         paymentMethodTypes: resp[13].data,
         shulSetting: resp[14].data,
         localDeliveries: resp[15].data,
-        settings: resp[16].data
+        settings: resp[16].data,
+        showFee
       })
     },
     addOrRemoveItem,
@@ -428,6 +431,9 @@ export const useMemberOrder = () => {
 
       const reciprocity = $mStore.$state.memberOptions.reciprocity.showReciprocity ? $mStore.$state.memberOptions.reciprocity.isReciprocal : false
 
+
+
+
       let data: MemberCreateOrderFormInterface = {
         phoneOrCheckDate: "",
         cardType: "",
@@ -448,7 +454,8 @@ export const useMemberOrder = () => {
         reciprocity,
         emailTo,
         tempCode: tokenSession.value,
-        total: $moStore.getCartData?.total || 0,
+        total: $moStore.getCartData?.totalNoFee || 0,
+        SendEmail: $moStore.showEmailReceiptTo,
       }
 
 
@@ -469,6 +476,8 @@ export const useMemberOrder = () => {
             paymentType: "Credit Card",
             paymentMethod: "Credit Card",
           } as unknown as MemberCreateOrderFormInterface
+          if ($moStore.showFee)
+            data.total = $moStore.getCartData?.total || 0
           break;
         }
         case 2: {

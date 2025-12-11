@@ -29,7 +29,17 @@
         <CheckPayment />
       </div>
 
-      <div class="row q-pa-sm q-mb-sm StepsCreateOrder-bordered q-mb-lg">
+      <div class="row">
+        <q-checkbox
+          style="margin-left: -8px"
+          v-model="$moStore.showEmailReceiptTo"
+          label="Email Receipt ?"
+        />
+      </div>
+      <div
+        v-if="$moStore.showEmailReceiptTo"
+        class="row q-pa-sm q-mb-sm StepsCreateOrder-bordered q-mb-lg"
+      >
         <div class="col-12">
           <div class="row q-mb-sm">
             <div class="text-h6">Email Receipt To</div>

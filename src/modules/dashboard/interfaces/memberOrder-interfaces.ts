@@ -358,6 +358,7 @@ export interface MemberCreateOrderFormInterface {
   phoneOrCheckDate: string;
   specialInstructions: boolean;
   reciprocity: boolean;
+  SendEmail: boolean;
 }
 
 

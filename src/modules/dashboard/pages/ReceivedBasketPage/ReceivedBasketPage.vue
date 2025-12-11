@@ -16,19 +16,6 @@
     </div>
   </div>
 
-  <!-- <div class="row q-mb-md">
-    <div class="col-12 d-flex justify-content-end">
-      <q-btn
-        :disable="exportDisabled"
-        label="Export to Excel"
-        color="primary"
-        icon="import_export"
-        @click="onExportToExcel"
-        :loading="exportDisabled"
-      />
-    </div>
-  </div> -->
-
   <div class="row table-white-container" :class="{ fullscreen: isFullScreen }">
     <div class="col-12">
       <div class="row">
@@ -43,7 +30,7 @@
         </div>
       </div>
       <TableCustom
-        class-name="table-sticky-header-column-table table-cursor-pointer-custom sticky-2-column-table"
+        class-name="table-sticky-header-column-table table-cursor-pointer-custom "
         styles="height: 628px"
         :rows="baskets"
         :columns="columns"

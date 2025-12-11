@@ -49,7 +49,9 @@ const initialState: MemberOrderStateInterface = {
   shulSetting: undefined,
   totalFromBackend: 0,
   localDeliveries: [],
-  settings: undefined
+  settings: undefined,
+  showFee: false,
+  showEmailReceiptTo: false,
 }
 
 export const useMemberOrderStore = defineStore('memberOrderStore', {

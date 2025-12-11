@@ -31,17 +31,34 @@
           <p
             class="MemberPage-login-code"
             @click="copyToClipboard(memberState.selectedMember?.loginCode || '')"
+            style="width: fit-content"
           >
             Login Code:
             <b>{{ memberState.selectedMember?.loginCode }}</b> <q-icon name="copy_all" />
+            <q-tooltip
+              anchor="bottom right"
+              persistent
+              transition-show="flip-right"
+              transition-hide="flip-left"
+              >Copy to Clipboard
+            </q-tooltip>
           </p>
           <div class="separator-right q-mr-sm q-ml-sm"></div>
           <p
+            style="width: fit-content"
             class="MemberPage-login-code"
             @click="copyToClipboard(memberState.selectedMember?.signOnLink || '')"
           >
             SignOn Link:
             <b> {{ memberState.selectedMember?.signOnLink }}</b> <q-icon name="copy_all" />
+
+            <q-tooltip
+              anchor="bottom right"
+              persistent
+              transition-show="flip-right"
+              transition-hide="flip-left"
+              >Copy to Clipboard
+            </q-tooltip>
           </p>
         </div>
         <!--=========================== END OF SECTION ===========================-->
@@ -149,21 +166,37 @@
           </div>
           <div class="col-12 q-mt-sm">
             <p
+              style="width: fit-content"
               class="MemberPage-login-code"
               @click="copyToClipboard(memberState.selectedMember?.loginCode || '')"
             >
               Login Code:
               <b> {{ memberState.selectedMember?.loginCode }}</b> <q-icon name="copy_all" />
+              <q-tooltip
+                anchor="bottom right"
+                persistent
+                transition-show="flip-right"
+                transition-hide="flip-left"
+                >Copy to Clipboard
+              </q-tooltip>
             </p>
           </div>
           <div class="row separator-bottom q-mt-sm"></div>
           <div class="col-12 q-mt-sm">
             <p
+              style="width: fit-content"
               class="MemberPage-login-code"
               @click="copyToClipboard(memberState.selectedMember?.signOnLink || '')"
             >
               SignOn Link:
               <b> {{ memberState.selectedMember?.signOnLink }}</b> <q-icon name="copy_all" />
+              <q-tooltip
+                anchor="bottom right"
+                persistent
+                transition-show="flip-right"
+                transition-hide="flip-left"
+                >Copy to Clipboard
+              </q-tooltip>
             </p>
           </div>
           <!-- <div class="row separator-bottom q-mt-sm"></div> -->

@@ -38,5 +38,7 @@ export interface MemberOrderStateInterface {
   shulSetting: ShulSettingInterface | NoneType;
   totalFromBackend: number;
   localDeliveries: LocalDeliveryInterface[];
-  settings: OrganizationSettingsInterface | NoneType
+  settings: OrganizationSettingsInterface | NoneType;
+  showFee: boolean;
+  showEmailReceiptTo: boolean;
 }
