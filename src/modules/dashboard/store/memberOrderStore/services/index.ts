@@ -35,6 +35,7 @@ export const s_fee = (state: MemberOrderStateInterface) => {
 }
 
 export const s_isPaymentFormInvalid = (state: MemberOrderStateInterface) => {
+  if (!state.paymentForm.paymentType) return true
 
   const carData = s_cartData(state)
 

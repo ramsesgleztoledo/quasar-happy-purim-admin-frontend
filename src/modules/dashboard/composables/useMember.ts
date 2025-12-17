@@ -55,6 +55,7 @@ export const useMember = () => {
     getShowRecordPaymentBtn,
     getShowClearCart,
     searchMembers,
+    getAllMemberInfo,
   } = useMemberService()
 
 
@@ -80,7 +81,7 @@ export const useMember = () => {
         members: members.data,
       });
   };
-  const getMemberDataById_Co = async (memberId: number) => {
+  const getMemberDataById_Co2 = async (memberId: number) => {
 
     $q.loading.show({
       message: `Loading...`,
@@ -185,6 +186,59 @@ export const useMember = () => {
 
     $q.loading.hide()
   };
+
+  const getMemberDataById_Co = async (memberId: number) => {
+
+    const { ok, data } = await getAllMemberInfo(memberId, {
+      loading: {
+        message: 'Loading...'
+      }
+    })
+
+
+    if (!ok) return
+
+
+
+    $mStore.$patch({
+      doorManSettings: {
+        show: !!data.doorman.showKJRow,
+        value: !!data.doorman.rbl24HourSelectedIndex,
+      },
+      selectedMember: data.info,
+      membershipSettings: {
+        checkedStatus: !!data.membershipStatus.checkedStatus,
+        visible: !!data.membershipStatus.visible
+      },
+      displayChildren: !!data.displayChildren,
+      showRecordPaymentBtn: !!data.showRecordPayment,
+      memberCategories: data.categories || [],
+      profileQuestions: data.profileQuestions || [],
+      memberAlternativeAddress: data.alternateDelivery,
+      memberTransactions: data.transactions || [],
+      memberDonateBasketOption: {
+        checked: !!data.donateBasketChecked,
+        text: data.donateBasketText || '',
+        visible: !!data.donateBasketVisible
+      },
+      showClearCart: !!data.showClearCart,
+      isPendingDeletion: !!data.pendingDeletion,
+      memberOptions: {
+        hidden: !!data.isHidden,
+        reciprocity: {
+          isReciprocal: !!data.reciprocity?.isReciprocal,
+          showReciprocity: !!data.reciprocity?.showReciprocity,
+        }
+      }
+
+
+
+    })
+
+
+  };
+
+
   const deleteMemberById_Co = async (memberId: number) => {
 
     const isPending = $mStore.isPendingDeletion
@@ -492,6 +546,7 @@ export const useMember = () => {
     getMembers_Co,
     searchMembers_co,
     getMemberDataById_Co,
+    getMemberDataById_Co2,
     deleteMemberById_Co,
     updateMember_Co,
     clearMemberCart_Co,

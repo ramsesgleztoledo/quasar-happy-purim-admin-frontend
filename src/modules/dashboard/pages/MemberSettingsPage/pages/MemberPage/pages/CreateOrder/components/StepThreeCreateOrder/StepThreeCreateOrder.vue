@@ -33,7 +33,7 @@
         <q-checkbox
           style="margin-left: -8px"
           v-model="$moStore.showEmailReceiptTo"
-          label="Email Receipt ?"
+          label="Send Email Receipt"
         />
       </div>
       <div

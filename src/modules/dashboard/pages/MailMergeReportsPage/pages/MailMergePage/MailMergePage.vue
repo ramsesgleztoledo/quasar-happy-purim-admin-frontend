@@ -1,10 +1,10 @@
 <template>
   <div class="row q-mb-sm">
     <div
-      class="top-title-col"
-      :class="{
-        'col-4': !isMobile,
-        'col-12': isMobile,
+      class="top-title-col col-12"
+      :style="{
+        flexDirection: isMobile ? 'column' : 'row',
+        alignItems: isMobile ? 'flex-start' : '',
       }"
     >
       <template v-if="$rStore.getReportSelectedReportData?.reportID">
@@ -15,17 +15,33 @@
           {{ cutName('Members Who Chose the Donate Basket Option', 44) }}
         </p>
       </template>
+      <template v-else>
+        <p v-if="$rStore.getReportSelectedReportData?.reportID != '12'" class="page-main-title">
+          Report
+        </p>
+      </template>
+      <q-separator class="q-mb-sm" v-if="isMobile" style="width: 100%" />
 
       <div class="separator-right q-mr-sm q-ml-sm"></div>
+      <div class="row align-items-center">
+        <q-icon name="info" style="font-size: 30px; color: var(--happypurim)" class="q-mr-sm" />
+        <p style="font-weight: 500">
+          <b style="font-weight: 800; margin-right: 5px"> Avoid emails going to spam!</b>
+          <b
+            @click="readMoreDialogFlag = true"
+            style="
+              text-decoration: underline;
+              color: var(--happypurim);
+              font-weight: 800;
+              cursor: pointer;
+            "
+            >read more.
+          </b>
+        </p>
+      </div>
     </div>
-    <div
-      class="top-title-col"
-      :class="{
-        'col-8': !isMobile,
-        'col-12': isMobile,
-      }"
-    ></div>
   </div>
+
   <!-- v-if="$rStore.$state.report?.members?.length" -->
   <div class="row">
     <div class="col-12">
@@ -387,7 +403,7 @@
                 :rules="[lazyRules.required(), lazyRules.isEmail()]"
               />
             </div>
-            <div class="row q-pl-sm q-pr-sm" style="color: red">
+            <div class="row q-pa-sm" style="color: #ff00009c; font-weight: 100; font-style: italic">
               *A link to download your document will be sent to this email address.
             </div>
           </div>
@@ -595,8 +611,13 @@
           </div>
         </div>
         <div class="row q-mb-sm">
+          <!-- TODO: regenerate feature for future -->
+          <div class="row q-pa-sm" style="color: #ff00009c; font-weight: 100; font-style: italic">
+            Please note: At this time, all emails will be sent based on Eastern Time (EST).
+          </div>
           <div class="col-12 q-pa-sm">
             <q-select
+              disable
               use-input
               v-model="timeZoneSelect"
               outlined
@@ -624,6 +645,7 @@
             </q-select>
           </div>
         </div>
+
         <div v-if="!isValidDateValue" class="row q-pl-md" style="color: red">
           Invalid date, please select a date and time in the future (at least 20 min from now)
         </div>
@@ -679,6 +701,11 @@
 
   <!--=========================== END OF SECTION ===========================-->
 
+  <!--=============================== read more text =============================-->
+
+  <InfoDialog title="Notice!" :innerHTML="readMoreEmails" v-model="readMoreDialogFlag" />
+  <!--=========================== END OF SECTION ===========================-->
+
   <!--=========================== END OF SECTION ===========================-->
 </template>
 
@@ -711,6 +738,8 @@ import { useReport } from 'src/modules/dashboard/composables/useReport'
 import { cutName } from 'src/helpers/cutName'
 import { useAuth } from 'src/modules/auth/composables/useAuth'
 // import { date as dateUtils } from 'quasar'
+import InfoDialog from 'src/components/InfoDialog/InfoDialog.vue'
+import { readMoreEmails } from './data/readMoreEmails'
 
 const $router = useRouter()
 const $q = useQuasar()
@@ -804,6 +833,7 @@ const { addDrafts } = useDraft()
 const preview = ref(false)
 const isFullScreen = ref(false)
 const cancelDialogFlag = ref(false)
+const readMoreDialogFlag = ref(false)
 
 const pageView = ref('1')
 const pageOption = computed(() => [
@@ -1092,8 +1122,9 @@ const checkIfRecipients = () => {
 const timeZones: string[] = Intl.supportedValuesOf('timeZone') || []
 // const timeZoneOptions = ref<string[]>(timeZones)
 const filteredTimeZoneOptions = ref<string[]>(['pepe', 'juan'])
-const userTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone || ''
-const timeZoneSelect = ref(userTimeZone)
+// const userTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone || ''
+// const timeZoneSelect = ref(userTimeZone)
+const timeZoneSelect = ref('America/New_York')
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const timeZoneFilterFn = (val: string, update: any) => {

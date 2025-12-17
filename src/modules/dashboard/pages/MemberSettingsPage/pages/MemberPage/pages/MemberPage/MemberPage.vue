@@ -28,38 +28,50 @@
             }}
           </p>
           <div class="separator-right q-mr-sm q-ml-sm"></div>
-          <p
+          <div
             class="MemberPage-login-code"
             @click="copyToClipboard(memberState.selectedMember?.loginCode || '')"
             style="width: fit-content"
+            @mouseenter="showHoverCopy = true"
+            @mouseleave="showHoverCopy = false"
+            @mousemove="updateHoverPos"
           >
             Login Code:
-            <b>{{ memberState.selectedMember?.loginCode }}</b> <q-icon name="copy_all" />
-            <q-tooltip
-              anchor="bottom right"
-              persistent
-              transition-show="flip-right"
-              transition-hide="flip-left"
-              >Copy to Clipboard
-            </q-tooltip>
-          </p>
+            <b class="user-select-none">{{ memberState.selectedMember?.loginCode }}</b>
+            <q-icon name="copy_all" />
+            <p
+              v-if="showHoverCopy"
+              class="tooltip"
+              :style="`top:${hoverY + 18}px !important; left:${hoverX + 18}px !important`"
+            >
+              Copy to Clipboard
+            </p>
+          </div>
           <div class="separator-right q-mr-sm q-ml-sm"></div>
-          <p
+          <div
             style="width: fit-content"
             class="MemberPage-login-code"
             @click="copyToClipboard(memberState.selectedMember?.signOnLink || '')"
+            @mouseenter="showHoverCopy = true"
+            @mouseleave="showHoverCopy = false"
+            @mousemove="updateHoverPos"
           >
             SignOn Link:
-            <b> {{ memberState.selectedMember?.signOnLink }}</b> <q-icon name="copy_all" />
+            <b class="user-select-none"> {{ memberState.selectedMember?.signOnLink }}</b>
+            <q-icon name="copy_all" />
 
-            <q-tooltip
-              anchor="bottom right"
-              persistent
-              transition-show="flip-right"
-              transition-hide="flip-left"
+            <p
+              v-if="showHoverCopy"
+              class="tooltip"
+              :style="`top:${hoverY + 18}px !important; left:${hoverX + 18}px !important`"
+            >
+              Copy to Clipboard
+            </p>
+
+            <!-- <q-tooltip target transition-show="flip-right" transition-hide="flip-left"
               >Copy to Clipboard
-            </q-tooltip>
-          </p>
+            </q-tooltip> -->
+          </div>
         </div>
         <!--=========================== END OF SECTION ===========================-->
         <!--=============================== if mobile =============================-->
@@ -165,39 +177,47 @@
             </q-btn-dropdown>
           </div>
           <div class="col-12 q-mt-sm">
-            <p
+            <div
               style="width: fit-content"
               class="MemberPage-login-code"
               @click="copyToClipboard(memberState.selectedMember?.loginCode || '')"
+              @mouseenter="showHoverCopy = true"
+              @mouseleave="showHoverCopy = false"
+              @mousemove="updateHoverPos"
             >
               Login Code:
-              <b> {{ memberState.selectedMember?.loginCode }}</b> <q-icon name="copy_all" />
-              <q-tooltip
-                anchor="bottom right"
-                persistent
-                transition-show="flip-right"
-                transition-hide="flip-left"
-                >Copy to Clipboard
-              </q-tooltip>
-            </p>
+              <b class="user-select-none"> {{ memberState.selectedMember?.loginCode }}</b>
+              <q-icon name="copy_all" />
+              <p
+                v-if="showHoverCopy"
+                class="tooltip"
+                :style="`top:${hoverY + 18}px !important; left:${hoverX + 18}px !important`"
+              >
+                Copy to Clipboard
+              </p>
+            </div>
           </div>
           <div class="row separator-bottom q-mt-sm"></div>
           <div class="col-12 q-mt-sm">
-            <p
+            <div
               style="width: fit-content"
               class="MemberPage-login-code"
               @click="copyToClipboard(memberState.selectedMember?.signOnLink || '')"
+              @mouseenter="showHoverCopy = true"
+              @mouseleave="showHoverCopy = false"
+              @mousemove="updateHoverPos"
             >
               SignOn Link:
-              <b> {{ memberState.selectedMember?.signOnLink }}</b> <q-icon name="copy_all" />
-              <q-tooltip
-                anchor="bottom right"
-                persistent
-                transition-show="flip-right"
-                transition-hide="flip-left"
-                >Copy to Clipboard
-              </q-tooltip>
-            </p>
+              <b class="user-select-none"> {{ memberState.selectedMember?.signOnLink }}</b>
+              <q-icon name="copy_all" />
+              <p
+                v-if="showHoverCopy"
+                class="tooltip"
+                :style="`top:${hoverY + 18}px !important; left:${hoverX + 18}px !important`"
+              >
+                Copy to Clipboard
+              </p>
+            </div>
           </div>
           <!-- <div class="row separator-bottom q-mt-sm"></div> -->
         </template>
@@ -750,6 +770,8 @@ interface CheckboxItemInterface {
   display?: boolean
 }
 
+const showHoverCopy = ref(false)
+
 const $route = useRoute()
 const $router = useRouter()
 const $q = useQuasar()
@@ -925,7 +947,7 @@ const resetAllForm = (showNotify: boolean = false) => {
   if (memberState.value.membershipSettings.visible) {
     options.value.push({
       id: 2,
-      value: memberState.value.membershipSettings.checkedStatus,
+      value: !!memberState.value.membershipSettings?.checkedStatus,
       label: 'Membership',
     })
   }
@@ -1021,6 +1043,14 @@ const goToCreateOrder = (isByCode: boolean = false) => {
       memberId: memberState.value.selectedMember?.memberId,
     },
   })
+}
+
+const hoverX = ref(0)
+const hoverY = ref(0)
+
+const updateHoverPos = (e: MouseEvent) => {
+  hoverX.value = e.clientX
+  hoverY.value = e.clientY
 }
 
 watch(

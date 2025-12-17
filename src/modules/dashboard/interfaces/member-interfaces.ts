@@ -1,3 +1,5 @@
+import type { MemberCategoryInterface } from "./category-interfaces";
+
 export interface MemberInterface {
   m_id: number;
   m_LastName: string;
@@ -79,6 +81,7 @@ export interface MemberDataInterface {
   spouseTitle: string | null | undefined;
   phone2: string | null | undefined;
   foods: string | null | undefined;
+  receivingFrom: string;
 }
 
 export interface MemberOptionsInterface {
@@ -306,6 +309,42 @@ export interface DoorManStatusInterface {
 
 
 export interface MembershipStatusInterface {
-  visible: boolean;
-  checkedStatus: boolean;
+  visible?: boolean;
+  checkedStatus?: boolean;
 }
+
+
+
+export interface SpecialShippingInstructionsInterface {
+  hasSpecialInstructions: boolean;
+  instructionsLabel: string;
+  instructions: string;
+}
+
+export interface MemberAllInfoInterface {
+  info: MemberDataInterface;
+  profileQuestions: MemberProfileQuestionInterface[];
+  isHidden: boolean;
+  reciprocity: MemberReciprocityInterface;
+  donateBasketVisible: boolean;
+  donateBasketText: string;
+  donateBasketChecked: boolean;
+  membershipStatus: MembershipStatusInterface;
+  showClearCart: boolean;
+  alternateDelivery: AlternativeMemberAddress;
+  specialShippingInstructions: SpecialShippingInstructionsInterface;
+  displayChildren: boolean;
+  pendingDeletion: boolean;
+  transactions: MemberTransactionInterface[];
+  doorman: DoorManStatusInterface;
+  showRecordPayment: boolean;
+  categories: MemberCategoryInterface[];
+}
+
+
+
+
+
+
+
+

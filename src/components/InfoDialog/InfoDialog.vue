@@ -7,7 +7,7 @@
         </div>
       </div>
 
-      <q-card-section class="q-pt-none" style="padding: 50px">
+      <q-card-section class="q-pt-none" style="padding: 12px">
         <div
           class="row custom-dialog-body-container"
           :style="{

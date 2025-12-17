@@ -99,11 +99,20 @@
         "
       >
         <!-- fee percent -->
-        <div class="row" v-if="!$moStore.$state.orgSettings?.feeRequired">
+        <div class="row">
           <q-checkbox
+            v-if="
+              !$moStore.$state.orgSettings?.feeRequired &&
+              data.fees.fee + data.fees.perTransactionFee
+            "
             style="margin-left: -10px"
             v-model="$moStore.showFee"
-            label="Required fee ?"
+            :label="`Add an additional ${$moStore.getSymbol}${convertWithCommas(
+              data.fees.fee + data.fees.perTransactionFee,
+              {
+                dontAllowZero: true,
+              },
+            )} to your order to cover Credit Card processing fees`"
           />
         </div>
         <div

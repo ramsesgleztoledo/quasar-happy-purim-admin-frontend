@@ -1,6 +1,6 @@
 import type { ApiCallResponseInterface, ExtraOptionsInterface } from "../../../services/api-interfaces";
 import { useApiCall } from "../../../services/apiCall";
-import type { AlternativeMemberAddress, AlternativeMemberAddressFormInterface, BasketReceivedInterface, DoorManStatusInterface, EmailLoginCodeInfoInterface, MemberAddFormInterface, MemberAddResponseInterface, MemberDataInterface, MemberDonateBasketOptionInterface, MemberHiddenInterface, MemberPersonalBasketInterface, MemberProfileQuestionInterface, MemberReciprocityInterface, MembershipStatusInterface, MembersLoggedInterface, MembersResponseInterface, MemberTransactionInterface, MemberUpdateFormInterface, PendingDeletionInterface, SearchedMemberInterface } from "../interfaces/member-interfaces";
+import type { AlternativeMemberAddress, AlternativeMemberAddressFormInterface, BasketReceivedInterface, DoorManStatusInterface, EmailLoginCodeInfoInterface, MemberAddFormInterface, MemberAddResponseInterface, MemberAllInfoInterface, MemberDataInterface, MemberDonateBasketOptionInterface, MemberHiddenInterface, MemberPersonalBasketInterface, MemberProfileQuestionInterface, MemberReciprocityInterface, MembershipStatusInterface, MembersLoggedInterface, MembersResponseInterface, MemberTransactionInterface, MemberUpdateFormInterface, PendingDeletionInterface, SearchedMemberInterface } from "../interfaces/member-interfaces";
 
 
 
@@ -331,6 +331,14 @@ export const useMemberService = () => {
     },
     searchMembers: async (query: string, extraOptions?: ExtraOptionsInterface): Promise<ApiCallResponseInterface<SearchedMemberInterface[]>> => {
       const nextUrl = `/search-members?query=${query}`;
+      const url = `${baseUrl}${nextUrl}`;
+      return await apiCall({
+        url,
+        extraOptions,
+      })
+    },
+    getAllMemberInfo: async (memberId: number | string, extraOptions?: ExtraOptionsInterface): Promise<ApiCallResponseInterface<MemberAllInfoInterface>> => {
+      const nextUrl = `/${memberId}/all-info`;
       const url = `${baseUrl}${nextUrl}`;
       return await apiCall({
         url,

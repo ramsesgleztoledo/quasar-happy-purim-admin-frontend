@@ -39,7 +39,7 @@
           <q-input
             v-model="paymentForm.realForm.value.phoneOrCheckDate.value"
             outlined
-            mask="date"
+            mask="##/##/####"
             lazy-rules
             :rules="[lazyRules.required()]"
             label="Check Date"
@@ -49,6 +49,7 @@
               <q-icon name="event" class="cursor-pointer">
                 <q-popup-proxy cover transition-show="scale" transition-hide="scale">
                   <q-date
+                    mask="MM/DD/YYYY"
                     emit-immediately
                     v-model="paymentForm.realForm.value.phoneOrCheckDate.value"
                   >

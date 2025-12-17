@@ -44,14 +44,14 @@ const initialState: MemberOrderStateInterface = {
     form: undefined,
     checkForm: undefined,
     email: "",
-    paymentType: 1
+    paymentType: 0
   },
   shulSetting: undefined,
   totalFromBackend: 0,
   localDeliveries: [],
   settings: undefined,
   showFee: false,
-  showEmailReceiptTo: false,
+  showEmailReceiptTo: true,
 }
 
 export const useMemberOrderStore = defineStore('memberOrderStore', {
