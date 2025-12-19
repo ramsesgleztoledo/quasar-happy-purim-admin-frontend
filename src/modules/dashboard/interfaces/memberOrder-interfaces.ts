@@ -9,10 +9,11 @@ export interface OrderPromotionInterface {
   cssClass: string;
   applyMax: null;
   displayed: null;
-  orderItemID: null;
-  transactionID: null;
+  orderItemID: number | null;
+  transactionID: number | null;
   quantity: number;
   selected?: boolean;
+  disabled?: boolean;
 }
 
 

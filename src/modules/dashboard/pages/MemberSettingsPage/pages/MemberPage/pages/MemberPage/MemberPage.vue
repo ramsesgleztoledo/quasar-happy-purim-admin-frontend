@@ -887,7 +887,10 @@ const loadPage = () => {
     memberState.value.members.members.findIndex(
       (member) => member.m_id === Number($route.params.memberId),
     ) + 1
-  if (currentMemberPage.value === 0) return
+  if (currentMemberPage.value === 0) {
+    isReady.value = true
+    return
+  }
 
   onPageChange(currentMemberPage.value)
   isReady.value = true

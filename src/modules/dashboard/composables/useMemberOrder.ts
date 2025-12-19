@@ -28,6 +28,7 @@ import { useLocalDeliveryService } from "../services/LocalDelivery.service";
 import { useBasicSettingsService } from "../services/basic-settings.service";
 import { useDashboardService } from "../services/dashboard.service";
 import { useDashboardStore } from "../store/dashboardStore/dashboardStore";
+import { useMemberShipService } from "../services/MemberShip.service";
 
 
 
@@ -39,13 +40,14 @@ export const useMemberOrder = () => {
   const $router = useRouter()
   const $moStore = useMemberOrderStore()
   const $mStore = useMemberStore()
+  const $dStore = useDashboardStore()
+  const $q = useQuasar()
   const { getTransactionsByMemberId } = useMemberService()
   const { getPromotionsByMemberGuid } = usePromotionService()
   const { getMemberListMemberGuid } = useMemberListService()
   const { getOrderItemsByMemberGuid, addOrRemoveOrderItemsByMemberGuid } = useOrderItemService()
   const { authState } = useAuth()
   const { memberState, showRecordPaymentBtn_co } = useMember()
-  const $q = useQuasar()
   const { addMember, removeMember } = useShaliachService()
   const { getOrganizationSettings } = useOrgSettingsService()
   const { getAdditionalCharityOptions, getCharityOptions } = useCharityService()
@@ -61,7 +63,7 @@ export const useMemberOrder = () => {
   const { getLocalDelivery } = useLocalDeliveryService()
   const { getSettings } = useBasicSettingsService()
   const { getTopTransactions } = useDashboardService()
-  const $dStore = useDashboardStore()
+  const { getPayMembershipByMemberId } = useMemberShipService()
 
 
   const mGuid = computed(() => memberState.value.selectedMember?.memberGuid || '')
@@ -174,16 +176,21 @@ export const useMemberOrder = () => {
         getPaymentMethods(mGuid.value),
         getShulSettings(mGuid.value),
         getLocalDelivery(),
-        getSettings()
+        getSettings(),
+        getPayMembershipByMemberId(memberId.value)
       ])
 
       if (resp.find(resp => !resp.ok)) return
 
       const promotions = resp[0].data.map(pro => {
         const selected = resp[2].data.find(item => item.itemId == pro.itemId)
+
+        const disabled = !!pro.orderItemID || !!pro.transactionID
+
         return {
           ...pro,
-          selected: !!selected
+          selected: (!!selected || disabled),
+          disabled
         }
       }
       ) || []
@@ -216,7 +223,8 @@ export const useMemberOrder = () => {
         shulSetting: resp[14].data,
         localDeliveries: resp[15].data,
         settings: resp[16].data,
-        showFee
+        showFee,
+        membership: resp[17].data
       })
     },
     addOrRemoveItem,

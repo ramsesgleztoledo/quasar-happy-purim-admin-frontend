@@ -52,6 +52,8 @@ const initialState: MemberOrderStateInterface = {
   settings: undefined,
   showFee: false,
   showEmailReceiptTo: true,
+  step: 0,
+  membership: undefined,
 }
 
 export const useMemberOrderStore = defineStore('memberOrderStore', {

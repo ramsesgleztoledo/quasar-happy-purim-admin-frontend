@@ -30,10 +30,10 @@
       <div class="CreateOrderPage-middle">
         <div class="row">
           <div class="col-12">
-            <div v-show="step === 1">
+            <div v-show="step === 0">
               <StepOneCreateOrder ref="stepOneCreateOrderRef" />
             </div>
-            <div v-show="step > 1">
+            <div v-show="step > 0">
               <div class="row q-mt-sm">
                 <div
                   :class="{
@@ -42,6 +42,7 @@
                   }"
                   class="CreateOrderPage-left-container q-pa-sm"
                 >
+                  <MembershipStep v-show="step === 1" />
                   <StepTwoCreateOrder v-show="step === 2" />
                   <StepThreeCreateOrder v-show="step === 3" />
                 </div>
@@ -76,13 +77,23 @@
               @click="cancelOrderDialogFlag = true"
             />
             <q-btn class="q-mr-sm" label="SAVE FOR LATER" @click="saveForLater" />
-            <q-btn v-if="step > 1" class="q-mr-sm" label="BACK" @click="goBack()" />
+            <q-btn v-if="step > 0" class="q-mr-sm" label="BACK" @click="goBack()" />
             <q-btn
-              v-if="step === 1"
+              v-if="step === 0"
               class="q-mr-sm"
               style="background: var(--happypurim); color: white"
               label="NEXT"
               @click="onNext"
+            />
+            <q-btn
+              :disable="
+                !orderTotal && !$moStore.totalFromBackend && !$moStore.getCartData.totalPriceMembers
+              "
+              v-if="step === 1"
+              class="q-mr-sm"
+              style="background: var(--happypurim); color: white"
+              label="CONTINUE"
+              @click="continueToPayment"
             />
             <q-btn
               :disable="
@@ -139,7 +150,7 @@
 <script setup lang="ts">
 import DialogAlert from 'src/components/DialogAlert/DialogAlert.vue'
 
-import { onMounted, ref } from 'vue'
+import { computed, onMounted, ref } from 'vue'
 import { useMember } from 'src/modules/dashboard/composables/useMember'
 import StepOneCreateOrder from './components/StepOneCreateOrder/StepOneCreateOrder.vue'
 import { useUI } from 'src/modules/UI/composables'
@@ -151,9 +162,12 @@ import type { StepOneCreateOrderInterface } from './interfaces'
 import { useRouter } from 'vue-router'
 import { useMemberOrderStore } from 'src/modules/dashboard/store/memberOrderStore/memberOrderStore'
 import { useCalculate } from 'src/modules/dashboard/composables/useCalculate'
+import MembershipStep from './components/MembershipStep/MembershipStep.vue'
 
 const $router = useRouter()
 const $moStore = useMemberOrderStore()
+
+const requiredMembership = computed(() => $moStore.membership?.showMembership || false)
 const { isMobile, goToTop, showLoading, stopLoading } = useUI()
 const { memberState } = useMember()
 const { getInitialData, updateCart, setUpdatedPromotions, orderTotal, placeOrder } =
@@ -162,7 +176,7 @@ const { setBackendTotal } = useCalculate()
 
 const cancelOrderDialogFlag = ref(false)
 const addReciprocityDialogFlag = ref(false)
-const step = ref(1)
+const step = ref(0)
 
 const isReady = ref(false)
 const stepOneCreateOrderRef = ref<StepOneCreateOrderInterface | undefined>(undefined)
@@ -198,6 +212,7 @@ const onNext = async () => {
   showLoading()
   await saveStepOne()
   step.value++
+  if (!requiredMembership.value) step.value++
   stopLoading()
   setBackendTotal()
   goToTop({ delay: 600 })
@@ -213,7 +228,11 @@ const continueToPayment = () => {
 
 const goBack = () => {
   step.value--
-  if (step.value === 2 && !$moStore.hasExtraOptions) step.value--
+  if (
+    (step.value === 2 && !$moStore.hasExtraOptions) ||
+    (step.value === 1 && !requiredMembership.value)
+  )
+    step.value--
   goToTop({ delay: 300 })
 }
 </script>

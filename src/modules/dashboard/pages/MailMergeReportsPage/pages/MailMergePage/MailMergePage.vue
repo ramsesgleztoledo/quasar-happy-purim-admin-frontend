@@ -173,7 +173,7 @@
                           class="merged-field-loading"
                         /> -->
                         <q-item
-                          class="ComposeEmail-token-item q-mb-sm"
+                          class="ComposeEmail-token-item"
                           v-for="(token, i) in $rStore.$state.tokens"
                           :key="i"
                           clickable
