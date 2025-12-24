@@ -107,6 +107,20 @@ export const useReportsService = () => {
         data
       })
     },
+    getReportRecipientsByReportIdCustomWithSQL12: async (data: {
+      id: number | string,
+      searchTerm: string,
+      categories: string
+    }, extraOptions?: ExtraOptionsInterface): Promise<ApiCallResponseInterface<RecipientDataInterface>> => {
+      const nextUrl = `/Custom-Reports/run-and-get-report/${data.id}?searchTerm=${data.searchTerm || ""}&categories=${data.categories || ""}`;
+      const url = `${baseUrl}${nextUrl}`;
+      return await apiCall({
+        url,
+        extraOptions,
+        method: 'POST',
+        data
+      })
+    },
     getZipCodeFilters: async (extraOptions?: ExtraOptionsInterface): Promise<ApiCallResponseInterface<string[]>> => {
       const nextUrl = `/Receiving-from-report/filter-by-zip-options`;
       const url = `${baseUrl}${nextUrl}`;

@@ -1,6 +1,6 @@
 <template>
   <div v-if="report">
-    <div class="row ">
+    <div class="row">
       <div class="col-12 top-title-col justify-content-space-between">
         <div style="height: 100%; display: flex">
           <template v-if="$rStore.getReportSelectedReportData?.reportID">
@@ -445,7 +445,9 @@ const goToPageWithFilters = () => {
     query = {
       yesOnly: `${filter.value.yesOnly}`,
       hideNL: `${filter.value.hideNL}`,
-      isCustom: 'true',
+      isCustom: 'true', 
+      categories: JSON.stringify(filter.value.categories),
+      searchTerm: filter.value.searchTerm,
     }
 
   $router.replace({

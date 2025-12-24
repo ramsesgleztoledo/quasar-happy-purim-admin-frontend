@@ -1,4 +1,6 @@
-export const getTimeAndDate = (value: string | Date) => {
+type monthDayYear = 'y' | 'm' | 'd'
+
+export const getTimeAndDate = (value: string | Date, format?: [monthDayYear, monthDayYear, monthDayYear]) => {
   let result = {
     dateValue: "",
     timeValue: "",
@@ -12,7 +14,13 @@ export const getTimeAndDate = (value: string | Date) => {
   const year = date.getFullYear();
   const month = String(date.getMonth() + 1).padStart(2, "0");
   const day = String(date.getDate()).padStart(2, "0");
-  const dateValue = `${year}/${month}/${day}`;
+  const dateToFormat = {
+    y: `${year}`,
+    m: month,
+    d: day,
+  }
+
+  const dateValue = format ? useFormat(dateToFormat, format) : `${year}/${month}/${day}`;
 
 
   let hours = date.getHours();
@@ -25,4 +33,18 @@ export const getTimeAndDate = (value: string | Date) => {
   result = { dateValue, timeValue };
   return result
 };
+
+const useFormat = (dateToFormat: {
+  y: string;
+  m: string;
+  d: string;
+}, format: [monthDayYear, monthDayYear, monthDayYear]) => {
+  let formatted = ""
+  format.forEach((fo) => {
+    formatted += dateToFormat[fo]
+  });
+  return formatted
+};
+
+
 

@@ -27,15 +27,15 @@
         readonly
         v-model="dateValue"
         outlined
-        mask="date"
         lazy-rules
         :rules="[...dateRules]"
         label="Date *"
+        mask="##/##/####"
       >
         <template v-slot:append>
           <q-icon name="event" class="cursor-pointer">
             <q-popup-proxy cover transition-show="scale" transition-hide="scale">
-              <q-date v-model="dateValue">
+              <q-date v-model="dateValue" mask="MM/DD/YYYY">
                 <div class="row items-center justify-end">
                   <q-btn v-close-popup label="Close" color="primary" flat />
                 </div>
@@ -131,7 +131,7 @@
       />
     </div>
   </div>
-  <div class="row q-mt-sm q-mb-sm ">
+  <div class="row q-mt-sm q-mb-sm">
     <div class="col-12">
       <label class="q-pl-sm"> <b>Selected Options</b></label>
       <div class="q-mt-md">
@@ -220,7 +220,7 @@ const setOptions = () => {
 }
 
 const setDateAndTime = () => {
-  const date = getTimeAndDate(basicSettingsState.value.settings?.endDateTime || '')
+  const date = getTimeAndDate(basicSettingsState.value.settings?.endDateTime || '', ['m', 'd', 'y'])
   dateValue.value = date.dateValue
   timeValue.value = date.timeValue
 }

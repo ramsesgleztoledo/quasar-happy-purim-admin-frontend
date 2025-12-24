@@ -48,7 +48,7 @@
                     <div class="row q-mb-sm">
                       <div class="col-6 q-pr-sm q-pl-sm">
                         <q-input
-                          v-model="(checkForm.date as FormField).value as string"
+                          v-model="checkForm.date.value"
                           outlined
                           mask="date"
                           lazy-rules
@@ -59,10 +59,7 @@
                           <template v-slot:append>
                             <q-icon name="event" class="cursor-pointer">
                               <q-popup-proxy cover transition-show="scale" transition-hide="scale">
-                                <q-date
-                                  emit-immediately
-                                  v-model="(checkForm.date as FormField).value as string"
-                                >
+                                <q-date emit-immediately v-model="checkForm.date.value">
                                   <div class="row items-center justify-end">
                                     <q-btn v-close-popup label="Close" color="primary" flat />
                                   </div>

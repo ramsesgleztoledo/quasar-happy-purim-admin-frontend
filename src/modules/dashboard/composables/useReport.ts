@@ -22,6 +22,7 @@ export const useReport = () => {
     getCustomSpecialReports,
     getAdvancedSpecialReports,
     getReportRecipientsByReportIdFilterOnly,
+    getReportRecipientsByReportIdCustomWithSQL12,
   } = useReportsService()
   const { getTokensByReportId, getCustomTokensByReportId } = useMailMergeService()
   const $rStore = useReportStore()
@@ -145,7 +146,7 @@ export const useReport = () => {
         })
 
       else
-        tokens = await getCustomTokensByReportId(data.id,{
+        tokens = await getCustomTokensByReportId(data.id, {
           // loading: {
           //   message: 'Loading...'
           // }
@@ -227,21 +228,19 @@ export const useReport = () => {
         //   //   message: 'Loading...'
         //   // }
         // }))
-        // if (data.id == 12)
-        //   resp = (await getReportRecipientsByReportIdCustom(data.id, {
-        //     categories: (data.categories || []).join(', '),
-        //     searchTerm: data.searchTerm || "",
-        //   }, {
-        //     loading: {
-        //       message: 'Loading...'
-        //     }
-        //   }))
-        // else
-        resp = await getReportRecipientsByReportIdCustomWithSQL(data, {
-          // loading: {
-          //   message: 'Loading...'
-          // }
-        })
+        if (data.id == 12)
+          resp = (await getReportRecipientsByReportIdCustomWithSQL12({
+            id: data.id,
+            categories: (data.categories || []).join(', '),
+            searchTerm: data.searchTerm || "",
+
+          },))
+        else
+          resp = await getReportRecipientsByReportIdCustomWithSQL(data, {
+            // loading: {
+            //   message: 'Loading...'
+            // }
+          })
 
 
 

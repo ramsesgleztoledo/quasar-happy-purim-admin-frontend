@@ -23,6 +23,7 @@ const initialState: DashboardStateInterface = {
   showCreateOrderByCode: false,
   categories: [],
   percentageRunningTotal: undefined,
+  customShippingOptions: [],
 }
 
 export const useDashboardStore = defineStore('dashBoardStore', {

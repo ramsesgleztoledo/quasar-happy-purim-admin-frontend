@@ -10,6 +10,8 @@ import type { MembersLoggedInterface } from "../interfaces/member-interfaces";
 import { useCategoryService } from "../services/category.service";
 import type { ShulCategoryInterface } from "../interfaces/category-interfaces";
 import { useBasicSettingsService } from "../services/basic-settings.service";
+import { useCustomShippingOptionsService } from "../services/customShippingOptions.service";
+import type { CustomShippingOptionInterface } from "../interfaces/memberOrder-interfaces";
 
 export const useDashboard = () => {
 
@@ -21,6 +23,7 @@ export const useDashboard = () => {
   const { getMembersLogged } = useMemberService()
   const { getShulCategories } = useCategoryService()
   const { getShowOrderByCode } = useBasicSettingsService()
+  const { getCustomShippingOptions } = useCustomShippingOptionsService()
 
   return {
     dashboardState: computed(() => $dStore.$state),
@@ -49,7 +52,8 @@ export const useDashboard = () => {
         membersLogged,
         categories,
         showCreateOrderByCode,
-        percentageRunningTotal
+        percentageRunningTotal,
+        customShippingOptions
       ]:
         [
           ApiCallResponseInterface<OrderGraphInterface[]>,
@@ -68,6 +72,7 @@ export const useDashboard = () => {
           ApiCallResponseInterface<ShulCategoryInterface[]>,
           ApiCallResponseInterface<boolean>,
           ApiCallResponseInterface<PercentageRunningTotalInterface>,
+          ApiCallResponseInterface<CustomShippingOptionInterface[]>
 
         ]
         = await Promise.all([
@@ -87,6 +92,7 @@ export const useDashboard = () => {
           getShulCategories(),
           getShowOrderByCode(),
           getPercentageOfRunningTotal(),
+          getCustomShippingOptions(),
         ])
 
 
@@ -108,6 +114,7 @@ export const useDashboard = () => {
         categories: categories.ok ? categories.data : [],
         showCreateOrderByCode: showCreateOrderByCode.ok ? !!showCreateOrderByCode.data : false,
         percentageRunningTotal: percentageRunningTotal.ok ? percentageRunningTotal.data : undefined,
+        customShippingOptions: customShippingOptions.ok ? customShippingOptions.data : []
       })
 
       $q.loading.hide()

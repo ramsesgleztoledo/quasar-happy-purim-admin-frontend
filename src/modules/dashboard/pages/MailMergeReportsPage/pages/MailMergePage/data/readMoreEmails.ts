@@ -1,10 +1,78 @@
-export const readMoreEmails = `
-<div>
-<p dir="ltr" style="color: rgb(34, 34, 34); font-family: arial, sans-serif; font-size: 13px; line-height: 1.15; margin-top: 0pt; margin-bottom: 0pt; text-align: center; background-color: rgb(255, 255, 255);"><span style="font-size: 16px; font-family: Verdana; color: rgb(71, 71, 71); vertical-align: baseline; white-space: pre-wrap; background-color: transparent;">
-<b style="font-size: 25px">
-Avoid emails going to spam!
+export const readMoreEmails =
+  `
+<div style="padding: 10px">
+  <p
+    dir="ltr"
+    style="
+      color: rgb(34, 34, 34);
+      font-family: arial, sans-serif;
+      font-size: 13px;
+      line-height: 1.15;
+      margin-top: 0pt;
+      margin-bottom: 0pt;
+      text-align: center;
+      background-color: rgb(255, 255, 255);
+    "
+  >
+    <span
+      style="
+        font-size: 16px;
+        font-family: Verdana;
+        color: rgb(71, 71, 71);
+        vertical-align: baseline;
+        white-space: pre-wrap;
+        background-color: transparent;
+      "
+    >
+      <b style="font-size: 25px"> Avoid emails going to spam! </b>
+    </span>
+  </p>
+
+
+
+  <div class="row" style="margin-bottom: 10px">
+<p>
+
+
+
+    Major email providers <b>  — including Gmail, Outlook (Hotmail), Yahoo, and AOL —</b> now enforce stricter rules to prevent spam and fraudulent emails.
+If you send emails using a “From” address from a public email provider (such as <b style="color: blue"> gmail.com, outlook.com, yahoo.com, or aol.com </b>), your messages are more likely to go to spam or be blocked when sent through <b style="color: blue"> HappyPurim.com</b> .
+</p>
+</div>
+<div class="row" style="margin-bottom: 10px">
+
+
+<div class="row" style="margin-bottom: 10px; width: 100%;">
+<h5 style="display: flex; width: 100%;justify-content: center;">
+Why is this happening?
+</h5>
+</div>
+<div class="row" style="margin-bottom: 10px">
+These providers now require stronger verification to confirm that emails truly come from the domain they claim to be from. When a public email address is used with a third-party sending platform, the email may appear suspicious — even if it’s legitimate.
+</div>
+</div>
+<div class="row" style="margin-bottom: 10px">
+
+<div class="row" style="margin-bottom: 10px; width: 100%;">
+<h5 style="display: flex; width: 100%; justify-content: center;">
+What should you do?
+</h5>
+</div>
+
+<div class="row" style="margin-bottom: 10px">
+
+<p>
+
+For best delivery, use an email address from a private domain you control, such as:
+<b style="color: blue">
+yourname@yourorganization.com
 </b>
-</span></p><br style="color: rgb(34, 34, 34); font-family: arial, sans-serif; font-size: 13px; background-color: rgb(255, 255, 255);"><p dir="ltr" style="color: rgb(34, 34, 34); font-family: arial, sans-serif; font-size: 13px; line-height: 1.15; margin-top: 0pt; margin-bottom: 0pt; text-align: center; background-color: rgb(255, 255, 255);"><span style="font-size: 16px; font-family: Verdana; color: rgb(71, 71, 71); font-weight: bold; text-decoration: underline; vertical-align: baseline; white-space: pre-wrap; background-color: transparent;"><span class="il">AOL</span>/Yahoo Changes May Affect Your Emails</span></p><p dir="ltr" style="color: rgb(34, 34, 34); font-family: arial, sans-serif; font-size: 13px; line-height: 1.15; margin-top: 0pt; margin-bottom: 0pt; background-color: rgb(255, 255, 255);"><span style="font-size: 16px; font-family: Verdana; color: rgb(71, 71, 71); vertical-align: baseline; white-space: pre-wrap; background-color: transparent;"> </span></p><p dir="ltr" style="color: rgb(34, 34, 34); font-family: arial, sans-serif; font-size: 13px; line-height: 1.15; margin-top: 0pt; margin-bottom: 0pt; background-color: rgb(255, 255, 255);"><span style="font-size: 16px; font-family: Verdana; color: rgb(71, 71, 71); vertical-align: baseline; white-space: pre-wrap; background-color: transparent;"><span class="il">AOL</span> and Yahoo recently changed their authentication policy, and the change may impact delivery of emails that come from <span class="il">AOL</span>.com and <a href="http://yahoo.com/" target="_blank" style="color: rgb(17, 85, 204);">yahoo.com</a> addresses. That means </span><span style="font-size: 16px; font-family: Verdana; color: rgb(71, 71, 71); font-weight: bold; vertical-align: baseline; white-space: pre-wrap; background-color: transparent;">if you send an email and your Sending From Email is a <a href="http://yahoo.com/" target="_blank" style="color: rgb(17, 85, 204);">yahoo.com</a> or <a href="http://aol.com/" target="_blank" style="color: rgb(17, 85, 204);"><span class="il">aol</span>.com</a> email, there’s an increased chance your emails will go to spam or bounce.</span></p><p dir="ltr" style="color: rgb(34, 34, 34); font-family: arial, sans-serif; font-size: 13px; line-height: 1.15; margin-top: 0pt; margin-bottom: 0pt; background-color: rgb(255, 255, 255);"><span style="font-size: 16px; font-family: Verdana; color: rgb(71, 71, 71); vertical-align: baseline; white-space: pre-wrap; background-color: transparent;"> </span></p><p dir="ltr" style="color: rgb(34, 34, 34); font-family: arial, sans-serif; font-size: 13px; line-height: 1.15; margin-top: 0pt; margin-bottom: 0pt; background-color: rgb(255, 255, 255);"><span style="font-size: 16px; font-family: Verdana; color: rgb(71, 71, 71); vertical-align: baseline; white-space: pre-wrap; background-color: transparent;">Why is this happening? In an attempt to stop fraudulent emails, Yahoo and <span class="il">AOL</span> changed their DMARC authentication policy to reject emails that claim to come from them, but actually originate at other servers.</span></p><p dir="ltr" style="color: rgb(34, 34, 34); font-family: arial, sans-serif; font-size: 13px; line-height: 1.15; margin-top: 0pt; margin-bottom: 0pt; background-color: rgb(255, 255, 255);"><span style="font-size: 16px; font-family: Verdana; color: rgb(71, 71, 71); vertical-align: baseline; white-space: pre-wrap; background-color: transparent;"> </span></p><p dir="ltr" style="color: rgb(34, 34, 34); font-family: arial, sans-serif; font-size: 13px; line-height: 1.15; margin-top: 0pt; margin-bottom: 0pt; background-color: rgb(255, 255, 255);"><span style="font-size: 16px; font-family: Verdana; color: rgb(71, 71, 71); vertical-align: baseline; white-space: pre-wrap; background-color: transparent;">With this change, using a <a href="http://yahoo.com/" target="_blank" style="color: rgb(17, 85, 204);">yahoo.com</a> or <a href="http://aol.com/" target="_blank" style="color: rgb(17, 85, 204);"><span class="il">aol</span>.com</a> Sending From Email when sending through an email service provider like ours will make the email look fraudulent, even if it’s not. And that will likely result in emails being rejected by the receiving server, or sent to spam. This will affect receiving servers who respect DMARC policies, including Gmail, Hotmail, and many others.</span></p><p dir="ltr" style="color: rgb(34, 34, 34); font-family: arial, sans-serif; font-size: 13px; line-height: 1.15; margin-top: 0pt; margin-bottom: 0pt; background-color: rgb(255, 255, 255);"><span style="font-size: 16px; font-family: Verdana; color: rgb(71, 71, 71); vertical-align: baseline; white-space: pre-wrap; background-color: transparent;"> </span></p><p dir="ltr" style="color: rgb(34, 34, 34); font-family: arial, sans-serif; font-size: 13px; line-height: 1.15; margin-top: 0pt; margin-bottom: 0pt; background-color: rgb(255, 255, 255);"><span style="font-size: 16px; font-family: Verdana; color: rgb(71, 71, 71); font-weight: bold; vertical-align: baseline; white-space: pre-wrap; background-color: transparent;">What should you do?</span><span style="font-size: 16px; font-family: Verdana; color: rgb(71, 71, 71); vertical-align: baseline; white-space: pre-wrap; background-color: transparent;"> You should use an email address at a private domain you control, such as YOURNAME @YOURorganziation.com. </span></p><p dir="ltr" style="color: rgb(34, 34, 34); font-family: arial, sans-serif; font-size: 13px; line-height: 1.15; margin-top: 0pt; margin-bottom: 0pt; background-color: rgb(255, 255, 255);"><span style="font-size: 16px; font-family: Verdana; color: rgb(71, 71, 71); vertical-align: baseline; white-space: pre-wrap; background-color: transparent;"> </span></p><p dir="ltr" style="color: rgb(34, 34, 34); font-family: arial, sans-serif; font-size: 13px; line-height: 1.15; margin-top: 0pt; margin-bottom: 0pt; background-color: rgb(255, 255, 255);"><span style="font-size: 16px; font-family: Verdana; color: rgb(71, 71, 71); vertical-align: baseline; white-space: pre-wrap; background-color: transparent;">Using emails from other personal email providers, like Gmail or Hotmail, should still work. However, it’s possible these companies will make the same change at any time.</span></p>
+Public email addresses may still work in some cases, but delivery is no longer guaranteed and the authentication policies may get stricter.
+</p>
+</div>
+  </div>
+
 
 </div>
+
 `

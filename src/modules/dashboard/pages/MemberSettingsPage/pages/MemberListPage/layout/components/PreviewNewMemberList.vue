@@ -267,7 +267,7 @@
       <q-card-section>
         <TableCustom
           :tableRowStyleFn="
-            (row: DetailedKeyInterface) => (row.isUpdated ? `background-color: #a5a0a0` : '')
+            (row: DetailedKeyInterface) => (row.isUpdated ? `color: #a5a0a0` : '')
           "
           class-name="table-sticky-header-column-table table-cursor-pointer-custom"
           styles="height: 628px"

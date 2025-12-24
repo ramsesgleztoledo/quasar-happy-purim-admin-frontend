@@ -6,7 +6,6 @@
       <div class="text-h2" style="opacity: 0.4">Unauthorized</div>
 
       <q-btn
-        v-if="isDev"
         class="q-mt-xl q-ma-sm"
         color="white"
         text-color="black"

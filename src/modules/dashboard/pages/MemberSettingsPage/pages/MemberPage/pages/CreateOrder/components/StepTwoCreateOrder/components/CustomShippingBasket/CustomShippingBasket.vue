@@ -94,93 +94,95 @@
         />
       </div>
     </div>
-
-    <div class="row q-mt-md basket-img-row-container">
-      <div
-        :class="{
-          'col-4': !isMobile,
-          'col-6': isMobile,
-          'selected-basket-img-container': item.id === customShippingSelected?.id,
-        }"
-        class="q-pa-sm q-mb-sm basket-img-container q-item-bordered"
-        v-for="(item, i) in memberOrderState.customShippingOptions"
-        :key="i"
-        style=""
-        @click="customShippingSelected = item"
-      >
-        <BasketImg :item="item" />
-      </div>
-    </div>
-
-    <div
-      v-if="customShippingSelectedAttributes && customShippingSelectedAttributes.length"
-      class="row q-mt-md"
-    >
-      <div class="col-12">
-        <div class="row CustomShippingBasket-personalization">Basket Personalization</div>
-        <q-separator />
-
+    <template v-if="!prop_customsShippingItem">
+      <div class="row q-mt-md basket-img-row-container">
         <div
-          class="row"
-          v-for="(attribute, index) in customShippingSelectedAttributes"
-          :key="attribute.id"
+          :class="{
+            'col-4': !isMobile,
+            'col-6': isMobile,
+            'selected-basket-img-container': item.id === customShippingSelected?.id,
+          }"
+          class="q-pa-sm q-mb-sm basket-img-container q-item-bordered"
+          v-for="(item, i) in memberOrderState.customShippingOptions"
+          :key="i"
+          style=""
+          @click="customShippingSelected = item"
         >
+          <BasketImg :item="item" />
+        </div>
+      </div>
+
+      <div
+        v-if="customShippingSelectedAttributes && customShippingSelectedAttributes.length"
+        class="row q-mt-md"
+      >
+        <div class="col-12">
+          <div class="row CustomShippingBasket-personalization">Basket Personalization</div>
+          <q-separator />
+
           <div
-            :class="{
-              'col-6': !isMobile,
-              'col-12': isMobile,
-            }"
+            class="row"
+            v-for="(attribute, index) in customShippingSelectedAttributes"
+            :key="attribute.id"
           >
-            <div class="row q-pa-sm CustomShippingBasket-text">
-              {{ index + 1 }}: {{ attribute.name }}
-            </div>
-            <div class="row q-pa-sm">
-              <q-checkbox
-                v-model="attribute.selected"
-                :label="attribute.description"
-                @click="attribute.value = ''"
-              />
-            </div>
-            <div class="row q-pa-sm CustomShippingBasket-text">
-              {{ attribute.promptText }}
-            </div>
-            <div class="row q-pa-sm">
-              <div class="col-12">
-                <q-input
-                  v-model="attribute.value"
-                  :type="attribute.type"
-                  outlined
-                  lazy-rules
-                  label="Enter Value"
-                  :rules="[lazyRules.required()]"
-                  :disable="!attribute.selected"
+            <div
+              :class="{
+                'col-6': !isMobile,
+                'col-12': isMobile,
+              }"
+            >
+              <div class="row q-pa-sm CustomShippingBasket-text">
+                {{ index + 1 }}: {{ attribute.name }}
+              </div>
+              <div class="row q-pa-sm">
+                <q-checkbox
+                  v-model="attribute.selected"
+                  :label="attribute.description"
+                  @click="attribute.value = ''"
                 />
               </div>
+              <div class="row q-pa-sm CustomShippingBasket-text">
+                {{ attribute.promptText }}
+              </div>
+              <div class="row q-pa-sm">
+                <div class="col-12">
+                  <q-input
+                    v-model="attribute.value"
+                    :type="attribute.type"
+                    outlined
+                    lazy-rules
+                    label="Enter Value"
+                    :rules="[lazyRules.required()]"
+                    :disable="!attribute.selected"
+                  />
+                </div>
+              </div>
             </div>
-          </div>
-          <div
-            class="col-6 q-pa-sm"
-            :class="{
-              'col-6': !isMobile,
-              'col-12': isMobile,
-            }"
-          >
-            <img :src="attribute.imageURL" alt="" style="width: 100%; height: 100%" />
+            <div
+              class="col-6 q-pa-sm"
+              :class="{
+                'col-6': !isMobile,
+                'col-12': isMobile,
+              }"
+            >
+              <img :src="attribute.imageURL" alt="" style="width: 100%; height: 100%" />
+            </div>
           </div>
         </div>
       </div>
-    </div>
-    <div v-if="!prop_customsShippingItem" class="row q-mt-md">
-      <div class="col-12 d-flex justify-content-end">
-        <q-btn
-          :disable="isInvalid"
-          color="primary"
-          icon="check"
-          label="ADD TO ORDER"
-          @click="onAddCustomShippingOption"
-        />
+
+      <div class="row q-mt-md">
+        <div class="col-12 d-flex justify-content-end">
+          <q-btn
+            :disable="isInvalid"
+            color="primary"
+            icon="check"
+            label="ADD TO ORDER"
+            @click="onAddCustomShippingOption"
+          />
+        </div>
       </div>
-    </div>
+    </template>
   </div>
   <q-card-actions
     v-if="prop_customsShippingItem"
@@ -296,6 +298,17 @@ const onAddCustomShippingOption = async () => {
   } as unknown as CustomShippingItemFormInterface
 
   const id = $props.prop_customsShippingItem?.shippingItemId || undefined
+
+  const newPrice = getBasketPrice(data)
+
+  // const currentPrice = $props.prop_customsShippingItem
+  //   ? getBasketPrice({
+  //       ...$props.prop_customsShippingItem,
+  //       attributes: JSON.stringify($props.prop_customsShippingItem.attributes),
+  //       // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  //     } as any)
+  //   : 0
+
   if (!id) {
     const dataAux = { ...data }
     if (!dataAux.shippingOptionId) dataAux.shippingOptionId = -1
@@ -308,7 +321,7 @@ const onAddCustomShippingOption = async () => {
       quantity: 1,
       message: dataAux.message || '',
       shipTo: dataAux.recipient || '',
-      price: getBasketPrice(data),
+      price: newPrice,
     })
 
     resetForm()
@@ -322,7 +335,10 @@ const onAddCustomShippingOption = async () => {
 
     if (!edit.shippingOptionId) edit.shippingOptionId = -1
 
-    await updateCustomShippingItem(edit)
+    await updateCustomShippingItem(
+      edit,
+      // newPrice, currentPrice
+    )
   }
 }
 

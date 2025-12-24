@@ -407,15 +407,35 @@ export const useMemberOrder = () => {
       if (resp.ok)
         setCustomShippingItems(resp.data)
     },
-    async updateCustomShippingItem(data: UpdateShippingItemFormInterface) {
+    async updateCustomShippingItem(data: UpdateShippingItemFormInterface,
+      // newPrice: number, currentPrice: number
+
+    ) {
+
+      // addOrRemoveItem()
       const resp = await updateCustomShippingItem(mGuid.value, data, {
         loading: {
           message: `Loading...`
         }
       })
-      if (resp.ok)
-        setCustomShippingItems(resp.data)
+      if (resp.ok) {
+        // const total = $moStore.$state.orderItems.find(item => item.itemId == 2)?.price || 0
 
+        // console.log({ total, newPrice, currentPrice });
+
+
+        // await addOrRemoveItem(true, {
+        //   description: 'Shipping Gift Basket',
+        //   itemId: 2,
+        //   sessionId: authState.value?.token?.token || '',
+        //   quantity: 1,
+        //   message: '',
+        //   shipTo: '',
+        //   price: 34,
+        // })
+
+        setCustomShippingItems(resp.data)
+      }
     },
     async deleteCustomShippingItem(data: UpdateShippingItemFormInterface) {
       const resp = await deleteCustomShippingItem(mGuid.value, data, {

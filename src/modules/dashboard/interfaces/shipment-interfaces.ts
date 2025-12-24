@@ -1,6 +1,6 @@
 export interface BasketToBeShippedInterface {
   shippingID: number;
-  shippingOptionID: number;
+  shippingOptionID: number | string;
   memberID: number;
   transactionID: number;
   sendTo: string;
@@ -11,7 +11,7 @@ export interface BasketToBeShippedInterface {
   zip: string;
   message: string;
   route: string;
-  description: null;
+  description?: string;
   email: string;
   phone: string;
   misc: string;
@@ -33,6 +33,6 @@ export interface BasketToBeShippedUpdateInterface {
   phone: string;
   route: string;
   misc: string;
-  shippingOptionID: number;
+  shippingOptionID: number | string;
 }
 

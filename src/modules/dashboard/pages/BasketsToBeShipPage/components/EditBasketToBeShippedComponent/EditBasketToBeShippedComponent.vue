@@ -11,6 +11,23 @@
           <div class="col-12">
             <div class="row q-mb-sm">
               <div class="col-12 q-pr-sm q-pl-sm">
+                <q-select
+                  option-label="description"
+                  option-value="id"
+                  popup-content-class="q-menu-300"
+                  :disable="dontEdit"
+                  v-model="shipOptionSelected"
+                  outlined
+                  :options="$dStore.$state.customShippingOptions"
+                  label="Type"
+                  lazy-rules
+                  :rules="[lazyRules.required()]"
+                />
+              </div>
+            </div>
+
+            <div class="row q-mb-sm">
+              <div class="col-12 q-pr-sm q-pl-sm">
                 <q-input
                   :disable="dontEdit"
                   v-model="realForm.sendTo.value"
@@ -167,10 +184,14 @@ import type { QDialog } from 'quasar'
 import { lazyRules, useForm, validations } from 'src/composables'
 import { useShipment } from 'src/modules/dashboard/composables/useShipment'
 import { statesOptions } from 'src/modules/dashboard/data'
+import type { CustomShippingOptionInterface } from 'src/modules/dashboard/interfaces/memberOrder-interfaces'
 import type { BasketToBeShippedInterface } from 'src/modules/dashboard/interfaces/shipment-interfaces'
+import { useDashboardStore } from 'src/modules/dashboard/store/dashboardStore/dashboardStore'
 import { onMounted, ref } from 'vue'
 
 const { UpdateBasketsToBeShipped } = useShipment()
+
+const $dStore = useDashboardStore()
 
 const emit = defineEmits(['onValueUpdated'])
 
@@ -196,6 +217,7 @@ interface FormInterface {
   route: string
   misc: string
 }
+const shipOptionSelected = ref<CustomShippingOptionInterface | undefined>(undefined)
 
 const { realForm, getFormValue, resetForm } = useForm<FormInterface>({
   sendTo: { value: '', validations: [validations.required] },
@@ -223,7 +245,7 @@ const onUpdate = () => {
   const value: any = {
     ...getFormValue(),
     shippingID: $props.basket.shippingID,
-    shippingOptionID: $props.basket.shippingOptionID,
+    shippingOptionID: shipOptionSelected.value?.id || 0,
   }
 
   UpdateBasketsToBeShipped({
@@ -235,15 +257,21 @@ const onUpdate = () => {
     .catch(console.error)
     .finally(() => {
       refD.hide()
+      
     })
 }
 
 onMounted(() => {
   resetForm(
-    { ...$props.basket },
+    {
+      ...$props.basket,
+    },
     {
       omitExtraFields: true,
     },
+  )
+  shipOptionSelected.value = $dStore.$state.customShippingOptions.find(
+    (op) => op.id == $props.basket.shippingOptionID,
   )
 })
 </script>
