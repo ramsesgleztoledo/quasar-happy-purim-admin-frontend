@@ -266,9 +266,7 @@
       </div>
       <q-card-section>
         <TableCustom
-          :tableRowStyleFn="
-            (row: DetailedKeyInterface) => (row.isUpdated ? `color: #a5a0a0` : '')
-          "
+          :tableRowStyleFn="(row: DetailedKeyInterface) => (row.isUpdated ? `color: #a5a0a0` : '')"
           class-name="table-sticky-header-column-table table-cursor-pointer-custom"
           styles="height: 628px"
           :rows="detailRows"
@@ -307,10 +305,19 @@ const $q = useQuasar()
 const pageView = ref('1')
 
 const pageOption = computed(() => [
-  { label: `Pending Updates (${data.value?.tables.updated.rows.length || 0})`, value: '1' },
-  { label: `Pending Addition (${data.value?.tables.added.rows.length || 0})`, value: '2' },
-  { label: `Pending Deletion (${data.value?.tables.deleted.rows.length || 0})`, value: '3' },
-  { label: `Unchanged Members (${data.value?.tables.unchanged.rows.length || 0})`, value: '4' },
+  {
+    label: `Pending Updates (${data.value?.tables.updated.rows.filter((row) => isNotInUnchanged(row.rowKey).value).length || 0})`,
+    value: '1',
+  },
+  {
+    label: `Pending Addition (${pendingAdditionData.value.filter((row) => row.selected).length || 0})`,
+    value: '2',
+  },
+  {
+    label: `Pending Deletion (${data.value?.tables.deleted.rows.filter((row) => isNotInUnchanged(row.rowKey).value).length || 0})`,
+    value: '3',
+  },
+  { label: `Unchanged Members (${unchangedMembersData.value.length || 0})`, value: '4' },
 ])
 
 const columns = computed<QTableColumn[]>(() => {
