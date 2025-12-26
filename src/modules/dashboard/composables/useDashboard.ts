@@ -74,7 +74,7 @@ export const useDashboard = () => {
           ApiCallResponseInterface<boolean>,
           ApiCallResponseInterface<PercentageRunningTotalInterface>,
           ApiCallResponseInterface<CustomShippingOptionInterface[]>,
-          ApiCallResponseInterface<boolean>
+          ApiCallResponseInterface<{ canUpload: false }>
 
         ]
         = await Promise.all([
@@ -102,7 +102,7 @@ export const useDashboard = () => {
 
       $dStore.$patch({
         // canUploadList: canUploadListValue.ok ? false : false,
-        canUploadList: canUploadListValue.ok ? canUploadListValue.data : false,
+        canUploadList: canUploadListValue.ok ? canUploadListValue.data.canUpload : false,
         orderTotalGraph: orderTotalGraph.ok ? orderTotalGraph.data : [],
         membersOrdersGraph: membersOrdersGraph.ok ? membersOrdersGraph.data : [],
         participationInfoGraph: participationInfoGraph.ok ? participationInfoGraph.data : undefined,
@@ -255,6 +255,14 @@ export const useDashboard = () => {
       })
     },
 
+    async updateCanUpload() {
+      const canUploadListValue = (await canUploadList({
+        dontRedirect: true,
+        dontShowToast: true
+      }))
+      $dStore.setCanUploadList(canUploadListValue.ok ? canUploadListValue.data.canUpload : false)
+
+    }
 
   }
 };

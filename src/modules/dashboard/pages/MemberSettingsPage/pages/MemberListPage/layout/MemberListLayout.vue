@@ -451,6 +451,7 @@ import { QBtn, useQuasar } from 'quasar'
 import { useRoute, useRouter } from 'vue-router'
 import { useDashboardStore } from 'src/modules/dashboard/store/dashboardStore/dashboardStore'
 import DialogAlert from 'src/components/DialogAlert/DialogAlert.vue'
+import { useDashboard } from 'src/modules/dashboard/composables/useDashboard'
 
 interface StepResponseInterface {
   success: boolean
@@ -462,6 +463,8 @@ const $route = useRoute()
 const $q = useQuasar()
 
 const $dStore = useDashboardStore()
+
+const { updateCanUpload } = useDashboard()
 
 const { isMobile, goToTop } = useUI()
 const {
@@ -666,7 +669,10 @@ const onContinueAndUpload = async () => {
     dicts,
   }
   const resp = await backupAndUpload(data)
-  if (resp) step.value++
+  if (resp) {
+    step.value++
+    await updateCanUpload()
+  }
 
   $q.loading.hide()
   goToTop({ delay: 500 })
@@ -675,6 +681,7 @@ const onContinueAndUpload = async () => {
 const revertBack = async () => {
   const reps = await revertChanges()
   if (reps) {
+    await updateCanUpload()
     $router.push({
       name: 'DashboardLayout',
     })

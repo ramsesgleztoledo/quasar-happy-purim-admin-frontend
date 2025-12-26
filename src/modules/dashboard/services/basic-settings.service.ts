@@ -120,7 +120,7 @@ export const useBasicSettingsService = () => {
         extraOptions,
       })
     },
-    canUploadList: async (extraOptions?: ExtraOptionsInterface): Promise<ApiCallResponseInterface<boolean>> => {
+    canUploadList: async (extraOptions?: ExtraOptionsInterface): Promise<ApiCallResponseInterface<{ canUpload: false }>> => {
       const nextUrl = `/can-upload-list`;
       const url = `${baseUrl}${nextUrl}`;
       return await apiCall({
