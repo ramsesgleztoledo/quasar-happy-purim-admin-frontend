@@ -178,7 +178,7 @@ import { useDashboardStore } from '../../store/dashboardStore/dashboardStore'
 import { compareValues } from 'src/helpers/compareValues'
 import DialogAlert from 'src/components/DialogAlert/DialogAlert.vue'
 import { useUploadList } from '../../composables/useUploadList'
-import { useDashboard } from '../../composables/useDashboard'
+// import { useDashboard } from '../../composables/useDashboard'
 
 const { isMobile } = useUI()
 const $router = useRouter()
@@ -186,7 +186,7 @@ const $route = useRoute()
 const $dStore = useDashboardStore()
 const { memberState, getMembers_Co } = useMember()
 const { revertChanges } = useUploadList()
-const { updateCanUpload } = useDashboard()
+// const { updateCanUpload } = useDashboard()
 
 const isFullScreen = ref(false)
 const revertDialogFlag = ref(false)
@@ -377,7 +377,8 @@ const filterDebounce = ref<NodeJS.Timeout | undefined>(undefined)
 
 const revertBack = async () => {
   const reps = await revertChanges()
-  if (reps) await updateCanUpload()
+  // if (reps) await updateCanUpload()
+  if (reps) window.location.reload()
 }
 
 watch(
