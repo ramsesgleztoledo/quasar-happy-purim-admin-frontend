@@ -101,8 +101,8 @@ export const useDashboard = () => {
 
 
       $dStore.$patch({
-        canUploadList: canUploadListValue.ok ? false : false,
-        // canUploadList: canUploadListValue.ok ? canUploadListValue.data : false,
+        // canUploadList: canUploadListValue.ok ? false : false,
+        canUploadList: canUploadListValue.ok ? canUploadListValue.data : false,
         orderTotalGraph: orderTotalGraph.ok ? orderTotalGraph.data : [],
         membersOrdersGraph: membersOrdersGraph.ok ? membersOrdersGraph.data : [],
         participationInfoGraph: participationInfoGraph.ok ? participationInfoGraph.data : undefined,
