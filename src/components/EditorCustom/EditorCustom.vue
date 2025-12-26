@@ -288,9 +288,10 @@
             >
               <div class="EditorCustom-img-container" @click="() => onFileSelected(item)">
                 <!-- :style="{ backgroundImage: ` url(${EDITOR_START_IMG_URL}${item})` }" -->
+                <!-- :src="`${EDITOR_START_IMG_URL}${item}`" -->
                 <img
                   style="width: 100%; height: 100%; position: absolute"
-                  :src="`${EDITOR_START_IMG_URL}${item}`"
+                  :src="item"
                   alt="No img"
                 />
               </div>

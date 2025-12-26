@@ -28,6 +28,7 @@
 
   <q-expansion-item
     v-else
+    :disable="disabled"
     :header-class="{ 'dropdown-selected-in-route': isInRoute }"
     v-model="expanded"
     expand-separator
@@ -35,10 +36,11 @@
     :label="title"
     :caption="caption"
   >
+    <q-tooltip v-if="tooltip" anchor="center right" self="center left" :offset="[10, 10]"> {{ tooltip }} hello world there</q-tooltip>
     <q-item
       v-for="(child, i) in children"
       :key="i"
-      :disable="disabled"
+      :disable="child.disabled"
       clickable
       class="user-select-none q-pl-lg"
       @click="navigateTo(child.name, child.force)"
@@ -46,6 +48,7 @@
         'selected-item': isSelected(child.name, child.routeClass).value,
       }"
     >
+     <q-tooltip v-if="child.tooltip" anchor="center right" self="center left" :offset="[10, 10]"> {{ child.tooltip }} hello world there</q-tooltip>
       <q-item-section avatar>
         <q-icon v-if="child.icon" :name="child.icon" />
       </q-item-section>

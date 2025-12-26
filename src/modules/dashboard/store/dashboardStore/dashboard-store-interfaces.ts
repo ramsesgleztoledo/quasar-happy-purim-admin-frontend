@@ -21,5 +21,6 @@ export interface DashboardStateInterface {
   showCreateOrderByCode: boolean;
   categories: ShulCategoryInterface[];
   percentageRunningTotal: PercentageRunningTotalInterface | NoneType;
-  customShippingOptions: CustomShippingOptionInterface[]
+  customShippingOptions: CustomShippingOptionInterface[];
+  canUploadList: boolean;
 }

@@ -22,7 +22,7 @@ export const useDashboard = () => {
   const { getBasketInfo, getBasketSizeBreakdown, getFundraiserStatus, getFundraiserTotals, getMembersOrdersGraph, getMemberSummary, getOrderItems, getOrderTotalGraph, getParticipationInfoGraph, getParticipationRate, getTopTransactions, getTotalsRaised, getPercentageOfRunningTotal } = useDashboardService()
   const { getMembersLogged } = useMemberService()
   const { getShulCategories } = useCategoryService()
-  const { getShowOrderByCode } = useBasicSettingsService()
+  const { getShowOrderByCode, canUploadList } = useBasicSettingsService()
   const { getCustomShippingOptions } = useCustomShippingOptionsService()
 
   return {
@@ -53,7 +53,8 @@ export const useDashboard = () => {
         categories,
         showCreateOrderByCode,
         percentageRunningTotal,
-        customShippingOptions
+        customShippingOptions,
+        canUploadListValue,
       ]:
         [
           ApiCallResponseInterface<OrderGraphInterface[]>,
@@ -72,7 +73,8 @@ export const useDashboard = () => {
           ApiCallResponseInterface<ShulCategoryInterface[]>,
           ApiCallResponseInterface<boolean>,
           ApiCallResponseInterface<PercentageRunningTotalInterface>,
-          ApiCallResponseInterface<CustomShippingOptionInterface[]>
+          ApiCallResponseInterface<CustomShippingOptionInterface[]>,
+          ApiCallResponseInterface<boolean>
 
         ]
         = await Promise.all([
@@ -93,11 +95,14 @@ export const useDashboard = () => {
           getShowOrderByCode(),
           getPercentageOfRunningTotal(),
           getCustomShippingOptions(),
+          canUploadList()
         ])
 
 
 
       $dStore.$patch({
+        canUploadList: canUploadListValue.ok ? false : false,
+        // canUploadList: canUploadListValue.ok ? canUploadListValue.data : false,
         orderTotalGraph: orderTotalGraph.ok ? orderTotalGraph.data : [],
         membersOrdersGraph: membersOrdersGraph.ok ? membersOrdersGraph.data : [],
         participationInfoGraph: participationInfoGraph.ok ? participationInfoGraph.data : undefined,

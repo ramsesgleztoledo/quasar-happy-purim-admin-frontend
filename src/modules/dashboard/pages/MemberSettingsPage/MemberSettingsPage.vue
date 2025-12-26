@@ -56,7 +56,7 @@
       />
       <q-btn
         outline
-        label="UPLOAD MEMBER LIST"
+        label="Manage MEMBER LIST"
         :to="{ name: 'MembersSettingsPage-MemberListLayout' }"
         style="height: 42px"
       />

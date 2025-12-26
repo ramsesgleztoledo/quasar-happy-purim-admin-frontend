@@ -24,6 +24,7 @@ const initialState: DashboardStateInterface = {
   categories: [],
   percentageRunningTotal: undefined,
   customShippingOptions: [],
+  canUploadList: false,
 }
 
 export const useDashboardStore = defineStore('dashBoardStore', {
@@ -66,6 +67,11 @@ export const useDashboardStore = defineStore('dashBoardStore', {
     setParticipationInfoGraph(participationInfoGraph: ParticipationInfoGraphInterface | NoneType) {
       this.participationInfoGraph = participationInfoGraph
     },
+    setCanUploadList(canUploadList: boolean) {
+      this.canUploadList = canUploadList
+    },
+
+
 
   }
 });

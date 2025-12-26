@@ -191,8 +191,9 @@ export const useMember = () => {
 
     const { ok, data } = await getAllMemberInfo(memberId, {
       loading: {
-        message: 'Loading...'
-      }
+        message: 'Loading...',
+      },
+      goBackIn400Error: true
     })
 
 

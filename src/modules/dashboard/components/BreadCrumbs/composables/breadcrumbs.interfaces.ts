@@ -7,6 +7,7 @@ export interface LinksDataInterface {
   children?: LinksDataInterface[];
   disabled?: boolean;
   force?: boolean;
+  tooltip?: string;
 }
 
 

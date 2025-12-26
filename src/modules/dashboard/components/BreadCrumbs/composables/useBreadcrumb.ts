@@ -7,11 +7,13 @@ import { useMemberStore } from "src/modules/dashboard/store/memberStore/memberSt
 import { computed } from "vue";
 import { cutName } from "src/helpers/cutName";
 import { useRoute } from "vue-router";
+import { useDashboardStore } from "src/modules/dashboard/store/dashboardStore/dashboardStore";
 
 export const useBreadcrumb = () => {
 
 
   const $rStore = useReportStore()
+  const $dStore = useDashboardStore()
   const $mStore = useMemberStore()
   const $route = useRoute()
 
@@ -81,7 +83,7 @@ export const useBreadcrumb = () => {
         },
         {
 
-          title: 'Upload Member List',
+          title: 'Manage Member List',
           icon: 'upload',
           name: 'MembersSettingsPage-MemberListLayout',
           force: true,
@@ -474,7 +476,7 @@ export const useBreadcrumb = () => {
       name: 'MembersSettingsPage-AddMemberPage',
     },
     {
-      title: 'Upload Member List',
+      title: 'Manage Member List',
       icon: 'upload',
       name: 'MembersSettingsPage-MemberListLayout',
     },

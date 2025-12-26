@@ -10,6 +10,13 @@ export const loginAccounts: LoginAccountInterface[] = [
     url: 'http://localhost:9000/#/authenticate?token=IIiteGH1xpeGKnVAoyDFxPX2jEwl9IfIJ5ltNUzaFuIC+4JNcdZfigaPWY1MzmNFvdH5OA3vXJXecEdxxRqiRg=='
   },
   {
+    id: 783,
+    name: `Test School`,
+    guid: 'AB958CEA-5BFB-45E3-B3B5-60561B93A598',
+    token: "5DOTr9y2QULoWpQEtGjADR/oAXOzr4RHIrS+kRNtZKATKESAt7/msjfBWBLC7R0tYX1I+rA+d89kU49m6bEP6Q==",
+    url: 'http://localhost:9000/#/authenticate?token=5DOTr9y2QULoWpQEtGjADR/oAXOzr4RHIrS+kRNtZKATKESAt7/msjfBWBLC7R0tYX1I+rA+d89kU49m6bEP6Q=='
+  },
+  {
     id: 334,
     name: `Yeshiva Toras Chaim Toras Emes`,
     guid: '4103410A-7A61-4C42-A7A8-75DE0014F4D9',

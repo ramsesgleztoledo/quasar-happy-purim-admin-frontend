@@ -58,7 +58,7 @@ export const linksData: LinksDataInterface[] = [
       },
       {
 
-        title: 'Upload Member List',
+        title: 'Manage Member List',
         icon: 'upload',
         name: 'MembersSettingsPage-MemberListLayout',
 
@@ -429,7 +429,7 @@ export const routeInfo: routeDataInterface[] = [
     name: 'MembersSettingsPage-AddMemberPage',
   },
   {
-    title: 'Upload Member List',
+    title: 'Manage Member List',
     icon: 'upload',
     name: 'MembersSettingsPage-MemberListLayout',
   },
