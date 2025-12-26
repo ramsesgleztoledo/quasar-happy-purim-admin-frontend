@@ -5,9 +5,9 @@ export interface LinksDataInterface {
   icon?: string;
   caption?: string;
   children?: LinksDataInterface[];
-  disabled?: boolean;
+  disabled?:  boolean 
   force?: boolean;
-  tooltip?: string;
+  tooltip?: string | undefined;
 }
 
 

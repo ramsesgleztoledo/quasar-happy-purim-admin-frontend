@@ -2,7 +2,7 @@
   <div v-if="!!dashboardState.membersLogged">
     <div class="row q-mb-md">
       <div class="col-12 top-title-col">
-        <p class="page-main-title">Processed Transactions ({{ transactions.count }})</p>
+        <p class="page-main-title">Processed Transactions ({{ transactions?.count || 0 }})</p>
         <div class="separator-right q-mr-sm q-ml-sm"></div>
       </div>
     </div>
@@ -124,9 +124,10 @@ const columns: QTableColumn<TransactionInterface>[] = [
     label: 'Charge Amount',
     align: 'left',
     field: 'charge',
-    format: (amount: number) => `$${convertWithCommas(amount,{
-              dontAllowZero: true
-            })}`,
+    format: (amount: number) =>
+      `$${convertWithCommas(amount, {
+        dontAllowZero: true,
+      })}`,
     sortable: true,
   },
   {
@@ -155,7 +156,7 @@ const transactions = ref<TransactionsInterface>({
 })
 
 const rows = computed(() =>
-  transactions.value.transactions.filter((item) =>
+  (transactions.value.transactions || []).filter((item) =>
     JSON.stringify(item).toLowerCase().includes(searchText.value.toLowerCase()),
   ),
 )

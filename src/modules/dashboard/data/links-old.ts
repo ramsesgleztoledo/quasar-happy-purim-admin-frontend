@@ -7,17 +7,18 @@ export interface LinksDataInterface {
   icon?: string;
   caption?: string;
   children?: LinksDataInterface[];
-  disabled?: boolean;
+  disabled?:  boolean;
+  tooltip?: string | undefined
 }
 
 const linksDataDev: LinksDataInterface[] = [];
 
 if (process.env.NODE_ENV === 'development')
-linksDataDev.push({
-  title: 'go to Accounts (dev)',
-  icon: 'person',
-  name: 'accountPage',
-})
+  linksDataDev.push({
+    title: 'go to Accounts (dev)',
+    icon: 'person',
+    name: 'accountPage',
+  })
 
 
 export const linksData: LinksDataInterface[] = [
@@ -58,7 +59,7 @@ export const linksData: LinksDataInterface[] = [
       },
       {
 
-        title: 'Manage Member List',
+        title: 'Upload Member List',
         icon: 'upload',
         name: 'MembersSettingsPage-MemberListLayout',
 
@@ -429,7 +430,7 @@ export const routeInfo: routeDataInterface[] = [
     name: 'MembersSettingsPage-AddMemberPage',
   },
   {
-    title: 'Manage Member List',
+    title: 'Upload Member List',
     icon: 'upload',
     name: 'MembersSettingsPage-MemberListLayout',
   },

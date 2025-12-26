@@ -55,11 +55,25 @@
         style="height: 42px"
       />
       <q-btn
+        v-if="!$dStore.$state.canUploadList"
+        class="q-mr-sm"
         outline
-        label="Manage MEMBER LIST"
+        label="Revert Member List"
+        style="height: 42px"
+        @click="revertDialogFlag = true"
+      />
+
+      <q-btn
+        :disable="!$dStore.$state.canUploadList"
+        outline
+        label="Upload Member List"
         :to="{ name: 'MembersSettingsPage-MemberListLayout' }"
         style="height: 42px"
-      />
+      >
+        <q-tooltip v-if="!$dStore.$state.canUploadList">
+          Upload disabled: A list has already been uploaded or an order has already been placed.
+        </q-tooltip>
+      </q-btn>
     </div>
   </div>
   <div class="">
@@ -137,6 +151,18 @@
       </div>
     </div>
   </div>
+  <!--=============================== reverting  =============================-->
+  <DialogAlert
+    @on-finish="
+      (value) => {
+        if (value) revertBack()
+      }
+    "
+    msg="Are you sure you want go back to your previous list."
+    v-model="revertDialogFlag"
+  />
+
+  <!--=========================== END OF SECTION ===========================-->
 </template>
 
 <script setup lang="ts">
@@ -150,14 +176,20 @@ import { useMember } from '../../composables/useMember'
 import type { ShulCategoryInterface } from '../../interfaces/category-interfaces'
 import { useDashboardStore } from '../../store/dashboardStore/dashboardStore'
 import { compareValues } from 'src/helpers/compareValues'
+import DialogAlert from 'src/components/DialogAlert/DialogAlert.vue'
+import { useUploadList } from '../../composables/useUploadList'
+import { useDashboard } from '../../composables/useDashboard'
 
 const { isMobile } = useUI()
 const $router = useRouter()
 const $route = useRoute()
 const $dStore = useDashboardStore()
 const { memberState, getMembers_Co } = useMember()
+const { revertChanges } = useUploadList()
+const { updateCanUpload } = useDashboard()
 
 const isFullScreen = ref(false)
+const revertDialogFlag = ref(false)
 
 const pagination = ref<QTableProps['pagination']>({
   rowsPerPage: 20,
@@ -342,6 +374,11 @@ const loadPage = () => {
 }
 
 const filterDebounce = ref<NodeJS.Timeout | undefined>(undefined)
+
+const revertBack = async () => {
+  const reps = await revertChanges()
+  if (reps) await updateCanUpload()
+}
 
 watch(
   filters,

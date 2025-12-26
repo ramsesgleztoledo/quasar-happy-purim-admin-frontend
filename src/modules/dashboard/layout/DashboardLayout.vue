@@ -37,7 +37,7 @@
         <!-- style="margin-bottom: 60px" -->
         <q-item-label v-if="!isMobile" header style="margin-bottom: 20px"> </q-item-label>
 
-        <EssentialLink v-for="link in linksList" :key="link.title" v-bind="link" />
+        <EssentialLink v-for="link in linksData" :key="link.title" v-bind="link" />
       </q-list>
     </q-drawer>
     <div
@@ -88,7 +88,6 @@ import { useUIStore } from 'src/modules/UI/store/ui-store'
 import { useRouter } from 'vue-router'
 import { useDashboard } from '../composables/useDashboard'
 import { useAuth } from 'src/modules/auth/composables/useAuth'
-import type { LinksDataInterface } from '../data/links-old'
 import { useBreadcrumb } from '../components/BreadCrumbs/composables/useBreadcrumb'
 import { useAuthStore } from 'src/modules/auth/store/auth.store'
 
@@ -103,7 +102,6 @@ const { loadStartedData, getMemberSummary } = useDashboard()
 const isLoading = ref(true)
 
 let getMembersSummaryInterval: NodeJS.Timeout | null = null
-const linksList: LinksDataInterface[] = linksData
 
 onMounted(() => {
   loadData().catch(console.error)

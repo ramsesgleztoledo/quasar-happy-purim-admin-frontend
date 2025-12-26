@@ -4,7 +4,7 @@
 import { useReportStore } from "src/modules/dashboard/store/ReportStore/reportStore";
 import type { LinksDataInterface, routeDataInterface, routeParamInterface } from "./breadcrumbs.interfaces";
 import { useMemberStore } from "src/modules/dashboard/store/memberStore/memberStore";
-import { computed } from "vue";
+import { computed, ref } from "vue";
 import { cutName } from "src/helpers/cutName";
 import { useRoute } from "vue-router";
 import { useDashboardStore } from "src/modules/dashboard/store/dashboardStore/dashboardStore";
@@ -31,7 +31,7 @@ export const useBreadcrumb = () => {
     })
 
 
-  const linksData: LinksDataInterface[] = [
+  const linksData = computed<LinksDataInterface[]>(() => [
 
     {
       title: 'Dashboard',
@@ -83,10 +83,12 @@ export const useBreadcrumb = () => {
         },
         {
 
-          title: 'Manage Member List',
+          title: 'Upload Member List',
           icon: 'upload',
           name: 'MembersSettingsPage-MemberListLayout',
           force: true,
+          disabled: !$dStore.$state.canUploadList,
+          tooltip: !$dStore.$state.canUploadList ? `Upload disabled: A list has already been uploaded or an order has already been placed.` : undefined
         },
       ],
 
@@ -189,9 +191,9 @@ export const useBreadcrumb = () => {
       // routeClass: ['dashboard-EmailStatsPage', 'EmailStatsPage-Email'],
     },
     ...linksDataDev
-  ]
+  ])
 
-  const routeInfo: routeDataInterface[] = [
+  const routeInfo = computed<routeDataInterface[]>(() => [
     {
       title: 'Home',
       icon: 'home',
@@ -476,7 +478,7 @@ export const useBreadcrumb = () => {
       name: 'MembersSettingsPage-AddMemberPage',
     },
     {
-      title: 'Manage Member List',
+      title: 'Upload Member List',
       icon: 'upload',
       name: 'MembersSettingsPage-MemberListLayout',
     },
@@ -486,7 +488,7 @@ export const useBreadcrumb = () => {
       name: 'dashboard-UserManagement',
     },
 
-  ]
+  ])
 
   return {
     linksData,

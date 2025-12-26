@@ -10,6 +10,9 @@
       'dropdown-selected-in-route': isInRoute,
     }"
   >
+    <q-tooltip v-if="tooltip" anchor="center right" self="center left" :offset="[10, 10]">
+      <div v-html="tooltip" />
+    </q-tooltip>
     <q-item-section avatar>
       <q-icon v-if="icon" :name="icon" />
     </q-item-section>
@@ -36,7 +39,9 @@
     :label="title"
     :caption="caption"
   >
-    <q-tooltip v-if="tooltip" anchor="center right" self="center left" :offset="[10, 10]"> {{ tooltip }} hello world there</q-tooltip>
+    <q-tooltip v-if="tooltip" anchor="center right" self="center left" :offset="[10, 10]">
+      <div v-html="tooltip" />
+    </q-tooltip>
     <q-item
       v-for="(child, i) in children"
       :key="i"
@@ -48,7 +53,9 @@
         'selected-item': isSelected(child.name, child.routeClass).value,
       }"
     >
-     <q-tooltip v-if="child.tooltip" anchor="center right" self="center left" :offset="[10, 10]"> {{ child.tooltip }} hello world there</q-tooltip>
+      <q-tooltip v-if="child.tooltip" anchor="center right" self="center left" :offset="[10, 10]">
+        <div v-html="child.tooltip" />
+      </q-tooltip>
       <q-item-section avatar>
         <q-icon v-if="child.icon" :name="child.icon" />
       </q-item-section>

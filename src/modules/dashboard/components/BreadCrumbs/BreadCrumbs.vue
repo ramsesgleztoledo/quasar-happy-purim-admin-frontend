@@ -37,7 +37,7 @@ const breadCrumbRoutes = computed<BreadCrumbRoutesInterface[]>(() => {
   const breadCrumbRoutes: BreadCrumbRoutesInterface[] = []
 
   for (let i = 0; i < matchedRoutes.length; i++) {
-    const found = routeInfo.find((mr) => mr.name === matchedRoutes[i]!.name)
+    const found = routeInfo.value.find((mr) => mr.name === matchedRoutes[i]!.name)
     if (!found || !!found.dontShow) continue
     const params = getParams(found.params)
 
