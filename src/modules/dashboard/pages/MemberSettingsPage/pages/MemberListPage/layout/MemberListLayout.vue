@@ -664,7 +664,16 @@ const isCheckOldValueDisabled = (item: MatchedFieldInterface) =>
   })
 
 onMounted(async () => {
-  if (!$dStore.$state.canUploadList) return $router.push({ name: 'dashboard-DashboardPage' })
+  await updateCanUpload()
+  if (!$dStore.$state.canUploadList) {
+    $q.notify({
+      color: 'blue',
+      textColor: 'black',
+      icon: 'error',
+      message: `Upload disabled: A list has already been uploaded or an order has already been placed.`,
+    })
+    return $router.push({ name: 'dashboard-DashboardPage' })
+  }
 
   const resp = await Promise.all([getFieldOptions(), getDestinationKeys()])
   fieldOptions.value = resp[0]
