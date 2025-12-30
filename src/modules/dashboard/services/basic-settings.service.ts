@@ -1,6 +1,6 @@
 import { useApiCall } from "src/services/apiCall";
 import type { ApiCallResponseInterface, ExtraOptionsInterface } from "src/services/api-interfaces";
-import type { FundraiserCoordinatorFormInterface, GiftBasketProgramFormInterface, OrganizationInformationFormInterface, OrganizationSettingsInterface } from "../interfaces/basic-settings.interfaces";
+import type { FundraiserCoordinatorFormInterface, GiftBasketProgramFormInterface, OrganizationInformationFormInterface, OrganizationSettingsInterface, UploadListStatusInterface } from "../interfaces/basic-settings.interfaces";
 import { AxiosHeaders } from "axios";
 
 
@@ -120,8 +120,8 @@ export const useBasicSettingsService = () => {
         extraOptions,
       })
     },
-    canUploadList: async (extraOptions?: ExtraOptionsInterface): Promise<ApiCallResponseInterface<{ canUpload: false }>> => {
-      const nextUrl = `/can-upload-list`;
+    canUploadList: async (extraOptions?: ExtraOptionsInterface): Promise<ApiCallResponseInterface<UploadListStatusInterface>> => {
+      const nextUrl = `/upload-list-status`;
       const url = `${baseUrl}${nextUrl}`;
       return await apiCall({
         url,

@@ -3,6 +3,7 @@ import { defineStore, acceptHMRUpdate } from 'pinia';
 import type { DashboardStateInterface } from './dashboard-store-interfaces';
 import type { FundraiserStatusInterface, FundraiserTotalsInterface, MembersOrdersGraphInterface, MemberSummaryInterface, OrderGraphInterface, ParticipationInfoGraphInterface, ParticipationRateInterface, PercentageRunningTotalInterface, TopTransactionsInterface } from 'src/modules/dashboard/interfaces/dashboard-interfaces';
 import type { NoneType } from '../../services/service-interfaces';
+import type { UploadListStatusInterface } from '../../interfaces/basic-settings.interfaces';
 
 
 
@@ -24,7 +25,10 @@ const initialState: DashboardStateInterface = {
   categories: [],
   percentageRunningTotal: undefined,
   customShippingOptions: [],
-  canUploadList: false,
+  canUploadList: {
+    canRevert: false,
+    canUpload: false
+  },
 }
 
 export const useDashboardStore = defineStore('dashBoardStore', {
@@ -67,7 +71,7 @@ export const useDashboardStore = defineStore('dashBoardStore', {
     setParticipationInfoGraph(participationInfoGraph: ParticipationInfoGraphInterface | NoneType) {
       this.participationInfoGraph = participationInfoGraph
     },
-    setCanUploadList(canUploadList: boolean) {
+    setCanUploadList(canUploadList: UploadListStatusInterface) {
       this.canUploadList = canUploadList
     },
 

@@ -265,14 +265,45 @@
         </div>
       </div>
       <q-card-section>
-        <TableCustom
-          :tableRowStyleFn="(row: DetailedKeyInterface) => (row.isUpdated ? `color: #a5a0a0` : '')"
-          class-name="table-sticky-header-column-table table-cursor-pointer-custom"
-          styles="height: 628px"
+        <q-table
+          :style="{ height: '628px' }"
+          class="table-sticky-header-column-table"
+          flat
+          bordered
+          row-key="fieldName"
           :rows="detailRows"
           :columns="detailColumns"
-          row-key="fieldName"
-        />
+          styles="height: 360px"
+          :pagination="{
+            rowsPerPage: 0,
+          }"
+        >
+          <template v-slot:header="props">
+            <q-tr :props="props">
+              <q-th v-for="col in props.cols" :key="`${col.name}`" :props="props">
+                {{ col.label }}
+              </q-th>
+            </q-tr>
+          </template>
+          <template v-slot:body="props">
+            <q-tr :props="props">
+              <q-td v-for="col in props.cols" :key="`${col.name}_${props.row.id}`">
+                <div
+                  v-if="
+                    (col.name == 'oldValue' || col.name == 'newValue') &&
+                    props.row['newValue'] == props.row['oldValue']
+                  "
+                  style="color: #a5a0a0"
+                >
+                  {{ props.row[col.name] }}
+                </div>
+                <div v-else>
+                  {{ props.row[col.name] }}
+                </div>
+              </q-td>
+            </q-tr>
+          </template>
+        </q-table>
       </q-card-section>
       <q-card-actions class="custom-dialog-footer-container" align="right">
         <q-btn
@@ -287,7 +318,6 @@
 
 <script setup lang="ts">
 import { useQuasar, type QTableColumn } from 'quasar'
-import TableCustom from 'src/components/TableCustom/TableCustom.vue'
 import { useUploadList } from 'src/modules/dashboard/composables/useUploadList'
 import type {
   DataSummaryResponseInterface,

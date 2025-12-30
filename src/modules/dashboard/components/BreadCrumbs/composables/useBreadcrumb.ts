@@ -87,8 +87,8 @@ export const useBreadcrumb = () => {
           icon: 'upload',
           name: 'MembersSettingsPage-MemberListLayout',
           force: true,
-          disabled: !$dStore.$state.canUploadList,
-          tooltip: !$dStore.$state.canUploadList ? `Upload disabled: A list has already been uploaded or an order has already been placed.` : undefined
+          disabled: !$dStore.$state.canUploadList.canUpload,
+          tooltip: !$dStore.$state.canUploadList.canUpload ? `Upload disabled: A list has already been uploaded or an order has already been placed.` : undefined
         },
       ],
 

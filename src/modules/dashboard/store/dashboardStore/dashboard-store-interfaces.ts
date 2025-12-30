@@ -3,6 +3,7 @@ import type { NoneType } from '../../services/service-interfaces';
 import type { MembersLoggedInterface } from '../../interfaces/member-interfaces';
 import type { ShulCategoryInterface } from '../../interfaces/category-interfaces';
 import type { CustomShippingOptionInterface } from '../../interfaces/memberOrder-interfaces';
+import type { UploadListStatusInterface } from '../../interfaces/basic-settings.interfaces';
 
 export interface DashboardStateInterface {
   orderTotalGraph: OrderGraphInterface[];
@@ -22,5 +23,5 @@ export interface DashboardStateInterface {
   categories: ShulCategoryInterface[];
   percentageRunningTotal: PercentageRunningTotalInterface | NoneType;
   customShippingOptions: CustomShippingOptionInterface[];
-  canUploadList:  boolean ;
+  canUploadList: UploadListStatusInterface;
 }

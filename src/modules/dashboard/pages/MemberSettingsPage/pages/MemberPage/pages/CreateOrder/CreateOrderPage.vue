@@ -85,15 +85,15 @@
               label="NEXT"
               @click="onNext"
             />
-            <q-btn
-              :disable="
+            <!-- :disable="
                 !orderTotal && !$moStore.totalFromBackend && !$moStore.getCartData.totalPriceMembers
-              "
+              " -->
+            <q-btn
               v-if="step === 1"
               class="q-mr-sm"
               style="background: var(--happypurim); color: white"
               label="CONTINUE"
-              @click="continueToPayment"
+              @click="continueToExtraOptions"
             />
             <q-btn
               :disable="
@@ -170,8 +170,14 @@ const $moStore = useMemberOrderStore()
 const requiredMembership = computed(() => $moStore.membership?.showMembership || false)
 const { isMobile, goToTop, showLoading, stopLoading } = useUI()
 const { memberState } = useMember()
-const { getInitialData, updateCart, setUpdatedPromotions, orderTotal, placeOrder } =
-  useMemberOrder()
+const {
+  getInitialData,
+  updateCart,
+  setUpdatedPromotions,
+  orderTotal,
+  placeOrder,
+  addMemberShipToCart,
+} = useMemberOrder()
 const { setBackendTotal } = useCalculate()
 
 const cancelOrderDialogFlag = ref(false)
@@ -228,12 +234,14 @@ const continueToPayment = () => {
 
 const goBack = () => {
   step.value--
-  if (
-    (step.value === 2 && !$moStore.hasExtraOptions) ||
-    (step.value === 1 && !requiredMembership.value)
-  )
-    step.value--
+  if (step.value === 2 && !$moStore.hasExtraOptions) step.value--
+  if (step.value === 1 && !requiredMembership.value) step.value--
   goToTop({ delay: 300 })
+}
+
+const continueToExtraOptions = async () => {
+  await addMemberShipToCart()
+  step.value++
 }
 </script>
 

@@ -1,7 +1,7 @@
 <template>
   <div class="row RowStyle-container" style="height: 100%">
     <div
-      v-if="row.iSentLastYear"
+      v-if="row.iSentLastYear && row.reciprocal !== 'Yes'"
       class="col-12 RowStyle-col"
       style="background-color: #9acd32"
     ></div>

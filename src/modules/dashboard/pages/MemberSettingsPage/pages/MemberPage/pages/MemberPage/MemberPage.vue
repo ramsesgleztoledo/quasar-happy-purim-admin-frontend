@@ -396,22 +396,24 @@
                 v-model="realForm.zip.value"
                 outlined
                 label="Zip Code"
-                mask="#####"
+                class="regular-number-input"
+                type="number"
                 lazy-rules
-                :rules="[lazyRules.maxCharacters(5), lazyRules.minCharacters(5)]"
+                :rules="[]"
               />
             </div>
           </div>
 
-          <div class="row">
+          <div class="row q-mt-md">
             <div class="col-6 q-pl-sm q-pr-sm">
               <q-input
                 v-model="realForm.phone.value"
                 outlined
                 label="Primary Telephone"
-                mask="(###) - ### - ####"
+                class="regular-number-input"
+                type="number"
                 lazy-rules
-                :rules="[lazyRules.minNumberDigitOnly(10, 'Wrong phone number format')]"
+                :rules="[]"
               />
             </div>
             <div class="col-6 q-pl-sm q-pr-sm">
@@ -419,13 +421,14 @@
                 v-model="realForm.phone2.value"
                 outlined
                 label="Optional 2nd Telephone"
-                mask="(###) - ### - ####"
+                class="regular-number-input"
+                type="number"
                 lazy-rules
-                :rules="[lazyRules.minNumberDigitOnly(10, 'Wrong phone number format')]"
+                :rules="[]"
               />
             </div>
           </div>
-          <div class="row">
+          <div class="row q-mt-md">
             <div class="col-6 q-pl-sm q-pr-sm">
               <q-input
                 v-model="realForm.email.value"
@@ -617,7 +620,8 @@
                         v-model="altAddressForm.zip.value"
                         outlined
                         label="Zip Code"
-                        mask="#####"
+                        class="regular-number-input"
+                        type="number"
                       />
                     </div>
                   </div>

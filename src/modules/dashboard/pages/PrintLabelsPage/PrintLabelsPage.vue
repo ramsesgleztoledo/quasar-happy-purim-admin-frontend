@@ -8,12 +8,9 @@
       </div>
     </div>
 
-    <div class="row q-mb-sm" v-for="(item, index) in labels" :key="item.id">
+    <div class="row q-mb-sm" v-for="item in labels" :key="item.id">
       <div class="col-12">
         <q-item class="PrintLabelsPage-item">
-          <q-item-section avatar>
-            <b> {{ index + 1 }} </b>
-          </q-item-section>
           <q-item-section
             ><q-item-label>{{ item.name }} </q-item-label>
             <q-item-label caption> {{ item.description }} </q-item-label></q-item-section

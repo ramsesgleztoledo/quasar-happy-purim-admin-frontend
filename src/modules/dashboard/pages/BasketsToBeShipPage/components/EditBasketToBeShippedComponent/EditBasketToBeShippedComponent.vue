@@ -91,7 +91,8 @@
                   v-model="realForm.zip.value"
                   outlined
                   label="Zip Code"
-                  mask="#####"
+                  class="regular-number-input"
+                  type="number"
                   lazy-rules
                   :rules="[lazyRules.required()]"
                 />
@@ -102,7 +103,8 @@
                   v-model="realForm.phone.value"
                   outlined
                   label="Phone"
-                  mask="(###) - ### - ####"
+                  class="regular-number-input"
+                  type="number"
                   lazy-rules
                   :rules="[]"
                 />
@@ -257,7 +259,6 @@ const onUpdate = () => {
     .catch(console.error)
     .finally(() => {
       refD.hide()
-      
     })
 }
 

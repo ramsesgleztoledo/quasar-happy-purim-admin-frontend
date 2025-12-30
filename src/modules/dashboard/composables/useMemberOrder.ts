@@ -226,6 +226,8 @@ export const useMemberOrder = () => {
         showFee,
         membership: resp[17].data
       })
+      if (!resp[17].data.membershipRequired)
+        $moStore.setMembershipType('none')
     },
     addOrRemoveItem,
 
@@ -448,6 +450,31 @@ export const useMemberOrder = () => {
         $moStore.setCustomShippingItems($moStore.customShippingItems.filter(item => item.shippingItemId !== data.shippingItemId))
 
     },
+
+    async addMemberShipToCart() {
+      const item: MemberOrderItemsInterface = {
+        description: 'Membership',
+        itemId: -120,
+        message: 'Membership',
+        quantity: 1,
+        sessionId: tokenSession.value,
+        shipTo: '',
+        price: $moStore.$state.membership?.annualPrice || 0
+      }
+
+      if ($moStore.$state.membershipType == 'life')
+        item.price = $moStore.$state.membership?.lifePrice || 0
+
+      const memberShipItem = $moStore.$state.orderItems.find(item => item.itemId == -120)
+
+      if (memberShipItem)
+        await addOrRemoveItem(false, item)
+
+      if ($moStore.$state.membershipType != 'none')
+        await addOrRemoveItem(true, item)
+
+    },
+
     async placeOrder() {
       if ($moStore.IsPaymentFormInvalid) return
 

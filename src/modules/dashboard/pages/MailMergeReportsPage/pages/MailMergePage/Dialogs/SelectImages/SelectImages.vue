@@ -15,11 +15,7 @@
         <div class="row">
           <div
             v-show="isReady"
-            :class="{
-              'col-4': !isMobile,
-              'col-12': isMobile,
-            }"
-            class="col-4 q-pa-md img-col-container"
+            class="col-6 col-sm-4 col-md-3 col-lg-3 q-pa-md img-col-container"
             v-for="img in $rStore.$state.images"
             :key="img"
           >

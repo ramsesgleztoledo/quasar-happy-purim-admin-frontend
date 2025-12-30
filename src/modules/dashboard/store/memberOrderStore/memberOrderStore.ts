@@ -54,6 +54,7 @@ const initialState: MemberOrderStateInterface = {
   showEmailReceiptTo: true,
   step: 0,
   membership: undefined,
+  membershipType: 'annual'
 }
 
 export const useMemberOrderStore = defineStore('memberOrderStore', {
@@ -163,6 +164,9 @@ export const useMemberOrderStore = defineStore('memberOrderStore', {
     },
     setSettings(settings: OrganizationSettingsInterface | NoneType) {
       this.settings = settings
+    },
+    setMembershipType(membershipType: 'life' | 'annual' | 'none') {
+      this.membershipType = membershipType
     },
 
   }

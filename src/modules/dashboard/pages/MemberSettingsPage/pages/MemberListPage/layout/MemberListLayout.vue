@@ -254,11 +254,16 @@
                 <div class="row q-mt-md">
                   <div class="col-12 justify-content-end">
                     <q-btn
+                      :disable="!$dStore.$state.canUploadList.canRevert"
                       @click="revertDialogFlag = true"
                       color="primary"
                       icon="history"
                       label="Revert Changes"
                     />
+                    <q-tooltip v-if="!$dStore.$state.canUploadList.canRevert">
+                      Revert changes disabled.
+                      <b> Please contact the Happy Purim support if you need any help. </b>
+                    </q-tooltip>
                   </div>
                 </div>
               </div>
@@ -665,7 +670,7 @@ const isCheckOldValueDisabled = (item: MatchedFieldInterface) =>
 
 onMounted(async () => {
   await updateCanUpload()
-  if (!$dStore.$state.canUploadList) {
+  if (!$dStore.$state.canUploadList.canUpload) {
     $q.notify({
       color: 'blue',
       textColor: 'black',

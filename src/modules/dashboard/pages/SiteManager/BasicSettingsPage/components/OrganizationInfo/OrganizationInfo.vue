@@ -53,9 +53,10 @@
         v-model="realForm.zip.value"
         outlined
         label="Zip Code *"
-        mask="#####"
+        class="regular-number-input"
+        type="number"
         lazy-rules
-        :rules="[lazyRules.required(), lazyRules.maxCharacters(5), lazyRules.minCharacters(5)]"
+        :rules="[lazyRules.required(), lazyRules.minCharacters(5)]"
       />
     </div>
     <div
@@ -107,7 +108,7 @@ const { realForm, isValidForm, resetForm, getFormValue } = useForm({
   state: { value: '', validations: [validations.required] },
   zip: {
     value: '',
-    validations: [validations.required, validations.minCharacters(5), validations.maxCharacters(5)],
+    validations: [validations.required, validations.minCharacters(5)],
   },
 })
 onMounted(() => {

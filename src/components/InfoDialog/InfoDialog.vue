@@ -7,7 +7,16 @@
         </div>
       </div>
 
-      <q-card-section class="q-pt-none" style="padding: 12px; min-height: 300px">
+      <q-card-section
+        class="q-pt-none"
+        style="padding: 12px"
+        :style="{
+          minWidth: minWidth ? minWidth : '',
+          minHeight: minHeight ? minHeight : '',
+          maxWidth: maxWidth ? maxWidth : '',
+          maxHeight: maxHeight ? maxHeight : '',
+        }"
+      >
         <div
           class="row custom-dialog-body-container"
           :style="{
@@ -42,6 +51,10 @@ interface DialogAlertPropsInterface {
   htmlContainerClasses?: string
   btnLabel?: string
   styleCard?: string
+  minWidth?: string
+  minHeight?: string
+  maxWidth?: string
+  maxHeight?: string
 }
 
 const $props = withDefaults(defineProps<DialogAlertPropsInterface>(), {

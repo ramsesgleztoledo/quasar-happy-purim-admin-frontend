@@ -80,12 +80,10 @@
         v-model="realForm.contactPhone.value"
         outlined
         label="Contact Phone *"
-        mask="(###) - ### - ####"
+        class="regular-number-input"
+        type="number"
         lazy-rules
-        :rules="[
-          lazyRules.required(),
-          lazyRules.minNumberDigitOnly(10, 'Wrong phone number format'),
-        ]"
+        :rules="[lazyRules.required()]"
       />
     </div>
   </div>
@@ -124,7 +122,7 @@ const { realForm, isValidForm, resetForm, getFormValue } = useForm({
 
   contactPhone: {
     value: '',
-    validations: [validations.required, validations.minNumberDigitOnly(10)],
+    validations: [validations.required],
   },
 })
 

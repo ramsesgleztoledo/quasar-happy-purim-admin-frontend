@@ -51,7 +51,8 @@
           v-model="realForm.zip.value"
           outlined
           label="Zip Code *"
-          mask="#####"
+          class="regular-number-input"
+          type="number"
           lazy-rules
           :rules="[lazyRules.required()]"
         />
@@ -63,12 +64,10 @@
           v-model="realForm.phoneNumber.value"
           outlined
           label="Phone *"
-          mask="(###) - ### - ####"
+          class="regular-number-input"
+          type="number"
           lazy-rules
-          :rules="[
-            lazyRules.required(),
-            lazyRules.minNumberDigitOnly(10, 'Wrong phone number format'),
-          ]"
+          :rules="[lazyRules.required()]"
         />
       </div>
       <div class="col-6 q-pl-sm q-pr-sm">

@@ -12,6 +12,7 @@ import type { ShulCategoryInterface } from "../interfaces/category-interfaces";
 import { useBasicSettingsService } from "../services/basic-settings.service";
 import { useCustomShippingOptionsService } from "../services/customShippingOptions.service";
 import type { CustomShippingOptionInterface } from "../interfaces/memberOrder-interfaces";
+import type { UploadListStatusInterface } from "../interfaces/basic-settings.interfaces";
 
 export const useDashboard = () => {
 
@@ -74,7 +75,7 @@ export const useDashboard = () => {
           ApiCallResponseInterface<boolean>,
           ApiCallResponseInterface<PercentageRunningTotalInterface>,
           ApiCallResponseInterface<CustomShippingOptionInterface[]>,
-          ApiCallResponseInterface<{ canUpload: false }>
+          ApiCallResponseInterface<UploadListStatusInterface>
 
         ]
         = await Promise.all([
@@ -95,14 +96,20 @@ export const useDashboard = () => {
           getShowOrderByCode(),
           getPercentageOfRunningTotal(),
           getCustomShippingOptions(),
-          canUploadList()
+          canUploadList({
+            dontRedirect: true,
+            dontShowToast: true,
+          })
         ])
 
 
 
       $dStore.$patch({
         // canUploadList: canUploadListValue.ok ? false : false,
-        canUploadList: canUploadListValue.ok ? canUploadListValue.data.canUpload : false,
+        canUploadList: canUploadListValue.ok ? canUploadListValue.data : {
+          canRevert: false,
+          canUpload: false
+        },
         orderTotalGraph: orderTotalGraph.ok ? orderTotalGraph.data : [],
         membersOrdersGraph: membersOrdersGraph.ok ? membersOrdersGraph.data : [],
         participationInfoGraph: participationInfoGraph.ok ? participationInfoGraph.data : undefined,
@@ -260,7 +267,10 @@ export const useDashboard = () => {
         dontRedirect: true,
         dontShowToast: true
       }))
-      $dStore.setCanUploadList(canUploadListValue.ok ? canUploadListValue.data.canUpload : false)
+      $dStore.setCanUploadList(canUploadListValue.ok ? canUploadListValue.data : {
+        canRevert: false,
+        canUpload: false
+      })
 
     }
 

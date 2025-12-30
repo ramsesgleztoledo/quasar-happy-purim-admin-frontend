@@ -103,7 +103,7 @@
           <q-checkbox
             v-if="
               !$moStore.$state.orgSettings?.feeRequired &&
-              data.fees.fee + data.fees.perTransactionFee
+              data.fees.fee + data.fees.perTransactionFee !== 0
             "
             style="margin-left: -10px"
             v-model="$moStore.showFee"

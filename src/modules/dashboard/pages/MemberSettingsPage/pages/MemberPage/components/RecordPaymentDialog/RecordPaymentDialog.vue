@@ -37,7 +37,7 @@
                     <div class="row q-mt-lg q-mb-sm">
                       <div class="col-12 q-pr-sm q-pl-sm">
                         <q-input
-                          v-model="(checkForm.number as FormField).value as string"
+                          v-model="checkForm.number.value"
                           outlined
                           label="Check Number"
                           lazy-rules
@@ -71,7 +71,7 @@
 
                         <!-- <q-input
                     type="date"
-                    v-model="(checkForm.date as FormField).value as string"
+                    v-model="checkForm.date.value"
                     outlined
                     label="Check Date"
                     lazy-rules
@@ -81,7 +81,7 @@
                       <div class="col-6 q-pr-sm q-pl-sm">
                         <q-input
                           type="number"
-                          v-model="(checkForm.amount as FormField).value as string"
+                          v-model="checkForm.amount.value"
                           outlined
                           label="Check Amount"
                           lazy-rules
@@ -99,7 +99,7 @@
                     <div class="row q-mb-sm">
                       <div class="col-12 q-pr-sm q-pl-sm">
                         <q-input
-                          v-model="(checkForm.memo as FormField).value as string"
+                          v-model="checkForm.memo.value"
                           outlined
                           label="memo"
                           lazy-rules
@@ -112,7 +112,7 @@
                     <div class="row q-mt-lg q-mb-sm">
                       <div class="col-12 q-pr-sm q-pl-sm">
                         <q-input
-                          v-model="(creditForm.holder as FormField).value as string"
+                          v-model="creditForm.holder.value"
                           outlined
                           label="Card Holder"
                           lazy-rules
@@ -123,7 +123,7 @@
                     <div class="row q-mb-sm">
                       <div class="col-6 q-pr-sm q-pl-sm">
                         <!-- <q-input
-                          v-model="(creditForm.date as FormField).value as string"
+                          v-model="creditForm.date.value"
                           outlined
                           label="Expiration Date"
                           lazy-rules
@@ -136,7 +136,7 @@
                           hint="mm/yyyy"
                         /> -->
                         <q-input
-                          v-model="(creditForm.date as FormField).value as string"
+                          v-model="creditForm.date.value"
                           outlined
                           mask="##/####"
                           hint="mm/yyyy"
@@ -158,7 +158,7 @@
                                   default-view="Years"
                                   minimal
                                   :options="() => false"
-                                  v-model="(creditForm.date as FormField).value as string"
+                                  v-model="creditForm.date.value"
                                 >
                                   <div class="row items-center justify-end">
                                     <q-btn v-close-popup label="Close" color="primary" flat />
@@ -171,7 +171,7 @@
                       </div>
                       <div class="col-6 q-pr-sm q-pl-sm">
                         <q-input
-                          v-model="(creditForm.code as FormField).value as string"
+                          v-model="creditForm.code.value"
                           outlined
                           label="Code"
                           lazy-rules
@@ -187,7 +187,7 @@
                     <div class="row q-mb-sm">
                       <div class="col-12 q-pr-sm q-pl-sm">
                         <q-input
-                          v-model="(creditForm.number as FormField).value as string"
+                          v-model="creditForm.number.value"
                           outlined
                           label="Card Number"
                           lazy-rules
@@ -206,7 +206,7 @@
                     <div class="row q-mb-sm">
                       <div class="col-6 q-pr-sm q-pl-sm">
                         <q-input
-                          v-model="(creditForm.address as FormField).value as string"
+                          v-model="creditForm.address.value"
                           outlined
                           label="Address"
                           lazy-rules
@@ -215,7 +215,7 @@
                       </div>
                       <div class="col-6 q-pr-sm q-pl-sm">
                         <q-input
-                          v-model="(creditForm.city as FormField).value as string"
+                          v-model="creditForm.city.value"
                           outlined
                           label="City"
                           lazy-rules
@@ -227,7 +227,7 @@
                       <div class="col-6 q-pr-sm q-pl-sm">
                         <q-select
                           popup-content-class="q-menu-300"
-                          v-model="(creditForm.state as FormField).value as string"
+                          v-model="creditForm.state.value"
                           outlined
                           :options="statesOptions"
                           label="State"
@@ -237,10 +237,11 @@
                       </div>
                       <div class="col-6 q-pr-sm q-pl-sm">
                         <q-input
-                          v-model="(creditForm.zipCode as FormField).value as string"
+                          v-model="creditForm.zipCode.value"
                           outlined
                           label="Zip Code"
-                          mask="#####"
+                          class="regular-number-input"
+                          type="number"
                           lazy-rules
                           :rules="[lazyRules.required()]"
                         />
@@ -249,10 +250,11 @@
                     <div class="row q-mt-md">
                       <div class="col-6 q-pl-sm q-pr-sm">
                         <q-input
-                          v-model="(creditForm.phone as FormField).value as string"
+                          v-model="creditForm.phone.value"
                           outlined
                           label="Primary Telephone"
-                          mask="(###) - ### - ####"
+                          class="regular-number-input"
+                          type="number"
                           lazy-rules
                           :rules="[lazyRules.required()]"
                         />
@@ -263,7 +265,7 @@
                     <div class="row q-mt-lg q-mb-sm">
                       <div class="col-6 q-pr-sm q-pl-sm">
                         <q-input
-                          v-model="(otherForm.date as FormField).value as string"
+                          v-model="otherForm.date.value"
                           outlined
                           mask="date"
                           lazy-rules
@@ -274,10 +276,7 @@
                           <template v-slot:append>
                             <q-icon name="event" class="cursor-pointer">
                               <q-popup-proxy cover transition-show="scale" transition-hide="scale">
-                                <q-date
-                                  emit-immediately
-                                  v-model="(otherForm.date as FormField).value as string"
-                                >
+                                <q-date emit-immediately v-model="otherForm.date.value">
                                   <div class="row items-center justify-end">
                                     <q-btn v-close-popup label="Close" color="primary" flat />
                                   </div>
@@ -289,7 +288,7 @@
 
                         <!-- <q-input
                     type="date"
-                    v-model="(checkForm.date as FormField).value as string"
+                    v-model="checkForm.date.value"
                     outlined
                     label="Check Date"
                     lazy-rules
@@ -299,7 +298,7 @@
                       <div class="col-6 q-pr-sm q-pl-sm">
                         <q-input
                           type="number"
-                          v-model="(otherForm.amount as FormField).value as string"
+                          v-model="otherForm.amount.value"
                           outlined
                           label="Amount"
                           lazy-rules
@@ -317,7 +316,7 @@
                     <div class="row q-mb-sm">
                       <div class="col-12 q-pr-sm q-pl-sm">
                         <q-input
-                          v-model="(otherForm.memo as FormField).value as string"
+                          v-model="otherForm.memo.value"
                           outlined
                           label="memo"
                           lazy-rules
@@ -467,7 +466,6 @@
 
 <script setup lang="ts">
 import type { QTableColumn } from 'quasar'
-import type { FormField } from 'src/composables'
 import { lazyRules, useForm, validations } from 'src/composables'
 import { convertToUSDate, convertWithCommas } from 'src/helpers'
 import { useMember } from 'src/modules/dashboard/composables/useMember'
@@ -755,14 +753,14 @@ const getAmountByTab = () => {
   let amount = '0.00'
   switch (tab) {
     case 0:
-      amount = ((checkForm.value.amount as FormField).value as string) || '0.00'
+      amount = checkForm.value.amount.value || '0.00'
       break
     case 1:
       amount = 'inf'
       break
 
     default:
-      amount = ((otherForm.value.amount as FormField).value as string) || '0.00'
+      amount = otherForm.value.amount.value || '0.00'
       break
   }
 
@@ -817,8 +815,8 @@ const isValidForm = () => {
   switch (type) {
     case 0: {
       if (!isValidFormCheck()) return false
-      const amount: FormField = checkForm.value['amount'] as FormField
-      const value: string = amount.value as string
+      const amount = checkForm.value['amount']
+      const value = amount.value
       if (sel.sum > Number(value)) return false
       break
     }
@@ -828,8 +826,8 @@ const isValidForm = () => {
     }
     default: {
       if (!isValidFormOther()) return false
-      const amount: FormField = otherForm.value['amount'] as FormField
-      const value: string = amount.value as string
+      const amount = otherForm.value['amount']
+      const value = amount.value
       if (sel.sum > Number(value)) return false
       break
     }

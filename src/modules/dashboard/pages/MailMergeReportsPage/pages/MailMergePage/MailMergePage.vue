@@ -705,6 +705,10 @@
 
   <InfoDialog title="Notice!" :innerHTML="readMoreEmails" v-model="readMoreDialogFlag" />
   <!--=========================== END OF SECTION ===========================-->
+  <!--=============================== read more text =============================-->
+
+  <InfoDialog title="Notice!" :innerHTML="mailMergeAlertText" v-model="mailMergeAlertDialogFlag" />
+  <!--=========================== END OF SECTION ===========================-->
 
   <!--=========================== END OF SECTION ===========================-->
 </template>
@@ -834,7 +838,17 @@ const preview = ref(false)
 const isFullScreen = ref(false)
 const cancelDialogFlag = ref(false)
 const readMoreDialogFlag = ref(false)
-
+const mailMergeAlertDialogFlag = ref(true)
+const mailMergeAlertText = ref(
+  `<p style="font-size: 18px">
+  If you are using an older draft, you must reselect the merge fields. Old merge fields (such as
+<b style="color: blue">
+[*First Name*]
+</b>
+  ) will not merge and must be updated to the new <b style="color: blue">
+{{First Name}}
+</b> format.</p>`,
+)
 const pageView = ref('1')
 const pageOption = computed(() => [
   { label: 'Compose Merge', value: '1', disable: false },

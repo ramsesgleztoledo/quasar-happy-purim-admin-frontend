@@ -55,7 +55,7 @@
         style="height: 42px"
       />
       <q-btn
-        v-if="!$dStore.$state.canUploadList"
+        v-if="$dStore.$state.canUploadList.canRevert"
         class="q-mr-sm"
         outline
         label="Revert Member List"
@@ -64,13 +64,13 @@
       />
 
       <q-btn
-        :disable="!$dStore.$state.canUploadList"
+        :disable="!$dStore.$state.canUploadList.canUpload"
         outline
         label="Upload Member List"
         :to="{ name: 'MembersSettingsPage-MemberListLayout' }"
         style="height: 42px"
       >
-        <q-tooltip v-if="!$dStore.$state.canUploadList">
+        <q-tooltip v-if="!$dStore.$state.canUploadList.canUpload">
           Upload disabled: A list has already been uploaded or an order has already been placed.
         </q-tooltip>
       </q-btn>

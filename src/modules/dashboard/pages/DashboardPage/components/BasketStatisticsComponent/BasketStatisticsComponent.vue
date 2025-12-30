@@ -3,7 +3,7 @@
 
   <div v-if="dataArray.length" class="row" style="height: 200px">
     <div class="col-6" style="height: 100%">
-      <PieChart deluxe-chart :char-data="[...dataArray]" />
+      <PieChart deluxe-chart :char-data="dataArray" />
     </div>
     <div class="col-6">
       <div class="BasketStatisticsComponent-chart-labels-container">
@@ -44,7 +44,7 @@
 import { useDashboardStore } from 'src/modules/dashboard/store/dashboardStore/dashboardStore'
 import PieChart from '../../../../components/ChartJs/PieChart/PieChart.vue'
 import DisplayItem from '../../../../components/DisplayItem/DisplayItem.vue'
-import { computed } from 'vue'
+import { computed, ref } from 'vue'
 import { generateRandomColor } from 'src/helpers'
 import type { ItemBasketInterface } from 'src/modules/dashboard/interfaces/item-interfaces'
 import { backendRoutes } from 'src/modules/dashboard/data/backend-routes-redirection'
@@ -55,13 +55,26 @@ interface DataArrayInterface {
   color: string
 }
 
+const firstArrayColors = [
+  '#d23939',
+  '#3cd856',
+  '#3c93e0',
+  '#f08615',
+  '#9611ae',
+  '#879706',
+  '#0cd1c0',
+  '#ef9adb',
+  '#84e099',
+  '#000000',
+]
+
 const $dStore = useDashboardStore()
 
-const dataArray = computed<DataArrayInterface[]>(() =>
-  $dStore.basketSizeBreakdown.map((item) => ({
+const dataArray = ref<DataArrayInterface[]>(
+  $dStore.basketSizeBreakdown.map((item, index) => ({
     label: item.basketSize,
     quantity: item.total,
-    color: generateRandomColor(),
+    color: index < firstArrayColors.length ? firstArrayColors[index]! : generateRandomColor(),
   })),
 )
 const baskets = computed<ItemBasketInterface[]>(() =>

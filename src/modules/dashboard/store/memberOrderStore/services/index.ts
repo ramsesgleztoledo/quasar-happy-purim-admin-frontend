@@ -163,8 +163,11 @@ export const s_cartData = (state: MemberOrderStateInterface) => {
 
 
   let fee = 0
-  if (fees.active && fees.required)
+  if (fees.active)
     fee = totalAux * fees.creditCardFee / 100
+
+
+
 
 
   const total = totalAux + fee + fees.perTransactionFee

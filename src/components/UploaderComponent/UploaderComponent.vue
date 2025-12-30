@@ -45,7 +45,7 @@
               <q-icon name="check" color="green" />
             </q-item-section>
             <q-item-section>
-              <q-item-label>{{ file.name }}</q-item-label>
+              <q-item-label>{{ cutName(file.name, 28) }}</q-item-label>
               <q-item-label caption>{{ formatSize(file.size) }}</q-item-label>
             </q-item-section>
             <q-item-section side>
@@ -61,6 +61,7 @@
 <script setup lang="ts">
 import type { QRejectedEntry } from 'quasar'
 import { QFile, useQuasar } from 'quasar'
+import { cutName } from 'src/helpers/cutName'
 import { ref, watch } from 'vue'
 
 const fileInput = ref<QFile | undefined>(undefined)

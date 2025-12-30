@@ -101,7 +101,7 @@
                 :key="item.methodId"
                 width="40px"
                 height="40px"
-                :src="`public/img/cards/${cardImg(item).value}.svg`"
+                :src="`/img/cards/${cardImg(item).value}.svg`"
                 alt="no img"
               />
             </div>
@@ -167,7 +167,8 @@
             v-model="paymentForm.realForm.value.billZip.value"
             outlined
             label="Zip Code *"
-            mask="#####"
+            class="regular-number-input"
+            type="number"
             lazy-rules
             :rules="[lazyRules.required(), lazyRules.minCharacters(5)]"
           />
@@ -178,12 +179,10 @@
             v-model="paymentForm.realForm.value.phoneOrCheckDate.value"
             outlined
             label="Primary Telephone *"
-            mask="(###) - ### - ####"
+            class="regular-number-input"
+            type="number"
             lazy-rules
-            :rules="[
-              lazyRules.required(),
-              lazyRules.minNumberDigitOnly(10, 'Wrong phone number format'),
-            ]"
+            :rules="[lazyRules.required()]"
           />
         </div>
       </div>
@@ -260,7 +259,7 @@ const paymentForm = useForm({
   billZip: { value: '', validations: [validations.required, validations.minCharacters(5)] },
   phoneOrCheckDate: {
     value: '',
-    validations: [validations.required, validations.minNumberDigitOnly(10)],
+    validations: [validations.required],
   },
 })
 

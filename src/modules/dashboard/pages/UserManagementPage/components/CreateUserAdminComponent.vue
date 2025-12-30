@@ -137,12 +137,10 @@
                   v-model="realForm.phone.value"
                   outlined
                   label="Phone *"
-                  mask="(###) - ### - ####"
+                  class="regular-number-input"
+                  type="number"
                   lazy-rules
-                  :rules="[
-                    lazyRules.required(),
-                    lazyRules.minCharacters(17, 'Invalid phone number'),
-                  ]"
+                  :rules="[lazyRules.required()]"
                 />
               </div>
             </div>
@@ -195,7 +193,8 @@
                   v-model="realForm.zip.value"
                   outlined
                   label="Zip Code"
-                  mask="#####"
+                  class="regular-number-input"
+                  type="number"
                   lazy-rules
                   :rules="[]"
                 />
@@ -356,7 +355,7 @@ const { realForm, isValidForm, getFormValue, resetForm } = useForm({
   lastName: { value: '', required: true },
   login: { value: '', required: true },
   email: { value: '', validations: [validations.required, validations.isEmail] },
-  phone: { value: '', validations: [validations.required, validations.minNumberDigitOnly(10)] },
+  phone: { value: '', validations: [validations.required] },
   address1: { value: '' },
   city: { value: '' },
   state: { value: '' },

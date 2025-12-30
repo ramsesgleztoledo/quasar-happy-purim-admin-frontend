@@ -88,6 +88,13 @@ export const loginAccounts: LoginAccountInterface[] = [
     url: 'http://localhost:9000/#/authenticate?token=71iSSNJHcwDIr2OwkmrQ5Jw5iw3ze85xZnQLdHkJANrzkK1dvmXbiTEDpbxxIzK79asSxVvfqaDRRtUtZfZzaQ=='
   },
   {
+    id: 353,
+    name: 'AMIT - Havtacha',
+    guid: 'B2445634-4A95-4FFE-AA25-AFBE514FD898',
+    token: "bIW6G+gdFmA1bq92kbuxVlxkj4bidx3g+PxqK+l1XklWZNzS44xhwTsh2zuLW0Y/EoqeJRZud+2gpK2zEFYoEg==",
+    url: 'http://localhost:9000/#/authenticate?token=bIW6G+gdFmA1bq92kbuxVlxkj4bidx3g+PxqK+l1XklWZNzS44xhwTsh2zuLW0Y/EoqeJRZud+2gpK2zEFYoEg=='
+  },
+  {
     id: 16,
     name: 'Young Israel of Hollywood',
     guid: '41450B0B-2A8C-49D7-A83C-F7CB5D86712B',
@@ -261,5 +268,12 @@ export const loginAccounts: LoginAccountInterface[] = [
     guid: 'E4E6D638-D909-4611-A435-5E283F0E65D6',
     token: "7cfQ1uW8sX444N3dDLfLOOZ38UyjFM45XHKkzC61SqdJcEmXzDY1TZFHz6+Xd57xv1o5N/uujzaXtxzreJT5Ng==",
     url: 'http://localhost:9000/#/authenticate?token=7cfQ1uW8sX444N3dDLfLOOZ38UyjFM45XHKkzC61SqdJcEmXzDY1TZFHz6+Xd57xv1o5N/uujzaXtxzreJT5Ng=='
+  },
+  {
+    id: 469,
+    name: 'Congregation Beth Israel of Bellingham',
+    guid: '0492d264-e946-42fb-bb65-500e69df4bd8',
+    token: "R15VNK7Ky6eLijRoen7/J2swZDwfEQ+or4BOLCzF/CKWjewDasEGeJensNtGPXXWnclUGYt0tlh9bAIPM7twgg==",
+    url: 'http://localhost:9000/#/authenticate?token=R15VNK7Ky6eLijRoen7/J2swZDwfEQ+or4BOLCzF/CKWjewDasEGeJensNtGPXXWnclUGYt0tlh9bAIPM7twgg=='
   },
 ]

@@ -51,3 +51,9 @@ export interface GiftBasketProgramFormInterface {
   selectAllByDefault:     boolean;
   displayLastYearsOrders: boolean;
 }
+
+
+export interface UploadListStatusInterface {
+  canUpload: boolean;
+  canRevert: boolean;
+}

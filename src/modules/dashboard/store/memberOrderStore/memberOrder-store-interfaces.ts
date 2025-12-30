@@ -44,4 +44,5 @@ export interface MemberOrderStateInterface {
   showEmailReceiptTo: boolean;
   step: 0 | 1 | 2 | 3;
   membership: MembershipInterface | NoneType;
+  membershipType: 'life' | 'annual' | 'none';
 }

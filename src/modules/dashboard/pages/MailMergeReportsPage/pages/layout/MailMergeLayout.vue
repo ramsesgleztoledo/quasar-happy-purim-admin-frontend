@@ -18,6 +18,7 @@ const $route = useRoute()
 
 const isReady = ref(false)
 
+
 const filter = {
   basketSize: [],
   categories: [],
