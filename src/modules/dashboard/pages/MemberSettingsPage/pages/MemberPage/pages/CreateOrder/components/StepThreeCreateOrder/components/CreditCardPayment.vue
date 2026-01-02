@@ -168,7 +168,7 @@
             outlined
             label="Zip Code *"
             class="regular-number-input"
-            type="number"
+            
             lazy-rules
             :rules="[lazyRules.required(), lazyRules.minCharacters(5)]"
           />
@@ -180,7 +180,7 @@
             outlined
             label="Primary Telephone *"
             class="regular-number-input"
-            type="number"
+            
             lazy-rules
             :rules="[lazyRules.required()]"
           />

@@ -1,0 +1,73 @@
+.last-year-p {
+  text-align: left;
+  color: #777777;
+  font-size: 17px;
+  margin-top: 15px;
+  margin-bottom: 0;
+}
+.last-year-p strong {
+  font-size: 24px;
+  color: #004eff;
+}
+.l-y-sub {
+  text-align: left;
+  font-size: 15px;
+  font-weight: 600;
+  color: #989898;
+}
+.r-wrap {
+  padding: 1em;
+  border: 1px solid red;
+  margin-bottom: 3em;
+}
+
+.review,
+.review-1 {
+  font-weight: 600;
+  display: block;
+  font-size: 13px;
+}
+.review {
+  color: red;
+  font-size: 15px;
+}
+.review-1 {
+  color: #989898;
+}
+
+.person-card-item {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+
+.card-price-container {
+  height: 100%;
+  display: flex;
+  align-items: flex-end;
+  justify-content: flex-end;
+}
+
+.card-person-container {
+  height: 48px;
+  border: solid 1px #e2e2e2;
+}
+
+.checkbox-member-container {
+  overflow: hidden;
+  flex: 1;
+}
+
+.row-member-container {
+  width: 100%;
+  display: flex;
+}
+
+.b-member-container {
+  display: inline-block;
+  width: calc(100% - 40px);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}

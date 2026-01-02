@@ -117,13 +117,13 @@ export const s_cartData = (state: MemberOrderStateInterface) => {
 
   let totalPriceMembers = 0
 
-
   if (!state.settings?.hasCustomPricing) {
     const memberSel = getMembersSelectedHelper(state)
     const totalMembers = memberSel.reduce((pre) =>
       pre + (state.shulSetting?.sPerperson || 0)
       , 0)
     totalPriceMembers = totalMembers
+
   }
 
   if (state.shulSetting?.sMaximum && totalPriceMembers > state.shulSetting?.sMaximum)

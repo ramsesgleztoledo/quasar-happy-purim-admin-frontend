@@ -306,6 +306,15 @@ hr {
   border: solid 1px #e2e2e2;
   border-radius: 10px;
 }
+.q-item-bordered-dotted {
+  border: 1px dotted #e2e2e2;
+  border-radius: 10px;
+}
+
+.q-item-bordered-dashed {
+  border: 1px dashed #e2e2e2;
+  border-radius: 10px;
+}
 
 .custom-dialog-header-container {
   box-shadow: 0px 0px 10px 0px black !important;

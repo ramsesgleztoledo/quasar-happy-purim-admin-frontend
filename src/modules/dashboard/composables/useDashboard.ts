@@ -23,7 +23,7 @@ export const useDashboard = () => {
   const { getBasketInfo, getBasketSizeBreakdown, getFundraiserStatus, getFundraiserTotals, getMembersOrdersGraph, getMemberSummary, getOrderItems, getOrderTotalGraph, getParticipationInfoGraph, getParticipationRate, getTopTransactions, getTotalsRaised, getPercentageOfRunningTotal } = useDashboardService()
   const { getMembersLogged } = useMemberService()
   const { getShulCategories } = useCategoryService()
-  const { getShowOrderByCode, canUploadList } = useBasicSettingsService()
+  const { getShowOrderByCode, canUploadList, showGreetingsPage } = useBasicSettingsService()
   const { getCustomShippingOptions } = useCustomShippingOptionsService()
 
   return {
@@ -56,6 +56,7 @@ export const useDashboard = () => {
         percentageRunningTotal,
         customShippingOptions,
         canUploadListValue,
+        showGreetingsPageValue
       ]:
         [
           ApiCallResponseInterface<OrderGraphInterface[]>,
@@ -75,7 +76,8 @@ export const useDashboard = () => {
           ApiCallResponseInterface<boolean>,
           ApiCallResponseInterface<PercentageRunningTotalInterface>,
           ApiCallResponseInterface<CustomShippingOptionInterface[]>,
-          ApiCallResponseInterface<UploadListStatusInterface>
+          ApiCallResponseInterface<UploadListStatusInterface>,
+          ApiCallResponseInterface<boolean>
 
         ]
         = await Promise.all([
@@ -99,7 +101,8 @@ export const useDashboard = () => {
           canUploadList({
             dontRedirect: true,
             dontShowToast: true,
-          })
+          }),
+          showGreetingsPage()
         ])
 
 
@@ -126,7 +129,8 @@ export const useDashboard = () => {
         categories: categories.ok ? categories.data : [],
         showCreateOrderByCode: showCreateOrderByCode.ok ? !!showCreateOrderByCode.data : false,
         percentageRunningTotal: percentageRunningTotal.ok ? percentageRunningTotal.data : undefined,
-        customShippingOptions: customShippingOptions.ok ? customShippingOptions.data : []
+        customShippingOptions: customShippingOptions.ok ? customShippingOptions.data : [],
+        showGreetingsPage: showGreetingsPageValue.ok ? showGreetingsPageValue.data : false
       })
 
       $q.loading.hide()

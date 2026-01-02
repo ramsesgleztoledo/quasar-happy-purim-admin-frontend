@@ -3,7 +3,7 @@
 
 import type { OrderItemSettingsInterface, Tab2AddonInterface } from "../../interfaces/advanced-settings.interfaces";
 import type { OrganizationSettingsInterface } from "../../interfaces/basic-settings.interfaces";
-import type { AdditionalOrderOptionInterface, CustomShippingItemInterface, CustomShippingOptionInterface, DiscountInterface, LocalDeliveryInterface, MemberAdditionalCharityOptionsInterface, MemberCharityOptionInterface, MemberOrderItemsInterface, MemberOrderOrgSettingInterface, OrderMemberListInterface, OrderPromotionInterface, PaymentMethodTypeInterface, ShulSettingInterface } from "../../interfaces/memberOrder-interfaces";
+import type { AdditionalOrderOptionInterface, CustomShippingItemInterface, CustomShippingOptionInterface, DiscountInterface, GreetingsRecipientInterface, LocalDeliveryInterface, MemberAdditionalCharityOptionsInterface, MemberCharityOptionInterface, MemberOrderItemsInterface, MemberOrderOrgSettingInterface, OrderMemberListInterface, OrderPromotionInterface, PageStepInterface, PaymentMethodTypeInterface, ShulSettingInterface } from "../../interfaces/memberOrder-interfaces";
 import type { MembershipInterface } from "../../interfaces/membership.interface";
 import type { NoneType } from "../../services/service-interfaces";
 
@@ -45,4 +45,6 @@ export interface MemberOrderStateInterface {
   step: 0 | 1 | 2 | 3;
   membership: MembershipInterface | NoneType;
   membershipType: 'life' | 'annual' | 'none';
+  orderPages: PageStepInterface[];
+  greetingsRecipients: GreetingsRecipientInterface[]
 }

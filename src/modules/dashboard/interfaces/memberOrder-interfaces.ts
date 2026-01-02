@@ -413,3 +413,27 @@ export interface LocalDeliveryInterface {
   enabled: boolean;
   zipCode: string;
 }
+
+
+//pages to show in the steps
+export interface PageStepInterface {
+  btnText: string;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  disabled: (...args: any[]) => boolean;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  method: (...args: any[]) => void;
+  page: string;
+  pageId: number;
+}
+
+
+
+export interface GreetingsRecipientInterface {
+  rowId: number;
+  recipientId: number;
+  recipientName: string;
+  greeting: string;
+}
+
+
+export type UpdateGreetingsRecipientType = Pick<GreetingsRecipientInterface, 'rowId' | 'greeting'>;

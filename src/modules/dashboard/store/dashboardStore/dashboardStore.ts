@@ -29,6 +29,7 @@ const initialState: DashboardStateInterface = {
     canRevert: false,
     canUpload: false
   },
+  showGreetingsPage: false,
 }
 
 export const useDashboardStore = defineStore('dashBoardStore', {
@@ -74,7 +75,9 @@ export const useDashboardStore = defineStore('dashBoardStore', {
     setCanUploadList(canUploadList: UploadListStatusInterface) {
       this.canUploadList = canUploadList
     },
-
+    setShowGreetingsPage(showGreetingsPage: boolean) {
+      this.showGreetingsPage = showGreetingsPage
+    },
 
 
   }

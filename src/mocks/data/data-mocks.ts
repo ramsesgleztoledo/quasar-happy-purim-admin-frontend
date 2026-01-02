@@ -276,4 +276,18 @@ export const loginAccounts: LoginAccountInterface[] = [
     token: "R15VNK7Ky6eLijRoen7/J2swZDwfEQ+or4BOLCzF/CKWjewDasEGeJensNtGPXXWnclUGYt0tlh9bAIPM7twgg==",
     url: 'http://localhost:9000/#/authenticate?token=R15VNK7Ky6eLijRoen7/J2swZDwfEQ+or4BOLCzF/CKWjewDasEGeJensNtGPXXWnclUGYt0tlh9bAIPM7twgg=='
   },
+  {
+    id: 600,
+    name: 'Har Shalom Sisterhood',
+    guid: 'A85CF7CE-20D2-4B3F-9054-063C178CF041',
+    token: "7Ncinx/xjKry1+R6EaG4rN7U4ZtefPooCFwbfP6EF8nXytcMFblNQJmlMXEIalCCTzQY6bwstMCeZxCOdtfnug==",
+    url: 'http://localhost:9000/#/authenticate?token=7Ncinx/xjKry1+R6EaG4rN7U4ZtefPooCFwbfP6EF8nXytcMFblNQJmlMXEIalCCTzQY6bwstMCeZxCOdtfnug=='
+  },
+  {
+    id: 571,
+    name: 'Talmudical Academy',
+    guid: '027CC232-5518-482D-AAF3-CE4C34104562',
+    token: "o3giiVX+76RJLFaCQYf1tmgCFctb0cs8grF29RZiHn8RzusQhtdkcXf3rYO/RFam9h0z8Q9NDg/kOB8HhAdLCA==",
+    url: 'http://localhost:9000/#/authenticate?token=o3giiVX+76RJLFaCQYf1tmgCFctb0cs8grF29RZiHn8RzusQhtdkcXf3rYO/RFam9h0z8Q9NDg/kOB8HhAdLCA=='
+  },
 ]

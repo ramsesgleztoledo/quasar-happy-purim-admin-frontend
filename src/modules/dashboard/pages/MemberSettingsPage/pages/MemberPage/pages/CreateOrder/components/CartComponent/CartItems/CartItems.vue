@@ -367,7 +367,7 @@
                 <div class="CartItems-text">{{ membersSelected.length }}</div>
               </div>
               <div class="col-5">
-                <div class="CartItems-text">Mishloach Manot to Members</div>
+                <div class="CartItems-text">Mishloach Manot to Members </div>
               </div>
               <div class="col-3">
                 <div class="CartItems-text">

@@ -52,7 +52,7 @@
           outlined
           label="Zip Code *"
           class="regular-number-input"
-          type="number"
+          
           lazy-rules
           :rules="[lazyRules.required()]"
         />
@@ -65,7 +65,7 @@
           outlined
           label="Phone *"
           class="regular-number-input"
-          type="number"
+          
           lazy-rules
           :rules="[lazyRules.required()]"
         />

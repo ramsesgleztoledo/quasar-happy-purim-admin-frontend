@@ -4,7 +4,7 @@ import { useMemberOrderStore } from "../store/memberOrderStore/memberOrderStore"
 import { usePromotionService } from "../services/promotion.service";
 import { useMemberListService } from "../services/memberList.service";
 import { useOrderItemService } from "../services/orderItems.service";
-import type { CharityType, CustomShippingItemFormInterface, CustomShippingItemResponseInterface, CustomShippingOptionAttributeType, MemberCreateOrderFormInterface, MemberOrderItemsInterface, OrderMemberListInterface, OrderPromotionInterface, PaymentFormInterface, UpdateShippingItemFormInterface } from "../interfaces/memberOrder-interfaces";
+import type { CharityType, CustomShippingItemFormInterface, CustomShippingItemResponseInterface, CustomShippingOptionAttributeType, MemberCreateOrderFormInterface, MemberOrderItemsInterface, OrderMemberListInterface, OrderPromotionInterface, PaymentFormInterface, UpdateGreetingsRecipientType, UpdateShippingItemFormInterface } from "../interfaces/memberOrder-interfaces";
 import { useQuasar } from "quasar";
 import { useAuth } from "src/modules/auth/composables/useAuth";
 import { useMember } from "./useMember";
@@ -29,6 +29,7 @@ import { useBasicSettingsService } from "../services/basic-settings.service";
 import { useDashboardService } from "../services/dashboard.service";
 import { useDashboardStore } from "../store/dashboardStore/dashboardStore";
 import { useMemberShipService } from "../services/MemberShip.service";
+import { useGreetingsService } from "../services/Greetings.service";
 
 
 
@@ -64,6 +65,7 @@ export const useMemberOrder = () => {
   const { getSettings } = useBasicSettingsService()
   const { getTopTransactions } = useDashboardService()
   const { getPayMembershipByMemberId } = useMemberShipService()
+  const { getRecipientsByMemberId, deleteRecipientsByMemberId, updateRecipientsByMemberId } = useGreetingsService()
 
 
   const mGuid = computed(() => memberState.value.selectedMember?.memberGuid || '')
@@ -177,7 +179,7 @@ export const useMemberOrder = () => {
         getShulSettings(mGuid.value),
         getLocalDelivery(),
         getSettings(),
-        getPayMembershipByMemberId(memberId.value)
+        getPayMembershipByMemberId(memberId.value),
       ])
 
       if (resp.find(resp => !resp.ok)) return
@@ -196,6 +198,8 @@ export const useMemberOrder = () => {
       ) || []
 
       const showFee = !!resp[3].data[0]?.feeActive && !!resp[3].data[0]?.feeRequired
+
+
 
       $moStore.$patch({
         memberList: {
@@ -224,7 +228,8 @@ export const useMemberOrder = () => {
         localDeliveries: resp[15].data,
         settings: resp[16].data,
         showFee,
-        membership: resp[17].data
+        membership: resp[17].data,
+
       })
       if (!resp[17].data.membershipRequired)
         $moStore.setMembershipType('none')
@@ -474,6 +479,38 @@ export const useMemberOrder = () => {
         await addOrRemoveItem(true, item)
 
     },
+
+
+    async getGreetingsRecipientsByMemberId() {
+      const resp = await getRecipientsByMemberId(memberId.value, {
+        loading: {
+          message: 'Loading...'
+        }
+      })
+      $moStore.setGreetingsRecipients(resp.ok ? resp.data : [])
+    },
+    async deleteGreetingsRecipientsByMemberId(rowId: number | string) {
+      const resp = await deleteRecipientsByMemberId(memberId.value, rowId, {
+        loading: {
+          message: 'Loading...'
+        }
+      })
+      if (resp.ok)
+        $moStore.$state.greetingsRecipients = $moStore.$state.greetingsRecipients.filter(rec => rec.rowId != rowId)
+    },
+    async updateGreetingsRecipientsByMemberId() {
+      const updates: UpdateGreetingsRecipientType[] = $moStore.$state.greetingsRecipients.map(rec => ({
+        greeting: rec.greeting,
+        rowId: rec.rowId
+      }))
+      await updateRecipientsByMemberId(memberId.value, updates, {
+        loading: {
+          message: 'Loading...'
+        }
+      })
+
+    },
+
 
     async placeOrder() {
       if ($moStore.IsPaymentFormInvalid) return

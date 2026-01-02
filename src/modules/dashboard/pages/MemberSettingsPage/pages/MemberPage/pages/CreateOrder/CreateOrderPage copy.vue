@@ -28,25 +28,12 @@
         </div>
       </div>
       <div class="CreateOrderPage-middle">
-        <div class="row" style="min-height: 70vh">
+        <div class="row">
           <div class="col-12">
-            <div
-              v-show="
-                currentPage?.pageId != undefined &&
-                currentPage?.pageId >= 0 &&
-                currentPage?.pageId <= 2
-              "
-            >
-              <div v-show="currentPage?.pageId === 0"><OrderHistoryStep /></div>
-              <div v-show="currentPage?.pageId === 1">
-                <!-- <StepOneCreateOrder v-show="currentPage?.pageId === 1" ref="stepOneCreateOrderRef" /> -->
-                <StepOneCreateOrder ref="stepOneCreateOrderRef" />
-              </div>
-              <div v-if="currentPage?.pageId === 2">
-                <ShowGreetingsStep />
-              </div>
+            <div v-show="step === 0">
+              <StepOneCreateOrder ref="stepOneCreateOrderRef" />
             </div>
-            <div v-show="currentPage?.pageId != undefined && currentPage?.pageId > 2">
+            <div v-show="step > 0">
               <div class="row q-mt-sm">
                 <div
                   :class="{
@@ -55,15 +42,9 @@
                   }"
                   class="CreateOrderPage-left-container q-pa-sm"
                 >
-                  <div v-show="currentPage?.pageId === 3">
-                    <MembershipStep />
-                  </div>
-                  <div v-show="currentPage?.pageId === 4">
-                    <StepTwoCreateOrder />
-                  </div>
-                  <div v-show="currentPage?.pageId === 5">
-                    <StepThreeCreateOrder />
-                  </div>
+                  <MembershipStep v-show="step === 1" />
+                  <StepTwoCreateOrder v-show="step === 2" />
+                  <StepThreeCreateOrder v-show="step === 3" />
                 </div>
                 <div
                   class="CreateOrderPage-right-container q-pa-sm"
@@ -97,18 +78,17 @@
             />
             <q-btn class="q-mr-sm" label="SAVE FOR LATER" @click="saveForLater" />
             <q-btn v-if="step > 0" class="q-mr-sm" label="BACK" @click="goBack()" />
-
             <q-btn
-              :disable="currentPage?.disabled()"
+              v-if="step === 0"
               class="q-mr-sm"
               style="background: var(--happypurim); color: white"
-              :label="currentPage?.btnText"
-              @click="currentPage?.method"
+              label="NEXT"
+              @click="onNext"
             />
             <!-- :disable="
                 !orderTotal && !$moStore.totalFromBackend && !$moStore.getCartData.totalPriceMembers
               " -->
-            <!-- <q-btn
+            <q-btn
               v-if="step === 1"
               class="q-mr-sm"
               style="background: var(--happypurim); color: white"
@@ -132,7 +112,7 @@
               style="background: var(--happypurim); color: white"
               label="PLACE ORDER"
               @click="placeOrder"
-            /> -->
+            />
           </div>
         </div>
       </div>
@@ -184,16 +164,9 @@ import { useMemberOrderStore } from 'src/modules/dashboard/store/memberOrderStor
 import { useCalculate } from 'src/modules/dashboard/composables/useCalculate'
 import MembershipStep from './components/MembershipStep/MembershipStep.vue'
 import type { PageStepInterface } from 'src/modules/dashboard/interfaces/memberOrder-interfaces'
-import ShowGreetingsStep from './components/ShowGreetingsStep/ShowGreetingsStep.vue'
-import { useDashboardStore } from 'src/modules/dashboard/store/dashboardStore/dashboardStore'
-import OrderHistoryStep from './components/OrderHistoryStep/OrderHistoryStep.vue'
 
 const $router = useRouter()
 const $moStore = useMemberOrderStore()
-const $dStore = useDashboardStore()
-
-const orderPages = computed(() => $moStore.$state.orderPages)
-const currentPage = computed(() => orderPages.value[step.value] || orderPages.value[0] || undefined)
 
 const requiredMembership = computed(() => $moStore.membership?.showMembership || false)
 const { isMobile, goToTop, showLoading, stopLoading } = useUI()
@@ -205,7 +178,6 @@ const {
   orderTotal,
   placeOrder,
   addMemberShipToCart,
-  updateGreetingsRecipientsByMemberId,
 } = useMemberOrder()
 const { setBackendTotal } = useCalculate()
 
@@ -239,12 +211,12 @@ const onNext = async () => {
   showLoading()
   await saveStepOne()
   step.value++
-  // if (!requiredMembership.value) step.value++
+  if (!requiredMembership.value) step.value++
   stopLoading()
   setBackendTotal()
   goToTop({ delay: 600 })
 
-  // if (!$moStore.hasExtraOptions) step.value++
+  if (!$moStore.hasExtraOptions) step.value++
 }
 
 const continueToPayment = () => {
@@ -254,15 +226,9 @@ const continueToPayment = () => {
 }
 
 const goBack = () => {
-  // step.value--
-  // if (step.value === 2 && !$moStore.hasExtraOptions) step.value--
-  // if (step.value === 1 && !requiredMembership.value) step.value--
-  const currentPageId = currentPage.value?.pageId
-  const index = orderPages.value.findIndex((pag) => pag.pageId === currentPageId)
-
-  if (index < 1) return
   step.value--
-
+  if (step.value === 2 && !$moStore.hasExtraOptions) step.value--
+  if (step.value === 1 && !requiredMembership.value) step.value--
   goToTop({ delay: 300 })
 }
 
@@ -271,101 +237,22 @@ const continueToExtraOptions = async () => {
   step.value++
 }
 
-const updateGreetings = async () => {
-  await updateGreetingsRecipientsByMemberId()
-  step.value++
-}
-
 onMounted(() => {
   getInitialData()
     .then(() => {
+      isReady.value = true
+
       const orderPages: PageStepInterface[] = [
-        ...($moStore.$state.orgSettings?.displayLastYearsOrderIntro
-          ? [
-              {
-                btnText: 'Proceed To General Ordering',
-                disabled: () => false,
-                method: () => {
-                  step.value++
-                },
-                page: '',
-                pageId: 0,
-              },
-            ]
-          : []),
         {
           btnText: 'NEXT',
           disabled: () => false,
           method: onNext,
           page: '',
-          pageId: 1,
-        },
-        //
-        ...($dStore.$state.showGreetingsPage
-          ? [
-              {
-                btnText: 'SAVE & CONTINUE',
-                disabled: () => false,
-                method: updateGreetings,
-                page: '',
-                pageId: 2,
-              },
-            ]
-          : []),
-
-        ...(requiredMembership.value
-          ? [
-              {
-                btnText: 'CONTINUE',
-                disabled: () => false,
-                method: continueToExtraOptions,
-                page: '',
-                pageId: 3,
-              },
-            ]
-          : []),
-        ...($moStore.hasExtraOptions
-          ? [
-              {
-                btnText: 'CONTINUE',
-                disabled: () =>
-                  !orderTotal.value &&
-                  !$moStore.totalFromBackend &&
-                  !$moStore.getCartData.totalPriceMembers,
-                method: continueToPayment,
-                page: '',
-                pageId: 4,
-              },
-            ]
-          : []),
-
-        {
-          btnText: 'PLACE ORDER',
-          disabled: () => !!$moStore.IsPaymentFormInvalid,
-          method: placeOrder,
-          page: '',
-          pageId: 5,
+          pageId: 0,
         },
       ]
 
-      $moStore.setOrderPages(orderPages)
-
-      if ($moStore.$state.orgSettings?.displayLastYearsOrderIntro) {
-        $moStore.$state.memberList.copy = $moStore.$state.memberList.copy.map((member) => {
-          if (
-            member.iSentLastYear == 1 ||
-            member.reciprocal == 'Yes' ||
-            member.sentToMeLastYear == 1
-          )
-            return {
-              ...member,
-              selected: true,
-            }
-
-          return member
-        })
-      }
-      isReady.value = true
+      console.log({ orderPages })
     })
     .catch(console.error)
 })

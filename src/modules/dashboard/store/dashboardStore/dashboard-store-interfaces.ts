@@ -24,4 +24,5 @@ export interface DashboardStateInterface {
   percentageRunningTotal: PercentageRunningTotalInterface | NoneType;
   customShippingOptions: CustomShippingOptionInterface[];
   canUploadList: UploadListStatusInterface;
+  showGreetingsPage: boolean;
 }

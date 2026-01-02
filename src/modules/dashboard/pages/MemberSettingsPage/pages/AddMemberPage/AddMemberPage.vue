@@ -104,7 +104,7 @@
             <div class="col-6 q-pl-sm q-pr-sm">
               <q-input
                 class="regular-number-input"
-                type="number"
+
                 v-model="realForm.zip.value"
                 outlined
                 label="Zip Code"
@@ -118,7 +118,7 @@
                 outlined
                 label="Primary Telephone"
                 class="regular-number-input"
-                type="number"
+
                 lazy-rules
                 :rules="[]"
               />
@@ -129,7 +129,7 @@
                 outlined
                 label="Optional 2nd Telephone"
                 class="regular-number-input"
-                type="number"
+
                 lazy-rules
                 :rules="[]"
               />
@@ -302,7 +302,7 @@
                 outlined
                 label="Zip Code *"
                 class="regular-number-input"
-                type="number"
+                
                 lazy-rules
                 :rules="[lazyRules.required()]"
               />

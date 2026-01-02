@@ -397,7 +397,6 @@
                 outlined
                 label="Zip Code"
                 class="regular-number-input"
-                type="number"
                 lazy-rules
                 :rules="[]"
               />
@@ -411,7 +410,6 @@
                 outlined
                 label="Primary Telephone"
                 class="regular-number-input"
-                type="number"
                 lazy-rules
                 :rules="[]"
               />
@@ -422,7 +420,7 @@
                 outlined
                 label="Optional 2nd Telephone"
                 class="regular-number-input"
-                type="number"
+
                 lazy-rules
                 :rules="[]"
               />
@@ -621,7 +619,7 @@
                         outlined
                         label="Zip Code"
                         class="regular-number-input"
-                        type="number"
+                        
                       />
                     </div>
                   </div>

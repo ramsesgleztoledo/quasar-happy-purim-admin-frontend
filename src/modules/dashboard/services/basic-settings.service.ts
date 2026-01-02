@@ -128,6 +128,14 @@ export const useBasicSettingsService = () => {
         extraOptions,
       })
     },
+    showGreetingsPage: async (extraOptions?: ExtraOptionsInterface): Promise<ApiCallResponseInterface<boolean>> => {
+      const nextUrl = `/show-greetings-page`;
+      const url = `${baseUrl}${nextUrl}`;
+      return await apiCall({
+        url,
+        extraOptions,
+      })
+    },
   }
 
 }

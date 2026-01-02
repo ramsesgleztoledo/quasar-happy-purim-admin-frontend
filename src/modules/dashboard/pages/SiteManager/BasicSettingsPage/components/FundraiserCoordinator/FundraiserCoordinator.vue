@@ -81,7 +81,7 @@
         outlined
         label="Contact Phone *"
         class="regular-number-input"
-        type="number"
+        
         lazy-rules
         :rules="[lazyRules.required()]"
       />

@@ -1,7 +1,7 @@
 
 import { defineStore, acceptHMRUpdate } from 'pinia';
 import type { MemberOrderStateInterface } from './memberOrder-store-interfaces';
-import type { OrderMemberListInterface, OrderPromotionInterface, MemberOrderItemsInterface, MemberOrderOrgSettingInterface, MemberAdditionalCharityOptionsInterface, MemberCharityOptionInterface, CustomShippingOptionInterface, CustomShippingItemInterface, AdditionalOrderOptionInterface, DiscountInterface, PaymentMethodTypeInterface, ShulSettingInterface, LocalDeliveryInterface, } from '../../interfaces/memberOrder-interfaces';
+import type { OrderMemberListInterface, OrderPromotionInterface, MemberOrderItemsInterface, MemberOrderOrgSettingInterface, MemberAdditionalCharityOptionsInterface, MemberCharityOptionInterface, CustomShippingOptionInterface, CustomShippingItemInterface, AdditionalOrderOptionInterface, DiscountInterface, PaymentMethodTypeInterface, ShulSettingInterface, LocalDeliveryInterface, PageStepInterface, GreetingsRecipientInterface, } from '../../interfaces/memberOrder-interfaces';
 import type { NoneType } from '../../services/service-interfaces';
 import type { OrderItemSettingsInterface, Tab2AddonInterface } from '../../interfaces/advanced-settings.interfaces';
 import { s_cartData, s_customShippingItemsTotal, s_donations, s_fee, s_hasExtraOptions, s_isPaymentFormInvalid, s_orderTotal } from './services';
@@ -54,7 +54,9 @@ const initialState: MemberOrderStateInterface = {
   showEmailReceiptTo: true,
   step: 0,
   membership: undefined,
-  membershipType: 'annual'
+  membershipType: 'annual',
+  orderPages: [],
+  greetingsRecipients: [],
 }
 
 export const useMemberOrderStore = defineStore('memberOrderStore', {
@@ -63,6 +65,7 @@ export const useMemberOrderStore = defineStore('memberOrderStore', {
   }),
 
   getters: {
+    membersLastYear: (state) => state.memberList.copy.filter(member => (member.iSentLastYear == 1 || member.reciprocal == 'Yes' || member.sentToMeLastYear == 1)),
 
     getMemberList: (state) => state.memberList,
     getSymbol: (state) => state.orgSettings?.symbol || '$',
@@ -168,6 +171,13 @@ export const useMemberOrderStore = defineStore('memberOrderStore', {
     setMembershipType(membershipType: 'life' | 'annual' | 'none') {
       this.membershipType = membershipType
     },
+    setOrderPages(orderPages: PageStepInterface[]) {
+      this.orderPages = orderPages
+    },
+    setGreetingsRecipients(greetingsRecipients: GreetingsRecipientInterface[]) {
+      this.greetingsRecipients = greetingsRecipients
+    },
+
 
   }
 });
