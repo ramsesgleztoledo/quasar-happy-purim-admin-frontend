@@ -280,7 +280,8 @@ onMounted(() => {
   getInitialData()
     .then(() => {
       const orderPages: PageStepInterface[] = [
-        ...($moStore.$state.orgSettings?.displayLastYearsOrderIntro
+        ...($moStore.$state.orgSettings?.displayLastYearsOrderIntro &&
+        $moStore.membersLastYear.length
           ? [
               {
                 btnText: 'Proceed To General Ordering',

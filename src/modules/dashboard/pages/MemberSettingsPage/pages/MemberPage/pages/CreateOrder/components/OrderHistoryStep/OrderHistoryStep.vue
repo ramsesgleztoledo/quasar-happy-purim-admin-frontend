@@ -57,7 +57,7 @@
                 >
                   <q-checkbox v-model="allSelected" label="Check/Uncheck All" />
                   <h6 style="margin: 0px; align-items: center; display: flex">
-                    Members ({{ $moStore.$state.membersSelected.length }}/{{
+                    Members ({{ membersLastYearSelected.length }}/{{
                       $moStore.membersLastYear.length
                     }})
                   </h6>
@@ -181,9 +181,15 @@ const columns = ref<QTableColumn<OrderMemberListInterface>[]>([
   },
 ])
 
+const membersLastYearSelected = computed<OrderMemberListInterface[]>(() =>
+  $moStore.$state.membersSelected.filter((memS) =>
+    $moStore.membersLastYear.some((memL) => memL.id == memS.id),
+  ),
+)
+
 const allSelected = computed({
   get() {
-    const totalSelected = $moStore.membersSelected.length
+    const totalSelected = membersLastYearSelected.value.length
     const totals = $moStore.membersLastYear.filter((item) => !item.paid).length
 
     if (totalSelected && totalSelected < totals) return ''
@@ -195,9 +201,16 @@ const allSelected = computed({
 })
 const toggleSelectAll = (selectAll: boolean) => {
   if (selectAll) {
-    $moStore.membersSelected = [...$moStore.membersLastYear.filter((item) => !item.paid)]
+    $moStore.membersSelected = [
+      ...$moStore.membersSelected,
+      ...$moStore.membersLastYear.filter(
+        (item) => !item.paid && !$moStore.membersSelected.some((member) => member.id == item.id),
+      ),
+    ]
   } else {
-    $moStore.membersSelected = []
+    $moStore.membersSelected = $moStore.membersSelected.filter(
+      (member) => !$moStore.membersLastYear.some((memberL) => member.id == memberL.id),
+    )
   }
 }
 

@@ -367,7 +367,7 @@
                 <div class="CartItems-text">{{ membersSelected.length }}</div>
               </div>
               <div class="col-5">
-                <div class="CartItems-text">Mishloach Manot to Members </div>
+                <div class="CartItems-text">Mishloach Manot to Members</div>
               </div>
               <div class="col-3">
                 <div class="CartItems-text">
@@ -515,7 +515,13 @@ import type {
 import { useMemberOrderStore } from 'src/modules/dashboard/store/memberOrderStore/memberOrderStore'
 import { computed } from 'vue'
 
-const { memberOrderState, addOrRemoveItem, addOrRemoveDonation } = useMemberOrder()
+const {
+  memberOrderState,
+  addOrRemoveItem,
+  addOrRemoveDonation,
+  onAddOrRemovePromotion,
+  updateMembersCart,
+} = useMemberOrder()
 const { authState } = useAuth()
 const $moStore = useMemberOrderStore()
 const { setBackendTotal } = useCalculate()
@@ -562,6 +568,11 @@ const checkIfPromotion = (item: MemberOrderItemsInterface) => {
 }
 
 const removePromotion = async (item: MemberOrderItemsInterface) => {
+  const proStore = $moStore.promotions.find((pro) => pro.itemId === item.itemId)
+  if (!proStore) return
+
+  await onAddOrRemovePromotion(false, proStore)
+  await updateMembersCart($moStore.$state.membersSelected)
   await addOrRemoveItemAItem(
     false,
     {
@@ -575,10 +586,13 @@ const removePromotion = async (item: MemberOrderItemsInterface) => {
     },
     true,
   )
-  // promotions.value = promotions.value.filter((pro) => pro.itemId !== item.itemId)
-  const proStore = $moStore.promotions.find((pro) => pro.itemId === item.itemId)
 
-  if (proStore) proStore.selected = false
+  proStore.selected = false
+
+  // promotions.value = promotions.value.filter((pro) => pro.itemId !== item.itemId)
+  // const proStore = $moStore.promotions.find((pro) => pro.itemId === item.itemId)
+
+  // if (proStore)
 }
 
 const removeDonate = async (charity: CharityType) => {

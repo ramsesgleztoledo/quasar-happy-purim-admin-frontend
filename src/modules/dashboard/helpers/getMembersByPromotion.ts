@@ -2,9 +2,6 @@ import type { OrderMemberListInterface, OrderPromotionInterface } from "../inter
 
 export const getMembersByPromotion = (promotion: OrderPromotionInterface, members: OrderMemberListInterface[], promotions?: OrderPromotionInterface[], notFound?: boolean) => {
 
-
-
-
   const isAll = promotion.categories.toLowerCase().includes('all')
   if (isAll) return notFound ? [] : members.filter(me => !me.paid)
 
@@ -29,6 +26,7 @@ export const getMembersByPromotion = (promotion: OrderPromotionInterface, member
     return notFound ? !found : found
   })
 };
+
 export const getMembersInsidePromotion = (promotion: OrderPromotionInterface, members: OrderMemberListInterface[]) => {
 
 

@@ -30,6 +30,7 @@ import { useDashboardService } from "../services/dashboard.service";
 import { useDashboardStore } from "../store/dashboardStore/dashboardStore";
 import { useMemberShipService } from "../services/MemberShip.service";
 import { useGreetingsService } from "../services/Greetings.service";
+import { getMembersByPromotion } from "../helpers/getMembersByPromotion";
 
 
 
@@ -52,7 +53,7 @@ export const useMemberOrder = () => {
   const { addMember, removeMember } = useShaliachService()
   const { getOrganizationSettings } = useOrgSettingsService()
   const { getAdditionalCharityOptions, getCharityOptions } = useCharityService()
-  const { showToast } = useUI()
+  const { showToast, showLoading: showLoadingUI, stopLoading: stopLoadingUI } = useUI()
   const { getCustomShippingOptions, getAttributesByCustomShippingOptionId } = useCustomShippingOptionsService()
   const { getCustomShippingItem, addCustomShippingItem, updateCustomShippingItem, deleteCustomShippingItem } = useShippingItemsService()
   const { getAdditionalOrderOptions } = useOrderOptionsService()
@@ -136,8 +137,53 @@ export const useMemberOrder = () => {
 
 
   return {
+
+
+
+
     memberOrderState: computed(() => $moStore.$state),
     orderTotal: computed(() => $moStore.getTotalCost),
+
+
+    async onAddOrRemovePromotion(value: boolean, item: OrderPromotionInterface) {
+      showLoadingUI()
+      const isAll = item.categories.toLowerCase().includes('all')
+
+      let promotions = $moStore.$state.promotions.map((promotion) => ({ ...promotion }))
+
+      if (isAll)
+        promotions = promotions.map((pro) => {
+          if (pro.id == item.id) return pro
+
+          return {
+            ...pro,
+            selected: false,
+          }
+        })
+
+      const members = $moStore.$state.memberList.copy
+
+      const list = getMembersByPromotion(item, members, promotions)
+
+      const selectedId = new Set($moStore.membersSelected.map((member) => member.id))
+
+      if (value) {
+        for (const item of list) {
+          if (!selectedId.has(item.id)) {
+            $moStore.membersSelected.push(item)
+            selectedId.add(item.id)
+          }
+        }
+      } else {
+        $moStore.membersSelected = getMembersByPromotion(
+          item,
+          $moStore.membersSelected,
+          promotions,
+          true,
+        )
+      }
+      stopLoadingUI()
+    },
 
     async getNewData() {
 
@@ -251,6 +297,21 @@ export const useMemberOrder = () => {
 
     },
 
+
+    async updateMembersCart(
+      membersAdd: OrderMemberListInterface[]
+    ) {
+      await addMember({
+        memberGuid: mGuid.value,
+        memberId: memberId.value
+      },
+        [...membersAdd.map(member => ({
+          receiver: member.id,
+          tempcode: `${mGuid.value}+${member.id}`,
+          price: member.price || $moStore.shulSetting?.sPerperson || 0
+        }))]
+      )
+    },
 
     async updateCart(data: {
       promotions: OrderPromotionInterface[];
