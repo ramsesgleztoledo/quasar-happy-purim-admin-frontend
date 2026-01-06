@@ -24,7 +24,10 @@ export const useReport = () => {
     getReportRecipientsByReportIdFilterOnly,
     getReportRecipientsByReportIdCustomWithSQL12,
   } = useReportsService()
-  const { getTokensByReportId, getCustomTokensByReportId } = useMailMergeService()
+  const {
+    getTokensByReportId,
+    // getCustomTokensByReportId
+  } = useMailMergeService()
   const $rStore = useReportStore()
   const { downloadFile, showLoading, stopLoading } = useUI()
   const $q = useQuasar()
@@ -133,24 +136,29 @@ export const useReport = () => {
 
 
       $rStore.setIsLoadingReportData(true)
-      let tokens = undefined
+      // let tokens = undefined
+      const tokens = await getTokensByReportId(data.id, {
+        // loading: {
+        //   message: 'Loading...'
+        // }
+      })
       let resp = undefined
 
 
 
-      if (!isCustom)
-        tokens = await getTokensByReportId(data.id, {
-          // loading: {
-          //   message: 'Loading...'
-          // }
-        })
+      // if (!isCustom)
+      // tokens = await getTokensByReportId(data.id, {
+      //   // loading: {
+      //   //   message: 'Loading...'
+      //   // }
+      // })
 
-      else
-        tokens = await getCustomTokensByReportId(data.id, {
-          // loading: {
-          //   message: 'Loading...'
-          // }
-        })
+      // else
+      // tokens = await getCustomTokensByReportId(data.id, {
+      //   // loading: {
+      //   //   message: 'Loading...'
+      //   // }
+      // })
 
 
 
