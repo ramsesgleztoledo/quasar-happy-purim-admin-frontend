@@ -6,23 +6,61 @@
 
 <script setup lang="ts">
 import { useMember } from 'src/modules/dashboard/composables/useMember'
-import { onMounted, ref } from 'vue'
+import {
+  // onMounted,
+  ref,
+  watch,
+} from 'vue'
+// import type { LocationQuery } from 'vue-router'
+import { useRoute } from 'vue-router'
 
 const { getMembers_Co } = useMember()
+const $route = useRoute()
 
 const isReady = ref(false)
+const isFirsTime = ref(true)
 
-onMounted(() => {
-  isReady.value = false
+const filters = ref({
+  categories: '',
+  search: '',
+})
+
+const loadData = () => {
+  if (isFirsTime.value) isReady.value = false
   getMembers_Co({
-    categories: '',
-    search: '',
+    ...filters.value,
   })
     .catch(console.error)
     .finally(() => {
-      isReady.value = true
+      if (isFirsTime.value) isReady.value = true
+      isFirsTime.value = false
     })
-})
+}
+
+watch(
+  () => [$route.name, $route.query],
+  (value) => {
+    if (isFirsTime.value) return loadData()
+
+    const routeName = 'MembersSettingsPage-home'
+    if (value.length == 2 && value[0] == routeName && value[1]) {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const newFilters: any = value[1] as unknown as any
+      if (
+        newFilters.categoryId != filters.value.categories ||
+        newFilters.search != filters.value.search
+      )
+        filters.value = {
+          categories: (newFilters.categoryId || '').split(',').join(', '),
+          search: newFilters.search || '',
+        }
+      return loadData()
+    }
+  },
+  {
+    immediate: true,
+  },
+)
 </script>
 
 <style scoped lang="scss"></style>

@@ -1,3 +1,9 @@
+export interface LinkParamInterface {
+  name: string;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  value: any
+}
+
 export interface LinksDataInterface {
   title: string;
   name: string;
@@ -5,9 +11,10 @@ export interface LinksDataInterface {
   icon?: string;
   caption?: string;
   children?: LinksDataInterface[];
-  disabled?:  boolean 
+  disabled?: boolean
   force?: boolean;
   tooltip?: string | undefined;
+  LinkParams?: LinkParamInterface[]
 }
 
 
@@ -24,3 +31,4 @@ export interface routeDataInterface {
   titleParam?: ((value?: routeParamInterface) => string);
   dontShow?: boolean;
 }
+

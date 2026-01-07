@@ -73,6 +73,7 @@ export const useBreadcrumb = () => {
           icon: 'group',
           name: 'MembersSettingsPage',
           routeClass: ['MembersSettingsPage', 'MembersSettingsPage-home'],
+          LinkParams: [{ name: "search", value: "" }, { name: "categoryId", value: "" }]
         },
         {
 

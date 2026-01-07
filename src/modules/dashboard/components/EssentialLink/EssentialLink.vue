@@ -4,7 +4,7 @@
     :disable="disabled"
     clickable
     class="user-select-none"
-    @click="navigateTo(name, force)"
+    @click="navigateTo({ name, force, LinkParams })"
     :class="{
       'selected-item': isSelected(name, routeClass).value,
       'dropdown-selected-in-route': isInRoute,
@@ -48,7 +48,7 @@
       :disable="child.disabled"
       clickable
       class="user-select-none q-pl-lg"
-      @click="navigateTo(child.name, child.force)"
+      @click="navigateTo({ name: child.name, force: child.force, LinkParams: child.LinkParams })"
       :class="{
         'selected-item': isSelected(child.name, child.routeClass).value,
       }"
@@ -69,20 +69,48 @@
 </template>
 
 <script setup lang="ts">
+import type { LocationQueryRaw, RouteLocationAsRelativeGeneric } from 'vue-router'
 import { useRoute, useRouter } from 'vue-router'
 import { computed, onMounted, ref } from 'vue'
-import type { LinksDataInterface } from '../BreadCrumbs/composables/breadcrumbs.interfaces'
+import type {
+  LinkParamInterface,
+  LinksDataInterface,
+} from '../BreadCrumbs/composables/breadcrumbs.interfaces'
 const $props = defineProps<LinksDataInterface>()
 
 const $router = useRouter()
 const $route = useRoute()
 
-const navigateTo = (name: string, force?: boolean) => {
-  if (!name) return
+const getParams = (LinkParams: LinkParamInterface[]) => {
+  const query: LocationQueryRaw = {}
+  LinkParams.forEach((element) => {
+    query[element.name] = element.value
+  })
+  return query
+}
 
-  if (force) return $router.replace({ name, query: { force: `${new Date().getTime()}` } })
+const navigateTo = (data: {
+  name: string
+  force?: boolean | undefined
+  LinkParams?: LinkParamInterface[] | undefined
+}) => {
+  if (!data.name) return
 
-  return $router.push({ name })
+  const ro: RouteLocationAsRelativeGeneric = { name: data.name }
+  if (data.LinkParams?.length) ro.query = getParams(data.LinkParams)
+
+  if (data.force) {
+    const force = `${new Date().getTime()}`
+
+    if (ro.query) ro.query.force = force
+    else
+      ro.query = {
+        force,
+      }
+    return $router.replace(ro)
+  }
+
+  return $router.push(ro)
 }
 
 const expanded = ref<boolean>(false)

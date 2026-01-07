@@ -184,7 +184,10 @@ const { isMobile } = useUI()
 const $router = useRouter()
 const $route = useRoute()
 const $dStore = useDashboardStore()
-const { memberState, getMembers_Co } = useMember()
+const {
+  memberState,
+  // getMembers_Co
+} = useMember()
 const { revertChanges } = useUploadList()
 // const { updateCanUpload } = useDashboard()
 
@@ -341,8 +344,8 @@ const onPaginationUpdate = (newPagination: QTableProps['pagination']) => {
   }
 }
 
-const goToPage = (categoryId: string | undefined, search: string) => {
-  $router.push({
+const goToPage = async (categoryId: string | undefined, search: string) => {
+  await $router.replace({
     name: 'MembersSettingsPage-home',
     query: {
       search,
@@ -370,6 +373,7 @@ const loadPage = () => {
     // : undefined,
     search: search ? `${search}` : '',
   }
+
   goToPage(getCategoriesIdAsString(), filters.value.search)
 }
 
@@ -386,7 +390,7 @@ watch(
   (newValue) => {
     if (filterDebounce.value) clearTimeout(filterDebounce.value)
 
-    filterDebounce.value = setTimeout(() => {
+    filterDebounce.value = setTimeout(async () => {
       // const stringNewValue = JSON.stringify(newValue)
       // const stringOldValue = JSON.stringify(oldValue.value)
 
@@ -394,16 +398,16 @@ watch(
 
       oldValue.value = { ...newValue }
 
-      goToPage(getCategoriesIdAsString(), newValue.search)
-      getMembers_Co({
-        categories: getCategoriesIdAsString().split(',').join(', '),
-        search: filters.value.search,
-      })
+      await goToPage(getCategoriesIdAsString(), newValue.search)
+      // getMembers_Co({
+      //   categories: getCategoriesIdAsString().split(',').join(', '),
+      //   search: filters.value.search,
+      // })
     }, 800)
   },
   {
     deep: true,
-    // immediate: true,
+    immediate: false,
   },
 )
 </script>
