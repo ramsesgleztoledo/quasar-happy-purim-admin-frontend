@@ -87,20 +87,20 @@
       <!--=========================== END OF SECTION ===========================-->
       <div class="CreateOrderPage-bottom">
         <div class="row q-mt-lg cancel-save-btn-container">
-          <div class="col-12">
+          <div class="col-12" :style="{ flexDirection: isMobile ? 'column' : 'row' }">
             <q-btn
               outline
               label="CANCEL"
-              class="q-mr-sm"
+              class="q-mr-sm q-mb-sm"
               style="color: #990000; border-color: #990000"
               @click="cancelOrderDialogFlag = true"
             />
-            <q-btn class="q-mr-sm" label="SAVE FOR LATER" @click="saveForLater" />
-            <q-btn v-if="step > 0" class="q-mr-sm" label="BACK" @click="goBack()" />
+            <q-btn class="q-mr-sm q-mb-sm" label="SAVE FOR LATER" @click="saveForLater" />
+            <q-btn v-if="step > 0" class="q-mr-sm q-mb-sm" label="BACK" @click="goBack()" />
 
             <q-btn
               :disable="currentPage?.disabled()"
-              class="q-mr-sm"
+              class="q-mr-sm q-mb-sm"
               style="background: var(--happypurim); color: white"
               :label="currentPage?.btnText"
               @click="currentPage?.method"

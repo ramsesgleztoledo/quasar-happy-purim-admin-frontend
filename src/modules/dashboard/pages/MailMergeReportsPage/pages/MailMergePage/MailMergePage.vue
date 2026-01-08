@@ -174,17 +174,29 @@
                         /> -->
                         <q-item
                           class="ComposeEmail-token-item"
-                          v-for="(token, i) in $rStore.$state.tokens"
+                          v-for="(token, i) in tokensToShow"
                           :key="i"
                           clickable
-                          @click="insertToken(token)"
+                          @click="insertToken(token.value)"
                         >
                           <q-item-section>
                             <q-icon name="arrow_back_ios" />
                           </q-item-section>
 
                           <q-item-section>
-                            {{ token }}
+                            {{ token.value }}
+                          </q-item-section>
+
+                          <q-item-section side>
+                            <q-icon
+                              v-if="token.tooltip"
+                              name="info"
+                              style="color: var(--happypurim); cursor: pointer; font-size: 20px"
+                            >
+                              <q-tooltip style="background-color: #ffd7d7; font-size: 16px">
+                                <div style="max-width: 400px" v-html="token.tooltip" />
+                              </q-tooltip>
+                            </q-icon>
                           </q-item-section>
                         </q-item>
                       </div>
@@ -318,18 +330,18 @@
         </div>
 
         <div class="row q-mt-lg cancel-save-btn-container">
-          <div class="col-12 q-pa-sm">
+          <div class="col-12 q-pa-sm" :style="{ flexDirection: isMobile ? 'column' : 'row' }">
             <q-btn
               outline
               label="Close"
-              class="q-mr-sm"
+              class="q-mr-sm q-mb-sm"
               style="color: #990000; border-color: #990000"
               @click="cancelDialogFlag = true"
             />
 
             <q-btn
               :disable="!$rStore.$state.selectedRecipients.length"
-              class="q-mr-sm"
+              class="q-mr-sm q-mb-sm"
               :label="`${preview ? 'Continue' : 'Preview'}`"
               @click="preview = !preview"
             />
@@ -337,7 +349,7 @@
             <q-btn
               v-if="!preview"
               :disable="!email"
-              class="q-mr-sm"
+              class="q-mr-sm q-mb-sm"
               style="background: var(--happypurim); color: white"
               label="Generate PDF To Print"
               @click="
@@ -349,7 +361,7 @@
             <q-btn
               v-if="!preview"
               :disable="!email"
-              class="q-mr-sm"
+              class="q-mr-sm q-mb-sm"
               style="background: var(--happypurim); color: white"
               label="Schedule or Send Email"
               @click="
@@ -766,16 +778,26 @@ const selectUnselectAllRows = () => {
   else $rStore.$state.selectedRecipients = rowsAux.value.map((row) => ({ ...row }))
 }
 
-// const rows = computed(() => {
-//   const members = $rStore.$state.report?.members || []
-//   if (!categoryFiltered.value) return members
-
-//   return members.filter((member) =>
-//     member.Categories?.toLowerCase().includes(
-//       `${categoryFiltered.value?.categoryID}`.toLowerCase(),
-//     ),
-//   )
-// })
+const tokensToShow = computed(() =>
+  $rStore.$state.tokens.map((token) => ({
+    value: token,
+    tooltip:
+      token == 'Sign On Link'
+        ? `<p style="color: black">
+   You can use any text with this field. For example if you want to
+   use the text
+   <b style="color: blue; font-weight: 600"> "click here" </b>
+   , you can change the field
+   <b style="color: red; font-weight: 600"> {{Sig On Link}} </b>
+   to
+   <b style="color: red; font-weight: 600">
+     {{Sig On Link
+     <b style="color: blue; font-weight: 600; margin-left: -5px; margin-right: -5px;">:"click here" </b>}}
+   </b>
+ </p>`
+        : '',
+  })),
+)
 
 const showSelectedOnly = ref(false)
 
