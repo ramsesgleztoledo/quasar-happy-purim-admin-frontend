@@ -1,6 +1,7 @@
 import { useApiCall } from "src/services/apiCall";
 import type { ApiCallResponseInterface, ExtraOptionsInterface } from "src/services/api-interfaces";
 import type { AddToUnmergedTableFormInterface, GeneratePDFFormInterface, MailMergeTemplateInterface, MergedContentPrintInterface, MergedContentResponseInterface, QueueBulkEmailsFormInterface } from "../interfaces/mail-merge.interface";
+import type { TokenInterface } from "../interfaces/report.interface";
 
 
 
@@ -37,7 +38,7 @@ export const useMailMergeService = () => {
         extraOptions
       })
     },
-    getTokensByReportId: async (reportId: number | string, extraOptions?: ExtraOptionsInterface): Promise<ApiCallResponseInterface<string[]>> => {
+    getTokensByReportId: async (reportId: number | string, extraOptions?: ExtraOptionsInterface): Promise<ApiCallResponseInterface<TokenInterface[]>> => {
       const nextUrl = `/get-merge-fields/${reportId}`;
       const url = `${baseUrl}${nextUrl}`;
       return await apiCall({
@@ -116,7 +117,7 @@ export const useMailMergeService = () => {
       })
     },
 
-    getCustomTokensByReportId: async (id: string | number, extraOptions?: ExtraOptionsInterface): Promise<ApiCallResponseInterface<string[]>> => {
+    getCustomTokensByReportId: async (id: string | number, extraOptions?: ExtraOptionsInterface): Promise<ApiCallResponseInterface<TokenInterface[]>> => {
       const nextUrl = `/get-custom-merge-fields?id=${id}`;
       const url = `${baseUrl}${nextUrl}`;
       return await apiCall({

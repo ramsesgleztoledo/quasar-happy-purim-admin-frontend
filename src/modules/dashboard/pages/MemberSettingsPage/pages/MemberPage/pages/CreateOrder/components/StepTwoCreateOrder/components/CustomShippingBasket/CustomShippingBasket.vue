@@ -52,7 +52,6 @@
           outlined
           label="Zip Code *"
           class="regular-number-input"
-          
           lazy-rules
           :rules="[lazyRules.required()]"
         />
@@ -65,7 +64,6 @@
           outlined
           label="Phone *"
           class="regular-number-input"
-          
           lazy-rules
           :rules="[lazyRules.required()]"
         />
@@ -94,20 +92,24 @@
       </div>
     </div>
     <template v-if="!prop_customsShippingItem">
-      <div class="row q-mt-md basket-img-row-container">
+      <div class="row q-mt-md basket-img-row-container justify-content-center">
         <div
-          :class="{
-            'col-4': !isMobile,
-            'col-6': isMobile,
-            'selected-basket-img-container': item.id === customShippingSelected?.id,
-          }"
-          class="q-pa-sm q-mb-sm basket-img-container q-item-bordered"
-          v-for="(item, i) in memberOrderState.customShippingOptions"
-          :key="i"
-          style=""
-          @click="customShippingSelected = item"
+          class="q-pa-sm col-6 col-sm-4 col-md-3 col-lg-3"
+          v-for="item in memberOrderState.customShippingOptions"
+          :key="item.id"
         >
-          <BasketImg :item="item" />
+          <div
+            :class="{
+              // 'col-4': !isMobile,
+              // 'col-6': isMobile,
+              'selected-basket-img-container': item.id === customShippingSelected?.id,
+            }"
+            class="q-pa-sm q-mb-sm basket-img-container q-item-bordered"
+            style=""
+            @click="customShippingSelected = item"
+          >
+            <BasketImg :item="item" />
+          </div>
         </div>
       </div>
 
@@ -158,13 +160,13 @@
               </div>
             </div>
             <div
-              class="col-6 q-pa-sm"
+              class="col-6 q-pa-sm justify-content-center"
               :class="{
                 'col-6': !isMobile,
                 'col-12': isMobile,
               }"
             >
-              <img :src="attribute.imageURL" alt="" style="width: 100%; height: 100%" />
+              <img :src="attribute.imageURL" alt="" style="width: 300px; height: 300px" />
             </div>
           </div>
         </div>

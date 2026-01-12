@@ -393,11 +393,11 @@ const timeOut = ref<NodeJS.Timeout | undefined>(undefined)
 
 const columns = computed(() => {
   const columns: QTableColumn[] = $rStore.$state.tokens.map((token, index) => ({
-    name: token,
+    name: token.name,
     required: true,
-    label: token,
+    label: token.name,
     align: 'left',
-    field: token,
+    field: token.name,
     sortable: true,
     style:
       index == 0
@@ -445,7 +445,7 @@ const goToPageWithFilters = () => {
     query = {
       yesOnly: `${filter.value.yesOnly}`,
       hideNL: `${filter.value.hideNL}`,
-      isCustom: 'true', 
+      isCustom: 'true',
       categories: JSON.stringify(filter.value.categories),
       searchTerm: filter.value.searchTerm,
     }

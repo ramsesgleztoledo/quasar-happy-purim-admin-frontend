@@ -85,3 +85,10 @@ export interface SpecialReportInterface {
   description: string;
   url: string
 }
+
+
+export interface TokenInterface {
+  name: string;
+  hasTooltip: boolean;
+  tooltip: string | null | undefined;
+}

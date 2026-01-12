@@ -1,7 +1,7 @@
 
 import { defineStore, acceptHMRUpdate } from 'pinia';
 import type { reportStateInterface } from './report-store-interfaces';
-import type { RecipientDataInterface, RecipientMemberInterface, ReportDataInterface, SpecialReportInterface } from '../../interfaces/report.interface';
+import type { RecipientDataInterface, RecipientMemberInterface, ReportDataInterface, SpecialReportInterface, TokenInterface } from '../../interfaces/report.interface';
 import type { NoneType } from '../../services/service-interfaces';
 
 
@@ -81,7 +81,7 @@ export const useReportStore = defineStore('reportStore', {
       this.images = images.map(img => img)
     },
 
-    setTokens(tokens: string[]) {
+    setTokens(tokens: TokenInterface[]) {
       this.tokens = tokens.map(to => to)
     },
     setIsCustom(isCustom: boolean) {

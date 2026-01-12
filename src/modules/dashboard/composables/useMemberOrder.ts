@@ -544,9 +544,9 @@ export const useMemberOrder = () => {
 
     async getGreetingsRecipientsByMemberId() {
       const resp = await getRecipientsByMemberId(memberId.value, {
-        loading: {
-          message: 'Loading...'
-        }
+        // loading: {
+        //   message: 'Loading...'
+        // }
       })
       $moStore.setGreetingsRecipients(resp.ok ? resp.data : [])
     },
@@ -564,12 +564,12 @@ export const useMemberOrder = () => {
         greeting: rec.greeting,
         rowId: rec.rowId
       }))
-      await updateRecipientsByMemberId(memberId.value, updates, {
-        loading: {
-          message: 'Loading...'
-        }
-      })
 
+      await updateRecipientsByMemberId(memberId.value, updates, {
+        // loading: {
+        //   message: 'Loading...'
+        // }
+      })
     },
 
 

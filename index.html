@@ -20,6 +20,15 @@
 
     <!-- <script src="http://localhost:8098"></script> -->
   </head>
+
+  <!-- vue devtools script -->
+  <script type="module">
+    if (import.meta.env.DEV) {
+      const s = document.createElement('script')
+      s.src = 'http://localhost:8098'
+      document.head.appendChild(s)
+    }
+  </script>
   <body>
     <!-- quasar:entry-point -->
   </body>

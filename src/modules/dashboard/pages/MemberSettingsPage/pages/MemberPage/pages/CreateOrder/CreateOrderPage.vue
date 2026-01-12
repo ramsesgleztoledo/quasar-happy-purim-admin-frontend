@@ -29,7 +29,7 @@
       </div>
       <div class="CreateOrderPage-middle">
         <div class="row" style="min-height: 70vh">
-          <div class="col-12">
+          <div class="col-12" style="height: 100%">
             <div
               v-show="
                 currentPage?.pageId != undefined &&
@@ -236,12 +236,14 @@ const saveStepOne = async () => {
 }
 
 const onNext = async () => {
-  showLoading()
+  // showLoading()
+  isReady.value = false
   await saveStepOne()
   step.value++
   // if (!requiredMembership.value) step.value++
-  stopLoading()
+  // stopLoading()
   setBackendTotal()
+  isReady.value = true
   goToTop({ delay: 600 })
 
   // if (!$moStore.hasExtraOptions) step.value++
@@ -249,6 +251,7 @@ const onNext = async () => {
 
 const continueToPayment = () => {
   // addReciprocityDialogFlag.value = true
+
   step.value++
   goToTop({ delay: 300 })
 }
@@ -267,13 +270,17 @@ const goBack = () => {
 }
 
 const continueToExtraOptions = async () => {
+  isReady.value = false
   await addMemberShipToCart()
   step.value++
+  isReady.value = true
 }
 
 const updateGreetings = async () => {
+  isReady.value = false
   await updateGreetingsRecipientsByMemberId()
   step.value++
+  isReady.value = true
 }
 
 onMounted(() => {

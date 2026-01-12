@@ -158,7 +158,7 @@
                         v-model="email"
                         height="750px"
                         ref="editorRef"
-                        :stringTokens="isMobile ? $rStore.$state.tokens : undefined"
+                        :stringTokens="isMobile ? tokensToShow : undefined"
                       />
                     </div>
                     <div v-if="!isMobile" class="col-2 q-pa-sm ComposeEmail-tokens-container">
@@ -174,26 +174,35 @@
                         /> -->
                         <q-item
                           class="ComposeEmail-token-item"
-                          v-for="(token, i) in tokensToShow"
+                          v-for="(token, i) in $rStore.$state.tokens"
                           :key="i"
                           clickable
-                          @click="insertToken(token.value)"
+                          @click="insertToken(token.name)"
                         >
                           <q-item-section>
-                            <q-icon name="arrow_back_ios" />
-                          </q-item-section>
+                            <div class="row">
+                              <div class="col-2">
+                                <q-icon
+                                  name="arrow_back_ios"
+                                  style="width: 30px; margin-right: 20px"
+                                />
+                              </div>
 
-                          <q-item-section>
-                            {{ token.value }}
+                              <div class="col-10">
+                                {{ token.name }}
+                              </div>
+                            </div>
                           </q-item-section>
 
                           <q-item-section side>
                             <q-icon
-                              v-if="token.tooltip"
+                              v-if="token.hasTooltip"
                               name="info"
                               style="color: var(--happypurim); cursor: pointer; font-size: 20px"
                             >
-                              <q-tooltip style="background-color: #ffd7d7; font-size: 16px">
+                              <q-tooltip
+                                style="background-color: var(--happypurim); font-size: 16px"
+                              >
                                 <div style="max-width: 400px" v-html="token.tooltip" />
                               </q-tooltip>
                             </q-icon>
@@ -778,26 +787,7 @@ const selectUnselectAllRows = () => {
   else $rStore.$state.selectedRecipients = rowsAux.value.map((row) => ({ ...row }))
 }
 
-const tokensToShow = computed(() =>
-  $rStore.$state.tokens.map((token) => ({
-    value: token,
-    tooltip:
-      token == 'Sign On Link'
-        ? `<p style="color: black">
-   You can use any text with this field. For example if you want to
-   use the text
-   <b style="color: blue; font-weight: 600"> "click here" </b>
-   , you can change the field
-   <b style="color: red; font-weight: 600"> {{Sig On Link}} </b>
-   to
-   <b style="color: red; font-weight: 600">
-     {{Sig On Link
-     <b style="color: blue; font-weight: 600; margin-left: -5px; margin-right: -5px;">:"click here" </b>}}
-   </b>
- </p>`
-        : '',
-  })),
-)
+const tokensToShow = computed(() => $rStore.$state.tokens.map((token) => token.name))
 
 const showSelectedOnly = ref(false)
 

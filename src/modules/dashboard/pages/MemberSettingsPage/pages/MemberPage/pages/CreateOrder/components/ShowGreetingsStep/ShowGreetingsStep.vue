@@ -1,7 +1,7 @@
 <template>
   <div v-if="ifReady">
     <div class="row q-mt-sm">
-      <h5>Edit Greetings Below:</h5>
+      <p style="margin: 0px; font-size: 20px">Edit Greetings Below:</p>
     </div>
     <div class="row q-mt-sm q-mb-md q-pa-sm">
       <div class="row q-item-bordered-dotted q-pa-sm" style="width: 100%">
