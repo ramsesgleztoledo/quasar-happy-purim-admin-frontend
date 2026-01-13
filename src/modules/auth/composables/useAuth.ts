@@ -42,7 +42,7 @@ export const useAuth = () => {
   const authState = computed(() => $aStore.$state);
 
   const logOut = (goToLogin?: boolean) => {
-    $q.localStorage.clear()
+    $q.localStorage.removeItem('authState')
     $auStore.$reset()
     $asStore.$reset()
     $bsStore.$reset()

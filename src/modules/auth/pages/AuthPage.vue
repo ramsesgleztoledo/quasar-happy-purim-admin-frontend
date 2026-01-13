@@ -107,7 +107,8 @@ const onLogin = async () => {
 
 <style lang="css" scoped>
 .login-container {
-  background-color: white;
+  /* background-color: white; */
+  background-color: var(--header-bg);
   box-shadow: 5px 8px 16px -1px var(--happypurim);
   border: solid 1px black;
   border-radius: 8px;

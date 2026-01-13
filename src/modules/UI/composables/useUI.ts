@@ -181,13 +181,12 @@ export const useUI = () => {
 
 
   const setInitialColors = () => {
-
+    let darkModeValue = 1
     const darkMode = $q.localStorage.getItem('darkMode')
-    let darkModeValue = Number(darkMode)
 
-    console.log({ darkModeValue });
-
-
+    if (darkMode || darkMode == 0)
+      darkModeValue = Number(darkMode)
+    
     if ((!darkModeValue && darkModeValue != 0) || darkModeValue < -1 || darkModeValue > 1) darkModeValue = 1
 
     setTheme(darkModeValue as -1 | 0 | 1)
