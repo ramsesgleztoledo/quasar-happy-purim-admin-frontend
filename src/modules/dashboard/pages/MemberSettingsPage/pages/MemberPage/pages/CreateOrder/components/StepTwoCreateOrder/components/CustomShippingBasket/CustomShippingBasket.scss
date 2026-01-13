@@ -3,11 +3,11 @@
   cursor: pointer;
 }
 :hover.basket-img-container {
-  border: solid 2px $happypurim-light;
+  border: solid 2px var(--happypurim-light);
 }
 
 .selected-basket-img-container {
-  border: solid 1px $happypurim;
+  border: solid 1px var(--happypurim);
 }
 
 .basket-img-row-container {
@@ -20,7 +20,7 @@
   justify-content: center;
   font-size: 26px;
   font-weight: 600;
-  color: $happypurim;
+  color: var(--happypurim);
 }
 
 .CustomShippingBasket-text {

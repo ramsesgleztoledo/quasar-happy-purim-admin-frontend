@@ -4,7 +4,6 @@
       <template v-if="!isSearchMobile">
         <!-- show only if mobile -->
         <q-btn
-          color="black"
           v-if="isMobile"
           flat
           dense
@@ -63,13 +62,18 @@
                 </p>
               </div>
             </div>
-            <div class="col" v-if="!isMobile" style="display: flex; justify-content: flex-end">
-              <SearchComponent />
-            </div>
+            <template v-if="!isMobile">
+              <div class="col" style="display: flex; justify-content: flex-end">
+                <SearchComponent />
+              </div>
+              <div class="q-ml-sm">
+                <ColorSettings />
+              </div>
+            </template>
           </div>
         </q-toolbar-title>
         <div>
-          <div v-if="!isMobile" class="dashboard-layout-right-info">
+          <!-- <div v-if="!isMobile" class="dashboard-layout-right-info">
             <div class="q-mr-sm">
               <div class="row">
                 <div class="col-12">{{ $aStore.$state.shul?.shulName }}</div>
@@ -85,9 +89,9 @@
                 Log Out
               </q-tooltip>
             </q-btn>
-          </div>
+          </div> -->
 
-          <div v-else class="dashboard-search-icon-mobile">
+          <div v-if="isMobile" class="dashboard-search-icon-mobile">
             <q-icon name="search" @click="isSearchMobile = true" />
           </div>
         </div>
@@ -126,18 +130,19 @@
 </template>
 
 <script setup lang="ts">
-import { useAuth } from 'src/modules/auth/composables/useAuth'
-import { useAuthStore } from 'src/modules/auth/store/auth.store'
+// import { useAuth } from 'src/modules/auth/composables/useAuth'
+// import { useAuthStore } from 'src/modules/auth/store/auth.store'
 import { useUI } from 'src/modules/UI/composables'
 import { useUIStore } from 'src/modules/UI/store/ui-store'
 import { ref } from 'vue'
 import SearchComponent from './components/SearchComponent.vue'
+import ColorSettings from '../ColorSettings/ColorSettings.vue'
 
 const $uiStore = useUIStore()
-const $aStore = useAuthStore()
+// const $aStore = useAuthStore()
 
 const { isMobile, goBack, goForward } = useUI()
-const { logOut } = useAuth()
+// const { logOut } = useAuth()
 
 const search = ref<string>('')
 const isSearchMobile = ref<boolean>(false)

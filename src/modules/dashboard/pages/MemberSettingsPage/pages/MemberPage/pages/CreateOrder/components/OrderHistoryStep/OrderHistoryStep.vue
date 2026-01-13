@@ -1,5 +1,10 @@
 <template>
-  <div class="q-pa-sm">
+  <!-- <div class="row q-mt-sm">
+    <div class="col-12 justify-end d-flex">
+      <q-btn label="Print Order History" @click="printReceipt" color="primary" icon="print" />
+    </div>
+  </div> -->
+  <div id="print-order-history-id" class="q-pa-sm">
     <div class="row">
       <div class="col-md-10 offset-md-1">
         <p class="last-year-p">
@@ -35,10 +40,7 @@
       <div class="col-12">
         <div class="row table-white-container" :class="{ fullscreen: isFullScreen }">
           <div class="col-12">
-            <div
-              class="row"
-              style="position: sticky; top: 0px; z-index: 1000; background-color: white"
-            >
+            <div class="row" style="position: sticky; top: 0px; z-index: 1000">
               <div class="col-12">
                 <div class="row">
                   <div class="col-12 justify-content-end">
@@ -67,7 +69,6 @@
             <q-table
               card-class="bg-primary text-white"
               grid
-              style="background-color: white"
               :style="{ maxHeight: isFullScreen ? '' : '800px' }"
               class="table-sticky-header-column-table"
               flat
@@ -150,6 +151,7 @@ import { useMemberOrderStore } from 'src/modules/dashboard/store/memberOrderStor
 import { computed, ref } from 'vue'
 import CreateOrderLegend from '../CreateOrderLegend/CreateOrderLegend.vue'
 import RowStyle from '../StepOneCreateOrder/components/RowStyle.vue'
+// import { printElement } from 'src/helpers/printHelper'
 
 const $moStore = useMemberOrderStore()
 
@@ -221,6 +223,10 @@ const onSelectAll = () => {
       .map((item) => ({ ...item, selected: true }))
   }, 200)
 }
+
+// const printReceipt = () => {
+//   printElement('print-order-history-id')
+// }
 </script>
 
 <style scoped lang="scss" src="./OrderHistoryStep.scss" />

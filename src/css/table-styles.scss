@@ -9,7 +9,7 @@
     /* higher than z-index for td below */
     z-index: 2;
     /* bg color is important; just specify one */
-    background: $happypurim;
+    background: var(--happypurim);
     color: white;
   }
 
@@ -57,14 +57,14 @@
   }
 }
 tr:hover {
-  background-color: adjust-color($happypurim, $lightness: 25%);
+  background-color: var(--happypurim-light);
 }
 
 .sticky-1-column-table {
   cursor: pointer;
   td:first-child {
     /* bg color is important for td; just specify one */
-    background-color: #ededed;
+    background-color: var(--row-tb-bg);
     z-index: 1;
     position: sticky;
     left: 0;
@@ -97,14 +97,14 @@ tr:hover {
   cursor: pointer;
   td:first-child {
     /* bg color is important for td; just specify one */
-    background-color: #ededed;
+    background-color: var(--row-tb-bg);
     z-index: 1;
     position: sticky;
     left: 0;
   }
   td:nth-child(2) {
     /* bg color is important for td; just specify one */
-    background-color: #ededed;
+    background-color: var(--row-tb-bg);
     z-index: 1;
     position: sticky;
     left: 87.43px;
@@ -152,14 +152,14 @@ tr:hover {
   cursor: pointer;
   td:first-child {
     /* bg color is important for td; just specify one */
-    background-color: #ededed;
+    background-color: var(--row-tb-bg);
     z-index: 1;
     position: sticky;
     left: 0;
   }
   td:nth-child(2) {
     /* bg color is important for td; just specify one */
-    background-color: #ededed;
+    background-color: var(--row-tb-bg);
     z-index: 1;
     position: sticky;
     left: 100px;
@@ -207,7 +207,7 @@ tr:hover {
   cursor: pointer;
   td:first-child {
     /* bg color is important for td; just specify one */
-    background-color: #ededed;
+    background-color: var(--row-tb-bg);
     z-index: 1;
     position: sticky;
     left: 0;
@@ -215,7 +215,7 @@ tr:hover {
   }
   td:nth-child(2) {
     /* bg color is important for td; just specify one */
-    background-color: #ededed;
+    background-color: var(--row-tb-bg);
     z-index: 1;
     position: sticky;
     left: 108.46px;
@@ -263,7 +263,7 @@ tr:hover {
 
 thead {
   tr {
-    background-color: $happypurim;
+    background-color: var(--happypurim);
   }
 }
 

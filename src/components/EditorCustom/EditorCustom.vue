@@ -2,7 +2,7 @@
   <q-editor
     ref="editorRef"
     :content-style="{
-      backgroundColor: '#f1f1f1',
+      backgroundColor: 'var(--row-tb-bg)',
       height: fullscreenClass ? '100%' : height ? height : '190px',
     }"
     v-model="text"

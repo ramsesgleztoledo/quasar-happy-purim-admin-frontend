@@ -40,12 +40,11 @@
   padding: 8px;
   padding-bottom: 3px;
   z-index: 99;
-  background-color: white;
-  box-shadow: 0 5px 5px -3px rgb(203 192 192);
+  background-color: var(--header-bg);
+  box-shadow: 0 5px 5px -3px var(--box-shadow);
   width: calc(100% - 234px);
   top: 50px;
   right: 0px;
-
 }
 
 .dashboard-router-view {

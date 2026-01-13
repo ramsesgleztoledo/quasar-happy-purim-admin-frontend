@@ -2,7 +2,7 @@ import { useQuasar } from 'quasar';
 import { computed, onBeforeUnmount, onMounted, ref } from 'vue';
 import { useRouter } from 'vue-router';
 import { useUIStore } from '../store/ui-store';
-import type { downloadEndPointType } from './ui-interfaces';
+import type { ColorModeInterface, downloadEndPointType } from './ui-interfaces';
 import { generateDownload } from 'src/helpers/generateDownload';
 import type { FileType } from 'src/interfaces/ui-interfaces';
 
@@ -51,6 +51,18 @@ export const useUI = () => {
 
 
   const isMobile = ref(false);
+
+  const appColorOptions = computed(() => [
+    { value: 'pink', label: '#ef6982' },
+    { value: 'blue', label: '#3171e0' },
+    { value: 'green', label: '#2dd36f' },
+    { value: 'yellow', label: '#ffca22' },
+    { value: 'purple', label: '#6370ff' },
+    { value: 'red', label: '#f31212' },
+    { value: 'orange', label: '#fa7900' },
+    { value: 'sky', label: '#00ddfa' },
+    { value: 'rose', label: '#fa00cc' },
+  ])
 
 
   const updateIsMobile = () => {
@@ -104,6 +116,87 @@ export const useUI = () => {
     $router.forward()
   }
 
+  const setQuasarTheme = (value: -1 | 0 | 1) => {
+    let darkModeValue: boolean | 'auto' = false;
+    switch (value) {
+      case -1:
+        darkModeValue = true
+        break;
+      case 0:
+        darkModeValue = 'auto'
+        break;
+
+      default:
+        darkModeValue = false
+        break;
+    }
+    $q.dark.set(darkModeValue)
+
+  };
+
+
+
+  const setTheme = (value: -1 | 0 | 1) => {
+    const colorTheme: ColorModeInterface = {
+      value: 1,
+      icon: 'light_mode'
+    }
+    if (value === -1) {
+      colorTheme.icon = 'dark_mode'
+      colorTheme.value = -1
+    }
+
+    if (value === 0) {
+      colorTheme.icon = 'brightness_medium'
+      colorTheme.value = 0
+    }
+
+    if (value === 1) {
+      colorTheme.icon = 'light_mode'
+      colorTheme.value = 1
+    }
+
+    $uiStore.$state.darkMode = { ...colorTheme }
+    setQuasarTheme(value)
+    $q.localStorage.setItem('darkMode', value)
+  }
+
+
+  const toggleTheme = () => {
+    const value = $uiStore.$state.darkMode.value
+    if (value === -1) setTheme(0)
+    if (value === 0) setTheme(1)
+    if (value === 1) setTheme(-1)
+  }
+
+
+  const setAppColor = (color: string) => {
+    const colorFound = appColorOptions.value.find(co => co.value == color) || appColorOptions.value[0]!
+
+    $uiStore.$state.appColor = colorFound
+    $q.localStorage.setItem('appColor', colorFound.value)
+    document.body.setAttribute('app-color', colorFound.value)
+  };
+
+
+
+  const setInitialColors = () => {
+
+    const darkMode = $q.localStorage.getItem('darkMode')
+    let darkModeValue = Number(darkMode)
+
+    console.log({ darkModeValue });
+
+
+    if ((!darkModeValue && darkModeValue != 0) || darkModeValue < -1 || darkModeValue > 1) darkModeValue = 1
+
+    setTheme(darkModeValue as -1 | 0 | 1)
+
+    const appColor = ($q.localStorage.getItem('appColor') as string) || 'pink'
+    setAppColor(appColor)
+  }
+
+
   const EDITOR_START_IMG_URL = computed(() => process.env.EDITOR_START_IMG_URL || '')
 
   return {
@@ -114,10 +207,13 @@ export const useUI = () => {
     reloadPage,
     goBack,
     goForward,
+    toggleTheme,
+    setInitialColors,
+    appColorOptions,
+    setAppColor,
     isDev: computed(() => process.env.NODE_ENV === 'development'
     ),
     version: computed(() => process.env.VERSION || ''),
-
     async downloadFile(endPoint: downloadEndPointType, data: {
       fileType: FileType,
       fileName?: string,

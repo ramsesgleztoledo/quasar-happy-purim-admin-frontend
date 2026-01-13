@@ -30,7 +30,7 @@ p {
   text-underline-position: from-font;
   text-decoration-skip-ink: none;
   b {
-    color: black;
+    color: var(--text-color);
   }
 }
 
@@ -41,7 +41,7 @@ p {
   padding: 5px 10px;
   border-radius: 4px;
   font-size: 14px;
-  pointer-events: none; 
+  pointer-events: none;
   white-space: nowrap;
   z-index: 1000;
   transition: transform 0.1s;

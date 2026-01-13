@@ -38,10 +38,10 @@
   width: 6px;
   height: 6px;
   border-radius: 18px;
-  background-color: adjust-color($happypurim, $lightness: 25%);
+  background-color: var(--happypurim-light);
 }
 ::-webkit-scrollbar-thumb {
-  background: $happypurim;
+  background: var(--happypurim);
   border-radius: 18px;
   border: solid 1px black;
   cursor: pointer;
@@ -72,7 +72,7 @@ hr {
 }
 
 .q-spinner-mat {
-  color: $happypurim;
+  color: var(--happypurim);
 }
 .align-items-center {
   display: flex;
@@ -124,7 +124,7 @@ hr {
 }
 
 .q-btn {
-  color: $happypurim;
+  color: var(--happypurim);
 }
 
 .separator-right {
@@ -177,7 +177,7 @@ hr {
 
 .cancel-save-btn-container {
   padding: 10px;
-  background-color: #f2f2f2;
+  background-color: var(--row-tb-bg);
   border-radius: 5px;
   .col-12 {
     display: flex;
@@ -187,7 +187,7 @@ hr {
 
 .dialog-header {
   height: 72px;
-  background: $happypurim;
+  background: var(--happypurim);
   color: white;
   padding: 20px;
   p {
@@ -228,7 +228,8 @@ hr {
 .white-100-container {
   height: 100%;
   width: 100%;
-  background-color: white;
+  // background-color: white;
+  background-color: var(--box-bg);
 }
 .page-main-title {
   // font-family: Open Sans;
@@ -331,12 +332,14 @@ hr {
   position: sticky;
   bottom: 0;
   z-index: 9;
-  background-color: white;
+  // background-color: white;
+  background-color: var(--box-bg);
 }
 
 .white-container,
 .table-white-container {
-  background-color: white;
+  // background-color: white;
+  background-color: var(--box-bg);
   overflow: auto;
 }
 
@@ -535,4 +538,8 @@ body {
     justify-content: center;
     align-items: center;
   }
+}
+
+canvas {
+  background-color: var(--box-bg);
 }

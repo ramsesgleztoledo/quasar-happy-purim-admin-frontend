@@ -4,7 +4,7 @@
       <div
         class="col-12 DisplayItem-item-container"
         :style="{
-          backgroundColor: index % 2 === 0 ? '#F6F6F6' : 'white',
+          backgroundColor: index % 2 === 0 ? 'var(--row-tb-bg)' : 'var( --header-bg)',
         }"
       >
         <div v-html="item.label" class="displayItemContainer" />
@@ -15,10 +15,9 @@
               if (item.hover && !item.showOnHover) menu = true
             }
           "
-
           @click="() => onItemCLicked(item)"
           :style="{
-            color: item.color ? item.color : 'black',
+            color: item.color ? item.color : '',
             cursor: item.redirectTo || item.hover ? 'pointer' : '',
             textDecoration: item.redirectTo ? 'underline' : '',
           }"
@@ -37,11 +36,10 @@
             </q-tooltip>
             <q-menu
               v-else
-
               style="
                 background-color: var(--happypurim);
                 font-size: 16px;
-                color: white;
+                /* color: white; */
                 padding: 8px;
               "
               v-model="menu"

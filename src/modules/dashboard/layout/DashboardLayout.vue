@@ -15,8 +15,8 @@
       bordered
     >
       <div v-if="isMobile">
-        <div class="row justify-content-space-between q-pa-sm">
-          <div class="q-mr-sm q-pa-sm">
+        <div class="row justify-content-end q-pa-sm">
+          <!-- <div class="q-mr-sm q-pa-sm">
             <div class="row">
               <div class="col-12">{{ $aStore.$state.shul?.shulName }}</div>
             </div>
@@ -25,12 +25,13 @@
                 {{ $aStore.$state.user?.firstName }} {{ $aStore.$state.user?.lastName }}
               </div>
             </div>
-          </div>
-          <q-btn flat round color="primary" icon="logout" @click="logOut(true)">
+          </div> -->
+          <ColorSettings />
+          <!-- <q-btn flat round color="primary" icon="logout" @click="logOut(true)">
             <q-tooltip transition-show="flip-right" transition-hide="flip-left">
               Log Out
             </q-tooltip>
-          </q-btn>
+          </q-btn> -->
         </div>
       </div>
       <q-list>
@@ -87,14 +88,15 @@ import { useUI } from 'src/modules/UI/composables'
 import { useUIStore } from 'src/modules/UI/store/ui-store'
 import { useRouter } from 'vue-router'
 import { useDashboard } from '../composables/useDashboard'
-import { useAuth } from 'src/modules/auth/composables/useAuth'
+// import { useAuth } from 'src/modules/auth/composables/useAuth'
 import { useBreadcrumb } from '../components/BreadCrumbs/composables/useBreadcrumb'
-import { useAuthStore } from 'src/modules/auth/store/auth.store'
+// import { useAuthStore } from 'src/modules/auth/store/auth.store'
+import ColorSettings from '../components/ColorSettings/ColorSettings.vue'
 
 const { linksData } = useBreadcrumb()
-const { logOut } = useAuth()
+// const { logOut } = useAuth()
 const $uiStore = useUIStore()
-const $aStore = useAuthStore()
+// const $aStore = useAuthStore()
 const $router = useRouter()
 const { isMobile, version } = useUI()
 const { loadStartedData, getMemberSummary } = useDashboard()

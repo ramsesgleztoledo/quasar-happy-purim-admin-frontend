@@ -134,10 +134,7 @@
     <div class="col-12">
       <div class="row table-white-container" :class="{ fullscreen: isFullScreen }">
         <div class="col-12">
-          <div
-            class="row"
-            style="position: sticky; top: 0px; z-index: 1000; background-color: white"
-          >
+          <div class="row" style="position: sticky; top: 0px; z-index: 1000">
             <div class="col-12">
               <div class="row">
                 <div class="col-12 justify-content-end">
@@ -166,7 +163,6 @@
           <q-table
             card-class="bg-primary text-white"
             grid
-            style="background-color: white"
             :style="{ maxHeight: isFullScreen ? '' : '800px' }"
             class="table-sticky-header-column-table"
             flat

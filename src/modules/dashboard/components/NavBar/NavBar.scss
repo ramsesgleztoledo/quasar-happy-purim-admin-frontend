@@ -1,6 +1,7 @@
 .dashboard-layout-header {
   left: 0px !important;
-  background-color: rgb(255, 255, 255);
+  // background-color: rgb(255, 255, 255);
+  background-color: var(--header-bg);
 }
 .dashboard-layout-title {
   // padding: 10px;
@@ -17,7 +18,7 @@
   }
 }
 .dashboard-layout-right-info {
-  color: black;
+  color: var(--text-color);
   display: flex;
   flex-direction: row;
   align-items: flex-end;
@@ -28,7 +29,8 @@
 }
 
 .dashboard-search-icon-mobile {
-  color: black;
+  // color: black;
+  color: var(--happypurim);
   font-size: 30px;
 }
 

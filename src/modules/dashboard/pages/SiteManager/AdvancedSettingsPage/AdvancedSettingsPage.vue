@@ -8,7 +8,13 @@
     </div>
     <div class="row q-mb-md">
       <div class="col-12">
-        <q-btn-toggle v-model="pageView" spread no-caps :options="pageOption" />
+        <q-btn-toggle
+          v-model="pageView"
+          spread
+          no-caps
+          :options="pageOption"
+          :style="{ flexDirection: isMobile ? 'column' : '' }"
+        />
       </div>
     </div>
     <div v-show="pageView === '1'">
@@ -34,10 +40,12 @@ import AdditionalOrderingOptions from './components/AdditionalOrderingOptions/Ad
 import BasketSizes from './components/BasketSizes/BasketSizes.vue'
 import AdditionalReceiptText from './components/AdditionalReceiptText/AdditionalReceiptText.vue'
 import { useAdvancedSettings } from 'src/modules/dashboard/composables/useAdvancedSettings'
+import { useUI } from 'src/modules/UI/composables'
 
 const $route = useRoute()
 const $router = useRouter()
 const { getAdvancedSettings } = useAdvancedSettings()
+const { isMobile } = useUI()
 
 const isReady = ref(false)
 

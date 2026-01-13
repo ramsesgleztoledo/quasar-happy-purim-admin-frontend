@@ -1,6 +1,9 @@
 <template>
   <div v-if="show" class="row">
-    <div class="col-12 InfoAlert-container-row" :style="{ backgroundColor: background }">
+    <div
+      class="col-12 InfoAlert-container-row"
+      :style="{ backgroundColor: background, color: 'black' }"
+    >
       <div class="InfoAlert-container-left">
         <q-icon class="q-mr-sm" name="info" :style="{ color: iconInternal }" />
         <p v-if="!innerHTML">

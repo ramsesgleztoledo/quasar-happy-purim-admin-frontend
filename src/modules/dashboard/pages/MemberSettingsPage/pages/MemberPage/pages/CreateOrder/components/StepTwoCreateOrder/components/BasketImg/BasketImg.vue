@@ -69,7 +69,7 @@ img {
   align-content: center;
   justify-content: center;
   align-items: center;
-  color: $happypurim;
+  color: var(--happypurim);
   background-color: #8080806e;
 }
 </style>
