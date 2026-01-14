@@ -15,7 +15,7 @@
       bordered
     >
       <div v-if="isMobile">
-        <div class="row justify-content-end" style="height: 100%">
+        <div class="row q-mt-sm q-mb-sm justify-content-end" style="height: 100%">
           <!-- <div class="q-mr-sm q-pa-sm">
             <div class="row">
               <div class="col-12">{{ $aStore.$state.shul?.shulName }}</div>
