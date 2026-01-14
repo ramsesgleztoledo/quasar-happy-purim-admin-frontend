@@ -38,9 +38,11 @@
         <!-- STEP 1 UPLOAD LIST -->
         <template v-if="step === 1">
           <UploaderComponent
+            ref="uploaderComponentRef"
             description="By following these instructions, you should be able to upload a new member list efficiently and accurately. If you have any questions or need further assistance, please contact us"
             v-model:file-model="fileModel"
             accept="xlsx, xls"
+            delete-before-upload
           />
         </template>
 
@@ -433,6 +435,9 @@ const {
 const loading = ref(false)
 const revertDialogFlag = ref(false)
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const uploaderComponentRef = ref<any>(undefined)
+
 // stepper
 const step = ref<number>(1)
 
@@ -492,6 +497,11 @@ const step_one = async () => {
   const step_one_response = await uploadMemberList(fileModel.value[0]!)
   loading.value = false
   if (step_one_response) {
+    if (uploaderComponentRef.value) {
+      fileModel.value = []
+      uploaderComponentRef.value.resetValue()
+    }
+
     step_one_data.value = step_one_response
     step.value++
     if (step_one_data.value?.sheetNames?.length === 1) {

@@ -1,11 +1,20 @@
 <template>
   <template v-if="isReady">
-    <div class="row q-mb-lg">
-      <PaginationCustom
-        ref="paginationCustomRef"
-        :total="memberState.members.members.length"
-        :current="currentMemberPage"
-        @page-change="onPageChange"
+    <div class="row q-mt-sm q-mb-sm justify-content-space-between">
+      <div>
+        <PaginationCustom
+          ref="paginationCustomRef"
+          :total="memberState.members.members.length"
+          :current="currentMemberPage"
+          @page-change="onPageChange"
+        />
+      </div>
+      <q-btn
+        v-if="!isMobile"
+        color="primary"
+        icon="query_stats"
+        label="Member Stats"
+        @click="memberStatsDialogFlag = true"
       />
     </div>
     <InfoAlert
@@ -155,11 +164,21 @@
                     />
                   </q-item-section>
                 </q-item>
+                <q-item clickable v-close-popup>
+                  <q-item-section>
+                    <q-btn
+                      color="primary"
+                      icon="query_stats"
+                      label="Member Stats"
+                      @click="memberStatsDialogFlag = true"
+                    />
+                  </q-item-section>
+                </q-item>
 
                 <q-item clickable v-close-popup>
                   <q-item-section>
                     <q-btn
-                      :icon="`${memberState.isPendingDeletion ? 'close' : 'delete'}`"
+                      :icon="`${memberState.isPendingDeletion ? 'close' : 'delete2'}`"
                       @click="
                         () => {
                           if (memberState.isPendingDeletion) setDeleteMember()
@@ -286,7 +305,7 @@
               icon="credit_card"
               class="q-mr-sm q-mt-sm"
               style="background: var(--happypurim); color: white"
-              label="RECORD PAYMENT "
+              label="RECORD PAYMENT"
               @click="recordPaymentDialogFlag = true"
             />
           </div>
@@ -420,7 +439,6 @@
                 outlined
                 label="Optional 2nd Telephone"
                 class="regular-number-input"
-
                 lazy-rules
                 :rules="[]"
               />
@@ -619,7 +637,6 @@
                         outlined
                         label="Zip Code"
                         class="regular-number-input"
-                        
                       />
                     </div>
                   </div>
@@ -705,6 +722,11 @@
       <EmailLoginCodeDialog />
     </q-dialog>
     <!--============== END OF SECTION =============-->
+    <!--================= member stats ================-->
+    <q-dialog v-model="memberStatsDialogFlag">
+      <MemberStatsDialog />
+    </q-dialog>
+    <!--============== END OF SECTION =============-->
     <!--* confirm delete --->
     <DialogAlert
       @on-finish="
@@ -764,6 +786,7 @@ import type {
   MemberUpdateFormInterface,
 } from 'src/modules/dashboard/interfaces/member-interfaces'
 import { useDashboard } from 'src/modules/dashboard/composables/useDashboard'
+import MemberStatsDialog from '../../components/MemberStatsDialog/MemberStatsDialog.vue'
 
 interface CheckboxItemInterface {
   value: boolean
@@ -796,6 +819,7 @@ const hasDoorman = ref<boolean>(false)
 // const altAddress = ref<boolean>(false)
 const recordPaymentDialogFlag = ref<boolean>(false)
 const emailLoginCodeDialogFlag = ref<boolean>(false)
+const memberStatsDialogFlag = ref<boolean>(false)
 const deleteMemberDialogFlag = ref<boolean>(false)
 const clearCartMemberDialogFlag = ref<boolean>(false)
 const confirmResetLoginDialogFlag = ref<boolean>(false)

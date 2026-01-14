@@ -1,8 +1,7 @@
 <template>
   <div>
     <q-btn-dropdown
-      class="glossy"
-      style="background-color: var(--happypurim); color: white"
+      style="background-color: var(--happypurim); color: white; height: 38px"
       icon="settings"
       :menu-offset="[220, 8]"
       :menu-props="{
@@ -10,6 +9,7 @@
         teleport: 'body',
         fit: true,
       }"
+      padding="4px"
     >
       <div class="row no-wrap q-pa-md">
         <div class="column" style="min-width: 150px">
@@ -94,7 +94,7 @@
             size="sm"
             v-close-popup
             icon="logout"
-            @click="logOut()"
+            @click="logOut(true)"
           />
         </div>
       </div>

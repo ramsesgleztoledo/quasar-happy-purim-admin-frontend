@@ -156,7 +156,7 @@
                       <EditorCustom
                         show-uploader
                         v-model="email"
-                        height="750px"
+                        height="53vh"
                         ref="editorRef"
                         :stringTokens="isMobile ? tokensToShow : undefined"
                       />

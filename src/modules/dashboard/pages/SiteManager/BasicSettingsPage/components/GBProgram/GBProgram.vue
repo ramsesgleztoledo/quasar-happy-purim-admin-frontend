@@ -145,9 +145,9 @@
 
 <script setup lang="ts">
 import { lazyRules, useForm, validations } from 'src/composables'
-import { isValidDate, isValidTime } from 'src/helpers'
+import { isValidDateUSA, isValidTime } from 'src/helpers'
 import { getTimeAndDate } from 'src/helpers/getTimeAndDate'
-import { turnTimeAndDate } from 'src/helpers/turnTimeAndDate'
+import { turnTimeAndDateUSA } from 'src/helpers/turnTimeAndDate'
 import { useBasicSettings } from 'src/modules/dashboard/composables/useBasicSettings'
 import type { GiftBasketProgramFormInterface } from 'src/modules/dashboard/interfaces/basic-settings.interfaces'
 import { useUI } from 'src/modules/UI/composables'
@@ -167,7 +167,7 @@ const options = ref([
   { value: false, label: 'Enable Reciprocity' },
 ])
 
-const dateRules = [(value: string) => isValidDate(value) || 'Invalid date']
+const dateRules = [(value: string) => isValidDateUSA(value) || 'Invalid date']
 const timeRules = [
   (value: string) => {
     return isValidTime(value) || 'Invalid time'
@@ -179,7 +179,7 @@ const isValidData = computed<boolean>(() => {
 
   return (
     isValidTime(timeValue.value) &&
-    isValidDate(dateValue.value) &&
+    isValidDateUSA(dateValue.value) &&
     (custom || (!custom && !!isValidForm()))
   )
 })
@@ -226,10 +226,12 @@ const setDateAndTime = () => {
 }
 
 const onUpdate = async () => {
-  const date = turnTimeAndDate({
+  const date = turnTimeAndDateUSA({
     dateValue: dateValue.value,
     timeValue: timeValue.value,
   })
+
+  console.log({ dateValue: dateValue.value, timeValue: timeValue.value, date })
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const formData = getFormValue() as unknown as any

@@ -61,6 +61,7 @@
         />
       </div>
       <q-btn
+        v-if="!isMobile"
         class="white-spinner q-ml-sm"
         :loading="isSearchedMembersLoading"
         style="background-color: var(--happypurim); color: white; height: 38px"

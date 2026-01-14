@@ -76,6 +76,51 @@ export const turnTimeAndDate = (value: {
 
   return jsDateUTC
 };
+export const turnTimeAndDateUSA = (value: {
+  dateValue: string,
+  timeValue: string,
+  timeZone?: string
+}) => {
+
+  const { hour, minute } = parseTime12h(value.timeValue);
+
+
+
+  const dateValue = value.dateValue.split('/')
+
+
+
+  const year = Number(dateValue[2] || 0)
+  const month = Number(dateValue[0] || 0)
+  const day = Number(dateValue[1] || 0)
+
+
+
+
+  const dtInZone = DateTime.fromObject(
+    {
+      year,
+      month,
+      day,
+      hour,
+      minute,
+    },
+    { zone: value.timeZone }
+  );
+
+  // console.log("En time zone:", dtInZone.toString());
+  // console.log("En UTC:", dtInZone.toUTC().toString());
+
+
+  // const jsDate = dtInZone.toJSDate();
+  const jsDateUTC = dtInZone.toUTC().toJSDate();
+
+  // console.log("JS Date (local zone):", jsDate);
+  // console.log("JS Date (UTC):", jsDateUTC);
+
+
+  return jsDateUTC
+};
 
 
 

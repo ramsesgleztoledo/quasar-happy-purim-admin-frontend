@@ -5,7 +5,7 @@
       flexDirection: isMobile ? 'column' : 'row',
     }"
   >
-    <div class="PaginationCustom-paginator-align q-mt-md">
+    <div class="PaginationCustom-paginator-align">
       <p class="q-mr-sm PaginationCustom-total-pages">{{ total }} results</p>
       <q-pagination
         class="q-mr-sm"

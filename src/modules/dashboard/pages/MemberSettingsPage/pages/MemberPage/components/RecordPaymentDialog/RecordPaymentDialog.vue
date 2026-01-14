@@ -16,7 +16,7 @@
               </div>
             </div>
             <div class="RecordPaymentDialog-container">
-              <div class="row q-mt-md">
+              <div class="row q-mt-sm">
                 <div class="col-12" style="display: flex; justify-content: center">
                   <q-btn-toggle
                     v-model="paymentType"
@@ -31,10 +31,10 @@
                   />
                 </div>
               </div>
-              <div class="row q-mb-md">
+              <div class="row">
                 <div class="col-12">
                   <template v-if="paymentType === 0">
-                    <div class="row q-mt-lg q-mb-sm">
+                    <div class="row q-mt-sm">
                       <div class="col-12 q-pr-sm q-pl-sm">
                         <q-input
                           v-model="checkForm.number.value"
@@ -45,7 +45,7 @@
                         />
                       </div>
                     </div>
-                    <div class="row q-mb-sm">
+                    <div class="row">
                       <div class="col-6 q-pr-sm q-pl-sm">
                         <q-input
                           v-model="checkForm.date.value"
@@ -96,7 +96,7 @@
                         />
                       </div>
                     </div>
-                    <div class="row q-mb-sm">
+                    <div class="row">
                       <div class="col-12 q-pr-sm q-pl-sm">
                         <q-input
                           v-model="checkForm.memo.value"
@@ -109,7 +109,7 @@
                     </div>
                   </template>
                   <template v-if="paymentType === 1">
-                    <div class="row q-mt-lg q-mb-sm">
+                    <div class="row q-mt-sm">
                       <div class="col-12 q-pr-sm q-pl-sm">
                         <q-input
                           v-model="creditForm.holder.value"
@@ -120,7 +120,7 @@
                         />
                       </div>
                     </div>
-                    <div class="row q-mb-sm">
+                    <div class="row">
                       <div class="col-6 q-pr-sm q-pl-sm">
                         <!-- <q-input
                           v-model="creditForm.date.value"
@@ -184,7 +184,7 @@
                         />
                       </div>
                     </div>
-                    <div class="row q-mb-sm">
+                    <div class="row">
                       <div class="col-12 q-pr-sm q-pl-sm">
                         <q-input
                           v-model="creditForm.number.value"
@@ -199,11 +199,11 @@
                         />
                       </div>
                     </div>
-                    <q-separator class="q-mb-sm" />
+                    <q-separator />
                     <div class="row q-mb-sm">
                       <div class="col-12 d-flex justify-content-center">Billing address</div>
                     </div>
-                    <div class="row q-mb-sm">
+                    <div class="row">
                       <div class="col-6 q-pr-sm q-pl-sm">
                         <q-input
                           v-model="creditForm.address.value"
@@ -223,7 +223,7 @@
                         />
                       </div>
                     </div>
-                    <div class="row q-mb-sm">
+                    <div class="row">
                       <div class="col-6 q-pr-sm q-pl-sm">
                         <q-select
                           popup-content-class="q-menu-300"
@@ -241,20 +241,18 @@
                           outlined
                           label="Zip Code"
                           class="regular-number-input"
-
                           lazy-rules
                           :rules="[lazyRules.required()]"
                         />
                       </div>
                     </div>
-                    <div class="row q-mt-md">
+                    <div class="row">
                       <div class="col-6 q-pl-sm q-pr-sm">
                         <q-input
                           v-model="creditForm.phone.value"
                           outlined
                           label="Primary Telephone"
                           class="regular-number-input"
-                          
                           lazy-rules
                           :rules="[lazyRules.required()]"
                         />
@@ -262,7 +260,7 @@
                     </div>
                   </template>
                   <template v-if="paymentType === 2">
-                    <div class="row q-mt-lg q-mb-sm">
+                    <div class="row q-mt-sm">
                       <div class="col-6 q-pr-sm q-pl-sm">
                         <q-input
                           v-model="otherForm.date.value"
@@ -313,7 +311,7 @@
                         />
                       </div>
                     </div>
-                    <div class="row q-mb-sm">
+                    <div class="row">
                       <div class="col-12 q-pr-sm q-pl-sm">
                         <q-input
                           v-model="otherForm.memo.value"
@@ -330,8 +328,12 @@
               <div class="row table-white-container" :class="{ fullscreen: isFullScreen }">
                 <div class="col-12">
                   <div class="row">
-                    <div class="col-12 justify-content-end">
+                    <div class="col-12 justify-content-space-between">
+                      <div class="q-table__title align-items-center">
+                        {{ `Total due: $${convertWithCommas(totalDue, { dontAllowZero: true })}` }}
+                      </div>
                       <q-btn
+                        style="font-size: 12px"
                         flat
                         round
                         color="primary"
@@ -356,9 +358,6 @@
                         row-key="OrderNumber"
                         selection="multiple"
                         v-model:selected="selected"
-                        :title="`Total due: $${convertWithCommas(totalDue, {
-                          dontAllowZero: true,
-                        })}`"
                       >
                         <template v-slot:header="props">
                           <q-tr :props="props">
@@ -389,21 +388,45 @@
                             <q-td v-for="col in props.cols" :key="col.name" :props="props">
                               {{ col.value }}
                             </q-td>
-                            <q-td auto-width>
+                            <q-td>
                               <q-input
-                                v-model="props.row['amountApplied'] as number"
+                                style="width: 200px"
+                                v-model="props.row['amountApplied']"
                                 type="number"
                                 outlined
                                 label="amount"
                                 lazy-rules
                                 :rules="[
-                                  lazyRules.required(),
-                                  lazyRules.greaterThan(0, false),
-                                  lazyRules.lowerThan(Number(props.row.Due), true),
+                                  lazyRules.required(''),
+                                  lazyRules.greaterThan(0, false, ''),
+                                  lazyRules.lowerThan(Number(props.row.Due), true, ''),
                                   isValidAmount,
                                 ]"
                                 :disable="isAmountAppliedDisabled(props.row).value"
                               />
+                              <q-tooltip
+                                v-if="
+                                  !isAmountAppliedDisabled(props.row).value &&
+                                  !checkErrorInRow(props.row['amountApplied'], [
+                                    lazyRules.required(),
+                                    lazyRules.greaterThan(0, false),
+                                    lazyRules.lowerThan(Number(props.row.Due), true),
+                                    isValidAmount,
+                                  ]).value.ok
+                                "
+                                style="background-color: var(--q-negative); font-size: 14px"
+                              >
+                                <div style="max-width: 150px">
+                                  {{
+                                    checkErrorInRow(props.row['amountApplied'], [
+                                      lazyRules.required(),
+                                      lazyRules.greaterThan(0, false),
+                                      lazyRules.lowerThan(Number(props.row.Due), true),
+                                      isValidAmount,
+                                    ]).value.msg
+                                  }}
+                                </div>
+                              </q-tooltip>
                             </q-td>
                           </q-tr>
                           <!-- <q-tr v-show="props.expand" :props="props">
@@ -423,23 +446,28 @@
           </div>
         </q-card-section>
 
-        <q-card-actions class="custom-dialog-footer-container" align="right">
-          <q-btn
-            outline
-            label="Cancel"
-            class="q-mr-sm q-mt-sm"
-            style="color: #990000; border-color: #990000"
-            v-close-popup
-          />
+        <q-card-actions class="custom-dialog-footer-container justify-content-space-between">
+          <div>
+            <b> Total Applied: ${{ convertWithCommas(totalApplied) }} </b>
+          </div>
+          <div>
+            <q-btn
+              outline
+              label="Cancel"
+              class="q-mr-sm q-mt-sm"
+              style="color: #990000; border-color: #990000"
+              v-close-popup
+            />
 
-          <q-btn
-            v-close-popup
-            class="q-mr-sm q-mt-sm"
-            style="background: var(--happypurim); color: white"
-            label="Pay"
-            @click="onPay"
-            :disable="!isValidForm()"
-          />
+            <q-btn
+              v-close-popup
+              class="q-mr-sm q-mt-sm"
+              style="background: var(--happypurim); color: white"
+              label="Pay"
+              @click="onPay"
+              :disable="!isValidForm()"
+            />
+          </div>
         </q-card-actions>
       </q-card>
     </div>
@@ -465,7 +493,7 @@
 </template>
 
 <script setup lang="ts">
-import type { QTableColumn } from 'quasar'
+import type { QTableColumn, ValidationRule } from 'quasar'
 import { lazyRules, useForm, validations } from 'src/composables'
 import { convertToUSDate, convertWithCommas } from 'src/helpers'
 import { useMember } from 'src/modules/dashboard/composables/useMember'
@@ -842,6 +870,32 @@ const isValidForm = () => {
 
   return true
 }
+
+const checkErrorInRow = (value: number, rules: ValidationRule[]) =>
+  computed(() => {
+    const result = {
+      ok: true,
+      msg: '',
+    }
+
+    for (let i = 0; i < rules.length; i++) {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const rule = rules[i] as any
+      const ruleResult = rule(value)
+
+      if (typeof ruleResult === 'string') {
+        result.ok = false
+        result.msg = ruleResult
+        break
+      }
+    }
+
+    return result
+  })
+
+const totalApplied = computed(() =>
+  rows.value.reduce((prev, current) => prev + Number(current.amountApplied) || 0, 0),
+)
 </script>
 
 <style scoped lang="scss">

@@ -75,6 +75,7 @@ interface UploaderPropsInterface {
   title?: string
   accept?: string
   multiple?: boolean
+  deleteBeforeUpload?: boolean
 }
 
 const $props = withDefaults(defineProps<UploaderPropsInterface>(), {
@@ -112,10 +113,16 @@ const onFileClick = () => {
     fileInput.value.$el.click()
   }
 }
-watch(files, (value) => {
-  if (Array.isArray(value)) $emit('update:fileModel', value)
-  else files.value = [value]
-})
+watch(
+  files,
+  (value) => {
+    if (Array.isArray(value)) $emit('update:fileModel', value)
+    else files.value = [value]
+  },
+  {
+    deep: true,
+  },
+)
 
 const rejected = (rejectedEntries: QRejectedEntry[]) => {
   {
@@ -125,6 +132,13 @@ const rejected = (rejectedEntries: QRejectedEntry[]) => {
     })
   }
 }
+
+const resetValue = () => {
+  if (!fileInput.value) return
+  files.value = []
+}
+
+defineExpose({ resetValue })
 </script>
 
 <style scoped lang="scss">

@@ -214,19 +214,6 @@
             no-footer
             default-view="palette"
           />
-          <div class="row justify-content-end">
-            <q-btn
-              class="clear-btn"
-              icon="close"
-              label="Clear"
-              outline
-              @click="
-                () => {
-                  onColorPicked(true)
-                }
-              "
-            />
-          </div>
         </q-popup-proxy>
       </q-btn>
     </template>
@@ -243,10 +230,10 @@
           />
           <div class="row justify-content-end">
             <q-btn
+              style="background-color: var(--happypurim); color: white"
               class="clear-btn"
               icon="close"
               label="Clear"
-              outline
               @click="
                 () => {
                   onColorPickedBackground(true)
@@ -477,7 +464,7 @@ const onColorPicked = (clear?: boolean) => {
   if (!editorRef.value) return
   const edit = editorRef.value
   edit.caret.restore()
-  edit.runCmd('foreColor', clear ? 'black' : colorPicked.value)
+  edit.runCmd('foreColor', clear ? 'unset' : colorPicked.value)
   setTimeout(() => {
     edit.focus()
   }, 300)

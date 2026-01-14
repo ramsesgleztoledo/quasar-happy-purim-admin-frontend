@@ -62,6 +62,7 @@ body.body--light {
   --box-shadow: #cbc0c0;
   --box-bg: white;
   --row-tb-bg: #ededed;
+  --transparent-light: #00000069;
 }
 
 body.body--dark {
@@ -70,7 +71,7 @@ body.body--dark {
   --header-str-bg: #0000004a;
   --box-shadow: #000000b3;
   --box-bg: #121212;
-  --row-tb-bg: #00000094;
+  --row-tb-bg: #242323;
 }
 
 body[app-color='pink'] {
@@ -93,6 +94,7 @@ body[app-color='blue'] {
   --happypurim-light: #2b63c53d;
   $happypurim-light: #2b63c53d;
   $secondary: #2b63c53d;
+  --q-secondary: #2b63c53d;
 }
 
 body[app-color='green'] {
