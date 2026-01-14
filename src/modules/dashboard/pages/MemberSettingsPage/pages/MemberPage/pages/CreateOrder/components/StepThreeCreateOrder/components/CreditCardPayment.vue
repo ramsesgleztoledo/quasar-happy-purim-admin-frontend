@@ -95,14 +95,11 @@
               Acceptable Credit Cards
             </div>
             <div class="row">
-              <img
-                class="q-ma-sm"
+              <div
                 v-for="item in memberOrderState.paymentMethodTypes"
                 :key="item.methodId"
-                width="40px"
-                height="40px"
-                :src="`/img/cards/${cardImg(item).value}.svg`"
-                alt="no img"
+                class="q-ma-sm payment-img-container"
+                v-html="paymentImgArray(cardImg(item).value).value.html"
               />
             </div>
           </div>
@@ -168,7 +165,6 @@
             outlined
             label="Zip Code *"
             class="regular-number-input"
-            
             lazy-rules
             :rules="[lazyRules.required(), lazyRules.minCharacters(5)]"
           />
@@ -180,7 +176,6 @@
             outlined
             label="Primary Telephone *"
             class="regular-number-input"
-            
             lazy-rules
             :rules="[lazyRules.required()]"
           />
@@ -199,12 +194,26 @@ import type { PaymentMethodTypeInterface } from 'src/modules/dashboard/interface
 import { useMemberOrderStore } from 'src/modules/dashboard/store/memberOrderStore/memberOrderStore'
 import { useMemberStore } from 'src/modules/dashboard/store/memberStore/memberStore'
 import { computed, onMounted, ref, watch } from 'vue'
+import { paymentImg } from '../../../../../../../../../data/payment-img'
 
 const $mStore = useMemberStore()
 const $moStore = useMemberOrderStore()
 const { memberOrderState } = useMemberOrder()
 
 const sameAsProfile = ref<boolean>(false)
+
+const paymentImgArray = (name: string) =>
+  computed(
+    () =>
+      paymentImg.find((img) => img.name == name) || {
+        name: 'none',
+        html: `
+        <div style="margin-right: 10px;">
+                unknown
+        </div>
+        `,
+      },
+  )
 
 const cardTypeValidation = ({ value }: { value: string }) => {
   const cardType = getCardType(value)
@@ -351,4 +360,12 @@ onMounted(() => {
 })
 </script>
 
-<style scoped lang="scss"></style>
+<style scoped lang="scss">
+.payment-img-container {
+  width: 40px;
+  height: 40px;
+  color: var(--happypurim);
+  // border: solid 1px var(--happypurim);
+  // border-radius: 5px;
+}
+</style>
