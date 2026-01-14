@@ -10,7 +10,7 @@
         />
       </div>
       <q-btn
-        v-if="!isMobile"
+        v-if="!isMobile && false"
         color="primary"
         icon="query_stats"
         label="Member Stats"
@@ -164,7 +164,7 @@
                     />
                   </q-item-section>
                 </q-item>
-                <q-item clickable v-close-popup>
+                <q-item v-if="false" clickable v-close-popup>
                   <q-item-section>
                     <q-btn
                       color="primary"
