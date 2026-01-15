@@ -233,7 +233,8 @@ export const useMemberOrder = () => {
       const promotions = resp[0].data.map(pro => {
         const selected = resp[2].data.find(item => item.itemId == pro.itemId)
 
-        const disabled = !!pro.orderItemID || !!pro.transactionID
+        const disabled = !!pro.transactionID
+        // || !!pro.orderItemID
 
         return {
           ...pro,

@@ -1,6 +1,6 @@
 <template>
   <q-inner-loading :showing="!isReady" label="Loading..." />
-  <div v-if="isReady">
+  <div v-show="isReady">
     <!-- ref="createOrderPageContainerRef" -->
     <div class="CreateOrderPage-container">
       <div class="CreateOrderPage-top">

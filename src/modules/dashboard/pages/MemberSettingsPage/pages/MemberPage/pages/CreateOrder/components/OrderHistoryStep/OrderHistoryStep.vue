@@ -201,6 +201,7 @@ const allSelected = computed({
     toggleSelectAll(val)
   },
 })
+
 const toggleSelectAll = (selectAll: boolean) => {
   if (selectAll) {
     $moStore.membersSelected = [

@@ -245,6 +245,7 @@
       <q-card-section class="row items-center">
         <div style="max-height: 500px; overflow-y: auto; width: 100%">
           <div v-for="item in promotions" :key="item.id" class="row">
+
             <q-checkbox
               :disable="item.disabled || checkDisabled(item).value"
               @update:model-value="(value) => onAddOrRemovePromotion(value, item)"
