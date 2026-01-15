@@ -86,7 +86,11 @@
               label="Reciprocity"
             />
             <div class="align-items-center q-ml-sm">
-              <q-icon size="large" name="contact_support" style="color: var(--happypurim)" />
+              <q-icon
+                size="large"
+                name="contact_support"
+                style="color: var(--happypurim); cursor: pointer"
+              />
               <q-tooltip
                 style="background-color: var(--happypurim); font-size: 16px"
                 transition-show="flip-right"
@@ -245,7 +249,6 @@
       <q-card-section class="row items-center">
         <div style="max-height: 500px; overflow-y: auto; width: 100%">
           <div v-for="item in promotions" :key="item.id" class="row">
-
             <q-checkbox
               :disable="item.disabled || checkDisabled(item).value"
               @update:model-value="(value) => onAddOrRemovePromotion(value, item)"
