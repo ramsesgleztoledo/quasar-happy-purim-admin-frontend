@@ -1,114 +1,116 @@
 <template>
-  <q-inner-loading :showing="!isReady" label="Loading..." />
-  <div v-show="isReady">
-    <!-- ref="createOrderPageContainerRef" -->
-    <div class="CreateOrderPage-container">
-      <div class="CreateOrderPage-top">
-        <div class="row">
-          <div class="col-12 top-title-col">
-            <p class="CreateOrderPage-new-order">New Order</p>
-            <div class="separator-right q-mr-sm q-ml-sm"></div>
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-12 top-title-col">
-            <!-- eslint-disable-next-line no-irregular-whitespace -->
-            <p class="CreateOrderPage-title-3">
-              <q-icon name="person" size="large" class="q-mr-sm" />
-              <b>
-                {{ memberState.selectedMember?.lastName }},
-                {{ memberState.selectedMember?.firstName }}
-                {{
-                  `${memberState.selectedMember?.spouseFirstName ? `& ${memberState.selectedMember?.spouseFirstName}` : ''}`
-                }}
-                <!-- - 0 baskets selected. -->
-              </b>
-            </p>
-          </div>
-        </div>
-      </div>
-      <div class="CreateOrderPage-middle">
-        <div class="row" style="min-height: 70vh">
-          <div class="col-12" style="height: 100%">
-            <div
-              v-show="
-                currentPage?.pageId != undefined &&
-                currentPage?.pageId >= 0 &&
-                currentPage?.pageId <= 2
-              "
-            >
-              <div v-show="currentPage?.pageId === 0"><OrderHistoryStep /></div>
-              <div v-show="currentPage?.pageId === 1">
-                <!-- <StepOneCreateOrder v-show="currentPage?.pageId === 1" ref="stepOneCreateOrderRef" /> -->
-                <StepOneCreateOrder ref="stepOneCreateOrderRef" />
-              </div>
-              <div v-if="currentPage?.pageId === 2">
-                <ShowGreetingsStep />
-              </div>
+  <div v-if="isReady">
+    <q-inner-loading :showing="isNotNexStepReady" label="Loading..." />
+
+    <div v-show="!isNotNexStepReady">
+      <!-- ref="createOrderPageContainerRef" -->
+      <div class="CreateOrderPage-container">
+        <div class="CreateOrderPage-top">
+          <div class="row">
+            <div class="col-12 top-title-col">
+              <p class="CreateOrderPage-new-order">New Order</p>
+              <div class="separator-right q-mr-sm q-ml-sm"></div>
             </div>
-            <div v-show="currentPage?.pageId != undefined && currentPage?.pageId > 2">
-              <div class="row q-mt-sm">
-                <div
-                  :class="{
-                    'col-6': !isMobile,
-                    'col-12': isMobile,
-                  }"
-                  class="CreateOrderPage-left-container q-pa-sm"
-                >
-                  <div v-show="currentPage?.pageId === 3">
-                    <MembershipStep />
-                  </div>
-                  <div v-show="currentPage?.pageId === 4">
-                    <StepTwoCreateOrder />
-                  </div>
-                  <div v-show="currentPage?.pageId === 5">
-                    <StepThreeCreateOrder />
-                  </div>
-                </div>
-                <div
-                  class="CreateOrderPage-right-container q-pa-sm"
-                  :class="{
-                    'col-6': !isMobile,
-                    'col-12': isMobile,
-                  }"
-                >
-                  <div class="col-12">
-                    <CartComponent />
-                  </div>
-                </div>
-              </div>
+          </div>
+          <div class="row">
+            <div class="col-12 top-title-col">
+              <!-- eslint-disable-next-line no-irregular-whitespace -->
+              <p class="CreateOrderPage-title-3">
+                <q-icon name="person" size="large" class="q-mr-sm" />
+                <b>
+                  {{ memberState.selectedMember?.lastName }},
+                  {{ memberState.selectedMember?.firstName }}
+                  {{
+                    `${memberState.selectedMember?.spouseFirstName ? `& ${memberState.selectedMember?.spouseFirstName}` : ''}`
+                  }}
+                  <!-- - 0 baskets selected. -->
+                </b>
+              </p>
             </div>
           </div>
         </div>
-      </div>
+        <div class="CreateOrderPage-middle">
+          <div class="row" style="min-height: 70vh">
+            <div class="col-12" style="height: 100%">
+              <div
+                v-show="
+                  currentPage?.pageId != undefined &&
+                  currentPage?.pageId >= 0 &&
+                  currentPage?.pageId <= 2
+                "
+              >
+                <div v-show="currentPage?.pageId === 0"><OrderHistoryStep /></div>
+                <div v-show="currentPage?.pageId === 1">
+                  <!-- <StepOneCreateOrder v-show="currentPage?.pageId === 1" ref="stepOneCreateOrderRef" /> -->
+                  <StepOneCreateOrder ref="stepOneCreateOrderRef" />
+                </div>
+                <div v-if="currentPage?.pageId === 2">
+                  <ShowGreetingsStep />
+                </div>
+              </div>
+              <div v-show="currentPage?.pageId != undefined && currentPage?.pageId > 2">
+                <div class="row q-mt-sm">
+                  <div
+                    :class="{
+                      'col-6': !isMobile,
+                      'col-12': isMobile,
+                    }"
+                    class="CreateOrderPage-left-container q-pa-sm"
+                  >
+                    <div v-show="currentPage?.pageId === 3">
+                      <MembershipStep />
+                    </div>
+                    <div v-show="currentPage?.pageId === 4">
+                      <StepTwoCreateOrder />
+                    </div>
+                    <div v-show="currentPage?.pageId === 5">
+                      <StepThreeCreateOrder />
+                    </div>
+                  </div>
+                  <div
+                    class="CreateOrderPage-right-container q-pa-sm"
+                    :class="{
+                      'col-6': !isMobile,
+                      'col-12': isMobile,
+                    }"
+                  >
+                    <div class="col-12">
+                      <CartComponent />
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
 
-      <!--=============================== Dialogs =============================-->
+        <!--=============================== Dialogs =============================-->
 
-      <!--=========================== END OF SECTION ===========================-->
-      <div class="CreateOrderPage-bottom">
-        <div class="row q-mt-lg cancel-save-btn-container">
-          <div class="col-12" :style="{ flexDirection: isMobile ? 'column' : 'row' }">
-            <q-btn
-              outline
-              label="CANCEL"
-              class="q-mr-sm q-mb-sm"
-              style="color: #990000; border-color: #990000"
-              @click="cancelOrderDialogFlag = true"
-            />
-            <q-btn class="q-mr-sm q-mb-sm" label="SAVE FOR LATER" @click="saveForLater" />
-            <q-btn v-if="step > 0" class="q-mr-sm q-mb-sm" label="BACK" @click="goBack()" />
+        <!--=========================== END OF SECTION ===========================-->
+        <div class="CreateOrderPage-bottom">
+          <div class="row q-mt-lg cancel-save-btn-container">
+            <div class="col-12" :style="{ flexDirection: isMobile ? 'column' : 'row' }">
+              <q-btn
+                outline
+                label="CANCEL"
+                class="q-mr-sm q-mb-sm"
+                style="color: #990000; border-color: #990000"
+                @click="cancelOrderDialogFlag = true"
+              />
+              <q-btn class="q-mr-sm q-mb-sm" label="SAVE FOR LATER" @click="saveForLater" />
+              <q-btn v-if="step > 0" class="q-mr-sm q-mb-sm" label="BACK" @click="goBack()" />
 
-            <q-btn
-              :disable="currentPage?.disabled()"
-              class="q-mr-sm q-mb-sm"
-              style="background: var(--happypurim); color: white"
-              :label="currentPage?.btnText"
-              @click="currentPage?.method"
-            />
-            <!-- :disable="
+              <q-btn
+                :disable="currentPage?.disabled()"
+                class="q-mr-sm q-mb-sm"
+                style="background: var(--happypurim); color: white"
+                :label="currentPage?.btnText"
+                @click="currentPage?.method"
+              />
+              <!-- :disable="
                 !orderTotal && !$moStore.totalFromBackend && !$moStore.getCartData.totalPriceMembers
               " -->
-            <!-- <q-btn
+              <!-- <q-btn
               v-if="step === 1"
               class="q-mr-sm"
               style="background: var(--happypurim); color: white"
@@ -133,37 +135,38 @@
               label="PLACE ORDER"
               @click="placeOrder"
             /> -->
+            </div>
           </div>
         </div>
       </div>
+      <!--* confirm cancel --->
+      <DialogAlert
+        @on-finish="
+          (value) => {
+            if (value)
+              $router.push({
+                name: 'MemberLayout-MemberPage',
+              })
+          }
+        "
+        msg="Are you sure you want to leave this page? Your cart will be lost unless you save it for later"
+        v-model="cancelOrderDialogFlag"
+      />
+      <DialogAlert
+        @on-finish="
+          (value) => {
+            step++
+            goToTop({ delay: 300 })
+          }
+        "
+        dont-show-icon
+        msg="The reciprocity function enables you to automatically send to people that are sending to you. This is a great tool to ensure that you don’t inadvertently miss someone and that everyone that sends to you, gets from you in return. Please do NOT rely on this alone—if everyone just chooses reciprocity, and doesn’t select any recipients, no one will get anything!"
+        v-model="addReciprocityDialogFlag"
+        title="Would you like to add reciprocity?"
+        cancel-btn-text="No"
+        ok-btn-text="Add To Order"
+      />
     </div>
-    <!--* confirm cancel --->
-    <DialogAlert
-      @on-finish="
-        (value) => {
-          if (value)
-            $router.push({
-              name: 'MemberLayout-MemberPage',
-            })
-        }
-      "
-      msg="Are you sure you want to leave this page? Your cart will be lost unless you save it for later"
-      v-model="cancelOrderDialogFlag"
-    />
-    <DialogAlert
-      @on-finish="
-        (value) => {
-          step++
-          goToTop({ delay: 300 })
-        }
-      "
-      dont-show-icon
-      msg="The reciprocity function enables you to automatically send to people that are sending to you. This is a great tool to ensure that you don’t inadvertently miss someone and that everyone that sends to you, gets from you in return. Please do NOT rely on this alone—if everyone just chooses reciprocity, and doesn’t select any recipients, no one will get anything!"
-      v-model="addReciprocityDialogFlag"
-      title="Would you like to add reciprocity?"
-      cancel-btn-text="No"
-      ok-btn-text="Add To Order"
-    />
   </div>
 </template>
 
@@ -214,6 +217,8 @@ const addReciprocityDialogFlag = ref(false)
 const step = ref(0)
 
 const isReady = ref(false)
+const isNotNexStepReady = ref(false)
+
 const stepOneCreateOrderRef = ref<StepOneCreateOrderInterface | undefined>(undefined)
 
 const saveForLater = async () => {
@@ -237,13 +242,13 @@ const saveStepOne = async () => {
 
 const onNext = async () => {
   // showLoading()
-  isReady.value = false
+  isNotNexStepReady.value = true
   await saveStepOne()
   step.value++
   // if (!requiredMembership.value) step.value++
   // stopLoading()
   setBackendTotal()
-  isReady.value = true
+  isNotNexStepReady.value = false
   goToTop({ delay: 600 })
 
   // if (!$moStore.hasExtraOptions) step.value++
@@ -270,20 +275,25 @@ const goBack = () => {
 }
 
 const continueToExtraOptions = async () => {
-  isReady.value = false
+  // showLoading()
+  isNotNexStepReady.value = true
   await addMemberShipToCart()
   step.value++
-  isReady.value = true
+  isNotNexStepReady.value = false
+  // stopLoading()
 }
 
 const updateGreetings = async () => {
-  isReady.value = false
+  isNotNexStepReady.value = true
+  // showLoading()
   await updateGreetingsRecipientsByMemberId()
   step.value++
-  isReady.value = true
+  isNotNexStepReady.value = false
+  // stopLoading()
 }
 
 onMounted(() => {
+  showLoading()
   getInitialData()
     .then(() => {
       const orderPages: PageStepInterface[] = [
@@ -374,6 +384,7 @@ onMounted(() => {
         })
       }
       isReady.value = true
+      stopLoading()
     })
     .catch(console.error)
 })
