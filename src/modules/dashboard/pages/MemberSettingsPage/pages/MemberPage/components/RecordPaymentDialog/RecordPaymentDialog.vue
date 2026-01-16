@@ -460,7 +460,6 @@
             />
 
             <q-btn
-              v-close-popup
               class="q-mr-sm q-mt-sm"
               style="background: var(--happypurim); color: white"
               label="Pay"
@@ -506,6 +505,16 @@ import type {
 } from 'src/modules/dashboard/interfaces/payment-interface'
 import { ref, onMounted, computed, watch } from 'vue'
 import { useRoute } from 'vue-router'
+
+interface RecordPaymentDialogInterface {
+  modelValue: boolean
+}
+
+defineProps<RecordPaymentDialogInterface>()
+
+const $emit = defineEmits<{
+  (e: 'update:modelValue', value: boolean): void
+}>()
 
 const $route = useRoute()
 const { getUnPaidOrdersByMemberId, recordCheckPayment, recordCCPayment, recordCreditPayment } =
@@ -650,16 +659,20 @@ onMounted(() => {
 })
 
 const onPay = async () => {
+  let ok = false
   switch (paymentType.value) {
     case 0:
-      await onCheckPayment()
+      ok = await onCheckPayment()
       break
     case 1:
-      await onCCPayment()
+      ok = await onCCPayment()
       break
     default:
-      await onCreditOtherPayment()
+      ok = await onCreditOtherPayment()
   }
+
+  if (!ok) return
+  $emit('update:modelValue', false)
   await getTransactionsByMemberSelected_co()
 }
 
@@ -677,7 +690,8 @@ const onCheckPayment = async () => {
         transactionID: item.OrderNumber,
       })),
   }
-  await recordCheckPayment(memberId.value, data)
+  const resp = await recordCheckPayment(memberId.value, data)
+  return resp
 }
 
 const onCCPayment = async () => {
@@ -702,7 +716,8 @@ const onCCPayment = async () => {
         transactionId: item.OrderNumber,
       })),
   }
-  await recordCCPayment(memberId.value, data)
+  const resp = await recordCCPayment(memberId.value, data)
+  return resp
 }
 
 const onCreditOtherPayment = async () => {
@@ -719,7 +734,8 @@ const onCreditOtherPayment = async () => {
         transactionID: item.OrderNumber,
       })),
   }
-  await recordCreditPayment(memberId.value, data)
+  const resp = await recordCreditPayment(memberId.value, data)
+  return resp
 }
 
 const isAmountAppliedDisabled = (row: InvoiceUnpaidOrderInterface) =>

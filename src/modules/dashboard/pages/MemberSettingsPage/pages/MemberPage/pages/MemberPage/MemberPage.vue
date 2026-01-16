@@ -714,7 +714,7 @@
     <!--=============================== Dialogs =============================-->
     <!--================= Record Payment ================-->
     <q-dialog v-model="recordPaymentDialogFlag" persistent>
-      <RecordPaymentDialog />
+      <RecordPaymentDialog v-model="recordPaymentDialogFlag" />
     </q-dialog>
     <!--============== END OF SECTION =============-->
     <!--================= email logion code ================-->

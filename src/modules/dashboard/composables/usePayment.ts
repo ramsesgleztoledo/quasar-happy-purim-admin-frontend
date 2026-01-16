@@ -52,6 +52,7 @@ export const usePayment = () => {
       });
 
       showPaymentResult(resp.ok)
+      return resp.ok
     },
     async recordCreditPayment(memberId: number, data: RecordCheckPaymentFormInterface) {
       const resp = await recordCreditPayment(memberId, data, {
@@ -64,6 +65,8 @@ export const usePayment = () => {
       });
 
       showPaymentResult(resp.ok)
+
+      return resp.ok
     },
     async recordCCPayment(memberId: number, data: RecordCCPaymentFormInterface) {
       const resp = await recordCCPayment(memberId, data, {
@@ -75,6 +78,7 @@ export const usePayment = () => {
         useRespAsError: true,
       });
       showPaymentResult(resp.ok)
+      return resp.ok
     }
 
   }
