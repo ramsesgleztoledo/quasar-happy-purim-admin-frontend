@@ -1,6 +1,11 @@
 import type { LoginAccountInterface } from "../interfaces/mocks-interfaces";
 
 
+const currentUrl = window.location.origin
+
+
+
+
 const loginAccountsAux: LoginAccountInterface[] = [
   { id: 757, name: `Elana's School`, guid: 'E834CD68-3272-424B-9851-30EF830A4E98', token: "IIiteGH1xpeGKnVAoyDFxPX2jEwl9IfIJ5ltNUzaFuIC+4JNcdZfigaPWY1MzmNFvdH5OA3vXJXecEdxxRqiRg==" },
   { id: 783, name: `Test School`, guid: 'AB958CEA-5BFB-45E3-B3B5-60561B93A598', token: "5DOTr9y2QULoWpQEtGjADR/oAXOzr4RHIrS+kRNtZKATKESAt7/msjfBWBLC7R0tYX1I+rA+d89kU49m6bEP6Q==" },
@@ -43,12 +48,15 @@ const loginAccountsAux: LoginAccountInterface[] = [
   { id: 469, name: 'Congregation Beth Israel of Bellingham', guid: '0492d264-e946-42fb-bb65-500e69df4bd8', token: "R15VNK7Ky6eLijRoen7/J2swZDwfEQ+or4BOLCzF/CKWjewDasEGeJensNtGPXXWnclUGYt0tlh9bAIPM7twgg==" },
   { id: 600, name: 'Har Shalom Sisterhood', guid: 'A85CF7CE-20D2-4B3F-9054-063C178CF041', token: "7Ncinx/xjKry1+R6EaG4rN7U4ZtefPooCFwbfP6EF8nXytcMFblNQJmlMXEIalCCTzQY6bwstMCeZxCOdtfnug==" },
   { id: 571, name: 'Talmudical Academy', guid: '027CC232-5518-482D-AAF3-CE4C34104562', token: "o3giiVX+76RJLFaCQYf1tmgCFctb0cs8grF29RZiHn8RzusQhtdkcXf3rYO/RFam9h0z8Q9NDg/kOB8HhAdLCA==" },
-  { id: 379, name: '', guid: 'FD30E5F5-9E95-43C6-8274-1B5836E9F917', token: "cxllKoeyEwMnI9+L9GN8aQJDiF20eDKA5i2UdK18+VESag5fUcx8fr7zqoC06WvDVYCEWYtwhp+yI5EYMrevpg==" }
+  { id: 379, name: '', guid: 'FD30E5F5-9E95-43C6-8274-1B5836E9F917', token: "cxllKoeyEwMnI9+L9GN8aQJDiF20eDKA5i2UdK18+VESag5fUcx8fr7zqoC06WvDVYCEWYtwhp+yI5EYMrevpg==" },
+  {
+    id: 508, name: 'Sacks Morasha JPS', guid: 'C545756A - 37C0- 4D62 - 8905 - 5F9DFBF0782A', token: "bHqH78BN14BEMj472KZwxOWthZdvnevxr5j+kOirCkX+85E9kkoE47J3RzCG+6QlowAsf9+LCnskAsouJUen2Q=="
+  },
 ]
 
 export const loginAccounts: LoginAccountInterface[] = loginAccountsAux.map(ac => ({
   ...ac,
-  url: `http://localhost:9000/#/authenticate?token=${ac.token}`
+  url: `${currentUrl}/#/authenticate?token=${ac.token}`
 }))
 
 

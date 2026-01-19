@@ -367,7 +367,10 @@ import { computed, onMounted, ref } from 'vue'
 import UploaderComponent from '../UploaderComponent/UploaderComponent.vue'
 import { useUI } from 'src/modules/UI/composables'
 
-const { isMobile, EDITOR_START_IMG_URL } = useUI()
+const {
+  isMobile,
+  // EDITOR_START_IMG_URL
+} = useUI()
 
 interface EditorCustomPropsInterface {
   modelValue: string
@@ -488,7 +491,7 @@ const onFileSelected = (item: string) => {
 
 const insertInternalFile = () => {
   if (!selectedFile.value) return
-  const src = `${EDITOR_START_IMG_URL.value}${selectedFile.value}`
+  const src = `${selectedFile.value}`
   insertFile(src)
 }
 

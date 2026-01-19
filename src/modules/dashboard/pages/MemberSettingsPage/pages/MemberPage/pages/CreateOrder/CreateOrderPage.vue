@@ -236,6 +236,7 @@ const saveForLater = async () => {
 const saveStepOne = async () => {
   const result = stepOneCreateOrderRef.value?.saveChanges()
   if (!result) return
+
   setUpdatedPromotions(result.promotions)
   await updateCart(result)
 }

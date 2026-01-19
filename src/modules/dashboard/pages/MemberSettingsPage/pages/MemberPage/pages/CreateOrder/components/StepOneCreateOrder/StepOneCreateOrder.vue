@@ -512,10 +512,10 @@ const onUpdateReciprocity = (value: boolean) => {
 const getPromotionChanges = () => {
   const promotionChanges: OrderPromotionInterface[] = []
   const promotionState = memberOrderState.value.promotions
+
   for (let i = 0; i < promotionState.length; i++) {
-    if (promotionState[i]?.selected !== promotions.value[i]?.selected) {
+    if (promotionState[i]?.selected !== promotions.value[i]?.selected)
       promotionChanges.push(promotions.value[i]!)
-    }
   }
   return promotionChanges
 }

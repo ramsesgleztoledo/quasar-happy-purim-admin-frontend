@@ -390,6 +390,8 @@
                             </q-td>
                             <q-td>
                               <q-input
+                                :error="false"
+                                error-message=""
                                 style="width: 200px"
                                 v-model="props.row['amountApplied']"
                                 type="number"
@@ -400,7 +402,7 @@
                                   lazyRules.required(''),
                                   lazyRules.greaterThan(0, false, ''),
                                   lazyRules.lowerThan(Number(props.row.Due), true, ''),
-                                  isValidAmount,
+                                  isValidAmount(''),
                                 ]"
                                 :disable="isAmountAppliedDisabled(props.row).value"
                               />
@@ -411,7 +413,7 @@
                                     lazyRules.required(),
                                     lazyRules.greaterThan(0, false),
                                     lazyRules.lowerThan(Number(props.row.Due), true),
-                                    isValidAmount,
+                                    isValidAmount(''),
                                   ]).value.ok
                                 "
                                 style="background-color: var(--q-negative); font-size: 14px"
@@ -422,7 +424,7 @@
                                       lazyRules.required(),
                                       lazyRules.greaterThan(0, false),
                                       lazyRules.lowerThan(Number(props.row.Due), true),
-                                      isValidAmount,
+                                      isValidAmount(''),
                                     ]).value.msg
                                   }}
                                 </div>
@@ -628,20 +630,14 @@ const columns: QTableColumn<InvoiceUnpaidOrderInterface>[] = [
     label: 'Paid',
     field: 'Paid',
     sortable: true,
-    format: (amount: number) =>
-      `$${convertWithCommas(amount, {
-        dontAllowZero: true,
-      })}`,
+    format: (amount: number) => `$${convertWithCommas(amount)}`,
   },
   {
     name: 'due',
     label: 'Due',
     field: 'Due',
     sortable: true,
-    format: (amount: number) =>
-      `$${convertWithCommas(amount, {
-        dontAllowZero: true,
-      })}`,
+    format: (amount: number) => `$${convertWithCommas(amount)}`,
   },
 ]
 
@@ -827,14 +823,13 @@ const onCheckAll = () => {
   updateValue()
 }
 
-const isValidAmount = () => {
+const isValidAmount = (msg?: string) => () => {
   const amount = getAmountByTab()
   if (amount === 'inf') return true
 
-  return (
-    getSumOfSelected().sum <= Number(amount) ||
-    `The total amount applied can't be greater than your total payment`
-  )
+  return getSumOfSelected().sum <= Number(amount) || msg !== undefined
+    ? `The total amount applied can't be greater than your total payment`
+    : ''
 }
 
 const getSumOfSelected = () => {

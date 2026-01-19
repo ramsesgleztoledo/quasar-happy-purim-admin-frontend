@@ -89,6 +89,30 @@ export const useMemberOrder = () => {
    *                           methods
    *========================================================================**/
 
+
+
+  const fixPromotions = (promotions: OrderPromotionInterface[], items: MemberOrderItemsInterface[]) => {
+
+    const result = promotions.map(pro => {
+      const selected = items.find(item => item.itemId == pro.itemId)
+
+      const disabled = !!pro.transactionID
+      // || !!pro.orderItemID
+
+      return {
+        ...pro,
+        selected: (!!selected || disabled),
+        disabled
+      }
+    }
+    ) || []
+
+
+    return result
+  };
+
+
+
   const addOrRemoveItem = async (isAdd: boolean, data: MemberOrderItemsInterface, showLoading?: boolean) => {
 
 
@@ -190,10 +214,15 @@ export const useMemberOrder = () => {
       const resp = await Promise.all([
         getOrderItemsByMemberGuid(mGuid.value),
         getCustomShippingItem(mGuid.value),
-
+        getPromotionsByMemberGuid(mGuid.value),
       ])
 
+
       if (resp.find(resp => !resp.ok)) return
+
+
+
+      const promotions = fixPromotions(resp[2].data || [], resp[0].data || [])
 
       $moStore.$patch({
         orderItems: resp[0].data,
@@ -202,6 +231,7 @@ export const useMemberOrder = () => {
             ...item,
             attributes: getParse(item.attributes)
           })),
+        promotions
 
       })
     },
@@ -230,19 +260,7 @@ export const useMemberOrder = () => {
 
       if (resp.find(resp => !resp.ok)) return
 
-      const promotions = resp[0].data.map(pro => {
-        const selected = resp[2].data.find(item => item.itemId == pro.itemId)
-
-        const disabled = !!pro.transactionID
-        // || !!pro.orderItemID
-
-        return {
-          ...pro,
-          selected: (!!selected || disabled),
-          disabled
-        }
-      }
-      ) || []
+      const promotions = fixPromotions(resp[0].data || [], resp[2].data || [])
 
       const showFee = !!resp[3].data[0]?.feeActive && !!resp[3].data[0]?.feeRequired
 
