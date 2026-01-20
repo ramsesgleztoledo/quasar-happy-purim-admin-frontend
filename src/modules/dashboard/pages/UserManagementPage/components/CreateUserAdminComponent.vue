@@ -177,7 +177,14 @@
             </div>
             <div class="row q-mt-md">
               <div class="col-6 q-pl-sm q-pr-sm">
-                <q-select
+                <q-input
+                  v-model="realForm.state.value"
+                  outlined
+                  label="State"
+                  lazy-rules
+                  :rules="[]"
+                />
+                <!-- <q-select
                   popup-content-class="q-menu-300"
                   v-model="realForm.state.value"
                   outlined
@@ -185,7 +192,7 @@
                   label="State"
                   lazy-rules
                   :rules="[]"
-                />
+                /> -->
               </div>
               <div class="col-6 q-pl-sm q-pr-sm">
                 <q-input
@@ -318,7 +325,7 @@
 import DialogAlert from 'src/components/DialogAlert/DialogAlert.vue'
 import { lazyRules, useForm, validations } from 'src/composables'
 import { useUserAdmin } from 'src/modules/dashboard/composables/useUserAdmin'
-import { statesOptions } from 'src/modules/dashboard/data'
+// import { statesOptions } from 'src/modules/dashboard/data'
 import type {
   AddUserFormInterface,
   AdminUserInterface,

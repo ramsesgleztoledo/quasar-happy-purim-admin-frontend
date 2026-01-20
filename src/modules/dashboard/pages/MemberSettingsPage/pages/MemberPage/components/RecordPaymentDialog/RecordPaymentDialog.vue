@@ -225,7 +225,14 @@
                     </div>
                     <div class="row">
                       <div class="col-6 q-pr-sm q-pl-sm">
-                        <q-select
+                        <q-input
+                          v-model="creditForm.state.value"
+                          outlined
+                          label="State"
+                          lazy-rules
+                          :rules="[lazyRules.required()]"
+                        />
+                        <!-- <q-select
                           popup-content-class="q-menu-300"
                           v-model="creditForm.state.value"
                           outlined
@@ -233,7 +240,7 @@
                           label="State"
                           lazy-rules
                           :rules="[lazyRules.required()]"
-                        />
+                        /> -->
                       </div>
                       <div class="col-6 q-pr-sm q-pl-sm">
                         <q-input
@@ -499,7 +506,7 @@ import { lazyRules, useForm, validations } from 'src/composables'
 import { convertToUSDate, convertWithCommas } from 'src/helpers'
 import { useMember } from 'src/modules/dashboard/composables/useMember'
 import { usePayment } from 'src/modules/dashboard/composables/usePayment'
-import { statesOptions } from 'src/modules/dashboard/data'
+// import { statesOptions } from 'src/modules/dashboard/data'
 import type {
   InvoiceUnpaidOrderInterface,
   RecordCCPaymentFormInterface,

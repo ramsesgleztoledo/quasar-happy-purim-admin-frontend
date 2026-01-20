@@ -93,13 +93,14 @@
           </div>
           <div class="row q-mt-md">
             <div class="col-6 q-pl-sm q-pr-sm">
-              <q-select
+               <q-input v-model="realForm.state.value" outlined label="State" />
+              <!-- <q-select
                 popup-content-class="q-menu-300"
                 v-model="realForm.state.value"
                 outlined
                 :options="statesOptions"
                 label="State"
-              />
+              /> -->
             </div>
             <div class="col-6 q-pl-sm q-pr-sm">
               <q-input
@@ -302,7 +303,7 @@
                 outlined
                 label="Zip Code *"
                 class="regular-number-input"
-                
+
                 lazy-rules
                 :rules="[lazyRules.required()]"
               />
@@ -413,7 +414,7 @@
 import DialogAlert from 'src/components/DialogAlert/DialogAlert.vue'
 import { lazyRules, useForm, validations } from 'src/composables'
 import { useMember } from 'src/modules/dashboard/composables/useMember'
-import { statesOptions } from 'src/modules/dashboard/data'
+// import { statesOptions } from 'src/modules/dashboard/data'
 import type { ShulCategoryInterface } from 'src/modules/dashboard/interfaces/category-interfaces'
 import type { MemberAddFormInterface } from 'src/modules/dashboard/interfaces/member-interfaces'
 import { useDashboardStore } from 'src/modules/dashboard/store/dashboardStore/dashboardStore'

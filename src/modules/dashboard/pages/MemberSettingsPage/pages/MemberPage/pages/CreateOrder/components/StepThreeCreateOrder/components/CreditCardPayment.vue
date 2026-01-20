@@ -145,7 +145,15 @@
           />
         </div>
         <div class="col-6 q-pr-sm q-pl-sm">
-          <q-select
+          <q-input
+            :disable="sameAsProfile"
+            v-model="paymentForm.realForm.value.billState.value"
+            outlined
+            label="State *"
+            lazy-rules
+            :rules="[lazyRules.required()]"
+          />
+          <!-- <q-select
             popup-content-class="q-menu-300"
             :disable="sameAsProfile"
             v-model="paymentForm.realForm.value.billState.value"
@@ -154,7 +162,7 @@
             label="State *"
             lazy-rules
             :rules="[lazyRules.required()]"
-          />
+          /> -->
         </div>
       </div>
       <div class="row q-mt-md">
@@ -189,7 +197,7 @@
 import { lazyRules, useForm, validations } from 'src/composables'
 import { getCardType } from 'src/helpers/getCardType'
 import { useMemberOrder } from 'src/modules/dashboard/composables/useMemberOrder'
-import { statesOptions } from 'src/modules/dashboard/data'
+// import { statesOptions } from 'src/modules/dashboard/data'
 import type { PaymentMethodTypeInterface } from 'src/modules/dashboard/interfaces/memberOrder-interfaces'
 import { useMemberOrderStore } from 'src/modules/dashboard/store/memberOrderStore/memberOrderStore'
 import { useMemberStore } from 'src/modules/dashboard/store/memberStore/memberStore'

@@ -72,7 +72,15 @@
                 />
               </div>
               <div class="col-6 q-pr-sm q-pl-sm">
-                <q-select
+                  <q-input
+                  :disable="dontEdit"
+                  v-model="realForm.state.value"
+                  outlined
+                  label="State"
+                  lazy-rules
+                  :rules="[lazyRules.required()]"
+                />
+                <!-- <q-select
                   popup-content-class="q-menu-300"
                   :disable="dontEdit"
                   v-model="realForm.state.value"
@@ -81,7 +89,7 @@
                   label="State"
                   lazy-rules
                   :rules="[lazyRules.required()]"
-                />
+                /> -->
               </div>
             </div>
             <div class="row q-mt-md">
@@ -104,7 +112,7 @@
                   outlined
                   label="Phone"
                   class="regular-number-input"
-                  
+
                   lazy-rules
                   :rules="[]"
                 />
@@ -185,7 +193,7 @@
 import type { QDialog } from 'quasar'
 import { lazyRules, useForm, validations } from 'src/composables'
 import { useShipment } from 'src/modules/dashboard/composables/useShipment'
-import { statesOptions } from 'src/modules/dashboard/data'
+// import { statesOptions } from 'src/modules/dashboard/data'
 import type { CustomShippingOptionInterface } from 'src/modules/dashboard/interfaces/memberOrder-interfaces'
 import type { BasketToBeShippedInterface } from 'src/modules/dashboard/interfaces/shipment-interfaces'
 import { useDashboardStore } from 'src/modules/dashboard/store/dashboardStore/dashboardStore'

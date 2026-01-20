@@ -402,13 +402,14 @@
           </div>
           <div class="row q-mt-md">
             <div class="col-6 q-pl-sm q-pr-sm">
-              <q-select
+              <q-input v-model="realForm.state.value" outlined label="State" />
+              <!-- <q-select
                 popup-content-class="q-menu-300"
                 v-model="realForm.state.value"
                 outlined
                 :options="statesOptions"
                 label="State"
-              />
+              /> -->
             </div>
             <div class="col-6 q-pl-sm q-pr-sm">
               <q-input
@@ -623,13 +624,14 @@
                   </div>
                   <div class="row q-mt-md">
                     <div class="col-6 q-pl-sm q-pr-sm">
-                      <q-select
+                      <q-input v-model="altAddressForm.state.value" outlined label="State" />
+                      <!-- <q-select
                         popup-content-class="q-menu-300"
                         v-model="altAddressForm.state.value"
                         outlined
                         :options="statesOptions"
                         label="State"
-                      />
+                      /> -->
                     </div>
                     <div class="col-6 q-pl-sm q-pr-sm">
                       <q-input
@@ -776,7 +778,7 @@ import {
 } from 'src/composables'
 import { ref, watch } from 'vue'
 import { useUI } from 'src/modules/UI/composables'
-import { statesOptions } from 'src/modules/dashboard/data'
+// import { statesOptions } from 'src/modules/dashboard/data'
 import { useMember } from 'src/modules/dashboard/composables/useMember'
 import { useRoute, useRouter } from 'vue-router'
 import { useQuasar } from 'quasar'

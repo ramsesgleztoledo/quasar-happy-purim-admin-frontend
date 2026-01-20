@@ -36,7 +36,14 @@
     </div>
     <div class="row q-mt-md">
       <div class="col-6 q-pl-sm q-pr-sm">
-        <q-select
+             <q-input
+          v-model="realForm.state.value"
+          outlined
+          label="State *"
+          lazy-rules
+          :rules="[lazyRules.required()]"
+        />
+        <!-- <q-select
           popup-content-class="q-menu-300"
           v-model="realForm.state.value"
           outlined
@@ -44,7 +51,7 @@
           label="State *"
           lazy-rules
           :rules="[lazyRules.required()]"
-        />
+        /> -->
       </div>
       <div class="col-6 q-pl-sm q-pr-sm">
         <q-input
@@ -211,7 +218,7 @@
 
 <script setup lang="ts">
 import { lazyRules, useForm, validations } from 'src/composables'
-import { statesOptions } from 'src/modules/dashboard/data'
+// import { statesOptions } from 'src/modules/dashboard/data'
 import BasketImg from '../BasketImg/BasketImg.vue'
 import { useUI } from 'src/modules/UI/composables'
 import { useMemberOrder } from 'src/modules/dashboard/composables/useMemberOrder'

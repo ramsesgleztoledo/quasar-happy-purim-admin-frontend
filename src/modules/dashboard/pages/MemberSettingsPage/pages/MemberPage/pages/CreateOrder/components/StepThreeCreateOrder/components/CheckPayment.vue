@@ -21,7 +21,7 @@
             label="Amount *"
             lazy-rules
             type="number"
-            :rules="[lazyRules.required(), lazyRules.greaterThan(0, false)]"
+            :rules="[lazyRules.required(), lazyRules.greaterThan(0, true)]"
           />
         </div>
       </div>
@@ -68,7 +68,7 @@
 </template>
 
 <script setup lang="ts">
-import { lazyRules, useForm } from 'src/composables'
+import { lazyRules, useForm, validations } from 'src/composables'
 import type { PaymentCheckFormInterface } from 'src/modules/dashboard/interfaces/memberOrder-interfaces'
 import { useMemberOrderStore } from 'src/modules/dashboard/store/memberOrderStore/memberOrderStore'
 
@@ -78,7 +78,7 @@ const $moStore = useMemberOrderStore()
 
 const paymentForm = useForm<PaymentCheckFormInterface>({
   checkOrCCNumber: { value: '', required: true },
-  total: { value: 0, required: true },
+  total: { value: 0, required: true, validations: [validations.greaterThan(0, true)] },
   firstName: { value: '', required: true },
   phoneOrCheckDate: { value: '', required: true },
 })

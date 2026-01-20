@@ -84,7 +84,7 @@
     "
     cancel-btn-text="Cancel"
     ok-btn-text="Send"
-    msg="Are you sure you want email this receipt?"
+    msg="Are you sure you want to email this receipt?"
   />
 </template>
 
