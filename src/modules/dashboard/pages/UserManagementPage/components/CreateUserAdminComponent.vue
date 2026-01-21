@@ -231,7 +231,7 @@
         />
 
         <div v-else>
-          <q-btn @click="onDeleteFlag = true" label="Delete" class="q-mr-sm q-mt-sm" />
+          <!-- <q-btn @click="onDeleteFlag = true" label="Delete" class="q-mr-sm q-mt-sm" /> -->
           <q-btn
             @click="onSaveUser"
             style="background: var(--happypurim); color: white"
