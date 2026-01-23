@@ -1,4 +1,23 @@
 <template>
+  <!-- <template>
+    hasUnsavedChanges {{ hasUnsavedChanges }}
+    <div class="row">
+      <div class="col-6">
+        <pre>
+              <code>
+                {{ memberCurrentData }}
+              </code>
+            </pre>
+      </div>
+      <div class="col-6">
+        <pre>
+            <code>
+              {{ memberEditedData }}
+            </code>
+          </pre>
+      </div>
+    </div>
+  </template> -->
   <template v-if="isReady">
     <div class="row q-mt-sm q-mb-sm justify-content-space-between">
       <div>
@@ -195,6 +214,7 @@
               </q-list>
             </q-btn-dropdown>
           </div>
+
           <div class="col-12 q-mt-sm">
             <div
               style="width: fit-content"
@@ -334,6 +354,28 @@
       type="error"
       text="This member is hidden, and does not show up on the order form."
     />
+    <div class="row q-mt-sm cancel-save-btn-container">
+      <div class="col-12">
+        <q-btn
+          outline
+          label="RESET"
+          class="q-mr-sm"
+          style="color: #990000; border-color: #990000"
+          @click="() => resetAllForm(true)"
+        />
+        <q-btn
+          class="q-mr-sm"
+          style="background: var(--happypurim); color: white"
+          label="SAVE CHANGES"
+          @click="
+            () => {
+              onUpdateMember()
+            }
+          "
+          :disable="!areValidForms()"
+        />
+      </div>
+    </div>
     <!-- eslint-disable -->
     <form action="" class="">
       <div class="row">
@@ -776,12 +818,12 @@ import {
   useForm,
   // validations
 } from 'src/composables'
-import { ref, watch } from 'vue'
+import { computed, ref, watch } from 'vue'
 import { useUI } from 'src/modules/UI/composables'
 // import { statesOptions } from 'src/modules/dashboard/data'
 import { useMember } from 'src/modules/dashboard/composables/useMember'
-import { useRoute, useRouter } from 'vue-router'
-import { useQuasar } from 'quasar'
+import { onBeforeRouteLeave, useRoute, useRouter } from 'vue-router'
+import { Dialog, useQuasar } from 'quasar'
 import type {
   AlternativeMemberAddressFormInterface,
   MemberUpdateAllDataForm,
@@ -796,6 +838,118 @@ interface CheckboxItemInterface {
   id: number
   display?: boolean
 }
+
+const memberCurrentData = computed(() => {
+  const memberData = {
+    title: memberState.value.selectedMember?.title,
+    firstName: memberState.value.selectedMember?.firstName,
+    lastName: memberState.value.selectedMember?.lastName,
+    spouseTitle: '',
+    spouseFirstName: memberState.value.selectedMember?.spouseFirstName,
+    spouseLastName: memberState.value.selectedMember?.spouseLastName,
+    address: memberState.value.selectedMember?.address,
+    address2: memberState.value.selectedMember?.address2,
+    city: memberState.value.selectedMember?.city,
+    state: memberState.value.selectedMember?.state,
+    zip: memberState.value.selectedMember?.zip,
+    phone: memberState.value.selectedMember?.phone,
+    phone2: memberState.value.selectedMember?.phone2,
+    email: memberState.value.selectedMember?.email,
+    email2: memberState.value.selectedMember?.email2,
+    misc: memberState.value.selectedMember?.misc,
+    misc2: memberState.value.selectedMember?.misc2,
+    displayAs: memberState.value.selectedMember?.displayAs,
+    // foods: memberState.value.selectedMember?.foods,
+    salutation: memberState.value.selectedMember?.salutation,
+    notes: memberState.value.selectedMember?.notes,
+    children: memberState.value.displayChildren ? memberState.value.selectedMember?.children : '',
+    route: memberState.value.selectedMember?.route,
+    category: memberState.value.memberCategories.map((cat) => cat.categoryId),
+  }
+  const altAddressData = {
+    name: memberState.value.memberAlternativeAddress?.altName,
+    address: memberState.value.memberAlternativeAddress?.altAddress1,
+    address2: memberState.value.memberAlternativeAddress?.altAddress2,
+    city: memberState.value.memberAlternativeAddress?.altCity,
+    state: memberState.value.memberAlternativeAddress?.altState,
+    zip: memberState.value.memberAlternativeAddress?.altZip,
+    useAlternateDelivery: !!memberState.value.memberAlternativeAddress?.isChecked,
+  }
+
+  const data: MemberUpdateAllDataForm = {
+    hidden: !!memberState.value.memberOptions.hidden,
+    reciprocity: !!memberState.value.memberOptions.reciprocity.isReciprocal,
+    membershipValue: !!memberState.value.membershipSettings?.checkedStatus,
+    memberData: memberData as unknown as MemberUpdateFormInterface,
+    donate: memberState.value.memberDonateBasketOption?.visible
+      ? !!memberState.value.memberDonateBasketOption.checked
+      : undefined,
+    profileQuestions: memberState.value.profileQuestions.map((proQ) => ({
+      option: proQ.optionId,
+      value: proQ.isChecked,
+    })),
+    altAddressData: altAddressData as unknown as AlternativeMemberAddressFormInterface,
+    doorManValue: !!memberState.value.doorManSettings.value,
+  }
+  return data
+})
+
+const memberEditedData = computed(() => {
+  const memberData = {
+    ...getFormValue(),
+    category: categories.value.filter((cat) => cat.value).map((cat) => cat.id),
+  }
+  const altAddressData = {
+    ...getAltAddressFormValue(),
+    useAlternateDelivery: altAddress.value,
+  }
+
+  const data: MemberUpdateAllDataForm = {
+    hidden: !!options.value.find((item) => item.id === 0)?.value,
+    reciprocity: !!options.value.find((item) => item.id === 1)?.value,
+    membershipValue: !!options.value.find((item) => item.id === 2)?.value,
+    memberData: memberData as unknown as MemberUpdateFormInterface,
+    donate: otherOptions.value.length ? otherOptions.value[0]!.value : undefined,
+    profileQuestions: profileQuestions.value.map((proQ) => ({
+      option: proQ.id,
+      value: proQ.value ? 1 : 0,
+    })),
+    altAddressData: altAddressData as unknown as AlternativeMemberAddressFormInterface,
+    doorManValue: hasDoorman.value,
+  }
+  return data
+})
+
+//before leave
+const hasUnsavedChanges = computed(
+  () => JSON.stringify(memberCurrentData.value) != JSON.stringify(memberEditedData.value),
+)
+const confirmLeave = (): Promise<boolean> => {
+  return new Promise((resolve) => {
+    Dialog.create({
+      title: 'Confirm!',
+      message: 'Are you sure you want to leave? Your changes will be lost.',
+      cancel: true,
+      persistent: true,
+      class: 'dialog-class',
+    })
+      .onOk(() => resolve(true))
+      .onCancel(() => resolve(false))
+  })
+}
+
+onBeforeRouteLeave(async (to, from, next) => {
+  if (hasUnsavedChanges.value) {
+    if (await confirmLeave()) {
+      next()
+    } else {
+      next(false)
+    }
+  } else {
+    next()
+  }
+})
+//en before leave
 
 const showHoverCopy = ref(false)
 
@@ -813,7 +967,7 @@ const {
 } = useMember()
 
 const currentMemberPage = ref<number>(1)
-const paginationCustomRef = ref()
+const paginationCustomRef = ref(undefined)
 const isReady = ref<boolean>(false)
 const altAddress = ref<boolean>(false)
 const hasDoorman = ref<boolean>(false)
@@ -1020,30 +1174,7 @@ const setDeleteMember = async () => {
 const onUpdateMember = async () => {
   const id = Number($route.params.memberId)
 
-  const memberData = {
-    ...getFormValue(),
-    category: categories.value.filter((cat) => cat.value).map((cat) => cat.id),
-  }
-  const altAddressData = {
-    ...getAltAddressFormValue(),
-    useAlternateDelivery: altAddress.value,
-  }
-
-  const data: MemberUpdateAllDataForm = {
-    hidden: !!options.value.find((item) => item.id === 0)?.value,
-    reciprocity: !!options.value.find((item) => item.id === 1)?.value,
-    membershipValue: !!options.value.find((item) => item.id === 2)?.value,
-    memberData: memberData as unknown as MemberUpdateFormInterface,
-    donate: otherOptions.value.length ? otherOptions.value[0]!.value : undefined,
-    profileQuestions: profileQuestions.value.map((proQ) => ({
-      option: proQ.id,
-      value: proQ.value ? 1 : 0,
-    })),
-    altAddressData: altAddressData as unknown as AlternativeMemberAddressFormInterface,
-    doorManValue: hasDoorman.value,
-  }
-
-  await updateMember_Co(id, data)
+  await updateMember_Co(id, memberEditedData.value)
 }
 
 const onResetLoginCode = () => {

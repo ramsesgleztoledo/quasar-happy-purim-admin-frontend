@@ -95,7 +95,7 @@
                   lazy-rules
                   :rules="[
                     lazyRules.required(),
-                    lazyRules.minCharacters(8),
+                    lazyRules.minCharacters(8, 'Minimum of 8 characters required'),
                     lazyRules.isGoodPassword(),
                   ]"
                   label="Password *"
@@ -245,27 +245,32 @@
 
   <!-- set password dialog -->
   <q-dialog v-model="setPasswordFlag" persistent>
-    <q-card>
+    <q-card
+      :style="{
+        width: isMobile ? '90vw' : '400px',
+      }"
+    >
       <div class="row dialog-header custom-dialog-header-container">
         <div class="col-12">
           <p>Set New Password</p>
         </div>
       </div>
 
-      <div class="custom-dialog-body-container q-pa-lg">
+      <div class="custom-dialog-body-container q-pa-lg" style="height: 175px">
         <div class="row">
           <!--=============================== member left=============================-->
           <div class="col-12">
             <div class="row q-mt-md">
               <div class="q-pl-sm q-pr-sm col-12">
                 <q-input
+                  class="dnt-show-error"
                   v-model="passwordForm.password.value"
                   outlined
                   :type="showPassword ? 'text' : 'password'"
                   lazy-rules
                   :rules="[
                     lazyRules.required(),
-                    lazyRules.minCharacters(8),
+                    lazyRules.minCharacters(8, 'Minimum of 8 characters required'),
                     lazyRules.isGoodPassword(),
                   ]"
                   label="Password *"
@@ -278,6 +283,9 @@
                     />
                   </template>
                 </q-input>
+                <div v-if="isPasswordValid != true" class="row msg-error">
+                  {{ isPasswordValid }}
+                </div>
               </div>
             </div>
           </div>
@@ -435,6 +443,19 @@ const onSetNewPassword = async () => {
   setPasswordFlag.value = false
   resetPasswordForm()
 }
+
+const isPasswordValid = computed(() => {
+  const min = lazyRules.minCharacters(
+    8,
+    'Minimum of 8 characters required',
+  )(passwordForm.value.password.value)
+  if (min !== true) return min
+
+  const isGood = lazyRules.isGoodPassword()(passwordForm.value.password.value)
+  if (isGood !== true) return isGood
+
+  return true
+})
 
 watch(
   () => $props.user,

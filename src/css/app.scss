@@ -543,3 +543,47 @@ body {
 canvas {
   background-color: var(--box-bg);
 }
+
+.msg-error {
+  color: var(--q-negative);
+  font-size: 12px;
+}
+
+.dnt-show-error {
+  .q-field__bottom {
+    display: none;
+  }
+}
+
+.dialog-class {
+  > :nth-child(1) {
+    height: 72px;
+    background: var(--happypurim);
+    color: white;
+    padding: 20px;
+    font-size: 24px;
+    font-weight: 600;
+    line-height: 36px;
+    letter-spacing: -0.005em;
+    text-underline-position: from-font;
+    -webkit-text-decoration-skip-ink: none;
+    text-decoration-skip-ink: none;
+    box-shadow: 0px 0px 10px 0px black !important;
+    margin-bottom: 20px;
+  }
+
+  // > :nth-child(2) {
+  // }
+
+  > :nth-child(3) {
+    box-shadow: 0px 1px 8px -3px black !important;
+    > :nth-child(1) {
+      border: 1px solid var(--q-negative);
+      color: var(--q-negative) !important;
+    }
+    > :nth-child(2) {
+      background-color: var(--happypurim);
+      color: white !important;
+    }
+  }
+}

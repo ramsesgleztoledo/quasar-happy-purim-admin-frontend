@@ -50,7 +50,25 @@ const loginAccountsAux: LoginAccountInterface[] = [
   { id: 571, name: 'Talmudical Academy', guid: '027CC232-5518-482D-AAF3-CE4C34104562', token: "o3giiVX+76RJLFaCQYf1tmgCFctb0cs8grF29RZiHn8RzusQhtdkcXf3rYO/RFam9h0z8Q9NDg/kOB8HhAdLCA==" },
   { id: 379, name: '', guid: 'FD30E5F5-9E95-43C6-8274-1B5836E9F917', token: "cxllKoeyEwMnI9+L9GN8aQJDiF20eDKA5i2UdK18+VESag5fUcx8fr7zqoC06WvDVYCEWYtwhp+yI5EYMrevpg==" },
   {
-    id: 508, name: 'Sacks Morasha JPS', guid: 'C545756A - 37C0- 4D62 - 8905 - 5F9DFBF0782A', token: "bHqH78BN14BEMj472KZwxOWthZdvnevxr5j+kOirCkX+85E9kkoE47J3RzCG+6QlowAsf9+LCnskAsouJUen2Q=="
+    id: 508, name: 'Sacks Morasha JPS', guid: 'C545756A-37C0-4D62-8905-5F9DFBF0782A', token: "bHqH78BN14BEMj472KZwxOWthZdvnevxr5j+kOirCkX+85E9kkoE47J3RzCG+6QlowAsf9+LCnskAsouJUen2Q=="
+  },
+  {
+    id: 23, name: `Congregation B'nai Tzedek(CBT)`, guid: '5F8805BE-4F17-458D-B69E-3C823EC2DA90', token: "5zWEjpvWruB2F0p//FwZPtRwcxo2AOY8yiJvqTuc9BqH2z5i2Cs34lD3cL/qwR10nZbCTC+MUQlBtJy5vIhFRA=="
+  },
+  {
+    id: 363, name: `Anshe Sfard Kehillat Torah (ASKT)`, guid: '7169DB3C-424B-4531-ADF7-5467422E51ED', token: "9qNQCwNPZouweincx34KZnK3GBc0Lib9cfqcgPXKXwzNElTZelsp69ntE3ZgVsJGcOF24CFMIBlVtan//LAyQw=="
+  },
+  {
+    id: 577, name: `Adath Israel Congregation - Adath Israel Women's League`, guid: 'F01B87E2-F516-4336-B705-D1DBC0F77098', token: "ykeWZ16sl5MsUL0tgEyMYTSYKa/90gTXkDAree+cNJoskYBSs+ESDa3AHGIlxwhmW7HvifVoXteuyHCXPngnZg=="
+  },
+  {
+    id: 686, name: `Beth El Synagogue (St. Louis Park)`, guid: '37F4F3A7-56FD-424A-B460-F591E7AA61F4', token: "H40n7tPBZQZhwKNHm3F4eb+XKJiGp0BTUc5fIi2aK/0zvp4Fp9gYH1VU7dEJltwGNc8m+yKJB12SrlYRlJ0gqw=="
+  },
+  {
+    id: 163, name: `Young Israel of Kendall Sisterhood (YIK)`, guid: 'D3A5104D-2391-4EA3-8194-3C881840703E', token: "A2fquqZsvBQHD6Mn8lBu47DbhPAacnEpC5j6G4nwMUyvr/Hm6b1Pvra0Ih/xDsGDbYUVrDYd5Mh5egf59rCnow=="
+  },
+  {
+    id: 116, name: `West End Synagogue Sisterhood`, guid: '6653D232-1050-4F26-8EDF-709392DAD96C', token: "z7jrl9Hb5s+xQeuFnJTXqsGlWrpEcbCAl480P9qyEkLqOVVJEzJX5A5vA10NpAviPPs5rpOmcmeom+OnhpoFrg=="
   },
 ]
 

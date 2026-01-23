@@ -8,7 +8,7 @@ export const lazyRules = {
 
   isEmail: (msg?: string) => (value: string) => !validations.isEmail({ value }) || (msg != undefined ? msg : 'Invalid email'),
 
-  isGoodPassword: (msg?: string) => (value: string) => !validations.isGoodPassword({ value }) || (msg != undefined ? msg : 'Password is too weak, please use numbers, Capital letters and special characters'),
+  isGoodPassword: (msg?: string) => (value: string) => !validations.isGoodPassword({ value }) || (msg != undefined ? msg : 'Password is too weak, please use numbers, capital letters and special characters'),
 
   // eslint-disable-next-line @typescript-eslint/no-unsafe-function-type
   checkOnlyIfValue: (validationFunction: Function, msg?: string) => (value: string) => !value || !validationFunction({ value }) || (msg != undefined ? msg : 'incorrect field'),
