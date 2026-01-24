@@ -24,9 +24,11 @@
                     class="col-4"
                   >
                     Customization ({{ totalCustomization(item).value ? $moStore.getSymbol : ''
-                    }}{{ convertWithCommas(totalCustomization(item).value,{
-              dontAllowZero: true
-            }) }})
+                    }}{{
+                      convertWithCommas(totalCustomization(item).value, {
+                        dontAllowZero: true,
+                      })
+                    }})
                   </div>
                   <div class="col-2 justify-content-end">
                     <q-icon
@@ -94,9 +96,11 @@
                                   <p style="margin: 0px">
                                     <b> {{ attribute.promptText }}: </b>
                                     {{ attribute.value }} - ({{ $moStore.getSymbol
-                                    }}{{ convertWithCommas(attribute.price || 0,{
-              dontAllowZero: true
-            }) }})
+                                    }}{{
+                                      convertWithCommas(attribute.price || 0, {
+                                        dontAllowZero: true,
+                                      })
+                                    }})
                                   </p>
                                 </li>
                               </div>
@@ -117,13 +121,13 @@
     </div>
   </div>
   <q-dialog v-model="editCustomShippingDialogFlag" persistent>
-    <q-card>
+    <q-card style="min-width: 50vw">
       <div class="row dialog-header custom-dialog-header-container">
         <div class="col-12">
           <p>Edit Custom Shipping Option</p>
         </div>
       </div>
-      <q-card-section style="padding: 0px; min-width: 50vw;">
+      <q-card-section style="padding: 5px">
         <CustomShippingBasket :prop_customs-shipping-item="customShippingToEdit" />
       </q-card-section>
     </q-card>
