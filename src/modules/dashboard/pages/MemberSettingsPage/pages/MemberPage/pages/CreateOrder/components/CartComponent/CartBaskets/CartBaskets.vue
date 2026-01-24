@@ -127,7 +127,7 @@
           <p>Edit Custom Shipping Option</p>
         </div>
       </div>
-      <q-card-section style="padding: 5px">
+      <q-card-section style="padding: 0px">
         <CustomShippingBasket :prop_customs-shipping-item="customShippingToEdit" />
       </q-card-section>
     </q-card>
