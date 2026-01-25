@@ -70,6 +70,9 @@ const loginAccountsAux: LoginAccountInterface[] = [
   {
     id: 116, name: `West End Synagogue Sisterhood`, guid: '6653D232-1050-4F26-8EDF-709392DAD96C', token: "z7jrl9Hb5s+xQeuFnJTXqsGlWrpEcbCAl480P9qyEkLqOVVJEzJX5A5vA10NpAviPPs5rpOmcmeom+OnhpoFrg=="
   },
+  {
+    id: 786, name: `Congregation Ahavas Sholom`, guid: 'B16982FE-980F-40F4-9E48-985D39DD647F', token: "JX/Chqw8cvN7Q2XOKNQtVWq/TAWhlgnhX+B23ESLAGddYqqmk1e+w5zU1bN5qR5lxOFclIIVX1aVOpFNuGUcKw=="
+  },
 ]
 
 export const loginAccounts: LoginAccountInterface[] = loginAccountsAux.map(ac => ({

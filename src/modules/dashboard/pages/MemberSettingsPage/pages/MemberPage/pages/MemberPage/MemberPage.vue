@@ -1,5 +1,5 @@
 <template>
-  <!-- <template>
+  <!-- <template v-if="true">
     hasUnsavedChanges {{ hasUnsavedChanges }}
     <div class="row">
       <div class="col-6">
@@ -841,30 +841,32 @@ interface CheckboxItemInterface {
 
 const memberCurrentData = computed(() => {
   const memberData = {
-    title: memberState.value.selectedMember?.title,
-    firstName: memberState.value.selectedMember?.firstName,
-    lastName: memberState.value.selectedMember?.lastName,
+    title: memberState.value.selectedMember?.title || '',
+    firstName: memberState.value.selectedMember?.firstName || '',
+    lastName: memberState.value.selectedMember?.lastName || '',
     spouseTitle: '',
-    spouseFirstName: memberState.value.selectedMember?.spouseFirstName,
-    spouseLastName: memberState.value.selectedMember?.spouseLastName,
-    address: memberState.value.selectedMember?.address,
-    address2: memberState.value.selectedMember?.address2,
-    city: memberState.value.selectedMember?.city,
-    state: memberState.value.selectedMember?.state,
-    zip: memberState.value.selectedMember?.zip,
-    phone: memberState.value.selectedMember?.phone,
-    phone2: memberState.value.selectedMember?.phone2,
-    email: memberState.value.selectedMember?.email,
-    email2: memberState.value.selectedMember?.email2,
-    misc: memberState.value.selectedMember?.misc,
-    misc2: memberState.value.selectedMember?.misc2,
-    displayAs: memberState.value.selectedMember?.displayAs,
+    spouseFirstName: memberState.value.selectedMember?.spouseFirstName || '',
+    spouseLastName: memberState.value.selectedMember?.spouseLastName || '',
+    address: memberState.value.selectedMember?.address || '',
+    address2: memberState.value.selectedMember?.address2 || '',
+    city: memberState.value.selectedMember?.city || '',
+    state: memberState.value.selectedMember?.state || '',
+    zip: memberState.value.selectedMember?.zip || '',
+    phone: memberState.value.selectedMember?.phone || '',
+    phone2: memberState.value.selectedMember?.phone2 || '',
+    email: memberState.value.selectedMember?.email || '',
+    email2: memberState.value.selectedMember?.email2 || '',
+    misc: memberState.value.selectedMember?.misc || '',
+    misc2: memberState.value.selectedMember?.misc2 || '',
+    displayAs: memberState.value.selectedMember?.displayAs || '',
     // foods: memberState.value.selectedMember?.foods,
-    salutation: memberState.value.selectedMember?.salutation,
-    notes: memberState.value.selectedMember?.notes,
+    salutation: memberState.value.selectedMember?.salutation || '',
+    notes: memberState.value.selectedMember?.notes || '',
     children: memberState.value.displayChildren ? memberState.value.selectedMember?.children : '',
     route: memberState.value.selectedMember?.route,
-    category: memberState.value.memberCategories.map((cat) => cat.categoryId),
+    category: memberState.value.memberCategories
+      .filter((cat) => cat.selected)
+      .map((cat) => cat.categoryId),
   }
   const altAddressData = {
     name: memberState.value.memberAlternativeAddress?.altName,
