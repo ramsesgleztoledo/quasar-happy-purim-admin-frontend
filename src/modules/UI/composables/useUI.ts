@@ -186,7 +186,7 @@ export const useUI = () => {
 
     if (darkMode || darkMode == 0)
       darkModeValue = Number(darkMode)
-    
+
     if ((!darkModeValue && darkModeValue != 0) || darkModeValue < -1 || darkModeValue > 1) darkModeValue = 1
 
     setTheme(darkModeValue as -1 | 0 | 1)
@@ -295,6 +295,13 @@ export const useUI = () => {
 
     stopLoading() {
       $q.loading.hide()
+    },
+    scrollToTarget(targetDiv: HTMLElement | null) {
+      if (!targetDiv) return
+      targetDiv.scrollIntoView({
+        behavior: 'smooth',
+        block: 'start'
+      })
     }
 
   };

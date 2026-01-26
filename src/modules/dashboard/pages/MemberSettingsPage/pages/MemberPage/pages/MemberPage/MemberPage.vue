@@ -354,8 +354,8 @@
       type="error"
       text="This member is hidden, and does not show up on the order form."
     />
-    <div class="row q-mt-sm cancel-save-btn-container">
-      <div class="col-12">
+    <div class="row q-mt-sm">
+      <div class="col-12 justify-content-end">
         <q-btn
           outline
           label="RESET"
@@ -373,6 +373,11 @@
             }
           "
           :disable="!areValidForms()"
+        />
+        <q-btn
+          class="q-mr-sm"
+          label="jump to transactions"
+          @click="scrollToTarget(orderHistoryTableRef)"
         />
       </div>
     </div>
@@ -748,7 +753,7 @@
     </form>
 
     <div class="row q-mt-lg">
-      <div class="col-12">
+      <div class="col-12" ref="orderHistoryTableRef">
         <OrderHistoryTable />
       </div>
     </div>
@@ -838,6 +843,8 @@ interface CheckboxItemInterface {
   id: number
   display?: boolean
 }
+
+const orderHistoryTableRef = ref<HTMLElement | null>(null)
 
 const memberCurrentData = computed(() => {
   const memberData = {
@@ -959,7 +966,7 @@ const $route = useRoute()
 const $router = useRouter()
 const $q = useQuasar()
 const { dashboardState } = useDashboard()
-const { copyToClipboard, isMobile } = useUI()
+const { copyToClipboard, isMobile, scrollToTarget } = useUI()
 const {
   memberState,
   deleteMemberById_Co,
