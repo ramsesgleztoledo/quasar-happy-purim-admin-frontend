@@ -4,21 +4,18 @@ export const readMoreEmails =
   <p
     dir="ltr"
     style="
-      color: rgb(34, 34, 34);
       font-family: arial, sans-serif;
       font-size: 13px;
       line-height: 1.15;
       margin-top: 0pt;
       margin-bottom: 0pt;
       text-align: center;
-      background-color: rgb(255, 255, 255);
     "
   >
     <span
       style="
         font-size: 16px;
         font-family: Verdana;
-        color: rgb(71, 71, 71);
         vertical-align: baseline;
         white-space: pre-wrap;
         background-color: transparent;
