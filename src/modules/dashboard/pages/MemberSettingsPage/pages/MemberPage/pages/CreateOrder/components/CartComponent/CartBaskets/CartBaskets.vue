@@ -16,7 +16,7 @@
                 :key="item.shippingOptionId"
                 class="CartBaskets-basket-container q-mb-md"
               >
-                <div class="row q-pa-sm" style="background-color: #fef5f7">
+                <div class="row q-pa-sm" style="background-color: #fef5f7; color: black">
                   <div class="col-2">{{ item.recipient }}</div>
                   <div class="col-4">{{ getShippingOption(item).value?.description }}</div>
                   <div

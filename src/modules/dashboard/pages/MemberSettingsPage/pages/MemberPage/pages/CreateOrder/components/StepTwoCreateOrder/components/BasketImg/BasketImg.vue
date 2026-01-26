@@ -10,8 +10,11 @@
             v-if="item.shippingOptionsGUID || item.shippingOptionGuid"
             :src="`${imStartUrl + `${item.shippingOptionsGUID ? item.shippingOptionsGUID : item.shippingOptionsGUID}`}`"
             alt="Image not found ..."
+            onerror="this.onerror=null; this.src='/img/baskets/default-basket.png';"
           />
-          <div v-else class="no-img-basket">No img</div>
+          <!-- <div class="no-img-basket"> -->
+          <img v-else src="/img/baskets/default-basket.png" />
+          <!-- </div> -->
         </div>
       </div>
     </div>
