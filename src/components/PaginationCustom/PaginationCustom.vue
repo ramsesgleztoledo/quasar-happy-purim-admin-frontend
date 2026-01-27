@@ -10,7 +10,7 @@
       <q-pagination
         class="q-mr-sm"
         :max-pages="total"
-        v-model="currentPage"
+        v-model="mValue"
         :min="min"
         :max="max"
         direction-links
@@ -34,22 +34,33 @@
 
 <script setup lang="ts">
 import { useUI } from 'src/modules/UI/composables'
-import { onMounted, ref } from 'vue'
+import { computed, onMounted, ref } from 'vue'
 
 const { isMobile } = useUI()
 
 interface PaginatorPropsInterface {
   total: number
-  current: number
+  modelValue: number
   showJumpBtn?: boolean
+  confirmUpdate?: () => Promise<boolean>
 }
 
 const $props = defineProps<PaginatorPropsInterface>()
 
+const $emit = defineEmits<{
+  (event: 'page-change', pageNumber: number): void
+  (event: 'update:modelValue', pageNumber: number): void
+}>()
+
+const mValue = computed({
+  get: () => $props.modelValue,
+  set: (val: number) => $emit('update:modelValue', val),
+})
+
 // const beforePage = ref<number>(1)
 // const totalPages = ref<number>(100)
 
-const currentPage = ref<number>($props.current)
+// const currentPage = ref<number>($props.current)
 const pageGo = ref<string>('')
 const min = ref<number>(1)
 const max = ref<number>(3)
@@ -58,42 +69,45 @@ onMounted(() => {
   if ($props.total < 5) {
     max.value = $props.total
   }
-  pageGo.value = `${currentPage.value}`
+  pageGo.value = `${$props.modelValue}`
   goToPage()
 })
 
-const $emit = defineEmits<{
-  (event: 'page-change', pageNumber: number): void
-}>()
-
 const onPageChange = (emit?: boolean) => {
   if ($props.total > 3) fixPaginator()
-  if (emit) $emit('page-change', currentPage.value)
+  if (emit) $emit('page-change', $props.modelValue)
 }
 
 const fixPaginator = () => {
   // const jumped: number = currentPage.value - beforePage.value
-  if (currentPage.value - 1 < 1) {
+  if ($props.modelValue - 1 < 1) {
     min.value = 1
     max.value = 3
     return
   }
-  if (currentPage.value + 1 > $props.total) {
+  if ($props.modelValue + 1 > $props.total) {
     min.value = $props.total - 2
     max.value = $props.total
     return
   }
-  max.value = currentPage.value + 1
-  min.value = currentPage.value - 1
+  max.value = $props.modelValue + 1
+  min.value = $props.modelValue - 1
 }
 
-const goToPage = (emit?: boolean) => {
+const goToPage = async (emit?: boolean) => {
   if (!pageGo.value) return
+  let canGo = true
+  if ($props.confirmUpdate) canGo = await $props.confirmUpdate()
+  if (!canGo) return
+
   const pageGoAux = Number(pageGo.value)
 
-  if (pageGoAux < 1) currentPage.value = 1
-  if (pageGoAux > $props.total) currentPage.value = $props.total
-  if (pageGoAux >= 1 && pageGoAux <= $props.total) currentPage.value = pageGoAux
+  // if (pageGoAux < 1) $props.modelValue = 1
+  // if (pageGoAux > $props.total) currentPage.value = $props.total
+  // if (pageGoAux >= 1 && pageGoAux <= $props.total) currentPage.value = pageGoAux
+  if (pageGoAux < 1) $emit('update:modelValue', 1)
+  if (pageGoAux > $props.total) $emit('update:modelValue', $props.total)
+  if (pageGoAux >= 1 && pageGoAux <= $props.total) $emit('update:modelValue', pageGoAux)
   pageGo.value = ''
 
   onPageChange(emit)

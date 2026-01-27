@@ -24,10 +24,39 @@
         <PaginationCustom
           ref="paginationCustomRef"
           :total="memberState.members.members.length"
-          :current="currentMemberPage"
-          @page-change="onPageChange"
+          :confirmUpdate="confirmLeaveToNext"
+          v-model="currentMemberPage"
+          @update:model-value="onPageChange"
         />
       </div>
+      <div v-if="!isMobile">
+        <div class="col-12 justify-content-end">
+          <q-btn
+            outline
+            label="RESET"
+            class="q-mr-sm"
+            style="color: #990000; border-color: #990000"
+            @click="() => resetAllForm(true)"
+          />
+          <q-btn
+            class="q-mr-sm"
+            style="background: var(--happypurim); color: white"
+            label="SAVE CHANGES"
+            @click="
+              () => {
+                onUpdateMember()
+              }
+            "
+            :disable="!areValidForms()"
+          />
+          <q-btn
+            class="q-mr-sm"
+            label="jump to transactions"
+            @click="scrollToTarget(orderHistoryTableRef)"
+          />
+        </div>
+      </div>
+
       <q-btn
         v-if="!isMobile && false"
         color="primary"
@@ -197,6 +226,41 @@
                 <q-item clickable v-close-popup>
                   <q-item-section>
                     <q-btn
+                      outline
+                      label="RESET"
+                      class="q-mr-sm"
+                      style="color: #990000; border-color: #990000"
+                      @click="() => resetAllForm(true)"
+                    />
+                  </q-item-section>
+                </q-item>
+                <q-item clickable v-close-popup>
+                  <q-item-section>
+                    <q-btn
+                      class="q-mr-sm"
+                      style="background: var(--happypurim); color: white"
+                      label="SAVE CHANGES"
+                      @click="
+                        () => {
+                          onUpdateMember()
+                        }
+                      "
+                      :disable="!areValidForms()"
+                    />
+                  </q-item-section>
+                </q-item>
+                <q-item clickable v-close-popup>
+                  <q-item-section>
+                    <q-btn
+                      class="q-mr-sm"
+                      label="jump to transactions"
+                      @click="scrollToTarget(orderHistoryTableRef)"
+                    />
+                  </q-item-section>
+                </q-item>
+                <q-item clickable v-close-popup>
+                  <q-item-section>
+                    <q-btn
                       :icon="`${memberState.isPendingDeletion ? 'close' : 'delete2'}`"
                       @click="
                         () => {
@@ -354,33 +418,7 @@
       type="error"
       text="This member is hidden, and does not show up on the order form."
     />
-    <div class="row q-mt-sm">
-      <div class="col-12 justify-content-end">
-        <q-btn
-          outline
-          label="RESET"
-          class="q-mr-sm"
-          style="color: #990000; border-color: #990000"
-          @click="() => resetAllForm(true)"
-        />
-        <q-btn
-          class="q-mr-sm"
-          style="background: var(--happypurim); color: white"
-          label="SAVE CHANGES"
-          @click="
-            () => {
-              onUpdateMember()
-            }
-          "
-          :disable="!areValidForms()"
-        />
-        <q-btn
-          class="q-mr-sm"
-          label="jump to transactions"
-          @click="scrollToTarget(orderHistoryTableRef)"
-        />
-      </div>
-    </div>
+
     <!-- eslint-disable -->
     <form action="" class="">
       <div class="row">
@@ -827,7 +865,8 @@ import { computed, ref, watch } from 'vue'
 import { useUI } from 'src/modules/UI/composables'
 // import { statesOptions } from 'src/modules/dashboard/data'
 import { useMember } from 'src/modules/dashboard/composables/useMember'
-import { onBeforeRouteLeave, useRoute, useRouter } from 'vue-router'
+import type { NavigationGuard } from 'vue-router'
+import { onBeforeRouteLeave, onBeforeRouteUpdate, useRoute, useRouter } from 'vue-router'
 import { Dialog, useQuasar } from 'quasar'
 import type {
   AlternativeMemberAddressFormInterface,
@@ -929,10 +968,14 @@ const memberEditedData = computed(() => {
   return data
 })
 
+const currentMemberPage = ref<number>(1)
+const oldMemberPage = ref<number>(1)
+
 //before leave
 const hasUnsavedChanges = computed(
   () => JSON.stringify(memberCurrentData.value) != JSON.stringify(memberEditedData.value),
 )
+
 const confirmLeave = (): Promise<boolean> => {
   return new Promise((resolve) => {
     Dialog.create({
@@ -947,18 +990,32 @@ const confirmLeave = (): Promise<boolean> => {
   })
 }
 
-onBeforeRouteLeave(async (to, from, next) => {
+const confirmLeaveToNext = (): Promise<boolean> => {
+  console.log('texting', { hasUnsavedChanges: hasUnsavedChanges.value })
+
+  if (hasUnsavedChanges.value) return confirmLeave()
+  return new Promise((resolve) => resolve(true))
+}
+const onBefore: NavigationGuard = async (to, from, next) => {
   if (hasUnsavedChanges.value) {
     if (await confirmLeave()) {
       next()
     } else {
       next(false)
+      currentMemberPage.value = oldMemberPage.value
     }
   } else {
     next()
   }
-})
+}
+
+onBeforeRouteLeave(onBefore)
+onBeforeRouteUpdate(onBefore)
 //en before leave
+
+watch(currentMemberPage, (newValue, oldValue) => {
+  if (newValue !== oldValue) oldMemberPage.value = oldValue
+})
 
 const showHoverCopy = ref(false)
 
@@ -975,7 +1032,6 @@ const {
   resetMemberLoginCode_Co,
 } = useMember()
 
-const currentMemberPage = ref<number>(1)
 const paginationCustomRef = ref(undefined)
 const isReady = ref<boolean>(false)
 const altAddress = ref<boolean>(false)
