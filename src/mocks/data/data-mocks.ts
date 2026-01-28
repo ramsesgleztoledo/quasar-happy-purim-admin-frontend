@@ -73,6 +73,9 @@ const loginAccountsAux: LoginAccountInterface[] = [
   {
     id: 786, name: `Congregation Ahavas Sholom`, guid: 'B16982FE-980F-40F4-9E48-985D39DD647F', token: "JX/Chqw8cvN7Q2XOKNQtVWq/TAWhlgnhX+B23ESLAGddYqqmk1e+w5zU1bN5qR5lxOFclIIVX1aVOpFNuGUcKw=="
   },
+  {
+    id: 323, name: `Congregation Tikvat Jacob (CTJ)`, guid: '5226953E-AAAC-409F-B707-41FD7DFDDE37', token: "7Pxe9Wm+poOMbKfxn3uJFtUy19yxzfKtKo0sctS9Q2PqIooRyZbhPNrL0DmpIoERvQo+o79cZBsQrgQIgnkrcQ=="
+  },
 ]
 
 export const loginAccounts: LoginAccountInterface[] = loginAccountsAux.map(ac => ({
