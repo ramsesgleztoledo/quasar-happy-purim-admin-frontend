@@ -197,7 +197,7 @@ export const useMember = () => {
     })
 
 
-    if (!ok) return
+    if (!ok) return false
 
 
 
@@ -236,6 +236,7 @@ export const useMember = () => {
 
     })
 
+    return true
 
   };
 
@@ -376,9 +377,8 @@ export const useMember = () => {
     $q.loading.hide()
 
     if (!ok) return ok
-    await getMemberDataById_Co(memberId)
-    return ok
-
+    const respOk = await getMemberDataById_Co(memberId)
+    return respOk
 
   };
   const clearMemberCart_Co = async (memberId: number) => {

@@ -1238,8 +1238,8 @@ const setDeleteMember = async () => {
 
 const onUpdateMember = async () => {
   const id = Number($route.params.memberId)
-
-  await updateMember_Co(id, memberEditedData.value)
+  const ok = await updateMember_Co(id, memberEditedData.value)
+  if (ok) resetAllForm()
 }
 
 const onResetLoginCode = () => {
