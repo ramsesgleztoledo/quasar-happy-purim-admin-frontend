@@ -1006,8 +1006,7 @@ const confirmLeave = (): Promise<boolean> => {
 }
 
 const confirmLeaveToNext = (): Promise<boolean> => {
-  console.log('texting', { hasUnsavedChanges: hasUnsavedChanges.value })
-
+  // console.log('texting', { hasUnsavedChanges: hasUnsavedChanges.value })
   if (hasUnsavedChanges.value) return confirmLeave()
   return new Promise((resolve) => resolve(true))
 }
