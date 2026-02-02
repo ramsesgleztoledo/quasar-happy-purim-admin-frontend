@@ -204,12 +204,20 @@
                 <q-item clickable v-close-popup v-if="memberState.showRecordPaymentBtn">
                   <q-item-section>
                     <q-btn
+                      disable
                       icon="credit_card"
                       class="q-mr-sm q-mt-sm"
                       style="background: var(--happypurim); color: white"
                       label="RECORD PAYMENT"
                       @click="recordPaymentDialogFlag = true"
-                    />
+                    >
+                      <q-tooltip class="bg-main-color-white"
+                        ><div>
+                          This feature is temporarily unavailable. Please use the old admin console
+                          to record payments in the meantime. Thank you
+                        </div>
+                      </q-tooltip></q-btn
+                    >
                   </q-item-section>
                 </q-item>
                 <q-item v-if="false" clickable v-close-popup>
@@ -384,6 +392,7 @@
               @click="emailLoginCodeDialogFlag = true"
             />
             <q-btn
+              disable
               padding="8px"
               v-if="memberState.showRecordPaymentBtn"
               icon="credit_card"
@@ -391,7 +400,13 @@
               style="background: var(--happypurim); color: white"
               label="RECORD PAYMENT"
               @click="recordPaymentDialogFlag = true"
-            />
+              ><q-tooltip class="bg-main-color-white"
+                ><div>
+                  This feature is temporarily unavailable. Please use the old admin console to
+                  record payments in the meantime. Thank you
+                </div>
+              </q-tooltip></q-btn
+            >
           </div>
           <q-btn
             padding="8px"
