@@ -121,7 +121,7 @@ const columns: QTableColumn<MemberTransactionInterface>[] = [
   {
     field: 'tranId',
     name: 'tranId',
-    label: 'Transaction',
+    label: 'Invoice Number',
     required: true,
     align: 'left',
     sortable: true,
