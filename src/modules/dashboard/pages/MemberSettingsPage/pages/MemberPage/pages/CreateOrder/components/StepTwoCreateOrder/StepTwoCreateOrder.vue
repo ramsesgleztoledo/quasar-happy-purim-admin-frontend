@@ -22,6 +22,7 @@
                 <div class="row">
                   <q-input
                     type="number"
+                    @keydown="numbersOnly"
                     v-model="additionalBasketsPersonal"
                     outlined
                     label="quantity"
@@ -167,9 +168,12 @@
                       lazyRules.greaterThan(0, false),
                       ...(aItem.maxQuantity ? [lazyRules.lowerThan(aItem.maxQuantity, true)] : []),
                     ]"
-                    :hint="`${memberOrderState.orgSettings?.symbol || '$'}${convertWithCommas(aItem.price || 0,{
-              dontAllowZero: true
-            })} ea. (${aItem.maxQuantity ? aItem.maxQuantity + ' max' : ''})`"
+                    :hint="`${memberOrderState.orgSettings?.symbol || '$'}${convertWithCommas(
+                      aItem.price || 0,
+                      {
+                        dontAllowZero: true,
+                      },
+                    )} ea. (${aItem.maxQuantity ? aItem.maxQuantity + ' max' : ''})`"
                   />
 
                   <q-btn
@@ -233,6 +237,7 @@ import type {
 import { useQuasar } from 'quasar'
 import type { authStateInterface } from 'src/modules/auth/store/auth-store-interfaces'
 import { convertWithCommas } from 'src/helpers'
+import { numbersOnly } from 'src/helpers/numbersOnly'
 
 const { memberOrderState, addOrRemoveDonation, addOrRemoveItem } = useMemberOrder()
 
