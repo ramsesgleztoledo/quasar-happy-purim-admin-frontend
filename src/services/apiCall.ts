@@ -155,8 +155,13 @@ export const useApiCall = () => {
           responseType: responseType
         })).data
       }
+      
+      let dataValue = undefined
+      if (extraOptions?.useCache)
+        dataValue = await fetchWithCache<T>(key, fetchFunction, extraOptions)
+      else
+        dataValue = await fetchFunction()
 
-      const dataValue = await fetchWithCache<T>(key, fetchFunction, extraOptions)
       if (extraOptions?.loading) {
         $q.loading.hide()
       }

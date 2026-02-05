@@ -45,7 +45,7 @@ export const useEmail = () => {
 
     async sendAEmail(data: EmailDataFormInterface) {
 
-      const resp = await sendAEmail(data, {
+      await sendAEmail(data, {
         loading: {
           message: 'Loading...',
         },
@@ -53,11 +53,11 @@ export const useEmail = () => {
         useRespAsError: true
       })
 
-      console.log({ resp });
+
 
     },
 
-    
+
   }
 };
 
