@@ -1,24 +1,27 @@
 <template>
-  <!-- <template v-if="true">
-    hasUnsavedChanges {{ hasUnsavedChanges }}
-    <div class="row">
-      <div class="col-6">
-        <pre>
+  <template v-if="isReady">
+    <template v-if="isDev">
+      <hr />
+      hasUnsavedChanges {{ hasUnsavedChanges }}
+      <hr />
+      <div class="row">
+        <div class="col-6">
+          <pre>
               <code>
                 {{ memberCurrentData }}
               </code>
             </pre>
-      </div>
-      <div class="col-6">
-        <pre>
+        </div>
+        <div class="col-6">
+          <pre>
             <code>
               {{ memberEditedData }}
             </code>
           </pre>
+        </div>
       </div>
-    </div>
-  </template> -->
-  <template v-if="isReady">
+      <hr />
+    </template>
     <div class="row q-mt-sm q-mb-sm justify-content-space-between">
       <div>
         <PaginationCustom
@@ -923,19 +926,21 @@ const memberCurrentData = computed(() => {
     // foods: memberState.value.selectedMember?.foods,
     salutation: memberState.value.selectedMember?.salutation || '',
     notes: memberState.value.selectedMember?.notes || '',
-    children: memberState.value.displayChildren ? memberState.value.selectedMember?.children : '',
-    route: memberState.value.selectedMember?.route,
+    children: memberState.value.displayChildren
+      ? memberState.value.selectedMember?.children || ''
+      : '',
+    route: memberState.value.selectedMember?.route || '',
     category: memberState.value.memberCategories
       .filter((cat) => cat.selected)
       .map((cat) => cat.categoryId),
   }
   const altAddressData = {
-    name: memberState.value.memberAlternativeAddress?.altName,
-    address: memberState.value.memberAlternativeAddress?.altAddress1,
-    address2: memberState.value.memberAlternativeAddress?.altAddress2,
-    city: memberState.value.memberAlternativeAddress?.altCity,
-    state: memberState.value.memberAlternativeAddress?.altState,
-    zip: memberState.value.memberAlternativeAddress?.altZip,
+    name: memberState.value.memberAlternativeAddress?.altName || '',
+    address: memberState.value.memberAlternativeAddress?.altAddress1 || '',
+    address2: memberState.value.memberAlternativeAddress?.altAddress2 || '',
+    city: memberState.value.memberAlternativeAddress?.altCity || '',
+    state: memberState.value.memberAlternativeAddress?.altState || '',
+    zip: memberState.value.memberAlternativeAddress?.altZip || '',
     useAlternateDelivery: !!memberState.value.memberAlternativeAddress?.isChecked,
   }
 
@@ -1037,7 +1042,7 @@ const $route = useRoute()
 const $router = useRouter()
 const $q = useQuasar()
 const { dashboardState } = useDashboard()
-const { copyToClipboard, isMobile, scrollToTarget } = useUI()
+const { copyToClipboard, isMobile, scrollToTarget, isDev } = useUI()
 const {
   memberState,
   deleteMemberById_Co,

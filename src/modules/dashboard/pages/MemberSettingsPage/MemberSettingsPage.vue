@@ -397,8 +397,9 @@ watch(
       // if (stringNewValue == stringOldValue) return
 
       oldValue.value = { ...newValue }
-
+      if ($route.name !== 'MembersSettingsPage-home') return
       await goToPage(getCategoriesIdAsString(), newValue.search)
+
       // getMembers_Co({
       //   categories: getCategoriesIdAsString().split(',').join(', '),
       //   search: filters.value.search,

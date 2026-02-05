@@ -40,22 +40,17 @@ const loadData = () => {
 watch(
   () => [$route.name, $route.query],
   (value) => {
-    if (isFirsTime.value) return loadData()
-
-    const routeName = 'MembersSettingsPage-home'
-    if (value.length == 2 && value[0] == routeName && value[1]) {
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      const newFilters: any = value[1] as unknown as any
-      if (
-        newFilters.categoryId != filters.value.categories ||
-        newFilters.search != filters.value.search
-      )
-        filters.value = {
-          categories: (newFilters.categoryId || '').split(',').join(', '),
-          search: newFilters.search || '',
-        }
-      return loadData()
-    }
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const newFilters: any = value[1] as unknown as any
+    if (
+      newFilters.categoryId != filters.value.categories ||
+      newFilters.search != filters.value.search
+    )
+      filters.value = {
+        categories: (newFilters.categoryId || '').split(',').join(', '),
+        search: newFilters.search || '',
+      }
+    if (isFirsTime.value || value[0] === 'MembersSettingsPage-home') return loadData()
   },
   {
     immediate: true,
