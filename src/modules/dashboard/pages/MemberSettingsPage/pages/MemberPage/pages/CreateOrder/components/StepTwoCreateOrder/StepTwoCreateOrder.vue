@@ -284,7 +284,7 @@ const addAdditionalBasket = async () => {
   const authState: authStateInterface | null = $q.localStorage.getItem('authState')
   const data: MemberOrderItemsInterface = {
     description: `Additional Gift Baskets for Personal Use`,
-    itemId: -1,
+    itemId: 1,
     message: '',
     price: memberOrderState.value.addonSettings.price,
     quantity: additionalBasketsPersonal.value,

@@ -207,14 +207,14 @@
                 <q-item clickable v-close-popup v-if="memberState.showRecordPaymentBtn">
                   <q-item-section>
                     <q-btn
-                      disable
+                      :disable="disableRecordPayment"
                       icon="credit_card"
                       class="q-mr-sm q-mt-sm"
                       style="background: var(--happypurim); color: white"
                       label="RECORD PAYMENT"
                       @click="recordPaymentDialogFlag = true"
                     >
-                      <q-tooltip class="bg-main-color-white"
+                      <q-tooltip v-if="disableRecordPayment" class="bg-main-color-white"
                         ><div>
                           This feature is temporarily unavailable. Please use the old admin console
                           to record payments in the meantime. Thank you
@@ -395,7 +395,7 @@
               @click="emailLoginCodeDialogFlag = true"
             />
             <q-btn
-              disable
+              :disable="disableRecordPayment"
               padding="8px"
               v-if="memberState.showRecordPaymentBtn"
               icon="credit_card"
@@ -403,7 +403,7 @@
               style="background: var(--happypurim); color: white"
               label="RECORD PAYMENT"
               @click="recordPaymentDialogFlag = true"
-              ><q-tooltip class="bg-main-color-white"
+              ><q-tooltip v-if="disableRecordPayment" class="bg-main-color-white"
                 ><div>
                   This feature is temporarily unavailable. Please use the old admin console to
                   record payments in the meantime. Thank you
@@ -893,6 +893,7 @@ import type {
 } from 'src/modules/dashboard/interfaces/member-interfaces'
 import { useDashboard } from 'src/modules/dashboard/composables/useDashboard'
 import MemberStatsDialog from '../../components/MemberStatsDialog/MemberStatsDialog.vue'
+import { useAuth } from 'src/modules/auth/composables/useAuth'
 
 interface CheckboxItemInterface {
   value: boolean
@@ -900,6 +901,14 @@ interface CheckboxItemInterface {
   id: number
   display?: boolean
 }
+
+const { authState } = useAuth()
+
+const disableRecordPayment = computed(() => {
+  const id = authState.value.shul?.shulId || '0'
+
+  return !(id == '757' || id == '783')
+})
 
 const orderHistoryTableRef = ref<HTMLElement | null>(null)
 
