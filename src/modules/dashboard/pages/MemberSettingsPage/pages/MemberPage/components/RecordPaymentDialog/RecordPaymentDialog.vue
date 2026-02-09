@@ -21,7 +21,6 @@
                   <q-btn-toggle
                     v-model="paymentType"
                     push
-                    glossy
                     toggle-color="primary"
                     :options="[
                       { label: 'Check', value: 0, icon: 'credit_score' },

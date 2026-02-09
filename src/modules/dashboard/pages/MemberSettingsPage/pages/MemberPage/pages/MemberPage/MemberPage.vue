@@ -207,20 +207,19 @@
                 <q-item clickable v-close-popup v-if="memberState.showRecordPaymentBtn">
                   <q-item-section>
                     <q-btn
-                      :disable="disableRecordPayment"
                       icon="credit_card"
                       class="q-mr-sm q-mt-sm"
                       style="background: var(--happypurim); color: white"
                       label="RECORD PAYMENT"
                       @click="recordPaymentDialogFlag = true"
                     >
-                      <q-tooltip v-if="disableRecordPayment" class="bg-main-color-white"
+                      <!-- <q-tooltip v-if="disableRecordPayment" class="bg-main-color-white"
                         ><div>
                           This feature is temporarily unavailable. Please use the old admin console
                           to record payments in the meantime. Thank you
                         </div>
-                      </q-tooltip></q-btn
-                    >
+                      </q-tooltip> -->
+                    </q-btn>
                   </q-item-section>
                 </q-item>
                 <q-item v-if="false" clickable v-close-popup>
@@ -395,7 +394,6 @@
               @click="emailLoginCodeDialogFlag = true"
             />
             <q-btn
-              :disable="disableRecordPayment"
               padding="8px"
               v-if="memberState.showRecordPaymentBtn"
               icon="credit_card"
@@ -403,13 +401,14 @@
               style="background: var(--happypurim); color: white"
               label="RECORD PAYMENT"
               @click="recordPaymentDialogFlag = true"
-              ><q-tooltip v-if="disableRecordPayment" class="bg-main-color-white"
+            >
+              <!-- <q-tooltip v-if="disableRecordPayment" class="bg-main-color-white"
                 ><div>
                   This feature is temporarily unavailable. Please use the old admin console to
                   record payments in the meantime. Thank you
                 </div>
-              </q-tooltip></q-btn
-            >
+              </q-tooltip> -->
+            </q-btn>
           </div>
           <q-btn
             padding="8px"
@@ -893,7 +892,7 @@ import type {
 } from 'src/modules/dashboard/interfaces/member-interfaces'
 import { useDashboard } from 'src/modules/dashboard/composables/useDashboard'
 import MemberStatsDialog from '../../components/MemberStatsDialog/MemberStatsDialog.vue'
-import { useAuth } from 'src/modules/auth/composables/useAuth'
+// import { useAuth } from 'src/modules/auth/composables/useAuth'
 
 interface CheckboxItemInterface {
   value: boolean
@@ -902,13 +901,13 @@ interface CheckboxItemInterface {
   display?: boolean
 }
 
-const { authState } = useAuth()
+// const { authState } = useAuth()
 
-const disableRecordPayment = computed(() => {
-  const id = authState.value.shul?.shulId || '0'
+// const disableRecordPayment = computed(() => {
+//   const id = authState.value.shul?.shulId || '0'
 
-  return !(id == '757' || id == '783')
-})
+//   return !(id == '757' || id == '783')
+// })
 
 const orderHistoryTableRef = ref<HTMLElement | null>(null)
 
