@@ -182,7 +182,7 @@ import StepThreeCreateOrder from './components/StepThreeCreateOrder/StepThreeCre
 import CartComponent from './components/CartComponent/CartComponent.vue'
 import { useMemberOrder } from 'src/modules/dashboard/composables/useMemberOrder'
 import type { StepOneCreateOrderInterface } from './interfaces'
-import { useRouter } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 import { useMemberOrderStore } from 'src/modules/dashboard/store/memberOrderStore/memberOrderStore'
 import { useCalculate } from 'src/modules/dashboard/composables/useCalculate'
 import MembershipStep from './components/MembershipStep/MembershipStep.vue'
@@ -192,6 +192,7 @@ import { useDashboardStore } from 'src/modules/dashboard/store/dashboardStore/da
 import OrderHistoryStep from './components/OrderHistoryStep/OrderHistoryStep.vue'
 
 const $router = useRouter()
+const $route = useRoute()
 const $moStore = useMemberOrderStore()
 const $dStore = useDashboardStore()
 
@@ -293,13 +294,18 @@ const updateGreetings = async () => {
   // stopLoading()
 }
 
+const orderByCode = computed(
+  () => (($route.query.orderByCode as string) || '').toLowerCase() === 'true',
+)
+
 onMounted(() => {
   showLoading()
   getInitialData()
     .then(() => {
       const orderPages: PageStepInterface[] = [
         ...($moStore.$state.orgSettings?.displayLastYearsOrderIntro &&
-        $moStore.membersLastYear.length
+        $moStore.membersLastYear.length &&
+        !orderByCode.value
           ? [
               {
                 btnText: 'Proceed To General Ordering',
@@ -312,13 +318,18 @@ onMounted(() => {
               },
             ]
           : []),
-        {
-          btnText: 'NEXT',
-          disabled: () => false,
-          method: onNext,
-          page: '',
-          pageId: 1,
-        },
+        ...(!orderByCode.value
+          ? [
+              {
+                btnText: 'NEXT',
+                disabled: () => false,
+                method: onNext,
+                page: '',
+                pageId: 1,
+              },
+            ]
+          : []),
+
         //
         ...($dStore.$state.showGreetingsPage
           ? [
