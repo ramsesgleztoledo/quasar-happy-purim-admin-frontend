@@ -271,7 +271,7 @@
                 <q-item clickable v-close-popup>
                   <q-item-section>
                     <q-btn
-                      :icon="`${memberState.isPendingDeletion ? 'close' : 'delete2'}`"
+                      :icon="`${memberState.isPendingDeletion ? 'close' : 'delete'}`"
                       @click="
                         () => {
                           if (memberState.isPendingDeletion) setDeleteMember()
