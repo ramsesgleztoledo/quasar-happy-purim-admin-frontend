@@ -66,7 +66,7 @@
       <q-btn
         :disable="!$dStore.$state.canUploadList.canUpload"
         outline
-        label="Upload Member List"
+        label="Import Member List"
         :to="{ name: 'MembersSettingsPage-MemberListLayout' }"
         style="height: 42px"
       >

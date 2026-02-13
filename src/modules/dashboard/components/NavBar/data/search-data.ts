@@ -36,11 +36,11 @@ export const pagesForSearch: PagesForSearchInterface[] = [
   },
   {
     routeName: 'MembersSettingsPage-MemberListLayout',
-    title: 'Upload Member List',
+    title: 'Import Member List',
     icon: 'upload',
     phrases: [
       'member',
-      'Upload Member List',
+      'Import Member List',
       'list',
       'upload file',
       'update member list',

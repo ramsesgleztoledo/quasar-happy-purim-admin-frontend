@@ -84,7 +84,7 @@ export const useBreadcrumb = () => {
         },
         {
 
-          title: 'Upload Member List',
+          title: 'Import Member List',
           icon: 'upload',
           name: 'MembersSettingsPage-MemberListLayout',
           force: true,
@@ -479,7 +479,7 @@ export const useBreadcrumb = () => {
       name: 'MembersSettingsPage-AddMemberPage',
     },
     {
-      title: 'Upload Member List',
+      title: 'Import Member List',
       icon: 'upload',
       name: 'MembersSettingsPage-MemberListLayout',
     },

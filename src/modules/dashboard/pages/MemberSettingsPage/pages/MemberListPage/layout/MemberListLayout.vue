@@ -6,7 +6,7 @@
         'justify-content-space-between': !isMobile,
       }"
     >
-      <p class="page-main-title">Upload Member List</p>
+      <p class="page-main-title">Import Member List</p>
       <div class="separator-right q-mr-sm q-ml-sm"></div>
     </div>
     <div
