@@ -7,6 +7,7 @@
       <div class="row">
         <div class="col-6">
           <pre>
+            Current Data
               <code>
                 {{ memberCurrentData }}
               </code>
@@ -14,6 +15,7 @@
         </div>
         <div class="col-6">
           <pre>
+            Edited Data
             <code>
               {{ memberEditedData }}
             </code>
@@ -954,7 +956,9 @@ const memberCurrentData = computed(() => {
 
   const data: MemberUpdateAllDataForm = {
     hidden: !!memberState.value.memberOptions.hidden,
-    reciprocity: !!memberState.value.memberOptions.reciprocity.isReciprocal,
+    reciprocity: memberState.value?.memberOptions?.reciprocity?.showReciprocity
+      ? !!memberState.value?.memberOptions?.reciprocity?.isReciprocal
+      : false,
     membershipValue: !!memberState.value.membershipSettings?.checkedStatus,
     memberData: memberData as unknown as MemberUpdateFormInterface,
     donate: memberState.value.memberDonateBasketOption?.visible
@@ -1217,7 +1221,7 @@ const resetAllForm = (showNotify: boolean = false) => {
   if (memberState.value.memberOptions.reciprocity.showReciprocity)
     options.value.push({
       id: 1,
-      value: memberState.value.memberOptions.reciprocity.isReciprocal,
+      value: !!memberState.value?.memberOptions?.reciprocity?.isReciprocal,
       label: 'Reciprocity',
     })
 
@@ -1228,6 +1232,7 @@ const resetAllForm = (showNotify: boolean = false) => {
       label: 'Membership',
     })
   }
+
   //categories
   categories.value = memberState.value.memberCategories.map((cat) => ({
     id: cat.categoryId,

@@ -76,6 +76,9 @@ const loginAccountsAux: LoginAccountInterface[] = [
   {
     id: 323, name: `Congregation Tikvat Jacob (CTJ)`, guid: '5226953E-AAAC-409F-B707-41FD7DFDDE37', token: "7Pxe9Wm+poOMbKfxn3uJFtUy19yxzfKtKo0sctS9Q2PqIooRyZbhPNrL0DmpIoERvQo+o79cZBsQrgQIgnkrcQ=="
   },
+  {
+    id: 112, name: `Bet Am Shalom Synagogue`, guid: '56193663-FA8E-4F28-88C5-8E0F63A0819F', token: "qBhrjjfPiavj8zfpFPbcm6fdAk9ZwPKYjjh3jty4QtDE9pbMfx6dH+4mk3Y+uzeXaMyAbL8rO0Eg3TXfavdyUQ=="
+  },
 ]
 
 export const loginAccounts: LoginAccountInterface[] = loginAccountsAux.map(ac => ({

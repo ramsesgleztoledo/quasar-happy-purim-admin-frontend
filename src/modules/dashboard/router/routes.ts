@@ -235,7 +235,15 @@ export const dashboardRoutes: RouteRecordRaw[] = [
         //       import(/* webpackChunkName: "dashboard-OrderArchivePage" */ "../pages/OrderArchivePage/pages/OrderDetailPage/OrderDetailPage.vue"),
         //   },
         // ]
+      },
+
+      {
+        path: 'tutorials',
+        name: 'dashboard-TutorialsPage',
+        component: () =>
+          import(/* webpackChunkName: "dashboard-TutorialsPage" */ "../pages/TutorialsPage/TutorialsPage.vue"),
       }
+
 
     ]
   }

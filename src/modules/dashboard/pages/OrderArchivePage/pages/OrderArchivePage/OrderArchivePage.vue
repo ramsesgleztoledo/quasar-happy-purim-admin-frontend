@@ -7,7 +7,7 @@
   </div>
   <div class="white-100-container" :class="{ fullscreen: isFullScreen }">
     <div class="row q-mb-sm" style="justify-content: space-between">
-      <q-input outlined v-model="searchText" label="Search">
+      <q-input outlined v-model="searchText" label="Search" clearable>
         <template v-slot:append>
           <q-icon name="search" />
         </template>

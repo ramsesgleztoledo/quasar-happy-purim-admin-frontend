@@ -64,7 +64,7 @@
           'q-mt-sm': isMobile,
         }"
       >
-        <q-input outlined v-model="searchText" label="Search">
+        <q-input outlined v-model="searchText" label="Search" clearable>
           <template v-slot:append>
             <q-icon name="search" />
           </template>

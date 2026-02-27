@@ -191,6 +191,12 @@ export const useBreadcrumb = () => {
       name: 'dashboard-UserManagement',
       // routeClass: ['dashboard-EmailStatsPage', 'EmailStatsPage-Email'],
     },
+    {
+      title: 'Tutorials',
+      icon: 'ondemand_video',
+      name: 'dashboard-TutorialsPage',
+      // routeClass: ['dashboard-EmailStatsPage', 'EmailStatsPage-Email'],
+    },
     ...linksDataDev
   ])
 
@@ -487,6 +493,11 @@ export const useBreadcrumb = () => {
       title: 'User Management',
       icon: 'person',
       name: 'dashboard-UserManagement',
+    },
+    {
+      title: 'Tutorials',
+      icon: 'ondemand_video',
+      name: 'dashboard-TutorialsPage',
     },
 
   ])

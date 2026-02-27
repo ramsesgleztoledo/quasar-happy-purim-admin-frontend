@@ -16,6 +16,7 @@
         v-model="filters.search"
         label="Search"
         :debounce="500"
+        clearable
       >
         <template v-slot:append>
           <q-icon name="search" />

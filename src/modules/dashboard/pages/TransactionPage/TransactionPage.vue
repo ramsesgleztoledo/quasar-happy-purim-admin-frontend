@@ -12,7 +12,7 @@
         <div class="col-12">
           <div class="row q-mb-sm">
             <div class="col-12 justify-content-space-between">
-              <q-input outlined v-model="searchText" label="Search">
+              <q-input outlined v-model="searchText" label="Search" clearable>
                 <template v-slot:append>
                   <q-icon name="search" />
                 </template>
@@ -165,6 +165,8 @@ const searchText = ref<string>('')
 const isFullScreen = ref<boolean>(false)
 
 onMounted(() => {
+  console.log('transactions history started')
+
   getTransactions().then((resp) => {
     transactions.value = resp
   })
