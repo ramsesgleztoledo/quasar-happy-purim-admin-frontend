@@ -72,7 +72,7 @@
         style="height: 42px"
       >
         <q-tooltip v-if="!$dStore.$state.canUploadList.canUpload">
-          Upload disabled: A list has already been uploaded or an order has already been placed.
+          Import disabled: A list has already been imported or an order has already been placed.
         </q-tooltip>
       </q-btn>
     </div>

@@ -685,7 +685,7 @@ onMounted(async () => {
       color: 'blue',
       textColor: 'black',
       icon: 'error',
-      message: `Upload disabled: A list has already been uploaded or an order has already been placed.`,
+      message: `Import disabled: A list has already been imported or an order has already been placed.`,
     })
     return $router.push({ name: 'dashboard-DashboardPage' })
   }
