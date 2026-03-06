@@ -10,7 +10,7 @@
     "lint": "eslint -c ./eslint.config.js \"./src*/**/*.{ts,js,cjs,mjs,vue}\"",
     "format": "prettier --write \"**/*.{js,ts,vue,scss,html,md,json}\" --ignore-path .gitignore",
     "test": "echo \"No test specified\" && exit 0",
-    "dev": "env-cmd -f .env -f .env.staging quasar dev",
+    "dev": "env-cmd -f .env -f .env.development quasar dev",
     "build": "quasar build",
     "build:dev": "env-cmd -f .env -f .env.development quasar build",
     "build:sta": "env-cmd -f .env -f .env.staging quasar build",

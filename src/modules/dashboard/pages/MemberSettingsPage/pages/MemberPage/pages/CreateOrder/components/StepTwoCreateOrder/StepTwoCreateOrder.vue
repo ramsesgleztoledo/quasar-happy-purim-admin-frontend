@@ -151,13 +151,12 @@
               <div
                 v-for="(aItem, index) in memberOrderState.additionalOrderOptions"
                 :key="index"
-                class="q-mb-md row q-mr-sm"
+                class="q-mb-md row q-mr-sm justify-content-space-between"
               >
-                <b class="q-pa-sm" style="color: var(--happypurim); width: 300px">
-                  {{ aItem.description }}</b
-                >
+                <b class="q-pa-sm" style="color: var(--happypurim)"> {{ aItem.description }}</b>
                 <div class="row">
                   <q-input
+                    style="max-width: 170px"
                     type="number"
                     v-model="aItem.value"
                     outlined

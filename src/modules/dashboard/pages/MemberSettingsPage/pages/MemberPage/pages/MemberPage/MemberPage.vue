@@ -70,12 +70,6 @@
         @click="memberStatsDialogFlag = true"
       />
     </div>
-    <InfoAlert
-      v-if="memberState.isPendingDeletion"
-      class="q-mb-md q-mt-md"
-      type="error"
-      text="This member is flagged for deletion"
-    />
 
     <div class="q-mb-md">
       <div class="row">
@@ -429,15 +423,21 @@
         </div>
       </template>
     </div>
-    <div class="row separator-bottom"></div>
+    <div class="row q-mb-sm separator-bottom"></div>
 
     <InfoAlert
       v-if="memberState.memberOptions.hidden"
-      class="q-mt-md"
+      class="q-mb-sm"
       type="error"
       text="This member is hidden, and does not show up on the order form."
     />
 
+    <InfoAlert
+      v-if="memberState.isPendingDeletion"
+      class="q-mb-sm"
+      type="error"
+      text="This member is flagged for deletion"
+    />
     <!-- eslint-disable -->
     <form action="" class="">
       <div class="row">
