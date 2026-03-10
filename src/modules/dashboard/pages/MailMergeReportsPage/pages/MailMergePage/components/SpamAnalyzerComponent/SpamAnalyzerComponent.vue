@@ -15,6 +15,7 @@
           style="display: none"
         />
         <div v-html="bodyModel" id="txtBody" style="display: none"></div>
+
         <div id="spam-analyzer-container"></div>
       </q-card-section>
 
@@ -48,12 +49,37 @@ const modelVisible = computed({
 })
 const subjectModel = computed({
   get: () => $props.subject,
-  set: (val) => $emit('update:subject', val),
+  set: (val) =>
+    $emit(
+      'update:subject',
+      val.replace(/(\[\*|\*\])/g, (match) => {
+        if (match === '[*') return '{{'
+        if (match === '*]') return '}}'
+        return match
+      }),
+    ),
 })
 const bodyModel = computed({
   get: () => $props.body,
   set: (val) => $emit('update:body', val),
 })
+
+const updateIframeContent = () => {
+  const iframe = document.getElementById('bodyIframe') as HTMLIFrameElement
+  if (iframe && iframe.contentWindow) {
+    const doc = iframe.contentWindow.document
+    doc.open()
+    // Inyectamos el bodyModel (HTML) dentro del iframe
+    doc.write(`
+      <!DOCTYPE html>
+      <html>
+        <head><meta charset="utf-8"></head>
+        <body id="innerBody">${bodyModel.value}</body>
+      </html>
+    `)
+    doc.close()
+  }
+}
 
 const mountAnalyzer = () => {
   const script = document.createElement('script')
@@ -91,8 +117,31 @@ const doAutoAnalyzerClick = () => {
   btn.click()
 }
 
+const mockAnalyzer = () => {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  ;(window as any).UltimateEditors = {
+    txtBody: {
+      GetEditorHTML: () => {
+        return $props.body || ''
+      },
+      SetEditorHTML: (html: string) => {
+        $emit(
+          'update:body',
+          html.replace(/(\[\*|\*\])/g, (match) => {
+            if (match === '[*') return '{{'
+            if (match === '*]') return '}}'
+            return match
+          }),
+        )
+      },
+    },
+  }
+}
+
 onMounted(() => {
+  updateIframeContent()
   addClickEvent()
+  mockAnalyzer()
   mountAnalyzer()
   setTimeout(() => doAutoAnalyzerClick(), 500)
 })
