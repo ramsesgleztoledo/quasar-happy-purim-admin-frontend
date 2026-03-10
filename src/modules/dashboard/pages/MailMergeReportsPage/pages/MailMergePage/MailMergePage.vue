@@ -745,6 +745,13 @@
   <SpamAnalyzerComponent
     v-if="spamAnalyzerDialogFlag"
     v-model="spamAnalyzerDialogFlag"
+    @update:body="
+      (value) => {
+        email = value
+        realForm.email.value = value
+      }
+    "
+    @update:subject="(value) => (realForm.emailSubject.value = value)"
     :body="email"
     :subject="realForm.emailSubject.value"
     :tokens="tokensToShow"

@@ -7,7 +7,7 @@
         </div>
       </div>
 
-      <q-card-section class="q-pt-none" style="padding: 12px; max-height: 500px">
+      <q-card-section class="q-pt-none" style="padding: 12px; max-height: 500px; overflow: auto;">
         <textarea
           v-model="subjectModel"
           id="txtSubject"
