@@ -60,13 +60,13 @@ interface DialogAlertPropsInterface {
 const $props = withDefaults(defineProps<DialogAlertPropsInterface>(), {
   title: () => '',
 })
+const $emit = defineEmits(['update:modelValue'])
 
 const modelVisible = computed({
   get: () => $props.modelValue,
   set: (val) => $emit('update:modelValue', val),
 })
 
-const $emit = defineEmits(['update:modelValue'])
 </script>
 
 <style scoped lang="scss"></style>

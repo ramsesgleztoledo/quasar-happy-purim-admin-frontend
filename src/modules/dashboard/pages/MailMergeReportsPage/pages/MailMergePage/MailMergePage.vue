@@ -90,14 +90,14 @@
                       'col-12': isMobile,
                     }"
                   >
-                    <!-- <q-input
+                    <q-input
                       style="min-width: 200px"
                       v-model="realForm.emailSubject.value"
                       outlined
                       label="Email Subject *"
                       lazy-rules
                       :rules="[lazyRules.required()]"
-                    /> -->
+                    />
                   </div>
                   <div
                     class="q-mb-sm"
@@ -213,21 +213,6 @@
                   </div>
                 </div>
 
-                <div>
-                  <textarea
-                    v-model="email"
-                    id="txtSubject"
-                    placeholder="Subject"
-                    style="display: none"
-                  />
-                  <textarea
-                    v-model="email"
-                    id="EditorId"
-                    placeholder="Body"
-                    style="display: none"
-                  />
-                  <div id="spam-analyzer-container"></div>
-                </div>
                 <!--=============================== Dialogs =============================-->
 
                 <SelectTemplate
@@ -370,14 +355,14 @@
               @click="preview = !preview"
             />
 
-            <!-- <q-btn
+            <q-btn
               color="negative"
               icon="warning"
-              :disable="!email"
+              :disable="!email || !realForm.emailSubject.value"
               class="q-mr-sm q-mb-sm"
               label="check spam"
-              @click="checkSpam"
-            /> -->
+              @click="spamAnalyzerDialogFlag = true"
+            />
 
             <q-btn
               v-if="!preview"
@@ -757,6 +742,14 @@
   <InfoDialog title="Notice!" :innerHTML="mailMergeAlertText" v-model="mailMergeAlertDialogFlag" />
   <!--=========================== END OF SECTION ===========================-->
 
+  <SpamAnalyzerComponent
+    v-if="spamAnalyzerDialogFlag"
+    v-model="spamAnalyzerDialogFlag"
+    :body="email"
+    :subject="realForm.emailSubject.value"
+    :tokens="tokensToShow"
+  />
+
   <!--=========================== END OF SECTION ===========================-->
 </template>
 
@@ -791,8 +784,7 @@ import { useAuth } from 'src/modules/auth/composables/useAuth'
 // import { date as dateUtils } from 'quasar'
 import InfoDialog from 'src/components/InfoDialog/InfoDialog.vue'
 import { readMoreEmails } from './data/readMoreEmails'
-
-// import SpamScanner from 'spamscanner'
+import SpamAnalyzerComponent from './components/SpamAnalyzerComponent/SpamAnalyzerComponent.vue'
 
 const $router = useRouter()
 const $q = useQuasar()
@@ -800,6 +792,8 @@ const $rStore = useReportStore()
 const $dStore = useDashboardStore()
 const { getReportData } = useReport()
 const { authState } = useAuth()
+
+const spamAnalyzerDialogFlag = ref(false)
 
 const categoryFiltered = ref<ShulCategoryInterface[] | undefined>(undefined)
 
@@ -1053,15 +1047,15 @@ const onSendLaterEmail = async () => {
 //   // const date = new Date(dateString!)
 //   const date = dateString!
 
-//   if (!regenerateBefore.value) await onSendEmail(date, true)
-//   else {
-//     const formData = getFormValue()
-//     const resp = await addUnmergedEmailJobToTable({
-//       content,
-//       date,
-//       form: {
-//         sendTo: formData.sendTo == 'Primary' ? 'Primary' : 'primary_alternate',
-//         fullName: formData.fullName || '',
+// if (!regenerateBefore.value) await onSendEmail(date, true)
+// else {
+//   const formData = getFormValue()
+//   const resp = await addUnmergedEmailJobToTable({
+//     content,
+//     date,
+//     form: {
+//       sendTo: formData.sendTo == 'Primary' ? 'Primary' : 'primary_alternate',
+//       fullName: formData.fullName || '',
 //         email: formData.email || '',
 //         emailSubject: formData.emailSubject || '',
 //       },
@@ -1196,29 +1190,6 @@ const timeZoneFilterFn = (val: string, update: any) => {
 //   console.log(result)
 // }
 
-const mountAnalyzer = () => {
-  /**========================================================================
-   *                           analyzer
-   *========================================================================**/
-  const script = document.createElement('script')
-  script.src = 'https://spamanalyzer.hpsend.com/widget/spam-analyzer.js'
-  script.onload = () => {
-    if (window) {
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      ;(window as any).SpamAnalyzer.init({
-        apiUrl: 'https://spamanalyzer.hpsend.com/api/analyze',
-        apiKey: '6b76f93f-bf47-491e-8343-b29efd4ebef1',
-        userId: 'ramses',
-        subjectSelector: '#txtSubject',
-        bodyEditorId: 'EditorId',
-        containerId: 'spam-analyzer-container',
-        mergeFields: tokensToShow.value || [],
-      })
-    }
-  }
-  document.body.appendChild(script)
-}
-
 /**========================================================================
  *                           get initial data
  *========================================================================**/
@@ -1236,7 +1207,6 @@ onMounted(() => {
       fullName: resp.form.fullName,
       email: resp.form.email,
     })
-    mountAnalyzer()
   })
 })
 </script>
