@@ -434,6 +434,8 @@
             <q-select
               popup-content-class="q-menu-300"
               v-model="orderByPDF"
+              option-label="name"
+              option-value="name"
               :options="$rStore.$state.tokens"
               label="Order By"
               filled
