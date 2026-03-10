@@ -213,6 +213,21 @@
                   </div>
                 </div>
 
+                <div>
+                  <textarea
+                    v-model="email"
+                    id="txtSubject"
+                    placeholder="Subject"
+                    style="display: none"
+                  />
+                  <textarea
+                    v-model="email"
+                    id="EditorId"
+                    placeholder="Body"
+                    style="display: none"
+                  />
+                  <div id="spam-analyzer-container"></div>
+                </div>
                 <!--=============================== Dialogs =============================-->
 
                 <SelectTemplate
@@ -354,6 +369,15 @@
               :label="`${preview ? 'Continue' : 'Preview'}`"
               @click="preview = !preview"
             />
+
+            <!-- <q-btn
+              color="negative"
+              icon="warning"
+              :disable="!email"
+              class="q-mr-sm q-mb-sm"
+              label="check spam"
+              @click="checkSpam"
+            /> -->
 
             <q-btn
               v-if="!preview"
@@ -768,6 +792,8 @@ import { useAuth } from 'src/modules/auth/composables/useAuth'
 import InfoDialog from 'src/components/InfoDialog/InfoDialog.vue'
 import { readMoreEmails } from './data/readMoreEmails'
 
+// import SpamScanner from 'spamscanner'
+
 const $router = useRouter()
 const $q = useQuasar()
 const $rStore = useReportStore()
@@ -1162,6 +1188,37 @@ const timeZoneFilterFn = (val: string, update: any) => {
   })
 }
 
+// const checkSpam = async () => {
+//   const scanner = new SpamScanner()
+
+//   const result = await scanner.scan(email.value)
+
+//   console.log(result)
+// }
+
+const mountAnalyzer = () => {
+  /**========================================================================
+   *                           analyzer
+   *========================================================================**/
+  const script = document.createElement('script')
+  script.src = 'https://spamanalyzer.hpsend.com/widget/spam-analyzer.js'
+  script.onload = () => {
+    if (window) {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      ;(window as any).SpamAnalyzer.init({
+        apiUrl: 'https://spamanalyzer.hpsend.com/api/analyze',
+        apiKey: '6b76f93f-bf47-491e-8343-b29efd4ebef1',
+        userId: 'ramses',
+        subjectSelector: '#txtSubject',
+        bodyEditorId: 'EditorId',
+        containerId: 'spam-analyzer-container',
+        mergeFields: tokensToShow.value || [],
+      })
+    }
+  }
+  document.body.appendChild(script)
+}
+
 /**========================================================================
  *                           get initial data
  *========================================================================**/
@@ -1179,6 +1236,7 @@ onMounted(() => {
       fullName: resp.form.fullName,
       email: resp.form.email,
     })
+    mountAnalyzer()
   })
 })
 </script>
