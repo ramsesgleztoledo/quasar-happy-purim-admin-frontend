@@ -7,19 +7,14 @@
         </div>
       </div>
 
-      <q-card-section class="q-pt-none" style="padding: 12px; max-height: 500px; overflow: auto;">
+      <q-card-section class="q-pt-none" style="padding: 12px; max-height: 500px; overflow: auto">
         <textarea
           v-model="subjectModel"
           id="txtSubject"
           placeholder="Subject"
           style="display: none"
         />
-        <textarea
-          v-model="bodyModel"
-          id="spam-analyzer-body"
-          placeholder="Body"
-          style="display: none"
-        />
+        <div v-html="bodyModel" id="txtBody" style="display: none"></div>
         <div id="spam-analyzer-container"></div>
       </q-card-section>
 
@@ -31,7 +26,10 @@
 </template>
 
 <script setup lang="ts">
+import { useAuth } from 'src/modules/auth/composables/useAuth'
 import { computed, onMounted } from 'vue'
+
+const { authState } = useAuth()
 
 interface SpamAnalyzerPropsInterface {
   tokens: string[]
@@ -66,9 +64,9 @@ const mountAnalyzer = () => {
       ;(window as any).SpamAnalyzer.init({
         apiUrl: 'https://spamanalyzer.hpsend.com/api/analyze',
         apiKey: '6b76f93f-bf47-491e-8343-b29efd4ebef1',
-        userId: 'ramses',
+        userId: authState.value.user?.email || '',
         subjectSelector: '#txtSubject',
-        bodyEditorId: 'bodyEditorId',
+        bodyEditorId: 'txtBody',
         containerId: 'spam-analyzer-container',
         mergeFields: $props.tokens || [],
       })
