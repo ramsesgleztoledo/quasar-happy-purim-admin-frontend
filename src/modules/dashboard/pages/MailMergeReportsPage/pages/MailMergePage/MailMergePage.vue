@@ -405,7 +405,7 @@
               "
             >
               <q-tooltip v-if="!email || !realForm.emailSubject.value">
-                <div>Please add a body to use this feature</div>
+                <div>Please add a body and subject to use this feature</div>
               </q-tooltip>
             </q-btn>
           </div>
