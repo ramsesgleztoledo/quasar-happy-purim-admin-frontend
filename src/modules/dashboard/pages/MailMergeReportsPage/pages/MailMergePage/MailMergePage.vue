@@ -333,7 +333,11 @@
             </template>
 
             <template v-else>
-              <PreviewEmail :content="email" @onContinue="preview = false" />
+              <PreviewEmail
+                :content="email"
+                :subject="realForm.emailSubject.value"
+                @onContinue="preview = false"
+              />
             </template>
           </div>
         </div>
@@ -360,11 +364,11 @@
             </q-btn>
 
             <q-btn
-              color="negative"
+              style="background: var(--happypurim); color: white"
               icon="warning"
               :disable="!email || !realForm.emailSubject.value"
               class="q-mr-sm q-mb-sm"
-              label="check spam"
+              label="Spam Analyzer"
               @click="spamAnalyzerDialogFlag = true"
             >
               <q-tooltip v-if="!email || !realForm.emailSubject.value">
@@ -390,7 +394,7 @@
             </q-btn>
             <q-btn
               v-if="!preview"
-              :disable="!email"
+              :disable="!email || !realForm.emailSubject.value"
               class="q-mr-sm q-mb-sm"
               style="background: var(--happypurim); color: white"
               label="Schedule or Send Email"
@@ -400,7 +404,7 @@
                 }
               "
             >
-              <q-tooltip v-if="!email">
+              <q-tooltip v-if="!email || !realForm.emailSubject.value">
                 <div>Please add a body to use this feature</div>
               </q-tooltip>
             </q-btn>
@@ -539,17 +543,6 @@
             label="Sending From Email *"
             lazy-rules
             :rules="[lazyRules.required(), lazyRules.isEmail()]"
-          />
-        </div>
-
-        <div class="row">
-          <q-input
-            style="width: 100%"
-            v-model="realForm.emailSubject.value"
-            outlined
-            label="Email Subject *"
-            lazy-rules
-            :rules="[lazyRules.required()]"
           />
         </div>
       </div>

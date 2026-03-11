@@ -38,7 +38,11 @@
     </div>
     <div class="row">
       <div v-if="!respError" class="col-12 q-pa-lg PreviewEmail-preview-container">
-        <div v-html="preview"></div>
+        <div class="row q-mb-sm" v-if="subject">{{ subject }}:</div>
+        <hr />
+        <div class="row">
+          <div v-html="preview"></div>
+        </div>
       </div>
       <div v-else class="col-12 q-pa-lg">
         We could not get data for this member ( he/she is missing some information)
@@ -56,6 +60,7 @@ import { computed, ref, watch } from 'vue'
 
 interface PreviewPropsInterface {
   content: string
+  subject: string
 }
 const $props = defineProps<PreviewPropsInterface>()
 
