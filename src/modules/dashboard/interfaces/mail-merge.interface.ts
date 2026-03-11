@@ -12,6 +12,7 @@ export interface MergedContentResponseInterface {
 export interface MergedContentPrintInterface {
   memberId: number;
   body: string;
+  subject: string;
 }
 
 export interface MergedResultInterface {

@@ -33,15 +33,20 @@
     </div>
     <div class="row">
       <p>
-        <b> Preview Composed Merge </b>
+        <b> Merge Preview </b>
       </p>
     </div>
     <div class="row">
       <div v-if="!respError" class="col-12 q-pa-lg PreviewEmail-preview-container">
-        <div class="row q-mb-sm" v-if="subject">{{ subject }}:</div>
-        <hr />
+        <div v-if="previewSubject">
+          <div class="row q-mb-sm">
+            <div class="q-mr-sm">Subject:</div>
+            <div v-html="previewSubject" />
+            <hr />
+          </div>
+        </div>
         <div class="row">
-          <div v-html="preview"></div>
+          <div v-html="previewBody"></div>
         </div>
       </div>
       <div v-else class="col-12 q-pa-lg">
@@ -60,7 +65,7 @@ import { computed, ref, watch } from 'vue'
 
 interface PreviewPropsInterface {
   content: string
-  subject: string
+  subject?: string
 }
 const $props = defineProps<PreviewPropsInterface>()
 
@@ -73,7 +78,8 @@ const isLoading = ref(false)
 
 const members = computed(() => $rStore.$state.selectedRecipients.map((re) => re.ID))
 
-const preview = ref('')
+const previewBody = ref('')
+const previewSubject = ref('')
 
 const onPosChange = (value: string) => {
   if (!members.value.length) return
@@ -106,11 +112,13 @@ const handlePage = async (position: number) => {
   const res = await getMergedContentPrintByReportAndMember(
     members.value[position - 1]!,
     $props.content,
+    $props.subject || '',
   )
   if (!res) {
     // respError.value = true
     $emit('onContinue', true)
-  } else preview.value = res?.body || ''
+  } else previewBody.value = res?.body || ''
+  previewSubject.value = res?.subject || ''
   isLoading.value = false
 }
 

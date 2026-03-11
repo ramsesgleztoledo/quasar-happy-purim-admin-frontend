@@ -67,6 +67,7 @@ export const useMailMergeService = () => {
     getMergedContentPrintByReportId: async (data: {
       reportId: number | string;
       data: {
+        subject: string;
         template: string;
         memberIds: number[]
       }

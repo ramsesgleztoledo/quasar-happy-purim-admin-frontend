@@ -104,11 +104,12 @@ export const useMailMerge = () => {
       return resp.ok && resp.data?.results?.length ? resp.data.results[0] : undefined
 
     },
-    async getMergedContentPrintByReportAndMember(memberId: number, content: string) {
+    async getMergedContentPrintByReportAndMember(memberId: number, content: string, subject: string) {
 
       const resp = await getMergedContentPrintByReportId({
         reportId: reportId.value,
         data: {
+          subject: subject,
           template: content,
           memberIds: [memberId]
         }
@@ -128,6 +129,7 @@ export const useMailMerge = () => {
     async generatePDF(data: {
       title: string;
       userEmail: string;
+      subject: string;
       content: string;
       memberIds: number[]
     }) {
@@ -144,6 +146,7 @@ export const useMailMerge = () => {
       const resp = await getMergedContentPrintByReportId({
         reportId: reportId.value,
         data: {
+          subject: data.subject,
           template: data.content,
           memberIds: data.memberIds
         }

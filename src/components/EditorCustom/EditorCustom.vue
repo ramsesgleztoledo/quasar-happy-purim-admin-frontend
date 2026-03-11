@@ -167,7 +167,7 @@
             :key="i"
             tag="label"
             clickable
-            @click="addTokenText(token)"
+            @click="emitTokenText(token)"
           >
             <q-item-section>{{ token }}</q-item-section>
           </q-item>
@@ -414,7 +414,7 @@ const stringTokenRef = ref<QBtnDropdown | undefined>(undefined)
 const attacherRef = ref<QBtnDropdown | undefined>(undefined)
 const editorRef = ref<QEditor | undefined>(undefined)
 // Emit the updated value when the internal state changes
-const $emit = defineEmits(['update:modelValue'])
+const $emit = defineEmits(['update:modelValue', 'insertNewToken'])
 
 const fontSizeRef = ref<QBtnDropdown | undefined>(undefined)
 
@@ -440,6 +440,11 @@ const add = (name: string) => {
   setTimeout(() => {
     edit.focus()
   }, 300)
+}
+const emitTokenText = (name: string) => {
+  if (!editorRef.value) return
+  stringTokenRef.value?.hide()
+  $emit('insertNewToken', name)
 }
 const addTokenText = (name: string) => {
   if (!editorRef.value) return

@@ -97,6 +97,7 @@
                       label="Email Subject *"
                       lazy-rules
                       :rules="[lazyRules.required()]"
+                      @click="lastFocus = 'subject'"
                     />
                   </div>
                   <div
@@ -154,6 +155,7 @@
                       }"
                     >
                       <EditorCustom
+                        @insertNewToken="(token) => insertToken(token)"
                         show-uploader
                         v-model="email"
                         height="53vh"
@@ -363,51 +365,52 @@
               </q-tooltip>
             </q-btn>
 
-            <q-btn
-              style="background: var(--happypurim); color: white"
-              icon="warning"
-              :disable="!email || !realForm.emailSubject.value"
-              class="q-mr-sm q-mb-sm"
-              label="Spam Analyzer"
-              @click="spamAnalyzerDialogFlag = true"
-            >
-              <q-tooltip v-if="!email || !realForm.emailSubject.value">
-                <div>Please add a body and subject to use this feature</div>
-              </q-tooltip>
-            </q-btn>
+            <template v-if="!preview">
+              <q-btn
+                style="background: var(--happypurim); color: white"
+                icon="warning"
+                :disable="!email || !realForm.emailSubject.value"
+                class="q-mr-sm q-mb-sm"
+                label="Spam Analyzer"
+                @click="spamAnalyzerDialogFlag = true"
+              >
+                <q-tooltip v-if="!email || !realForm.emailSubject.value">
+                  <div>{{ tooltipText }}</div>
+                </q-tooltip>
+              </q-btn>
 
-            <q-btn
-              v-if="!preview"
-              :disable="!email"
-              class="q-mr-sm q-mb-sm"
-              style="background: var(--happypurim); color: white"
-              label="Generate PDF To Print"
-              @click="
-                () => {
-                  if (checkIfRecipients()) pdfTitleFlag = true
-                }
-              "
-            >
-              <q-tooltip v-if="!email">
-                <div>Please add a body to use this feature</div>
-              </q-tooltip>
-            </q-btn>
-            <q-btn
-              v-if="!preview"
-              :disable="!email || !realForm.emailSubject.value"
-              class="q-mr-sm q-mb-sm"
-              style="background: var(--happypurim); color: white"
-              label="Schedule or Send Email"
-              @click="
-                () => {
-                  if (checkIfRecipients()) sendEmailFlag = true
-                }
-              "
-            >
-              <q-tooltip v-if="!email || !realForm.emailSubject.value">
-                <div>Please add a body and subject to use this feature</div>
-              </q-tooltip>
-            </q-btn>
+              <q-btn
+                :disable="!email"
+                class="q-mr-sm q-mb-sm"
+                style="background: var(--happypurim); color: white"
+                label="Generate PDF To Print"
+                @click="
+                  () => {
+                    if (checkIfRecipients()) pdfTitleFlag = true
+                  }
+                "
+              >
+                <q-tooltip v-if="!email">
+                  <div>{{ tooltipNoSubjectText }}</div>
+                </q-tooltip>
+              </q-btn>
+
+              <q-btn
+                :disable="!email || !realForm.emailSubject.value"
+                class="q-mr-sm q-mb-sm"
+                style="background: var(--happypurim); color: white"
+                label="Schedule or Send Email"
+                @click="
+                  () => {
+                    if (checkIfRecipients()) sendEmailFlag = true
+                  }
+                "
+              >
+                <q-tooltip v-if="!email || !realForm.emailSubject.value">
+                  <div>{{ tooltipText }}</div>
+                </q-tooltip>
+              </q-btn>
+            </template>
           </div>
         </div>
       </div>
@@ -789,7 +792,7 @@ import { useRouter } from 'vue-router'
 import { isValidDate, isValidTime } from 'src/helpers'
 import { getFormattedStringDate, turnTimeAndDate } from 'src/helpers/turnTimeAndDate'
 import type { RecipientMemberInterface } from 'src/modules/dashboard/interfaces/report.interface'
-import { useQuasar, type QTableColumn } from 'quasar'
+import { QInput, useQuasar, type QTableColumn } from 'quasar'
 import { sortArrayByField } from 'src/helpers/sortArrayByfield'
 import { useDashboardStore } from 'src/modules/dashboard/store/dashboardStore/dashboardStore'
 import type { ShulCategoryInterface } from 'src/modules/dashboard/interfaces/category-interfaces'
@@ -808,8 +811,11 @@ const $rStore = useReportStore()
 const $dStore = useDashboardStore()
 const { getReportData } = useReport()
 const { authState } = useAuth()
+const tooltipText = ref('Please add a body and subject to use this feature')
+const tooltipNoSubjectText = ref('Please add a body to use this feature')
 
 const spamAnalyzerDialogFlag = ref(false)
+const lastFocus = ref<'subject' | 'body'>('body')
 
 const categoryFiltered = ref<ShulCategoryInterface[] | undefined>(undefined)
 
@@ -941,8 +947,12 @@ const saveDialogFlag = ref<boolean>(false)
 const editorRef = ref<InstanceType<typeof EditorCustom> | null>(null)
 
 const insertToken = (tokenName: string) => {
-  if (editorRef.value) {
-    editorRef.value.addTokenText(tokenName)
+  if (lastFocus.value === 'subject') {
+    realForm.value.emailSubject.value += ` {{${tokenName}}}`
+  } else {
+    if (editorRef.value) {
+      editorRef.value.addTokenText(tokenName)
+    }
   }
 }
 
@@ -991,6 +1001,7 @@ const onGeneratePDF = async () => {
   generatePDF({
     title: pdfTitle.value,
     userEmail: userEmail.value,
+    subject: '',
     content: content.replace(/\\+/g, ''),
     memberIds: (orderByPDF.value
       ? sortArrayByField(
@@ -1211,6 +1222,13 @@ const timeZoneFilterFn = (val: string, update: any) => {
  *========================================================================**/
 
 onMounted(() => {
+  document.addEventListener('click', (e) => {
+    const target = e.target as HTMLElement
+    if (target.classList.contains('q-editor__content')) {
+      lastFocus.value = 'body'
+    }
+  })
+
   getData().then((resp) => {
     // tokens
 
