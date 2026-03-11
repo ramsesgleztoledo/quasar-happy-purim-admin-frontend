@@ -23,21 +23,43 @@
         <div class="row TutorialsPage-title">
           {{ tutorial.name }}
         </div>
-
-        <q-video :src="tutorial.url" />
+        <div style="position: relative; height: 100%">
+          <q-video :src="tutorial.url" style="position: relative; z-index: 1" />
+          <q-inner-loading :showing="true" style="position: absolute">
+            <q-spinner size="50px" />
+          </q-inner-loading>
+        </div>
       </div>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { computed, ref } from 'vue'
-import { tutorialVideos } from '../../data/tutorialVideos'
-
-const tutorials = ref(tutorialVideos)
+import { computed, onMounted, ref } from 'vue'
+import { useTutorialService } from '../../services/tutorials.service'
+import type { TutorialInterface } from '../../interfaces/tutorials.interface'
+const tutorialService = useTutorialService()
+const tutorials = ref<TutorialInterface[]>([])
 const searchText = ref('')
 const showVideo = (name: string) =>
   computed(() => name.toLowerCase().includes((searchText.value || '').toLowerCase()))
+
+onMounted(async () => {
+  try {
+    const resp = await tutorialService.getTutorials({
+      loading: {
+        message: 'Loading...',
+      },
+      dontRedirect: true,
+      dontShowToast: true,
+      useCache: true,
+    })
+    if (!resp.ok) return
+    tutorials.value = resp.data
+  } catch (error) {
+    console.error(error)
+  }
+})
 </script>
 
 <style scoped lang="scss" src="./TutorialsPage.scss" />

@@ -112,6 +112,7 @@ export const useAuth = () => {
         shul: {
           shulId: payload.shulId,
           shulName: payload.shulName,
+          isHrhClient: payload.isHrhClient === 'true' ? true : false
         },
         user: {
           id: payload.u_id || "",

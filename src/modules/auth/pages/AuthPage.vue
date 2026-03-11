@@ -7,11 +7,8 @@
       }"
     >
       <div class="col-12 q-pa-sm">
-        <div class="row q-mb-lg happypurim-logo user-select-none justify-content-end">
-          <p class="hp-logo" style="font-size: 26px">
-            HappyPurim.com
-            <!-- HappyRoshHashanah.com -->
-          </p>
+        <div class="row q-mb-lg user-select-none justify-content-end">
+          <p class="hp-logo" style="font-size: 26px">Admin Console</p>
         </div>
         <div class="row q-mt-md">
           <div class="col-12 q-pl-sm q-pr-sm">

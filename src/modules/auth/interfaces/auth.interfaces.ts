@@ -20,4 +20,5 @@ export interface AuthJWTInterface {
   exp: number;
   iss: string;
   aud: string;
+  isHrhClient: string;
 }

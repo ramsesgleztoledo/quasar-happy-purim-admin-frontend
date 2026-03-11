@@ -39,8 +39,7 @@
                 }"
               >
                 <p>
-                  HappyPurim.com
-                  <!-- HappyRoshHashanah.com -->
+                  {{ happyText }}
                 </p>
               </div>
               <div class="row">
@@ -141,7 +140,7 @@ import ColorSettings from '../ColorSettings/ColorSettings.vue'
 const $uiStore = useUIStore()
 // const $aStore = useAuthStore()
 
-const { isMobile, goBack, goForward } = useUI()
+const { isMobile, goBack, goForward, happyText } = useUI()
 // const { logOut } = useAuth()
 
 const search = ref<string>('')

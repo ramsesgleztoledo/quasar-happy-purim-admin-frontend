@@ -353,7 +353,11 @@
               class="q-mr-sm q-mb-sm"
               :label="`${preview ? 'Continue' : 'Preview'}`"
               @click="preview = !preview"
-            />
+            >
+              <q-tooltip v-if="!$rStore.$state.selectedRecipients.length">
+                <div>Loading recipients</div>
+              </q-tooltip>
+            </q-btn>
 
             <q-btn
               color="negative"
@@ -362,7 +366,11 @@
               class="q-mr-sm q-mb-sm"
               label="check spam"
               @click="spamAnalyzerDialogFlag = true"
-            />
+            >
+              <q-tooltip v-if="!email || !realForm.emailSubject.value">
+                <div>Please add a body and subject to use this feature</div>
+              </q-tooltip>
+            </q-btn>
 
             <q-btn
               v-if="!preview"
@@ -375,7 +383,11 @@
                   if (checkIfRecipients()) pdfTitleFlag = true
                 }
               "
-            />
+            >
+              <q-tooltip v-if="!email">
+                <div>Please add a body to use this feature</div>
+              </q-tooltip>
+            </q-btn>
             <q-btn
               v-if="!preview"
               :disable="!email"
@@ -387,7 +399,11 @@
                   if (checkIfRecipients()) sendEmailFlag = true
                 }
               "
-            />
+            >
+              <q-tooltip v-if="!email">
+                <div>Please add a body to use this feature</div>
+              </q-tooltip>
+            </q-btn>
           </div>
         </div>
       </div>

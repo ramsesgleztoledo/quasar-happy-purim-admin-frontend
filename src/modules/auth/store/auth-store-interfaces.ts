@@ -7,6 +7,7 @@ export interface authStateInterface {
 export interface authShulInterface {
   shulId: string;
   shulName: string;
+  isHrhClient: boolean;
 }
 export interface authUserInterface {
   id: string;

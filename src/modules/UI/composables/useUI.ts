@@ -5,12 +5,14 @@ import { useUIStore } from '../store/ui-store';
 import type { ColorModeInterface, downloadEndPointType } from './ui-interfaces';
 import { generateDownload } from 'src/helpers/generateDownload';
 import type { FileType } from 'src/interfaces/ui-interfaces';
+import { useAuthStore } from 'src/modules/auth/store/auth.store';
 
 
 export const useUI = () => {
 
   const $router = useRouter()
   const $uiStore = useUIStore()
+  const $aStore = useAuthStore()
 
   const $q = useQuasar();
   const copyToClipboard = async (text: string) => {
@@ -211,6 +213,8 @@ export const useUI = () => {
     appColorOptions,
     setAppColor,
     isDev: computed(() => process.env.NODE_ENV === 'development'
+    ),
+    happyText: computed(() => $aStore.$state.shul?.isHrhClient ? 'HappyRoshHashanah' : 'HappyPurim'
     ),
     version: computed(() => process.env.VERSION || ''),
     async downloadFile(endPoint: downloadEndPointType, data: {
