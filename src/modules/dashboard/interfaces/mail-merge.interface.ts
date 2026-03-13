@@ -19,7 +19,7 @@ export interface MergedResultInterface {
   memberId: number;
   email: string;
   body: string;
-
+  subject: string
 }
 
 

@@ -225,7 +225,7 @@ export const useMailMerge = () => {
         dateAdded: data.date,
         fromAddress: data.form.email,
         fromDisplayName: data.form.fullName,
-        subject: data.form.emailSubject,
+        subject: data.subject,
         recipients,
         timeZone: data.timeZone || '',
         sendNow: data.sendNow,
