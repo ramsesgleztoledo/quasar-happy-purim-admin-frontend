@@ -757,12 +757,7 @@
   <SpamAnalyzerComponent
     v-if="spamAnalyzerDialogFlag"
     v-model="spamAnalyzerDialogFlag"
-    @update:body="
-      (value) => {
-        email = value
-        realForm.email.value = value
-      }
-    "
+    @update:body="(value) => (email = value)"
     @update:subject="(value) => (realForm.emailSubject.value = value)"
     :body="email"
     :subject="realForm.emailSubject.value"
@@ -1108,6 +1103,7 @@ const onSendEmail = async (date?: Date | string, isSchedule?: boolean) => {
       email: formData.email || '',
       emailSubject: formData.emailSubject || '',
     },
+    subject: realForm.value.emailSubject.value,
     content,
     memberIds: $rStore.$state.selectedRecipients.map((re) => re.ID),
     date,

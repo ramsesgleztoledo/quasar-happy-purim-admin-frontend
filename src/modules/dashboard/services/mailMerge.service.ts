@@ -51,6 +51,7 @@ export const useMailMergeService = () => {
       reportId: number | string;
       emailOption: 'Primary' | 'primary_alternate';
       data: {
+        subject: string
         template: string;
         memberIds: number[]
       }

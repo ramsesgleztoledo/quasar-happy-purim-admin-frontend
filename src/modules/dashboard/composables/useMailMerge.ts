@@ -24,11 +24,12 @@ export const useMailMerge = () => {
   const reportId = computed(() => $rStore.$state.reportId)
   const userId = computed(() => $aStore.$state.user?.id)
 
-  const getMergedContent = async (data: { content: string, memberIds: number[], emailOption: 'Primary' | 'primary_alternate' }) => {
+  const getMergedContent = async (data: { subject: string, content: string, memberIds: number[], emailOption: 'Primary' | 'primary_alternate' }) => {
     const merged = await getMergedContentByReportId({
       reportId: reportId.value,
       emailOption: data.emailOption,
       data: {
+        subject: data.subject,
         template: data.content,
         memberIds: data.memberIds
       }
@@ -83,12 +84,13 @@ export const useMailMerge = () => {
 
     },
 
-    async getMergedContentByReportAndMember(memberId: number, content: string, emailOption: 'Primary' | 'primary_alternate') {
+    async getMergedContentByReportAndMember(memberId: number, subject: string, content: string, emailOption: 'Primary' | 'primary_alternate') {
 
       const resp = await getMergedContentByReportId({
         reportId: reportId.value,
         emailOption,
         data: {
+          subject,
           template: content,
           memberIds: [memberId]
         }
@@ -200,6 +202,7 @@ export const useMailMerge = () => {
         email: string;
         emailSubject: string;
       },
+      subject: string;
       content: string;
       memberIds: number[];
       date?: Date;
@@ -209,6 +212,7 @@ export const useMailMerge = () => {
     }, isSchedule?: boolean) {
 
       const recipients: MergedResultInterface[] = await getMergedContent({
+        subject: data.subject,
         content: data.content,
         memberIds: data.memberIds,
         emailOption: data.form.sendTo || 'Primary'
