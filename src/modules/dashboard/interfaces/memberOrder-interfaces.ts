@@ -78,6 +78,7 @@ export interface MemberOrderOrgSettingInterface {
   receiptText: string;
   showShippingInstructions: boolean;
   showShippingInstructionsTitle: string;
+  persistLastYearsOrderHistory: boolean;
   displayLastYearsOrderIntro: boolean;
   overrideMailFromAddress: boolean;
   alternateDeliveryAddress: boolean;

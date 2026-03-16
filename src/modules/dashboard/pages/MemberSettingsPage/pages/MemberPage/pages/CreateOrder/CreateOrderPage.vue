@@ -298,14 +298,23 @@ const orderByCode = computed(
   () => (($route.query.orderByCode as string) || '').toLowerCase() === 'true',
 )
 
+const anyMemberPaid = computed(() => !!$moStore.$state.memberList.original.find((me) => me.paid))
+
+const anyMemberSelected = computed(() => $moStore.$state.membersSelected.length > 0)
+
 onMounted(() => {
   showLoading()
   getInitialData()
     .then(() => {
-      const orderPages: PageStepInterface[] = [
-        ...($moStore.$state.orgSettings?.displayLastYearsOrderIntro &&
-        $moStore.membersLastYear.length &&
+      const basicShowOrderHistory =
+        $moStore.$state.orgSettings?.displayLastYearsOrderIntro &&
+        $moStore.membersLastYear.length > 0 &&
         !orderByCode.value
+
+      const orderPages: PageStepInterface[] = [
+        ...(basicShowOrderHistory &&
+        ($moStore.$state.orgSettings?.persistLastYearsOrderHistory ||
+          (!anyMemberPaid.value && !anyMemberSelected.value))
           ? [
               {
                 btnText: 'Proceed To General Ordering',
@@ -380,7 +389,11 @@ onMounted(() => {
 
       $moStore.setOrderPages(orderPages)
 
-      if ($moStore.$state.orgSettings?.displayLastYearsOrderIntro) {
+      if (
+        $moStore.$state.orgSettings?.displayLastYearsOrderIntro &&
+        !anyMemberPaid.value &&
+        !anyMemberSelected.value
+      ) {
         $moStore.$state.memberList.copy = $moStore.$state.memberList.copy.map((member) => {
           if (
             member.iSentLastYear == 1 ||
@@ -396,9 +409,11 @@ onMounted(() => {
         })
       }
       isReady.value = true
-      stopLoading()
     })
     .catch(console.error)
+    .finally(() => {
+      stopLoading()
+    })
 })
 </script>
 

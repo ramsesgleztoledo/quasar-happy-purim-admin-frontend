@@ -79,6 +79,9 @@ const loginAccountsAux: LoginAccountInterface[] = [
   {
     id: 112, name: `Bet Am Shalom Synagogue`, guid: '56193663-FA8E-4F28-88C5-8E0F63A0819F', token: "qBhrjjfPiavj8zfpFPbcm6fdAk9ZwPKYjjh3jty4QtDE9pbMfx6dH+4mk3Y+uzeXaMyAbL8rO0Eg3TXfavdyUQ=="
   },
+  {
+    id: 527, name: `Sisterhood Temple Emanuel (Newton)`, guid: '9489E5A9-5D5C-4AB3-8A37-FE285FD95C7F', token: "DUp62cXQax45uwW5NiYb8845WM+jN0kY3T2x4AVs+PYjzvGZ7YF6QL2fhYqSwHmJhGlAX52vKjmyFeGAoZLmsA=="
+  },
 ]
 
 export const loginAccounts: LoginAccountInterface[] = loginAccountsAux.map(ac => ({
