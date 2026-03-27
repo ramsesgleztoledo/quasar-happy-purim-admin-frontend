@@ -13,9 +13,46 @@
       </p>
     </div>
   </div>
- 
+
   <div class="row q-mb-md">
     <q-btn-toggle v-model="pageView" spread no-caps :options="pageOption" style="width: 445px" />
+  </div>
+  <div class="row" v-if="$rStore.$state.htcBasketReport && pageView === '3'">
+    <div class="col-12 MailMergeReportsPage-container">
+      <div class="row q-mb-sm">
+        <div class="col-12">
+          <q-item class="MailMergeReportsPage-item">
+            <q-item-section
+              ><q-item-label class="q-mb-sm">
+                <div class="row">
+                  <div v-html="$rStore.$state.htcBasketReport.name" />
+                </div>
+              </q-item-label>
+              <q-item-label caption>
+                <div v-html="$rStore.$state.htcBasketReport.description" /> </q-item-label
+            ></q-item-section>
+            <q-item-section side>
+              <div class="row">
+                <q-btn
+                  class="q-mr-sm"
+                  padding="none"
+                  color="primary"
+                  flat
+                  icon="visibility"
+                  :to="{
+                    name: 'MailMergeReportsPage-htc-report',
+                  }"
+                >
+                  <q-tooltip>
+                    <div>View Report</div>
+                  </q-tooltip>
+                </q-btn>
+              </div>
+            </q-item-section>
+          </q-item>
+        </div>
+      </div>
+    </div>
   </div>
   <div class="row" v-if="pageView != '1'">
     <div class="col-12 MailMergeReportsPage-container">

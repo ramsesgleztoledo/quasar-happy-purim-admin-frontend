@@ -1,6 +1,6 @@
 import { useApiCall } from "src/services/apiCall";
 import type { ApiCallResponseInterface, ExtraOptionsInterface } from "src/services/api-interfaces";
-import type { CustomReportInterface, RecipientDataFormInterface, RecipientDataInterface, ReportResponseInterface, SpecialReportInterface } from "../interfaces/report.interface";
+import type { CustomReportInterface, HTCBasketReport, RecipientDataFormInterface, RecipientDataInterface, ReportResponseInterface, SpecialReportInterface } from "../interfaces/report.interface";
 
 
 
@@ -13,6 +13,14 @@ export const useReportsService = () => {
   return {
     getReportList: async (extraOptions?: ExtraOptionsInterface): Promise<ApiCallResponseInterface<ReportResponseInterface>> => {
       const nextUrl = `/Basic-and-Advanced/Get-Report-List`;
+      const url = `${baseUrl}${nextUrl}`;
+      return await apiCall({
+        url,
+        extraOptions,
+      })
+    },
+    getHTCBasketReport: async (extraOptions?: ExtraOptionsInterface): Promise<ApiCallResponseInterface<HTCBasketReport | undefined>> => {
+      const nextUrl = `/Htc-basket-report`;
       const url = `${baseUrl}${nextUrl}`;
       return await apiCall({
         url,

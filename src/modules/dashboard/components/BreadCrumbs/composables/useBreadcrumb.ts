@@ -500,6 +500,16 @@ export const useBreadcrumb = () => {
       name: 'dashboard-TutorialsPage',
     },
 
+    //* extra reports
+    {
+      title: 'HTC Baskets',
+      icon: 'visibility',
+      name: 'MailMergeReportsPage-htc-report',
+    },
+
+    //* extra reports
+
+
   ])
 
   return {

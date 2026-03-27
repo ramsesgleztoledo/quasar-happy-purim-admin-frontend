@@ -7,7 +7,12 @@ import { useMailMergeService } from "../services/mailMerge.service";
 
 export const useReport = () => {
 
-  const { getReportList, downloadReportExcelByReportId, getCustomReports, downloadCustomReportExcelByReportId,
+  const {
+    getReportList,
+    getHTCBasketReport,
+    downloadReportExcelByReportId,
+    getCustomReports,
+    downloadCustomReportExcelByReportId,
     // runSQLReportRecipientsByReportId,
     getReportRecipientsByReportIdWithSQL,
     getReportRecipientsByReportIdCustomWithSQL,
@@ -44,23 +49,25 @@ export const useReport = () => {
         getCustomReports(),
         getAdvancedSpecialReports(),
         getCustomSpecialReports(),
+        getHTCBasketReport(),
       ])
 
 
       $rStore.$patch({
         advancedReports: resp[0].ok ? resp[0].data.advancedReports : [],
-
         basicReports: resp[0].ok ? resp[0].data.basicReports : [],
-
-        customReports: resp[1].ok ? resp[1].data.map(re => ({
+        customReports: resp[1].ok ? [...resp[0].data.customReports.map(re => ({
+          ...re,
+          isCustom: true
+        })), ...resp[1].data.map(re => ({
           reportID: `${re.reportId}`,
           name: re.reportName,
           summary: "",
           isCustom: true
-        })) : [],
+        }))] : [],
         advancedReportsSpecial: resp[2].ok ? resp[2].data : [],
         customReportsSpecial: resp[3].ok ? resp[3].data : [],
-
+        htcBasketReport: resp[4].ok ? resp[4].data : undefined
       })
       $q.loading.hide()
     },

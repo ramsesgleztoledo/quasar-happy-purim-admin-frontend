@@ -1,6 +1,25 @@
 export interface ReportResponseInterface {
   basicReports: ReportDataInterface[];
   advancedReports: ReportDataInterface[];
+  customReports: ReportDataInterface[];
+}
+
+export interface HTCBasketReport {
+  name: string;
+  description: string;
+  totalInfo: HTCBasketRoutesTableTotalInfo[];
+  routesTables: HTCBasketRoutesTable[];
+}
+
+
+export interface HTCBasketRoutesTable {
+  routeCode: string;
+  data: HTCBasketRoutesTableTotalInfo[];
+}
+
+export interface HTCBasketRoutesTableTotalInfo {
+  total: number;
+  basketSize: string;
 }
 
 export interface ReportDataInterface {

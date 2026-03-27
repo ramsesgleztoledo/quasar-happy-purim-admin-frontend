@@ -182,6 +182,16 @@ export const dashboardRoutes: RouteRecordRaw[] = [
             ]
           },
 
+          //* extra reports
+          {
+            path: 'htc-report',
+            name: 'MailMergeReportsPage-htc-report',
+            component: () =>
+              import(/* webpackChunkName: "MailMergeReportsPage-MailMergeReportsPage" */ "../pages/MailMergeReportsPage/MailMergeReportsPage/Reports/HTCBasketReport/HTCBasketReport.vue"),
+          },
+
+          //* extra reports
+
 
         ]
       }

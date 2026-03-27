@@ -1,9 +1,10 @@
-import type { RecipientDataInterface, RecipientMemberInterface, ReportDataInterface, SpecialReportInterface, TokenInterface } from "../../interfaces/report.interface";
+import type { HTCBasketReport, RecipientDataInterface, RecipientMemberInterface, ReportDataInterface, SpecialReportInterface, TokenInterface } from "../../interfaces/report.interface";
 import type { NoneType } from "../../services/service-interfaces";
 
 
 export interface reportStateInterface {
   basicReports: ReportDataInterface[];
+  htcBasketReport: HTCBasketReport | undefined;
   advancedReports: ReportDataInterface[];
   customReports: ReportDataInterface[];
   report: RecipientDataInterface | NoneType;

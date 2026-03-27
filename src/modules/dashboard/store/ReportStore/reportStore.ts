@@ -7,6 +7,7 @@ import type { NoneType } from '../../services/service-interfaces';
 
 const initialState: reportStateInterface = {
   advancedReports: [],
+  htcBasketReport: undefined,
   basicReports: [],
   customReports: [],
   report: undefined,

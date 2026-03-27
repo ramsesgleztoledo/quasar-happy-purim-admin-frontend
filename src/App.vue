@@ -24,17 +24,17 @@ const { setInitialColors } = useUI()
 //   if (recordly) {
 //     // set your initial configuration
 //     recordly.init(
-//       'srk_WENzVnCAhEG0R8QU7vFK3Q',
+//       'srk_z-QoUkggtEGwMqYq7JrfEA',
 //       // session info
 //       {
 //         // firstName non-require (string)
-//         firstName: 'Link',
+//         firstName: 'Ramses',
 //         // lastName non-require (string)
-//         lastName: 'nintendo',
+//         lastName: 'Gonzalez',
 //         // email non-require (string)
-//         email: 'link@nintend.com',
+//         email: 'ramses@gmail.com',
 //         // userId non-require (string)
-//         userId: '123',
+//         userId: '88',
 //       },
 //       // extra data non-require (JSON)
 //       {
@@ -47,6 +47,8 @@ const { setInitialColors } = useUI()
 //     recordly.setup({
 //       // inlineStylesheet non-required, DEFAULT: false (boolean)
 //       inlineStylesheet: false,
+//       // recordClientInfo non-required, DEFAULT: false (boolean)
+//       recordClientInfo: true,
 //       // recordLocation non-required, DEFAULT: false (boolean)
 //       recordLocation: true,
 //       // recordConsole non-required, DEFAULT: false (boolean)
@@ -86,7 +88,7 @@ onMounted(() => {
   setInitialColors()
   checkLocalStoreAuth()
   // console.log({
-  //   starRecordly
+  // starRecordly()
   // });
 })
 </script>
