@@ -3,9 +3,9 @@ import type { OrderMemberListInterface, OrderPromotionInterface } from "../inter
 export const getMembersByPromotion = (promotion: OrderPromotionInterface, members: OrderMemberListInterface[], promotions?: OrderPromotionInterface[], notFound?: boolean) => {
 
   const isAll = promotion.categories.toLowerCase().includes('all')
-  if (isAll) return notFound ? [] : members.filter(me => !me.paid)
+  if (isAll) return notFound ? [] : members.filter(me => !me.paid && (!me.basketOptionID || me.basketOptionID === promotion.basketOptionID))
 
-  if (!promotion.joinCategories) return notFound ? members.filter(me => me.selected && !me.paid) : []
+  if (!promotion.joinCategories) return notFound ? members.filter(me => me.selected && !me.paid && (!me.basketOptionID || me.basketOptionID === promotion.basketOptionID)) : []
 
   const cats = promotion.joinCategories.split(',')
 
@@ -14,11 +14,14 @@ export const getMembersByPromotion = (promotion: OrderPromotionInterface, member
   return members.filter(member => {
     const paid = member.paid
     if (paid) return false
+
+    if (member.basketOptionID && member.basketOptionID !== promotion.basketOptionID) return false
+
     let found = false
     const memberCat = member.memberCategories.split(',')
     for (let i = 0; i < cats.length; i++) {
       if (memberCat.includes(cats[i]!) &&
-      ((auxPromotions && !checkOtherIncludes(memberCat, auxPromotions)) || !auxPromotions)) {
+        ((auxPromotions && !checkOtherIncludes(memberCat, auxPromotions)) || !auxPromotions)) {
         found = true
         break
       }
