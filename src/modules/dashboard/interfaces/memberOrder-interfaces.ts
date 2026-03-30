@@ -128,7 +128,8 @@ export type CharityType = MemberCharityOptionInterface & {
 }
 
 export type ExtendedPromotionType = MemberOrderItemsInterface & {
-  memberList: OrderMemberListInterface[]
+  memberList: OrderMemberListInterface[],
+  basketOptionID: undefined | null | number
 }
 
 
@@ -449,7 +450,7 @@ export interface BasketOptionBtnsInterface {
 }
 
 export interface BasketOptionButtonInterface {
-  id:          number;
+  id: number;
   description: string;
-  price:       number;
+  price: number;
 }

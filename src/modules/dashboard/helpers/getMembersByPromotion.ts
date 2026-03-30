@@ -13,9 +13,12 @@ export const getMembersByPromotion = (promotion: OrderPromotionInterface, member
 
   return members.filter(member => {
     const paid = member.paid
-    if (paid) return false
+    if (paid) return notFound ? true : false
 
-    if (member.basketOptionID && member.basketOptionID !== promotion.basketOptionID) return false
+    if (member.basketOptionID && member.basketOptionID !== promotion.basketOptionID)
+
+      return notFound ? true : false
+
 
     let found = false
     const memberCat = member.memberCategories.split(',')
@@ -40,10 +43,14 @@ export const getMembersInsidePromotion = (promotion: OrderPromotionInterface, me
 
   const cats = promotion.joinCategories.split(',')
 
-  return members.filter(member => {
+  return members.filter((member) => {
     if (member.paid) return false
-
     if (!member.selected) return false
+
+
+
+    if (member.basketOptionID && promotion.basketOptionID !== member.basketOptionID) return false
+
     let found = false
     const memberCat = member.memberCategories.split(',')
     for (let i = 0; i < cats.length; i++) {

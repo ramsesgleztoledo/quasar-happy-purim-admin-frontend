@@ -82,6 +82,7 @@ const loginAccountsAux: LoginAccountInterface[] = [
   {
     id: 527, name: `Sisterhood Temple Emanuel (Newton)`, guid: '9489E5A9-5D5C-4AB3-8A37-FE285FD95C7F', token: "DUp62cXQax45uwW5NiYb8845WM+jN0kY3T2x4AVs+PYjzvGZ7YF6QL2fhYqSwHmJhGlAX52vKjmyFeGAoZLmsA=="
   },
+
 ]
 
 export const loginAccounts: LoginAccountInterface[] = loginAccountsAux.map(ac => ({

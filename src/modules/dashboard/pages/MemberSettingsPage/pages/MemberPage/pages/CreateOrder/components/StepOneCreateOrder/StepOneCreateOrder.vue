@@ -108,10 +108,7 @@
           </div>
         </div>
       </div>
-      <div
-        class="CreateOrderPage-send-to"
-        v-if="memberOrderState.orgSettings?.displayPromotions && promotions.length"
-      >
+      <div class="CreateOrderPage-send-to" v-if="promotions.length">
         <div class="row">
           <label>
             <b>Promotions: </b>
@@ -527,6 +524,7 @@ const onAddOrRemovePromotion = (value: boolean, item: OrderPromotionInterface) =
       if (!selectedId.has(row.id)) {
         $moStore.membersSelected.push({
           ...row,
+          selected: true,
           basketOptionID: item.basketOptionID,
         })
         selectedId.add(row.id)

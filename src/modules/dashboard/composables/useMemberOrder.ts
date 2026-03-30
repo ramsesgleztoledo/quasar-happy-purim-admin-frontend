@@ -209,26 +209,37 @@ export const useMemberOrder = () => {
           }
         })
 
-      const members = $moStore.$state.memberList.copy
-
-      const list = getMembersByPromotion(item, members, promotions)
-
-      const selectedId = new Set($moStore.membersSelected.map((member) => member.id))
 
       if (value) {
-        for (const item of list) {
-          if (!selectedId.has(item.id)) {
-            $moStore.membersSelected.push(item)
-            selectedId.add(item.id)
+        const members = $moStore.$state.memberList.copy
+
+        const list = getMembersByPromotion(item, members, promotions)
+
+        const selectedId = new Set($moStore.membersSelected.map((member) => member.id))
+
+
+        for (const row of list) {
+          if (!selectedId.has(row.id)) {
+            $moStore.membersSelected.push({
+              ...row,
+              selected: true,
+              basketOptionID: item.basketOptionID
+            })
+            selectedId.add(row.id)
           }
         }
       } else {
-        $moStore.membersSelected = getMembersByPromotion(
+        const list = getMembersByPromotion(
           item,
           $moStore.membersSelected,
           promotions,
           true,
         )
+
+        console.log({ list: $moStore.membersSelected });
+
+
+        $moStore.membersSelected = [...list]
       }
       stopLoadingUI()
     },

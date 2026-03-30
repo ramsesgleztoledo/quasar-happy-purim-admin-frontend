@@ -124,14 +124,18 @@ export const s_cartData = (state: MemberOrderStateInterface) => {
 
   if (!state.settings?.hasCustomPricing) {
     const memberSel = getMembersSelectedHelper(state)
+
     const totalMembers = memberSel.reduce((pre, current) => {
       let btnPrice = 0
       if (hasBTNs && current.basketOptionID)
         btnPrice = btns.find(bt => bt.id === current.basketOptionID)?.price || 0
+
+
       return pre + (btnPrice || state.shulSetting?.sPerperson || 0)
     }
       , 0)
     totalPriceMembers = totalMembers
+
 
   }
 

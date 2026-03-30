@@ -348,6 +348,9 @@
       </div>
     </div>
     <!-- Members -->
+    <!-- {{ membersSelected }} -->
+    <!-- {{ data }} -->
+    <!-- {{ $moStore.$state.settings }} -->
     <div v-if="membersSelected.length" class="row q-pa-sm">
       <div class="col-12">
         <div class="row">
@@ -360,6 +363,7 @@
             <q-separator inset />
           </div>
         </div>
+
         <div class="q-pa-sm row">
           <div class="col-12">
             <div class="row q-mb-sm">
@@ -549,6 +553,7 @@ const promotions = computed(() => {
     if (promoFound.ok) {
       promotionsAux.push({
         ...item,
+        basketOptionID: promoFound.promotion?.basketOptionID,
         memberList: getMembersInsidePromotion(
           promoFound.promotion!,
           memberOrderState.value.membersSelected,

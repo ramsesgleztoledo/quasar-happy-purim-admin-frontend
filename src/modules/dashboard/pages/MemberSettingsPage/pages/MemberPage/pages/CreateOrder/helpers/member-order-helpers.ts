@@ -14,6 +14,7 @@ export const getPromotionsHelper = (memberList: OrderMemberListInterface[], orde
     if (promoFound.ok) {
       promotionsAux.push({
         ...item,
+        basketOptionID: promoFound.promotion?.basketOptionID,
         memberList: getMembersByPromotion(
           promoFound.promotion!,
           memberList,
@@ -47,7 +48,7 @@ export const getMembersSelectedHelper = (state: MemberOrderStateInterface) => {
     let found = false
 
     for (let j = 0; j < promotionsAux.length; j++) {
-      const foundAux = promotionsAux[j]!.memberList.find((member) => member.id === me.id)
+      const foundAux = promotionsAux[j]!.memberList.find((member) => member.id === me.id && (!me.basketOptionID || me.basketOptionID === promotionsAux[j]!.basketOptionID))
       if (foundAux) {
         found = true
         break
@@ -55,6 +56,7 @@ export const getMembersSelectedHelper = (state: MemberOrderStateInterface) => {
     }
     if (!found) members.push({ ...me, price: me.price ? me.price : state.shulSetting?.sPerperson || 0 })
   }
+
 
   return members
 }
