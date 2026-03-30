@@ -14,14 +14,14 @@
         </div>
         <div class="row">
           <q-table
-            class="table-sticky-header-column-table sticky-2-column-table-copy"
+            class="table-sticky-header-column-table sticky-2-column-table-copy non-table-pagination"
             flat
             bordered
             :rows="$rStore.$state.htcBasketReport.totalInfo"
             :columns="columnsSummary"
             row-key="basketSize"
             :pagination="{
-              rowsPerPage: 100,
+              rowsPerPage: 0,
             }"
           />
         </div>
@@ -51,14 +51,14 @@
           <div v-for="item in routesTables" :key="item.routeCode">
             <q-table
               :title="`Route Code: ${item.routeCode}`"
-              class="table-sticky-header-column-table sticky-2-column-table-copy"
+              class="table-sticky-header-column-table sticky-2-column-table-copy non-table-pagination"
               flat
               bordered
               :rows="item.data"
               :columns="columnsSummary"
               row-key="basketSize"
               :pagination="{
-                rowsPerPage: 100,
+                rowsPerPage: 0,
               }"
             />
           </div>

@@ -117,10 +117,19 @@ export const s_cartData = (state: MemberOrderStateInterface) => {
 
   let totalPriceMembers = 0
 
+  const hasBTNs = state.basketOptionBtns?.hasTwoBasketButtons || false
+  const btns = state.basketOptionBtns?.buttons || []
+
+
+
   if (!state.settings?.hasCustomPricing) {
     const memberSel = getMembersSelectedHelper(state)
-    const totalMembers = memberSel.reduce((pre) =>
-      pre + (state.shulSetting?.sPerperson || 0)
+    const totalMembers = memberSel.reduce((pre, current) => {
+      let btnPrice = 0
+      if (hasBTNs && current.basketOptionID)
+        btnPrice = btns.find(bt => bt.id === current.basketOptionID)?.price || 0
+      return pre + (btnPrice || state.shulSetting?.sPerperson || 0)
+    }
       , 0)
     totalPriceMembers = totalMembers
 

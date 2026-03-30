@@ -280,3 +280,15 @@ td {
 .q-table__top {
   padding: 0px;
 }
+
+.justify-content-center-items {
+  .q-table__grid-content {
+    justify-content: center;
+  }
+}
+
+.non-table-pagination {
+  .q-table__bottom {
+    display: none;
+  }
+}

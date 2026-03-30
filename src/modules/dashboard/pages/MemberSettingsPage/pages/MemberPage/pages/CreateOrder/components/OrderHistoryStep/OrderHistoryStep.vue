@@ -88,49 +88,91 @@
                 <div class="q-pa-sm col-xs-12 col-sm-4 col-md-2">
                   <div class="card-person-container">
                     <div class="row row-member-container">
-                      <div style="width: 19px; height: 48px">
+                      <div style="width: 19px; height: 68px">
                         <RowStyle :row="props.row" />
                       </div>
-                      <q-checkbox
-                        v-if="!props.row.paid"
-                        class="q-mr-sm checkbox-member-container"
-                        v-model="props.selected"
-                        @update:model-value="
-                          (val, evt) => {
-                            ;(Object as any)
-                              .getOwnPropertyDescriptor(props, 'selected')
-                              .set(val, evt)
-                          }
-                        "
-                      >
-                        <b class="text-overflow-ellipsis b-member-container">
-                          <q-tooltip>
+
+                      <template v-if="props.row.paid">
+                        <q-checkbox
+                          class="q-mr-sm checkbox-member-container"
+                          disable
+                          v-model="alreadyPaidModel"
+                        >
+                          <b class="text-overflow-ellipsis b-member-container">
+                            <q-tooltip>
+                              {{
+                                `${props.row.lastName} ${props.row.firstName ? `, ${props.row.firstName}` : ``} ${props.row.sFirstName ? `& ${props.row.sFirstName}` : ''}`
+                              }}
+                            </q-tooltip>
                             {{
                               `${props.row.lastName} ${props.row.firstName ? `, ${props.row.firstName}` : ``} ${props.row.sFirstName ? `& ${props.row.sFirstName}` : ''}`
                             }}
-                          </q-tooltip>
-                          {{
-                            `${props.row.lastName} ${props.row.firstName ? `, ${props.row.firstName}` : ``} ${props.row.sFirstName ? `& ${props.row.sFirstName}` : ''}`
-                          }}
-                        </b>
-                      </q-checkbox>
-                      <q-checkbox
-                        v-else
-                        class="q-mr-sm checkbox-member-container"
-                        disable
-                        v-model="alreadyPaidModel"
-                      >
-                        <b class="text-overflow-ellipsis b-member-container">
-                          <q-tooltip>
+                          </b>
+                        </q-checkbox>
+                      </template>
+
+                      <template v-else-if="!$moStore.$state.basketOptionBtns?.hasTwoBasketButtons">
+                        <q-checkbox
+                          class="q-mr-sm checkbox-member-container"
+                          v-model="props.selected"
+                          @update:model-value="
+                            (val, evt) => {
+                              ;(Object as any)
+                                .getOwnPropertyDescriptor(props, 'selected')
+                                .set(val, evt)
+                            }
+                          "
+                        >
+                          <b class="text-overflow-ellipsis b-member-container">
+                            <q-tooltip>
+                              {{
+                                `${props.row.lastName} ${props.row.firstName ? `, ${props.row.firstName}` : ``} ${props.row.sFirstName ? `& ${props.row.sFirstName}` : ''}`
+                              }}
+                            </q-tooltip>
                             {{
                               `${props.row.lastName} ${props.row.firstName ? `, ${props.row.firstName}` : ``} ${props.row.sFirstName ? `& ${props.row.sFirstName}` : ''}`
                             }}
-                          </q-tooltip>
-                          {{
-                            `${props.row.lastName} ${props.row.firstName ? `, ${props.row.firstName}` : ``} ${props.row.sFirstName ? `& ${props.row.sFirstName}` : ''}`
-                          }}
-                        </b>
-                      </q-checkbox>
+                          </b>
+                        </q-checkbox>
+                      </template>
+                      <template v-else>
+                        <div class="row checkbox-member-container">
+                          <div class="col-12">
+                            <div class="row justify-content-center">
+                              <b class="text-overflow-ellipsis b-member-container">
+                                <q-tooltip>
+                                  {{
+                                    `${props.row.lastName} ${props.row.firstName ? `, ${props.row.firstName}` : ``} ${props.row.sFirstName ? `& ${props.row.sFirstName}` : ''}`
+                                  }}
+                                </q-tooltip>
+                                {{
+                                  `${props.row.lastName} ${props.row.firstName ? `, ${props.row.firstName}` : ``} ${props.row.sFirstName ? `& ${props.row.sFirstName}` : ''}`
+                                }}
+                              </b>
+                            </div>
+                            <div class="row q-gutter-sm q-pa-sm justify-content-end">
+                              <div
+                                v-for="btnItem in $moStore.$state.basketOptionBtns?.buttons"
+                                :key="btnItem.id"
+                              >
+                                <q-btn
+                                  padding="3px"
+                                  size="small"
+                                  :style="{
+                                    backgroundColor: isOptionBtnsMemberSelected(props.row, btnItem)
+                                      .value
+                                      ? 'var(--happypurim)'
+                                      : 'gray',
+                                    color: 'white',
+                                  }"
+                                  :label="btnItem.description"
+                                  @click="addSelectedMemberWithOptionBtns(props.row, btnItem)"
+                                />
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </template>
                     </div>
                   </div>
                 </div>
@@ -146,7 +188,10 @@
 <script setup lang="ts">
 import type { QTableColumn } from 'quasar'
 import { convertWithCommas } from 'src/helpers'
-import type { OrderMemberListInterface } from 'src/modules/dashboard/interfaces/memberOrder-interfaces'
+import type {
+  BasketOptionButtonInterface,
+  OrderMemberListInterface,
+} from 'src/modules/dashboard/interfaces/memberOrder-interfaces'
 import { useMemberOrderStore } from 'src/modules/dashboard/store/memberOrderStore/memberOrderStore'
 import { computed, ref } from 'vue'
 import CreateOrderLegend from '../CreateOrderLegend/CreateOrderLegend.vue'
@@ -223,6 +268,37 @@ const onSelectAll = () => {
       .filter((item) => !item.paid)
       .map((item) => ({ ...item, selected: true }))
   }, 200)
+}
+
+const isOptionBtnsMemberSelected = (
+  member: OrderMemberListInterface,
+  btnItem: BasketOptionButtonInterface,
+) =>
+  computed(
+    () =>
+      !!$moStore.membersSelected.find(
+        (se) => se.id === member.id && se.basketOptionID === btnItem.id,
+      ),
+  )
+
+const addSelectedMemberWithOptionBtns = (
+  member: OrderMemberListInterface,
+  btnItem: BasketOptionButtonInterface,
+) => {
+  const found = {
+    ...$moStore.membersSelected.find((item) => item.id === member.id),
+  }
+
+  if (found.id)
+    $moStore.membersSelected = $moStore.membersSelected.filter((se) => se.id !== member.id)
+
+  if (found.id && found.basketOptionID === btnItem.id) return
+
+  $moStore.membersSelected.push({
+    ...member,
+    // selected: true,
+    basketOptionID: btnItem.id,
+  })
 }
 
 // const printReceipt = () => {

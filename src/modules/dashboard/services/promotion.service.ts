@@ -19,14 +19,14 @@ export const usePromotionService = () => {
         extraOptions
       })
     },
-    getMemberListByMemberGuid: async (memberGuid: string, extraOptions?: ExtraOptionsInterface): Promise<ApiCallResponseInterface<OrderPromotionInterface[]>> => {
-      const nextUrl = `/get-promotions?memberGuid=${memberGuid}`;
-      const url = `${baseUrl}${nextUrl}`;
-      return await apiCall({
-        url,
-        extraOptions
-      })
-    },
+    // getMemberListByMemberGuid: async (memberGuid: string, extraOptions?: ExtraOptionsInterface): Promise<ApiCallResponseInterface<OrderPromotionInterface[]>> => {
+    //   const nextUrl = `/get-promotions?memberGuid=${memberGuid}`;
+    //   const url = `${baseUrl}${nextUrl}`;
+    //   return await apiCall({
+    //     url,
+    //     extraOptions
+    //   })
+    // },
 
 
   }

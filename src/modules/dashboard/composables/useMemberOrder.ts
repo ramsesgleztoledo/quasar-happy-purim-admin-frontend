@@ -31,6 +31,7 @@ import { useDashboardStore } from "../store/dashboardStore/dashboardStore";
 import { useMemberShipService } from "../services/MemberShip.service";
 import { useGreetingsService } from "../services/Greetings.service";
 import { getMembersByPromotion } from "../helpers/getMembersByPromotion";
+import { useSpecialBasketOptionsService } from "../services/SpecialBasketOptions.service";
 
 
 
@@ -67,6 +68,7 @@ export const useMemberOrder = () => {
   const { getTopTransactions } = useDashboardService()
   const { getPayMembershipByMemberId } = useMemberShipService()
   const { getRecipientsByMemberId, deleteRecipientsByMemberId, updateRecipientsByMemberId } = useGreetingsService()
+  const { getBasketBtns } = useSpecialBasketOptionsService()
 
 
   const mGuid = computed(() => memberState.value.selectedMember?.memberGuid || '')
@@ -157,6 +159,28 @@ export const useMemberOrder = () => {
     })) || [])
   };
 
+
+
+  const addMemberAux = async (membersAdd: OrderMemberListInterface[]) => {
+
+    await addMember({
+      memberGuid: mGuid.value,
+      memberId: memberId.value
+    },
+      [...membersAdd.map(member => {
+        const basketOptionId = member.basketOptionID
+
+        const basketOptionBtnPrice = $moStore.$state.basketOptionBtns?.buttons.find(btn => btn.id === basketOptionId)?.price || 0
+
+        return {
+          receiver: member.id,
+          tempcode: `${mGuid.value}+${member.id}`,
+          price: basketOptionBtnPrice || member.price || $moStore.shulSetting?.sPerperson || 0,
+          basketOptionId
+        }
+      })]
+    )
+  }
 
 
 
@@ -256,13 +280,15 @@ export const useMemberOrder = () => {
         getLocalDelivery(),
         getSettings(),
         getPayMembershipByMemberId(memberId.value),
+        getBasketBtns(),
       ])
 
-      if (resp.find(resp => !resp.ok)) return
+      if (resp.find(resp => !resp.ok)) return showToast(false, '', 'Something went wrong getting the member information')
 
       const promotions = fixPromotions(resp[0].data || [], resp[2].data || [])
 
       const showFee = !!resp[3].data[0]?.feeActive && !!resp[3].data[0]?.feeRequired
+
 
 
 
@@ -294,7 +320,7 @@ export const useMemberOrder = () => {
         settings: resp[16].data,
         showFee,
         membership: resp[17].data,
-
+        basketOptionBtns: resp[18].data?.hasTwoBasketButtons ? resp[18].data : undefined
       })
       if (!resp[17].data.membershipRequired)
         $moStore.setMembershipType('none')
@@ -320,16 +346,7 @@ export const useMemberOrder = () => {
     async updateMembersCart(
       membersAdd: OrderMemberListInterface[]
     ) {
-      await addMember({
-        memberGuid: mGuid.value,
-        memberId: memberId.value
-      },
-        [...membersAdd.map(member => ({
-          receiver: member.id,
-          tempcode: `${mGuid.value}+${member.id}`,
-          price: member.price || $moStore.shulSetting?.sPerperson || 0
-        }))]
-      )
+      await addMemberAux(membersAdd)
     },
 
     async updateCart(data: {
@@ -338,25 +355,12 @@ export const useMemberOrder = () => {
       // membersDelete: OrderMemberListInterface[];
     }) {
 
-
-
-
-
       // let respDelete = undefined;
       // const respPromotions = undefined
 
 
       // const respAdd =
-      await addMember({
-        memberGuid: mGuid.value,
-        memberId: memberId.value
-      },
-        [...data.membersAdd.map(member => ({
-          receiver: member.id,
-          tempcode: `${mGuid.value}+${member.id}`,
-          price: member.price || $moStore.shulSetting?.sPerperson || 0
-        }))]
-      )
+      await addMemberAux(data.membersAdd)
 
       // if (data.membersDelete.length)
       //   respDelete = await removeMember({

@@ -12,6 +12,7 @@ export interface OrderPromotionInterface {
   orderItemID: number | null;
   transactionID: number | null;
   quantity: number;
+  basketOptionID?: number;
   selected?: boolean;
   disabled?: boolean;
 }
@@ -36,6 +37,7 @@ export interface OrderMemberListInterface {
   customPrice: number;
   selected: boolean;
   memberCategories: string;
+  basketOptionID?: number | null | undefined;
 }
 
 
@@ -438,3 +440,16 @@ export interface GreetingsRecipientInterface {
 
 
 export type UpdateGreetingsRecipientType = Pick<GreetingsRecipientInterface, 'rowId' | 'greeting'>;
+
+
+
+export interface BasketOptionBtnsInterface {
+  hasTwoBasketButtons: boolean;
+  buttons: BasketOptionButtonInterface[];
+}
+
+export interface BasketOptionButtonInterface {
+  id:          number;
+  description: string;
+  price:       number;
+}

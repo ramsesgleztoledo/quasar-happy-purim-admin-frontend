@@ -57,6 +57,7 @@ const initialState: MemberOrderStateInterface = {
   membershipType: 'annual',
   orderPages: [],
   greetingsRecipients: [],
+  basketOptionBtns: undefined,
 }
 
 export const useMemberOrderStore = defineStore('memberOrderStore', {

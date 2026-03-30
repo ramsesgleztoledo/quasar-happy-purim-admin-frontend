@@ -392,7 +392,8 @@ onMounted(() => {
       if (
         $moStore.$state.orgSettings?.displayLastYearsOrderIntro &&
         !anyMemberPaid.value &&
-        !anyMemberSelected.value
+        !anyMemberSelected.value &&
+        !$moStore.$state.basketOptionBtns?.hasTwoBasketButtons
       ) {
         $moStore.$state.memberList.copy = $moStore.$state.memberList.copy.map((member) => {
           if (
