@@ -22,7 +22,7 @@
         <div class="row SelectRecipients-list-container" :class="{ fullscreen: isFullScreen }">
           <div class="col-12">
             <div class="row">
-              <div class="col-12 justify-content-end">
+              <div class="col-12 justify-content-end white-container">
                 <q-btn
                   flat
                   round

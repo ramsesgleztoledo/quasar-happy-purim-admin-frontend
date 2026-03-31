@@ -135,15 +135,13 @@ export const s_cartData = (state: MemberOrderStateInterface) => {
     }
       , 0)
     totalPriceMembers = totalMembers
-
-
   }
 
   if (state.shulSetting?.sMaximum && totalPriceMembers > state.shulSetting?.sMaximum)
     totalPriceMembers = state.shulSetting.sMaximum
 
 
-  let totalAux = totalBefore + feePerperson + (!state.totalFromBackend ? totalPriceMembers : state.totalFromBackend)
+  let totalAux = totalBefore + feePerperson + (state.settings?.hasCustomPricing && state.totalFromBackend ? state.totalFromBackend : totalPriceMembers)
 
 
 
@@ -178,6 +176,7 @@ export const s_cartData = (state: MemberOrderStateInterface) => {
   let fee = 0
   if (fees.active)
     fee = totalAux * fees.creditCardFee / 100
+
 
 
 

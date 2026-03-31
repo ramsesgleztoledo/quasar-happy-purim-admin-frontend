@@ -180,6 +180,7 @@
         style="color: #cc0505"
       >
         <b>ORDER TOTAL </b>
+
         <b
           >{{ $moStore.getSymbol }}
           {{

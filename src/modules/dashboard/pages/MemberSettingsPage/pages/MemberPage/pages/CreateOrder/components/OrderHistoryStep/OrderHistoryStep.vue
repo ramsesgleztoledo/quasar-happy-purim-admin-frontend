@@ -43,7 +43,7 @@
             <div class="row" style="position: sticky; top: 0px; z-index: 1000">
               <div class="col-12">
                 <div class="row">
-                  <div class="col-12 justify-content-end">
+                  <div class="col-12 justify-content-end white-container">
                     <q-btn
                       flat
                       round
@@ -92,8 +92,9 @@
                         <RowStyle :row="props.row" />
                       </div>
 
-                      <template v-if="props.row.paid">
+                      <template v-if="!$moStore.$state.basketOptionBtns?.hasTwoBasketButtons">
                         <q-checkbox
+                          v-if="props.row.paid"
                           class="q-mr-sm checkbox-member-container"
                           disable
                           v-model="alreadyPaidModel"
@@ -108,11 +109,11 @@
                               `${props.row.lastName} ${props.row.firstName ? `, ${props.row.firstName}` : ``} ${props.row.sFirstName ? `& ${props.row.sFirstName}` : ''}`
                             }}
                           </b>
+                          <img class="paid-img" src="/img/paid/paid.svg" alt="paid..." />
                         </q-checkbox>
-                      </template>
 
-                      <template v-else-if="!$moStore.$state.basketOptionBtns?.hasTwoBasketButtons">
                         <q-checkbox
+                          v-else
                           class="q-mr-sm checkbox-member-container"
                           v-model="props.selected"
                           @update:model-value="
@@ -135,6 +136,7 @@
                           </b>
                         </q-checkbox>
                       </template>
+
                       <template v-else>
                         <div class="row checkbox-member-container">
                           <div class="col-12">
@@ -159,10 +161,12 @@
                                   padding="3px"
                                   size="small"
                                   :style="{
-                                    backgroundColor: isOptionBtnsMemberSelected(props.row, btnItem)
-                                      .value
-                                      ? 'var(--happypurim)'
-                                      : 'gray',
+                                    backgroundColor:
+                                      props.row.paid && props.row.basketOptionID === btnItem.id
+                                        ? 'var(--happypurim)'
+                                        : isOptionBtnsMemberSelected(props.row, btnItem).value
+                                          ? 'var(--happypurim)'
+                                          : 'gray',
                                     color: 'white',
                                   }"
                                   :label="btnItem.description"
@@ -171,6 +175,12 @@
                               </div>
                             </div>
                           </div>
+                          <img
+                            v-if="props.row.paid"
+                            class="paid-img"
+                            src="/img/paid/paid.svg"
+                            alt="paid..."
+                          />
                         </div>
                       </template>
                     </div>

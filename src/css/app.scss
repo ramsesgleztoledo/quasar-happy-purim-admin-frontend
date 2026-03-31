@@ -487,6 +487,7 @@ body {
 }
 
 .checkbox-member-container {
+  position: relative;
   .q-checkbox__label {
     width: 100%;
     display: flex;
@@ -592,4 +593,16 @@ canvas {
   background-color: var(--happypurim);
   color: white;
   font-size: 16px;
+}
+
+.paid-img {
+  position: absolute;
+  width: 40px;
+  height: 40px;
+  right: -1px;
+  top: -2px;
+}
+
+.no-uppercase {
+  text-transform: none;
 }
