@@ -87,8 +87,8 @@ const { setInitialColors } = useUI()
 onMounted(() => {
   setInitialColors()
   checkLocalStoreAuth()
-  // console.log({
+
   // starRecordly()
-  // });
+
 })
 </script>

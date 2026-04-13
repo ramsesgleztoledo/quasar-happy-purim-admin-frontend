@@ -161,7 +161,10 @@ export const useMemberOrderStore = defineStore('memberOrderStore', {
       this.shulSetting = shulSetting
     },
     setTotalFromBackend(totalFromBackend: number) {
-      this.totalFromBackend = totalFromBackend
+      if (!this.settings?.hasCustomPricing)
+        this.totalFromBackend = 0
+      else
+        this.totalFromBackend = totalFromBackend
     },
     setLocalDeliveries(localDeliveries: LocalDeliveryInterface[]) {
       this.localDeliveries = localDeliveries.map(item => ({ ...item }))
