@@ -1,8 +1,26 @@
+export interface ReportResponseInterface2 {
+  basicReports: ReportDataInterface[];
+  advancedReports: ReportDataInterface[];
+  customReports: ReportDataInterface[];
+}
+
 export interface ReportResponseInterface {
   basicReports: ReportDataInterface[];
   advancedReports: ReportDataInterface[];
   customReports: ReportDataInterface[];
 }
+
+export interface ReportDataInterface {
+  reportID: string;
+  fieldID: number;
+  name: string;
+  summary: string;
+  displayOrder: number;
+  viewOnly: boolean;
+  downloadOnly: boolean;
+  isCustom?: boolean
+}
+
 
 export interface HTCBasketReport {
   name: string;
@@ -22,7 +40,7 @@ export interface HTCBasketRoutesTableTotalInfo {
   basketSize: string;
 }
 
-export interface ReportDataInterface {
+export interface ReportDataInterface2 {
   reportID: string;
   name: string;
   summary: string;
@@ -43,6 +61,7 @@ export interface CustomReportInterface {
 
 export interface RecipientDataFormInterface {
   id: number | string;
+  fieldID?: number | string;
   searchTerm?: string;
   categories?: string[];
   zipCode?: string[];

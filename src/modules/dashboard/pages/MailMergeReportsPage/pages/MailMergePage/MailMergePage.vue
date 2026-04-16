@@ -695,14 +695,14 @@
         </div>
 
         <!-- TODO: regenerate feature for future -->
-        <div class="row q-pa-sm" style="color: #ff00009c; font-weight: 100; font-style: italic">
+        <!-- <div class="row q-pa-sm" style="color: #ff00009c; font-weight: 100; font-style: italic">
           Regenerate report feature coming soon
-        </div>
-        <!-- <div class="row q-mb-sm q-pa-sm" style="align-items: center">
+        </div> -->
+        <div class="row q-mb-sm q-pa-sm" style="align-items: center">
           <div>Regenerate before sending:</div>
           <q-radio v-model="regenerateBefore" :val="true" label="Yes" />
           <q-radio v-model="regenerateBefore" :val="false" label="No" />
-        </div> -->
+        </div>
         <div v-if="regenerateBefore" class="row" style="color: red; font-weight: 600">
           Please note: Since the report will be regenerated before sending, any recipients that were
           deselected will still be included in the email
@@ -783,7 +783,7 @@ import type { DraftInterface } from 'src/modules/dashboard/interfaces/draft.inte
 import SaveDraft from './Dialogs/SaveDraft/SaveDraft.vue'
 import { useDraft } from 'src/modules/dashboard/composables/useDraft'
 // import InnerViewRow from '../ViewReport/InnerViewRow.vue'
-import { useRouter } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 import { isValidDate, isValidTime } from 'src/helpers'
 import { getFormattedStringDate, turnTimeAndDate } from 'src/helpers/turnTimeAndDate'
 import type { RecipientMemberInterface } from 'src/modules/dashboard/interfaces/report.interface'
@@ -801,6 +801,7 @@ import { readMoreEmails } from './data/readMoreEmails'
 import SpamAnalyzerComponent from './components/SpamAnalyzerComponent/SpamAnalyzerComponent.vue'
 
 const $router = useRouter()
+const { fieldID } = useRoute().query
 const $q = useQuasar()
 const $rStore = useReportStore()
 const $dStore = useDashboardStore()
@@ -994,6 +995,7 @@ const onGeneratePDF = async () => {
   if (!editorRef.value) return
   const content = editorRef.value.getEditorValue() || ''
   generatePDF({
+    fieldID: fieldID as string,
     title: pdfTitle.value,
     userEmail: userEmail.value,
     subject: '',
@@ -1103,6 +1105,7 @@ const onSendEmail = async (date?: Date | string, isSchedule?: boolean) => {
       email: formData.email || '',
       emailSubject: formData.emailSubject || '',
     },
+    fieldID: fieldID as string,
     subject: realForm.value.emailSubject.value,
     content,
     memberIds: $rStore.$state.selectedRecipients.map((re) => re.ID),

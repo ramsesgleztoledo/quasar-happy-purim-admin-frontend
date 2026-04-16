@@ -11,7 +11,7 @@ export const useReport = () => {
     getReportList,
     getHTCBasketReport,
     downloadReportExcelByReportId,
-    getCustomReports,
+    // getCustomReports,
     downloadCustomReportExcelByReportId,
     // runSQLReportRecipientsByReportId,
     getReportRecipientsByReportIdWithSQL,
@@ -46,7 +46,7 @@ export const useReport = () => {
       })
       const resp = await Promise.all([
         getReportList(),
-        getCustomReports(),
+        // getCustomReports(),
         getAdvancedSpecialReports(),
         getCustomSpecialReports(),
         getHTCBasketReport(),
@@ -56,18 +56,20 @@ export const useReport = () => {
       $rStore.$patch({
         advancedReports: resp[0].ok ? resp[0].data.advancedReports : [],
         basicReports: resp[0].ok ? resp[0].data.basicReports : [],
-        customReports: resp[1].ok ? [...resp[0].data.customReports.map(re => ({
+        customReports: resp[0].ok ? [...resp[0].data.customReports.map(re => ({
           ...re,
           isCustom: true
-        })), ...resp[1].data.map(re => ({
-          reportID: `${re.reportId}`,
-          name: re.reportName,
-          summary: "",
-          isCustom: true
-        }))] : [],
-        advancedReportsSpecial: resp[2].ok ? resp[2].data : [],
-        customReportsSpecial: resp[3].ok ? resp[3].data : [],
-        htcBasketReport: resp[4].ok ? resp[4].data : undefined
+        }))
+          // , ...resp[1].data.map(re => ({
+          // reportID: `${re.reportID}`,
+          // name: re.name,
+          // summary: "",
+          // isCustom: true
+          // }))
+        ] : [],
+        advancedReportsSpecial: resp[1].ok ? resp[1].data : [],
+        customReportsSpecial: resp[2].ok ? resp[2].data : [],
+        htcBasketReport: resp[3].ok ? resp[3].data : undefined
       })
       $q.loading.hide()
     },
@@ -144,7 +146,10 @@ export const useReport = () => {
 
       $rStore.setIsLoadingReportData(true)
       // let tokens = undefined
-      const tokens = await getTokensByReportId(data.id, {
+
+
+
+      const tokens = await getTokensByReportId(data.id, data.fieldID, {
         // loading: {
         //   message: 'Loading...'
         // }

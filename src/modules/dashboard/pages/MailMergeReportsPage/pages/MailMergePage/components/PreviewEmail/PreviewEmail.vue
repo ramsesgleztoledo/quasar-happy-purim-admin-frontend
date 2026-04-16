@@ -62,12 +62,14 @@ import { numbersOnly } from 'src/helpers/numbersOnly'
 import { useMailMerge } from 'src/modules/dashboard/composables/useMailMerge'
 import { useReportStore } from 'src/modules/dashboard/store/ReportStore/reportStore'
 import { computed, ref, watch } from 'vue'
+import { useRoute } from 'vue-router'
 
 interface PreviewPropsInterface {
   content: string
   subject?: string
 }
 const $props = defineProps<PreviewPropsInterface>()
+const { fieldID} = useRoute().query
 
 const $rStore = useReportStore()
 const { getMergedContentPrintByReportAndMember } = useMailMerge()
@@ -110,6 +112,7 @@ const handlePage = async (position: number) => {
   respError.value = false
 
   const res = await getMergedContentPrintByReportAndMember(
+    fieldID as string,
     members.value[position - 1]!,
     $props.content,
     $props.subject || '',

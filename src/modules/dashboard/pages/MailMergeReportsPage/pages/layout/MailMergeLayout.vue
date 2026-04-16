@@ -13,11 +13,11 @@ import { useRoute } from 'vue-router'
 
 const { getViewReport, setIsCustom } = useReport()
 const { reportId } = useRoute().params
+const { fieldID } = useRoute().query
 const $rStore = useReportStore()
 const $route = useRoute()
 
 const isReady = ref(false)
-
 
 const filter = {
   basketSize: [],
@@ -40,6 +40,7 @@ watch(
     getViewReport(
       {
         ...filter,
+        fieldID: fieldID as string,
         id: reportId as string,
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         categories: filter.categories.map((ca) => (ca as any).categoryID),

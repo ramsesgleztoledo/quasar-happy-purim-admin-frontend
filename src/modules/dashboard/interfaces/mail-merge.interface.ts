@@ -59,6 +59,7 @@ export interface AddToUnmergedTableFormInterface {
   subject: string;
   sendDate: Date | string;
   timeZone: string;
+  customReportId?: string | number
 }
 
 

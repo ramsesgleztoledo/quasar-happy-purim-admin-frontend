@@ -38,17 +38,22 @@ export const useMailMergeService = () => {
         extraOptions
       })
     },
-    getTokensByReportId: async (reportId: number | string, extraOptions?: ExtraOptionsInterface): Promise<ApiCallResponseInterface<TokenInterface[]>> => {
+    getTokensByReportId: async (reportId: number | string, fieldID?: number | string, extraOptions?: ExtraOptionsInterface): Promise<ApiCallResponseInterface<TokenInterface[]>> => {
       const nextUrl = `/get-merge-fields/${reportId}`;
       const url = `${baseUrl}${nextUrl}`;
       return await apiCall({
         url,
-        extraOptions
+        extraOptions,
+        data: {
+          fieldID
+        },
+        method: 'POST'
       })
     },
 
     getMergedContentByReportId: async (data: {
       reportId: number | string;
+      fieldID: number | string;
       emailOption: 'Primary' | 'primary_alternate';
       data: {
         subject: string
@@ -62,11 +67,15 @@ export const useMailMergeService = () => {
         url,
         extraOptions
         , method: 'POST',
-        data: data.data
+        data: {
+          ...data.data,
+          fieldID: data.fieldID
+        }
       })
     },
     getMergedContentPrintByReportId: async (data: {
       reportId: number | string;
+      fieldID: number | string;
       data: {
         subject: string;
         template: string;
@@ -79,7 +88,7 @@ export const useMailMergeService = () => {
         url,
         extraOptions
         , method: 'POST',
-        data: data.data
+        data: { ...data.data, fieldID: data.fieldID }
       })
     },
 

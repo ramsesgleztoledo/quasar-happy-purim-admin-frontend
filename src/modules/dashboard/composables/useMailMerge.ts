@@ -24,9 +24,10 @@ export const useMailMerge = () => {
   const reportId = computed(() => $rStore.$state.reportId)
   const userId = computed(() => $aStore.$state.user?.id)
 
-  const getMergedContent = async (data: { subject: string, content: string, memberIds: number[], emailOption: 'Primary' | 'primary_alternate' }) => {
+  const getMergedContent = async (data: { fieldID: string, subject: string, content: string, memberIds: number[], emailOption: 'Primary' | 'primary_alternate' }) => {
     const merged = await getMergedContentByReportId({
       reportId: reportId.value,
+      fieldID: data.fieldID,
       emailOption: data.emailOption,
       data: {
         subject: data.subject,
@@ -84,10 +85,11 @@ export const useMailMerge = () => {
 
     },
 
-    async getMergedContentByReportAndMember(memberId: number, subject: string, content: string, emailOption: 'Primary' | 'primary_alternate') {
+    async getMergedContentByReportAndMember(fieldID: string | number, memberId: number, subject: string, content: string, emailOption: 'Primary' | 'primary_alternate') {
 
       const resp = await getMergedContentByReportId({
         reportId: reportId.value,
+        fieldID: fieldID,
         emailOption,
         data: {
           subject,
@@ -106,10 +108,11 @@ export const useMailMerge = () => {
       return resp.ok && resp.data?.results?.length ? resp.data.results[0] : undefined
 
     },
-    async getMergedContentPrintByReportAndMember(memberId: number, content: string, subject: string) {
+    async getMergedContentPrintByReportAndMember(fieldID: string, memberId: number, content: string, subject: string) {
 
       const resp = await getMergedContentPrintByReportId({
         reportId: reportId.value,
+        fieldID,
         data: {
           subject: subject,
           template: content,
@@ -133,6 +136,7 @@ export const useMailMerge = () => {
       userEmail: string;
       subject: string;
       content: string;
+      fieldID: string
       memberIds: number[]
     }) {
 
@@ -147,6 +151,7 @@ export const useMailMerge = () => {
       // })
       const resp = await getMergedContentPrintByReportId({
         reportId: reportId.value,
+        fieldID: data.fieldID,
         data: {
           subject: data.subject,
           template: data.content,
@@ -207,11 +212,13 @@ export const useMailMerge = () => {
       memberIds: number[];
       date?: Date;
       timeZone?: string;
+      fieldID: string;
       sendNow: boolean;
 
     }, isSchedule?: boolean) {
 
       const recipients: MergedResultInterface[] = await getMergedContent({
+        fieldID: data.fieldID,
         subject: data.subject,
         content: data.content,
         memberIds: data.memberIds,
@@ -268,7 +275,8 @@ export const useMailMerge = () => {
         toEmail: data.form.sendTo,
         subject: data.form.emailSubject,
         sendDate: data.date,
-        timeZone: data.timeZone
+        timeZone: data.timeZone,
+        customReportId: reportId.value,
       }, {
         dontRedirect: true,
         useRespAsError: true,

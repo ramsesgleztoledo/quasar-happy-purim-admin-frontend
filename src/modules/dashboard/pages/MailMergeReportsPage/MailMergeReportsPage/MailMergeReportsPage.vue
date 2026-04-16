@@ -90,7 +90,7 @@
   </div>
   <div class="row">
     <div class="col-12 MailMergeReportsPage-container">
-      <div class="row q-mb-sm" v-for="item in reports" :key="item.reportID">
+      <div class="row q-mb-sm" v-for="item in reports" :key="item.reportID + '-' + item.fieldID">
         <div class="col-12" v-if="item.reportID != '19'">
           <div class="row"></div>
           <q-item class="MailMergeReportsPage-item">
@@ -118,6 +118,7 @@
                     },
                     query: {
                       isCustom: pageView === '3' ? true : false,
+                      fieldID: item.fieldID,
                     },
                   }"
                 >
@@ -149,6 +150,7 @@
                     params: { reportId: item.reportID },
                     query: {
                       isCustom: pageView === '3' ? true : false,
+                      fieldID: item.fieldID,
                     },
                   }"
                 >

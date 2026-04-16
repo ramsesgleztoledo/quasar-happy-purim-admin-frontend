@@ -314,6 +314,7 @@ const $dStore = useDashboardStore()
 const $rStore = useReportStore()
 const { isMobile } = useUI()
 const $router = useRouter()
+const $route = useRoute()
 const notFirstTime = ref(false)
 
 const allRowSelected = computed(() => {
@@ -450,7 +451,10 @@ const goToPageWithFilters = () => {
       searchTerm: filter.value.searchTerm,
     }
 
+  const routeQuery = $route.query
+
   $router.replace({
+    ...routeQuery,
     query,
   })
   // $router.push({
