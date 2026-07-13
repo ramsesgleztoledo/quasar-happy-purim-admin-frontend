@@ -33,7 +33,8 @@ export interface MemberOrderStateInterface {
   paymentForm: {
     form: any;
     checkForm: any;
-    email: string
+    email: string;
+    email2: string;
     paymentType: number
   };
   shulSetting: ShulSettingInterface | NoneType;
@@ -42,6 +43,7 @@ export interface MemberOrderStateInterface {
   settings: OrganizationSettingsInterface | NoneType;
   showFee: boolean;
   showEmailReceiptTo: boolean;
+  sendToAlternate: boolean;
   step: 0 | 1 | 2 | 3;
   membership: MembershipInterface | NoneType;
   membershipType: 'life' | 'annual' | 'none';

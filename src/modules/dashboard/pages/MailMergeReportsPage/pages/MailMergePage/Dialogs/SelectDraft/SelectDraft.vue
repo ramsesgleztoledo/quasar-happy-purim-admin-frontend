@@ -11,7 +11,16 @@
       </div>
       <div v-if="isReady">
         <div v-if="drafts.length" class="custom-dialog-body-container q-pa-lg">
-          <q-item v-for="draft in drafts" :key="draft.draftId" class="q-item-bordered q-mb-sm">
+          <div class="row q-mb-sm">
+            <div class="col-12">
+              <q-input outlined v-model="searchText" label="Search" clearable>
+                <template v-slot:append>
+                  <q-icon name="search" />
+                </template>
+              </q-input>
+            </div>
+          </div>
+          <q-item v-for="draft in draftsItems" :key="draft.draftId" class="q-item-bordered q-mb-sm">
             <q-item-section>
               <q-item-label>{{ draft.documentTitle }}</q-item-label>
               <q-item-label caption lines="2"
@@ -67,6 +76,7 @@ interface ScheduleSendPropsInterface {
 const { isMobile } = useUI()
 
 const isReady = ref(false)
+const searchText = ref('')
 
 const $emit = defineEmits(['update:modelValue', 'onSelectDraft'])
 
@@ -80,6 +90,12 @@ const show = computed({
 const { deleteDraft, getDrafts } = useDraft()
 
 const drafts = ref<DraftInterface[]>([])
+
+const draftsItems = computed(() =>
+  drafts.value.filter((item) =>
+    item.documentTitle.toLowerCase().includes((searchText.value || '').toLowerCase()),
+  ),
+)
 
 const onDeleteDraft = async (draft: DraftInterface) => {
   const resp = await deleteDraft(draft)

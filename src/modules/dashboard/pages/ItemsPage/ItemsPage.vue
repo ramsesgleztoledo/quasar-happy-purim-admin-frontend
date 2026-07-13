@@ -56,8 +56,9 @@ const isFullScreen = ref(false)
 
 onMounted(async () => {
   const itemId = $route.params.itemId
-  description.value = $route.query.description as string
-  getItemTableByItemId(Number(itemId))
+  const descriptionQuery: string = $route.query.description as string
+  description.value = descriptionQuery
+  getItemTableByItemId(Number(itemId), descriptionQuery)
 })
 
 const columns: QTableColumn<ItemDetailsInterface>[] = [

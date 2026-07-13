@@ -230,7 +230,8 @@ export const useMember = () => {
           isReciprocal: !!data.reciprocity?.isReciprocal,
           showReciprocity: !!data.reciprocity?.showReciprocity,
         }
-      }
+      },
+      memberReceivingFrom: data.receivingFrom || []
 
 
 

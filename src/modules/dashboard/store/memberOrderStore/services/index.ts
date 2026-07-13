@@ -42,7 +42,11 @@ export const s_isPaymentFormInvalid = (state: MemberOrderStateInterface) => {
   if (!carData.totalNoFee) return true
 
   const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
   if (state.showEmailReceiptTo && !regex.test(state.paymentForm.email)) return true
+
+  if (state.sendToAlternate && !regex.test(state.paymentForm.email2)) return true
+
   if (state.paymentForm.paymentType == 3) return false
 
   if (state.paymentForm.paymentType == 1) {

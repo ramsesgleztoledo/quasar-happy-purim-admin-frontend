@@ -364,6 +364,7 @@ export interface MemberCreateOrderFormInterface {
   specialInstructions: boolean;
   reciprocity: boolean;
   SendEmail: boolean;
+  extraEmails: string[]
 }
 
 

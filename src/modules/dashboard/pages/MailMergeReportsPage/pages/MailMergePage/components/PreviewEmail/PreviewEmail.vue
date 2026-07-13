@@ -41,12 +41,12 @@
         <div v-if="previewSubject">
           <div class="row q-mb-sm">
             <div class="q-mr-sm">Subject:</div>
-            <div v-html="previewSubject" />
+            <div style="width: 100%" v-html="previewSubject" />
             <hr />
           </div>
         </div>
         <div class="row">
-          <div v-html="previewBody"></div>
+          <div style="width: 100%; height: 100%" v-html="previewBody"></div>
         </div>
       </div>
       <div v-else class="col-12 q-pa-lg">
@@ -69,7 +69,7 @@ interface PreviewPropsInterface {
   subject?: string
 }
 const $props = defineProps<PreviewPropsInterface>()
-const { fieldID} = useRoute().query
+const { fieldID } = useRoute().query
 
 const $rStore = useReportStore()
 const { getMergedContentPrintByReportAndMember } = useMailMerge()

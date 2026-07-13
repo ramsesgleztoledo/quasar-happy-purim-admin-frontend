@@ -5,10 +5,10 @@ import { useQuasar } from "quasar";
 import { api } from "src/boot/axios";
 import { useRouter } from "vue-router";
 import type { ApiCallInterface, ApiCallResponseInterface } from "./api-interfaces";
-import type { ExtraOptionsInterface, CacheItemInterface } from './api-interfaces';
+import type { ExtraOptionsInterface } from './api-interfaces';
 import type { authStateInterface } from "src/modules/auth/store/auth-store-interfaces";
-import Dexie, { type Table } from 'dexie';
 import { useUI } from "src/modules/UI/composables";
+import { cache } from "./database-cache";
 
 
 
@@ -20,13 +20,7 @@ export const useApiCall = () => {
   const $q = useQuasar();
   const $router = useRouter();
 
-  const db = new Dexie('CacheDB');
 
-  db.version(1).stores({
-    cache: 'key, timestamp',
-  });
-
-  const cache: Table<CacheItemInterface, string> = db.table('cache');
 
 
 
@@ -155,7 +149,7 @@ export const useApiCall = () => {
           responseType: responseType
         })).data
       }
-      
+
       let dataValue = undefined
       if (extraOptions?.useCache)
         dataValue = await fetchWithCache<T>(key, fetchFunction, extraOptions)

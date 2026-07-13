@@ -188,58 +188,19 @@
               <div class="q-pa-sm">
                 <div class="card-person-container">
                   <div class="row row-member-container">
-                    <div style="width: 19px; min-height: 68px">
+                    <div style="width: 19px; min-height: 108px">
                       <RowStyle :row="props.row" />
                     </div>
 
-                    <template v-if="!$moStore.$state.basketOptionBtns?.hasTwoBasketButtons">
-                      <q-checkbox
-                        v-if="props.row.paid"
-                        class="q-mr-sm checkbox-member-container"
-                        disable
-                        v-model="alreadyPaidModel"
-                      >
-                        <b class="text-overflow-ellipsis b-member-container">
-                          <q-tooltip>
-                            {{
-                              `${props.row.lastName} ${props.row.firstName ? `, ${props.row.firstName}` : ``} ${props.row.sFirstName ? `& ${props.row.sFirstName}` : ''}`
-                            }}
-                          </q-tooltip>
-                          {{
-                            `${props.row.lastName} ${props.row.firstName ? `, ${props.row.firstName}` : ``} ${props.row.sFirstName ? `& ${props.row.sFirstName}` : ''}`
-                          }}
-                        </b>
-                        <img class="paid-img" src="/img/paid/paid.svg" alt="paid..." />
-                      </q-checkbox>
-                      <q-checkbox
-                        v-else
-                        class="q-mr-sm checkbox-member-container"
-                        v-model="props.selected"
-                        @update:model-value="
-                          (val, evt) => {
-                            ;(Object as any)
-                              .getOwnPropertyDescriptor(props, 'selected')
-                              .set(val, evt)
-                          }
-                        "
-                      >
-                        <b class="text-overflow-ellipsis b-member-container">
-                          <q-tooltip>
-                            {{
-                              `${props.row.lastName} ${props.row.firstName ? `, ${props.row.firstName}` : ``} ${props.row.sFirstName ? `& ${props.row.sFirstName}` : ''}`
-                            }}
-                          </q-tooltip>
-                          {{
-                            `${props.row.lastName} ${props.row.firstName ? `, ${props.row.firstName}` : ``} ${props.row.sFirstName ? `& ${props.row.sFirstName}` : ''}`
-                          }}
-                        </b>
-                      </q-checkbox>
-                    </template>
-
-                    <template v-else>
-                      <div class="row checkbox-member-container">
-                        <div class="col-12">
-                          <div class="row justify-content-center">
+                    <div style="flex: 1; overflow: hidden; display: flex; flex-direction: column">
+                      <div class="row">
+                        <template v-if="!hasTwoBasketButtons">
+                          <q-checkbox
+                            v-if="props.row.paid"
+                            class="q-mr-sm checkbox-member-container"
+                            disable
+                            v-model="alreadyPaidModel"
+                          >
                             <b class="text-overflow-ellipsis b-member-container">
                               <q-tooltip>
                                 {{
@@ -250,40 +211,107 @@
                                 `${props.row.lastName} ${props.row.firstName ? `, ${props.row.firstName}` : ``} ${props.row.sFirstName ? `& ${props.row.sFirstName}` : ''}`
                               }}
                             </b>
-                          </div>
-                          <div class="row q-gutter-sm q-pa-sm justify-content-center">
-                            <div
-                              v-for="btnItem in $moStore.$state.basketOptionBtns?.buttons"
-                              :key="btnItem.id"
-                            >
-                              <q-btn
-                                class="no-uppercase"
-                                :disable="props.row.paid"
-                                padding="3px"
-                                size="small"
-                                :style="{
-                                  backgroundColor:
-                                    props.row.paid && props.row.basketOptionID === btnItem.id
-                                      ? 'var(--happypurim)'
-                                      : isOptionBtnsMemberSelected(props.row, btnItem).value
-                                        ? 'var(--happypurim)'
-                                        : 'gray',
-                                  color: 'white',
-                                }"
-                                :label="btnItem.description"
-                                @click="addSelectedMemberWithOptionBtns(props.row, btnItem)"
-                              />
+                            <img class="paid-img" src="/img/paid/paid.svg" alt="paid..." />
+                          </q-checkbox>
+                          <q-checkbox
+                            v-else
+                            class="q-mr-sm checkbox-member-container"
+                            v-model="props.selected"
+                            @update:model-value="
+                              (val, evt) => {
+                                ;(Object as any)
+                                  .getOwnPropertyDescriptor(props, 'selected')
+                                  .set(val, evt)
+                              }
+                            "
+                          >
+                            <b class="text-overflow-ellipsis b-member-container">
+                              <q-tooltip>
+                                {{
+                                  `${props.row.lastName} ${props.row.firstName ? `, ${props.row.firstName}` : ``} ${props.row.sFirstName ? `& ${props.row.sFirstName}` : ''}`
+                                }}
+                              </q-tooltip>
+                              {{
+                                `${props.row.lastName} ${props.row.firstName ? `, ${props.row.firstName}` : ``} ${props.row.sFirstName ? `& ${props.row.sFirstName}` : ''}`
+                              }}
+                            </b>
+                          </q-checkbox>
+                        </template>
+
+                        <template v-else>
+                          <div class="row checkbox-member-container">
+                            <div class="col-12">
+                              <div class="row justify-content-center">
+                                <b class="text-overflow-ellipsis b-member-container">
+                                  <q-tooltip>
+                                    {{
+                                      `${props.row.lastName} ${props.row.firstName ? `, ${props.row.firstName}` : ``} ${props.row.sFirstName ? `& ${props.row.sFirstName}` : ''}`
+                                    }}
+                                  </q-tooltip>
+                                  {{
+                                    `${props.row.lastName} ${props.row.firstName ? `, ${props.row.firstName}` : ``} ${props.row.sFirstName ? `& ${props.row.sFirstName}` : ''}`
+                                  }}
+                                </b>
+                              </div>
+                              <div class="row q-gutter-sm q-pa-sm justify-content-center">
+                                <div
+                                  v-for="btnItem in $moStore.$state.basketOptionBtns?.buttons"
+                                  :key="btnItem.id"
+                                >
+                                  <q-btn
+                                    class="no-uppercase"
+                                    :disable="props.row.paid"
+                                    padding="3px"
+                                    size="small"
+                                    :style="{
+                                      backgroundColor:
+                                        props.row.paid && props.row.basketOptionID === btnItem.id
+                                          ? 'var(--happypurim)'
+                                          : isOptionBtnsMemberSelected(props.row, btnItem).value
+                                            ? 'var(--happypurim)'
+                                            : 'gray',
+                                      color: 'white',
+                                    }"
+                                    :label="btnItem.description"
+                                    @click="addSelectedMemberWithOptionBtns(props.row, btnItem)"
+                                  />
+                                </div>
+                              </div>
                             </div>
+                            <img
+                              v-if="props.row.paid"
+                              class="paid-img"
+                              src="/img/paid/paid.svg"
+                              alt="paid..."
+                            />
                           </div>
-                        </div>
-                        <img
-                          v-if="props.row.paid"
-                          class="paid-img"
-                          src="/img/paid/paid.svg"
-                          alt="paid..."
-                        />
+                        </template>
                       </div>
-                    </template>
+                      <div class="row w-100 q-pa-sm justify-content-end align-items-end" style="flex: 1;">
+                        <template v-if="hasTwoBasketButtons">
+                          {{
+                            convertWithCommas(getMemberTwoBtnPrice(props.row.id).value, {
+                              dontAllowZero: true,
+                              prefix: `${$moStore.getSymbol || '$'}`,
+                            })
+                          }}
+                        </template>
+                        <template v-else>
+                          {{
+                            convertWithCommas(
+                              props.row.customPrice ||
+                                props.row.price ||
+                                $moStore.$state.settings?.costPerPerson ||
+                                0,
+                              {
+                                dontAllowZero: true,
+                                prefix: `${$moStore.getSymbol || '$'}`,
+                              },
+                            )
+                          }}
+                        </template>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -377,6 +405,23 @@ const ordersHistory = ref([
   { value: 2, label: 'People I reciprocated to last year' },
   { value: 3, label: 'People I received from last year' },
 ])
+
+const hasTwoBasketButtons = computed(() => !!$moStore.$state.basketOptionBtns?.hasTwoBasketButtons)
+
+const getMemberTwoBtnPrice = (id: number | string) =>
+  computed(() => {
+    const selected = $moStore.membersSelected
+
+    const found = selected.find((me) => me.id === id)
+    if (!found) return 0
+
+    const btnFound = $moStore.$state.basketOptionBtns?.buttons.find(
+      (btn) => btn.id === found.basketOptionID,
+    )
+    if (!btnFound) return 0
+
+    return btnFound.price
+  })
 
 // const reciprocity = ref(false)
 const hidePaidOrders = ref(false)

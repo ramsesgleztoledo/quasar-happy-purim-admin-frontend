@@ -50,7 +50,7 @@
                   v-else-if="col.name === 'sendEmail'"
                   size="sm"
                   color="primary"
-                  label="send email "
+                  label="Email receipt"
                   @click="
                     () => {
                       onSendEmailFlag = true

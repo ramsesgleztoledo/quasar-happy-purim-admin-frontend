@@ -6,6 +6,7 @@ import type { ColorModeInterface, downloadEndPointType } from './ui-interfaces';
 import { generateDownload } from 'src/helpers/generateDownload';
 import type { FileType } from 'src/interfaces/ui-interfaces';
 import { useAuthStore } from 'src/modules/auth/store/auth.store';
+import { cache } from 'src/services/database-cache';
 
 
 export const useUI = () => {
@@ -200,7 +201,23 @@ export const useUI = () => {
 
   const EDITOR_START_IMG_URL = computed(() => process.env.EDITOR_START_IMG_URL || '')
 
+
+  const hardRefresh = async () => {
+    await cache.clear()
+    const hash = window.location.hash
+
+    const [path, queryString = ''] = hash.split('?')
+
+    const params = new URLSearchParams(queryString)
+    params.set('t', Date.now().toString())
+
+    window.location.hash = `${path}?${params.toString()}`
+    window.location.reload()
+  };
+
+
   return {
+    hardRefresh,
     EDITOR_START_IMG_URL,
     copyToClipboard,
     isMobile,

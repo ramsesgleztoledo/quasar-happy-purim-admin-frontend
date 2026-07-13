@@ -30,9 +30,9 @@ export const useOrderArchiveService = () => {
         extraOptions
       })
     },
-    getItemTableByItemId: async (itemId: number, extraOptions?: ExtraOptionsInterface): Promise<ApiCallResponseInterface<ItemDetailsInterface[]>> => {
+    getItemTableByItemId: async (itemId: number, description?: string, extraOptions?: ExtraOptionsInterface): Promise<ApiCallResponseInterface<ItemDetailsInterface[]>> => {
 
-      const nextUrl = `/items/${itemId}`;
+      const nextUrl = `/items/${itemId}?description=${description}`;
       const url = `${baseUrl}${nextUrl}`;
 
       return await apiCall({

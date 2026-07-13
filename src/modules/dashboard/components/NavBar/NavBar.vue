@@ -15,6 +15,7 @@
         <div v-if="isMobile">
           <q-btn flat round icon="arrow_back" aria-label="back" @click="goBack" />
           <q-btn flat round icon="arrow_forward" aria-label="forward" @click="goForward" />
+          <q-btn color="primary" icon="replay" outline flat @click="hardRefresh" />
         </div>
 
         <q-toolbar-title
@@ -67,6 +68,9 @@
               </div>
               <div class="q-ml-sm">
                 <ColorSettings />
+              </div>
+              <div class="q-ml-sm">
+                <q-btn color="primary" icon="replay" outline flat @click="hardRefresh" />
               </div>
             </template>
           </div>
@@ -140,7 +144,7 @@ import ColorSettings from '../ColorSettings/ColorSettings.vue'
 const $uiStore = useUIStore()
 // const $aStore = useAuthStore()
 
-const { isMobile, goBack, goForward, happyText } = useUI()
+const { isMobile, goBack, goForward, happyText, hardRefresh } = useUI()
 // const { logOut } = useAuth()
 
 const search = ref<string>('')

@@ -88,7 +88,7 @@
                 <div class="q-pa-sm col-xs-12 col-sm-4 col-md-2">
                   <div class="card-person-container">
                     <div class="row row-member-container">
-                      <div style="width: 19px; height: 68px">
+                      <div style="width: 19px; height: 108px">
                         <RowStyle :row="props.row" />
                       </div>
 

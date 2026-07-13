@@ -5,6 +5,10 @@
     </div>
   </div>
 
+  <!--=============================== TODO: this is new for time zone =============================-->
+
+  <!--=============================== TODO: this is new for time zone =============================-->
+
   <div class="row q-mt-md q-pl-sm">
     <div class="col-12">
       <b>Date and Time</b>
@@ -16,6 +20,11 @@
     </div>
   </div>
   <div class="row">
+    <div class="col-12">
+      <date-time-zone v-model="closeFundraiserValue" />
+    </div>
+  </div>
+  <!-- <div class="row">
     <div
       class="q-pa-sm"
       :class="{
@@ -74,7 +83,7 @@
         </template>
       </q-input>
     </div>
-  </div>
+  </div> -->
   <div v-if="!basicSettingsState.settings?.hasCustomPricing">
     <div class="row">
       <div class="col-12 q-pl-sm q-pr-sm q-mt-md">
@@ -144,20 +153,26 @@
 </template>
 
 <script setup lang="ts">
+import DateTimeZone from 'src/components/DateTimeZone/DateTimeZone.vue'
 import { lazyRules, useForm, validations } from 'src/composables'
 import { isValidDateUSA, isValidTime } from 'src/helpers'
 import { getTimeAndDate } from 'src/helpers/getTimeAndDate'
 import { turnTimeAndDateUSA } from 'src/helpers/turnTimeAndDate'
 import { useBasicSettings } from 'src/modules/dashboard/composables/useBasicSettings'
 import type { GiftBasketProgramFormInterface } from 'src/modules/dashboard/interfaces/basic-settings.interfaces'
-import { useUI } from 'src/modules/UI/composables'
+// import { useUI } from 'src/modules/UI/composables'
 import { computed, onMounted, ref } from 'vue'
 
-const { isMobile } = useUI()
+// const { isMobile } = useUI()
 const { basicSettingsState, updatePricingSettings } = useBasicSettings()
 
-const dateValue = ref('')
-const timeValue = ref('')
+const closeFundraiserValue = ref({
+  dateValue: '',
+  timeValue: '',
+  timeZoneValue: Intl.DateTimeFormat().resolvedOptions().timeZone || '',
+})
+// const dateValue = ref('')
+// const timeValue = ref('')
 const options = ref([
   {
     value: false,
@@ -167,19 +182,19 @@ const options = ref([
   { value: false, label: 'Enable Reciprocity' },
 ])
 
-const dateRules = [(value: string) => isValidDateUSA(value) || 'Invalid date']
-const timeRules = [
-  (value: string) => {
-    return isValidTime(value) || 'Invalid time'
-  },
-]
+// const dateRules = [(value: string) => isValidDateUSA(value) || 'Invalid date']
+// const timeRules = [
+//   (value: string) => {
+//     return isValidTime(value) || 'Invalid time'
+//   },
+// ]
 
 const isValidData = computed<boolean>(() => {
   const custom = !!basicSettingsState.value.settings?.hasCustomPricing
 
   return (
-    isValidTime(timeValue.value) &&
-    isValidDateUSA(dateValue.value) &&
+    isValidTime(closeFundraiserValue.value.timeValue) &&
+    isValidDateUSA(closeFundraiserValue.value.dateValue) &&
     (custom || (!custom && !!isValidForm()))
   )
 })
@@ -221,17 +236,18 @@ const setOptions = () => {
 
 const setDateAndTime = () => {
   const date = getTimeAndDate(basicSettingsState.value.settings?.endDateTime || '', ['m', 'd', 'y'])
-  dateValue.value = date.dateValue
-  timeValue.value = date.timeValue
+  closeFundraiserValue.value.dateValue = date.dateValue
+  closeFundraiserValue.value.timeValue = date.timeValue
 }
 
 const onUpdate = async () => {
   const date = turnTimeAndDateUSA({
-    dateValue: dateValue.value,
-    timeValue: timeValue.value,
+    dateValue: closeFundraiserValue.value.dateValue,
+    timeValue: closeFundraiserValue.value.timeValue,
+    timeZone: closeFundraiserValue.value.timeZoneValue,
   })
 
-  console.log({ dateValue: dateValue.value, timeValue: timeValue.value, date })
+  // console.log({ dateValue: dateValue.value, timeValue: timeValue.value, date })
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const formData = getFormValue() as unknown as any

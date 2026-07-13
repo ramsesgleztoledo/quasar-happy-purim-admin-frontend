@@ -612,6 +612,9 @@ export const useMemberOrder = () => {
 
 
       const emailTo = $moStore.paymentForm.email || "";
+      const extraEmails = []
+      if ($moStore.$state.sendToAlternate)
+        extraEmails.push($moStore.paymentForm.email2)
 
       const paymentType = $moStore.paymentForm.paymentType
 
@@ -643,6 +646,7 @@ export const useMemberOrder = () => {
         tempCode: tokenSession.value,
         total: $moStore.getCartData?.totalNoFee || 0,
         SendEmail: $moStore.showEmailReceiptTo,
+        extraEmails
       }
 
 

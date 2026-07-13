@@ -627,7 +627,7 @@ const columns: QTableColumn<InvoiceUnpaidOrderInterface>[] = [
     field: 'OrderTotal',
     sortable: true,
     format: (amount: number) =>
-      `$${convertWithCommas(amount, {
+      `${convertWithCommas(amount, {
         dontAllowZero: true,
       })}`,
   },

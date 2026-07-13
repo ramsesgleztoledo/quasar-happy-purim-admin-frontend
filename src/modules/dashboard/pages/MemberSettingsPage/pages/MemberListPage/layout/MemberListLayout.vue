@@ -9,6 +9,7 @@
       <p class="page-main-title">Import Member List</p>
       <div class="separator-right q-mr-sm q-ml-sm"></div>
     </div>
+
     <div
       :class="{
         'col-12': isMobile,
@@ -31,7 +32,14 @@
       </q-stepper>
     </div>
   </div>
-
+  <div class="row q-mt-sm justify-content-end">
+    <q-btn
+      color="primary"
+      icon="check"
+      label="Download Member List Format"
+      @click="downloadMemberListFormat"
+    />
+  </div>
   <div style="display: flex; flex-direction: column">
     <div style="flex: 1; min-height: 70vh" class="row MemberListLayout-container q-mb-lg">
       <div class="col-12 q-pa-md">
@@ -405,6 +413,7 @@ import { useRoute, useRouter } from 'vue-router'
 import { useDashboardStore } from 'src/modules/dashboard/store/dashboardStore/dashboardStore'
 import DialogAlert from 'src/components/DialogAlert/DialogAlert.vue'
 import { useDashboard } from 'src/modules/dashboard/composables/useDashboard'
+import { useReportsService } from 'src/modules/dashboard/services/report.service'
 
 interface StepResponseInterface {
   success: boolean
@@ -419,7 +428,7 @@ const $dStore = useDashboardStore()
 
 const { updateCanUpload } = useDashboard()
 
-const { isMobile, goToTop } = useUI()
+const { isMobile, goToTop, downloadFile } = useUI()
 const {
   uploadMemberList,
   processAndMatch,
@@ -431,6 +440,8 @@ const {
   backupAndUpload,
   revertChanges,
 } = useUploadList()
+
+const { downloadReportExcelByReportId } = useReportsService()
 
 const loading = ref(false)
 const revertDialogFlag = ref(false)
@@ -701,6 +712,23 @@ watch(
     step.value = 1
   },
 )
+
+const downloadMemberListFormat = async () => {
+  await downloadFile(
+    async () =>
+      downloadReportExcelByReportId(30, {
+        dontRedirect: true,
+        loading: {
+          message: 'Loading...',
+        },
+      }),
+    {
+      fileType: 'excel',
+      fileName: 'Member List Format',
+      extension: 'xlsx',
+    },
+  )
+}
 </script>
 
 <style scoped lang="scss" src="./MemberListLayout.scss" />

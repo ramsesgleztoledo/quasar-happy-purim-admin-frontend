@@ -4,6 +4,7 @@ export const convertWithCommas = (
     dontAllowZero?: boolean,
     usdm?: boolean,
     goDown?: boolean
+    prefix?: string
   }
 ) => {
   if (!number && params?.dontAllowZero) return "";
@@ -25,11 +26,17 @@ export const convertWithCommas = (
     .toFixed(decimals)
     .replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 
-  return number
+  let result = number
     ? number < 0
       ? `${params?.usdm ? (number > -0.1 ? "" : "-") : "(-"}${formatted}${params?.usdm ? "" : ")"}`
       : formatted
     : params?.usdm
       ? "0.0"
       : "0.00";
+
+
+  if (params?.prefix)
+    result = params.prefix + result
+
+  return result
 };

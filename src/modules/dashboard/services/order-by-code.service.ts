@@ -1,6 +1,9 @@
 import type { ApiCallResponseInterface, ExtraOptionsInterface } from "../../../services/api-interfaces";
 import { useApiCall } from "../../../services/apiCall";
-import type { OrderReceiptInterface, ItemDetailsInterface } from "../interfaces/order-interfaces";
+import type {
+  OrderReceiptInterface,
+  // ItemDetailsInterface
+} from "../interfaces/order-interfaces";
 
 
 
@@ -21,16 +24,16 @@ export const useOrderByCodeService = () => {
         extraOptions
       })
     },
-    getItemTableByItemId: async (itemId: number, extraOptions?: ExtraOptionsInterface): Promise<ApiCallResponseInterface<ItemDetailsInterface[]>> => {
+    // getItemTableByItemId: async (itemId: number, extraOptions?: ExtraOptionsInterface): Promise<ApiCallResponseInterface<ItemDetailsInterface[]>> => {
 
-      const nextUrl = `/items/${itemId}`;
-      const url = `${baseUrl}${nextUrl}`;
+    //   const nextUrl = `/items/${itemId}`;
+    //   const url = `${baseUrl}${nextUrl}`;
 
-      return await apiCall({
-        url,
-        extraOptions
-      }) 
-    },
+    //   return await apiCall({
+    //     url,
+    //     extraOptions
+    //   })
+    // },
 
 
 

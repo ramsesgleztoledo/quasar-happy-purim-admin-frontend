@@ -136,6 +136,7 @@ export interface MemberTransactionInterface {
   paid: number;
   balanceDue: number;
 }
+
 export interface MemberDonateBasketOptionInterface {
   visible: boolean;
   text?: string;
@@ -339,11 +340,20 @@ export interface MemberAllInfoInterface {
   doorman: DoorManStatusInterface;
   showRecordPayment: boolean;
   categories: MemberCategoryInterface[];
+  receivingFrom: ReceivingFromDataInterface[]
 }
 
 
 
 
+
+export interface ReceivingFromDataInterface {
+  m_id: number;
+  m_FName: string;
+  m_LastName: string;
+  m_SFName: string;
+  m_displayname: string;
+}
 
 
 

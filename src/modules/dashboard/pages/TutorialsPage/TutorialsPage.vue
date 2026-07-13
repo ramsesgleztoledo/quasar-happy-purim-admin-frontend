@@ -5,6 +5,7 @@
       <div class="separator-right q-mr-sm q-ml-sm"></div>
     </div>
   </div>
+
   <div class="row justify-content-space-between q-mb-sm">
     <q-input outlined v-model="searchText" label="Search" clearable>
       <template v-slot:append>
@@ -37,21 +38,31 @@
     </div>
   </div>
 </template>
-
+<!-- eslint-disable @typescript-eslint/no-explicit-any -->
 <script setup lang="ts">
 import { computed, onMounted, ref } from 'vue'
 import { useTutorialService } from '../../services/tutorials.service'
 import type { TutorialInterface } from '../../interfaces/tutorials.interface'
+import Fuse from 'fuse.js'
+
 const tutorialService = useTutorialService()
 const tutorials = ref<TutorialInterface[]>([])
 const searchText = ref('')
 
-const filteredTutorials = computed<TutorialInterface[]>(() =>
-  tutorials.value.filter((tutorial) =>
-    tutorial.name.toLowerCase().includes((searchText.value || '').toLowerCase()),
-  ),
-)
+const filteredTutorials = computed<TutorialInterface[]>(() => {
+  const query = searchText.value
 
+  if (!query) return tutorials.value
+
+  const fuse = new Fuse(tutorials.value, {
+    keys: ['name'],
+    threshold: 0.4,
+    ignoreLocation: true,
+    findAllMatches: true,
+  })
+
+  return fuse.search(query).map((r) => r.item)
+})
 onMounted(async () => {
   try {
     const resp = await tutorialService.getTutorials({

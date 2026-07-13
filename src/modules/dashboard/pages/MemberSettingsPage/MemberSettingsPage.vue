@@ -93,12 +93,13 @@
           </div>
         </div>
         <q-table
+          ref="membersTable"
+          virtual-scroll
           @update:pagination="onPaginationUpdate"
           :style="{ height: isFullScreen ? '800px' : '630px' }"
           class="table-sticky-header-column-table sticky-2-column-table-copy"
           flat
           bordered
-          ref="tableRef"
           :rows="memberState.members.members"
           :columns="columns"
           row-key="m_id"
@@ -169,7 +170,7 @@
 <script setup lang="ts">
 import type { QTableColumn, QTableProps } from 'quasar'
 import { convertToUSDate } from 'src/helpers/convertToUSDate'
-import { onMounted, ref, watch } from 'vue'
+import { onMounted, ref, watch, onBeforeUnmount, nextTick } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useUI } from 'src/modules/UI/composables'
 import type { MemberInterface } from '../../interfaces/member-interfaces'
@@ -181,6 +182,41 @@ import DialogAlert from 'src/components/DialogAlert/DialogAlert.vue'
 import { useUploadList } from '../../composables/useUploadList'
 // import { useDashboard } from '../../composables/useDashboard'
 
+//* keep scroll table
+
+const membersTable = ref()
+const STORAGE_KEY = 'members-table-scroll'
+let scrollEl: HTMLElement | null = null
+
+const saveScroll = () => {
+  if (!scrollEl) return
+
+  sessionStorage.setItem(STORAGE_KEY, scrollEl.scrollTop.toString())
+}
+onMounted(async () => {
+  await nextTick()
+
+  // internal container
+  scrollEl = membersTable.value?.$el.querySelector('.q-table__middle')
+
+  if (!scrollEl) return
+
+  // restoring the scroll
+  const saved = sessionStorage.getItem(STORAGE_KEY)
+
+  if (saved) {
+    scrollEl.scrollTop = parseInt(saved)
+  }
+
+  // listen scroll
+  scrollEl.addEventListener('scroll', saveScroll)
+})
+
+onBeforeUnmount(() => {
+  scrollEl?.removeEventListener('scroll', saveScroll)
+})
+
+//* keep scroll table
 const { isMobile } = useUI()
 const $router = useRouter()
 const $route = useRoute()
@@ -293,21 +329,26 @@ const columns: QTableColumn[] = auxColumns.map((co) => ({
 const filters = ref<{
   category: ShulCategoryInterface[]
   search: string
+  rows: number
 }>({
   category: [],
   search: '',
+  rows: 20,
 })
 
 const oldValue = ref<{
   category: ShulCategoryInterface[]
   search: string
+  rows: number
 }>({
   category: [],
   search: '',
+  rows: 20,
 })
 
 const onClearFilters = () => {
   filters.value = {
+    ...filters.value,
     category: [],
     search: '',
   }
@@ -343,14 +384,20 @@ const onPaginationUpdate = (newPagination: QTableProps['pagination']) => {
     }
     pagination.value = newPagination
   }
+
+  if (newPagination && oldValue.value.rows !== newPagination.rowsPerPage) {
+    oldValue.value.rows = newPagination.rowsPerPage ?? 20
+    goToPage(getCategoriesIdAsString(), filters.value.search, newPagination.rowsPerPage ?? 20)
+  }
 }
 
-const goToPage = async (categoryId: string | undefined, search: string) => {
+const goToPage = async (categoryId: string | undefined, search: string, rows: number) => {
   await $router.replace({
     name: 'MembersSettingsPage-home',
     query: {
       search,
       categoryId,
+      rows,
     },
   })
 }
@@ -363,19 +410,27 @@ const getCategoriesByCategoryArr = (categories: string[]) => {
 }
 
 const loadPage = () => {
-  const { categoryId, search } = $route.query
+  const { categoryId, search, rows } = $route.query
   const categoryIdAux: string = categoryId as string
 
   const categories = categoryIdAux ? categoryIdAux.split(',') : []
+
+  const rowsTotal = Number(rows)
+  const rowAux = rowsTotal || rowsTotal === 0 ? rowsTotal : 20
 
   filters.value = {
     category: categories.length ? getCategoriesByCategoryArr(categories) : [],
     // ? $dStore.categories.find((c) => c.categoryID == Number(categoryId))
     // : undefined,
     search: search ? `${search}` : '',
+    rows: rowAux,
   }
 
-  goToPage(getCategoriesIdAsString(), filters.value.search)
+  pagination.value = {
+    rowsPerPage: rowAux,
+  }
+
+  goToPage(getCategoriesIdAsString(), filters.value.search, rowAux)
 }
 
 const filterDebounce = ref<NodeJS.Timeout | undefined>(undefined)
@@ -392,19 +447,9 @@ watch(
     if (filterDebounce.value) clearTimeout(filterDebounce.value)
 
     filterDebounce.value = setTimeout(async () => {
-      // const stringNewValue = JSON.stringify(newValue)
-      // const stringOldValue = JSON.stringify(oldValue.value)
-
-      // if (stringNewValue == stringOldValue) return
-
       oldValue.value = { ...newValue }
       if ($route.name !== 'MembersSettingsPage-home') return
-      await goToPage(getCategoriesIdAsString(), newValue.search)
-
-      // getMembers_Co({
-      //   categories: getCategoriesIdAsString().split(',').join(', '),
-      //   search: filters.value.search,
-      // })
+      await goToPage(getCategoriesIdAsString(), newValue.search, newValue.rows)
     }, 800)
   },
   {

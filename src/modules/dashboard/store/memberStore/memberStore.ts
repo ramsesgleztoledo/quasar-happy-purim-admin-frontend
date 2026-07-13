@@ -1,7 +1,7 @@
 
 import { defineStore, acceptHMRUpdate } from 'pinia';
 import type { MemberStateInterface } from './member-store-interfaces';
-import type { AlternativeMemberAddress, MemberDataInterface, MemberDonateBasketOptionInterface, MemberOptionsInterface, MemberProfileQuestionInterface, MembershipStatusInterface, MemberTransactionInterface } from '../../interfaces/member-interfaces';
+import type { AlternativeMemberAddress, MemberDataInterface, MemberDonateBasketOptionInterface, MemberOptionsInterface, MemberProfileQuestionInterface, ReceivingFromDataInterface, MembershipStatusInterface, MemberTransactionInterface } from '../../interfaces/member-interfaces';
 import type { NoneType } from '../../services/service-interfaces';
 import type { MemberCategoryInterface } from '../../interfaces/category-interfaces';
 
@@ -26,6 +26,7 @@ const initialState: MemberStateInterface = {
   showRecordPaymentBtn: false,
   memberAlternativeAddress: undefined,
   memberTransactions: [],
+  memberReceivingFrom: [],
   memberDonateBasketOption: undefined,
   profileQuestions: [],
   displayChildren: false,
@@ -67,6 +68,9 @@ export const useMemberStore = defineStore('memberStore', {
     },
     setMemberTransactions(memberTransactions: MemberTransactionInterface[]) {
       this.memberTransactions = memberTransactions
+    },
+    setMemberReceivingFrom(members: ReceivingFromDataInterface[]) {
+      this.memberReceivingFrom = members
     },
     setMemberDonateBasketOption(memberDonateBasketOption: MemberDonateBasketOptionInterface | NoneType) {
       this.memberDonateBasketOption = memberDonateBasketOption

@@ -69,7 +69,6 @@ const updateIframeContent = () => {
   if (iframe && iframe.contentWindow) {
     const doc = iframe.contentWindow.document
     doc.open()
-    // Inyectamos el bodyModel (HTML) dentro del iframe
     doc.write(`
       <!DOCTYPE html>
       <html>
@@ -81,6 +80,8 @@ const updateIframeContent = () => {
   }
 }
 
+//  process.env.NODE_ENV
+
 const mountAnalyzer = () => {
   const script = document.createElement('script')
   script.src = 'https://spamanalyzer.hpsend.com/widget/spam-analyzer.js'
@@ -88,8 +89,8 @@ const mountAnalyzer = () => {
     if (window) {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       ;(window as any).SpamAnalyzer.init({
-        apiUrl: 'https://spamanalyzer.hpsend.com/api/analyze',
-        apiKey: '6b76f93f-bf47-491e-8343-b29efd4ebef1',
+        apiUrl: process.env.SPAN_ANALYZER_API_URL,
+        apiKey: process.env.SPAN_ANALYZER_API_KEY,
         userId: authState.value.user?.email || '',
         subjectSelector: '#txtSubject',
         bodyEditorId: 'txtBody',

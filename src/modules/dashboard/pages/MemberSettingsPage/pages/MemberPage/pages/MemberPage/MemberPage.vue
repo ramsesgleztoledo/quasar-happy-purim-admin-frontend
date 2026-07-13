@@ -814,6 +814,11 @@
         <OrderHistoryTable />
       </div>
     </div>
+    <div class="row q-mt-sm">
+      <div class="col-12" ref="orderHistoryTableRef">
+        <ReceivingFromTable />
+      </div>
+    </div>
 
     <!-- eslint-enable -->
 
@@ -894,6 +899,7 @@ import type {
 } from 'src/modules/dashboard/interfaces/member-interfaces'
 import { useDashboard } from 'src/modules/dashboard/composables/useDashboard'
 import MemberStatsDialog from '../../components/MemberStatsDialog/MemberStatsDialog.vue'
+import ReceivingFromTable from '../../components/ReceivingFromTable/ReceivingFromTable.vue'
 // import { useAuth } from 'src/modules/auth/composables/useAuth'
 
 interface CheckboxItemInterface {

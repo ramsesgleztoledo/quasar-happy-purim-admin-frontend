@@ -1,14 +1,4 @@
-export interface PagesForSearchInterface {
-  routeName: string;
-  title: string;
-  phrases: string[];
-  icon: string;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  params?: any;
-}
-
-
-export const pagesForSearch: PagesForSearchInterface[] = [
+export const tutorialsForSearch = [
   {
     routeName: 'MembersSettingsPage',
     title: 'Member List',
@@ -20,31 +10,20 @@ export const pagesForSearch: PagesForSearchInterface[] = [
       'members',
       'show member list',
       'people',
-      'see members'
-    ]
+      'see members',
+    ],
   },
   {
     routeName: 'MembersSettingsPage-AddMemberPage',
     title: 'Add Member',
     icon: 'person',
-    phrases: [
-      'member',
-      'add',
-      'add member',
-      'new member',
-    ]
+    phrases: ['member', 'add', 'add member', 'new member'],
   },
   {
     routeName: 'MembersSettingsPage-MemberListLayout',
     title: 'Import Member List',
     icon: 'upload',
-    phrases: [
-      'member',
-      'Import Member List',
-      'list',
-      'upload file',
-      'update member list',
-    ]
+    phrases: ['member', 'Import Member List', 'list', 'upload file', 'update member list'],
   },
   {
     routeName: 'dashboard-SiteManagerPage-BasicSettingsPage',
@@ -57,8 +36,8 @@ export const pagesForSearch: PagesForSearchInterface[] = [
       'upload gift basket program',
       'organization info',
       'fundraiser coordinator',
-      'payment processing'
-    ]
+      'payment processing',
+    ],
   },
   {
     routeName: 'dashboard-SiteManagerPage-AdvanceSettingsPage',
@@ -76,17 +55,14 @@ export const pagesForSearch: PagesForSearchInterface[] = [
       'Sell Gift Baskets for Personal Use',
       'Allow Members to Send to Others Outside the List',
       'Sell Additional Items',
-      'Invoice Text'
-    ]
+      'Invoice Text',
+    ],
   },
   {
     routeName: 'dashboard-OrderArchivePage',
     title: 'Order Archive',
     icon: 'archive',
-    phrases: [
-      'order archive',
-      'order archive list'
-    ]
+    phrases: ['order archive', 'order archive list'],
   },
   {
     routeName: 'dashboard-MailMergeReportsPage',
@@ -100,31 +76,19 @@ export const pagesForSearch: PagesForSearchInterface[] = [
       'basic reports',
       'advanced reports',
       'custom reports',
-    ]
+    ],
   },
   {
     routeName: 'dashboard-PrintLabelsPage',
     title: 'Print & Labels',
     icon: 'print',
-    phrases: [
-      'print',
-      'labels',
-      'print labels',
-      'print and labels',
-      'print & labels',
-    ]
+    phrases: ['print', 'labels', 'print labels', 'print and labels', 'print & labels'],
   },
   {
     routeName: 'dashboard-EmailStatsPage',
     title: 'Email Stats',
     icon: 'query_stats',
-    phrases: [
-      'email',
-      'stats',
-      'email stats',
-      'campaigns',
-      'campaigns details',
-    ]
+    phrases: ['email', 'stats', 'email stats', 'campaigns', 'campaigns details'],
   },
   {
     routeName: 'dashboard-UserManagement',
@@ -139,7 +103,7 @@ export const pagesForSearch: PagesForSearchInterface[] = [
       'add admin',
       'admin',
       'create admin',
-    ]
+    ],
   },
   {
     routeName: 'dashboard-TutorialsPage',
@@ -160,10 +124,7 @@ export const pagesForSearch: PagesForSearchInterface[] = [
       'Membership List and Member Profile Page',
       'Order Archive',
       'Print & Labels',
-      'Transactions History'
-    ]
+      'Transactions History',
+    ],
   },
-
-
-
 ]

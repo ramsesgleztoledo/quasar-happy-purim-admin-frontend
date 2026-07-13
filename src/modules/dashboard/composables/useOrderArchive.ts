@@ -24,8 +24,8 @@ export const useOrderArchive = () => {
       })
       $oStore.setOrders(orders.ok ? orders.data : []);
     },
-    async getItemTableByItemId(itemId: number) {
-      const items = await getItemTableByItemId(itemId, {
+    async getItemTableByItemId(itemId: number, description: string) {
+      const items = await getItemTableByItemId(itemId, description, {
         loading: {
           message: 'Loading...'
         }

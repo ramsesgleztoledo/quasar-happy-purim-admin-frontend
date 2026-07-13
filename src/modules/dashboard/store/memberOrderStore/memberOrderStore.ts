@@ -44,6 +44,7 @@ const initialState: MemberOrderStateInterface = {
     form: undefined,
     checkForm: undefined,
     email: "",
+    email2: "",
     paymentType: 0
   },
   shulSetting: undefined,
@@ -52,6 +53,7 @@ const initialState: MemberOrderStateInterface = {
   settings: undefined,
   showFee: false,
   showEmailReceiptTo: true,
+  sendToAlternate: false,
   step: 0,
   membership: undefined,
   membershipType: 'annual',
@@ -154,6 +156,7 @@ export const useMemberOrderStore = defineStore('memberOrderStore', {
         form: undefined,
         checkForm: undefined,
         email: "",
+        email2: "",
         paymentType: 1
       }
     },

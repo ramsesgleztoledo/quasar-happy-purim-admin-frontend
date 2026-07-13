@@ -31,9 +31,16 @@
 
       <div class="row">
         <q-checkbox
+          class="q-mr-sm"
           style="margin-left: -8px"
           v-model="$moStore.showEmailReceiptTo"
           label="Send Email Receipt"
+        />
+        <q-checkbox
+          v-if="$moStore.showEmailReceiptTo"
+          style="margin-left: -8px"
+          v-model="$moStore.sendToAlternate"
+          label="Send to Alternate"
         />
       </div>
       <div
@@ -57,6 +64,23 @@
             </div>
           </div>
         </div>
+        <div v-if="$moStore.sendToAlternate" class="col-12">
+          <div class="row q-mb-sm">
+            <div class="text-h6">Alternate Email</div>
+          </div>
+          <div class="row">
+            <div class="col-12">
+              <q-input
+                v-model="$moStore.paymentForm.email2"
+                outlined
+                label="Alternate Email *"
+                lazy-rules
+                type="email"
+                :rules="[lazyRules.required(), lazyRules.isEmail()]"
+              />
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -64,7 +88,7 @@
 
 <script setup lang="ts">
 import { lazyRules } from 'src/composables'
-import { computed, onMounted } from 'vue'
+import { computed, onMounted, watch } from 'vue'
 import CreditCardPayment from './components/CreditCardPayment.vue'
 import { useMemberStore } from 'src/modules/dashboard/store/memberStore/memberStore'
 import { useMemberOrderStore } from 'src/modules/dashboard/store/memberOrderStore/memberOrderStore'
@@ -87,7 +111,15 @@ const payments = computed(() => [
 
 onMounted(() => {
   $moStore.paymentForm.email = $mStore.selectedMember?.email || ''
+  $moStore.paymentForm.email2 = $mStore.selectedMember?.email2 || ''
 })
+
+watch(
+  () => $moStore.showEmailReceiptTo,
+  () => {
+    $moStore.sendToAlternate = false
+  },
+)
 </script>
 
 <style scoped lang="scss"></style>
