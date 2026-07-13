@@ -107,13 +107,13 @@
           <div
             style="width: fit-content"
             class="MemberPage-login-code"
-            @click="copyToClipboard(memberState.selectedMember?.signOnLink || '')"
+            @click="copyToClipboard(fixedSignOnLink)"
             @mouseenter="showHoverCopy = true"
             @mouseleave="showHoverCopy = false"
             @mousemove="updateHoverPos"
           >
             SignOn Link:
-            <b class="user-select-none"> {{ memberState.selectedMember?.signOnLink }}</b>
+            <b class="user-select-none"> {{ fixedSignOnLink }}</b>
             <q-icon name="copy_all" />
 
             <p
@@ -311,13 +311,13 @@
             <div
               style="width: fit-content"
               class="MemberPage-login-code"
-              @click="copyToClipboard(memberState.selectedMember?.signOnLink || '')"
+              @click="copyToClipboard(fixedSignOnLink)"
               @mouseenter="showHoverCopy = true"
               @mouseleave="showHoverCopy = false"
               @mousemove="updateHoverPos"
             >
               SignOn Link:
-              <b class="user-select-none"> {{ memberState.selectedMember?.signOnLink }}</b>
+              <b class="user-select-none"> {{ fixedSignOnLink}}</b>
               <q-icon name="copy_all" />
               <p
                 v-if="showHoverCopy"
@@ -900,6 +900,7 @@ import type {
 import { useDashboard } from 'src/modules/dashboard/composables/useDashboard'
 import MemberStatsDialog from '../../components/MemberStatsDialog/MemberStatsDialog.vue'
 import ReceivingFromTable from '../../components/ReceivingFromTable/ReceivingFromTable.vue'
+import { useAuthStore } from 'src/modules/auth/store/auth.store.js'
 // import { useAuth } from 'src/modules/auth/composables/useAuth'
 
 interface CheckboxItemInterface {
@@ -1068,6 +1069,17 @@ const {
   clearMemberCart_Co,
   resetMemberLoginCode_Co,
 } = useMember()
+const $aStore = useAuthStore()
+
+const fixedSignOnLink = computed(() => {
+  const link = (memberState.value?.selectedMember?.signOnLink || '').split('?token=')
+
+  const firstPart = $aStore.$state.shul?.isHrhClient
+    ? 'https://www.happyroshhashanah.com/sso.aspx?token='
+    : 'https://www.happypurim.com/sso.aspx?token='
+
+  return link.length && link.length === 2 ? firstPart + link[1] : firstPart
+})
 
 const paginationCustomRef = ref(undefined)
 const isReady = ref<boolean>(false)
