@@ -30,5 +30,6 @@ export interface routeDataInterface {
   queryParams?: string[];
   titleParam?: ((value?: routeParamInterface) => string);
   dontShow?: boolean;
+  nonClickable?: boolean
 }
 

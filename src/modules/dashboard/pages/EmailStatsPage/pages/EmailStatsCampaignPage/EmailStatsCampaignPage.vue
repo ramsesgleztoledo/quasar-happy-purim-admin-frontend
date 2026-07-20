@@ -215,6 +215,15 @@ const columns: QTableColumn[] = [
     sortable: true,
   },
   {
+    name: 'EmailAddress',
+    required: true,
+    label: 'Email',
+    align: 'left',
+    field: 'EmailAddress',
+    // format: (val: any) => `${val}`,
+    sortable: true,
+  },
+  {
     name: 'DateAdded',
     required: true,
     label: 'Date Logged',

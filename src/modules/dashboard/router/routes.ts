@@ -129,7 +129,7 @@ export const dashboardRoutes: RouteRecordRaw[] = [
               import(/* webpackChunkName: "MailMergeReportsPage-MailMergeReportsPage" */ "../pages/ScheduleEmail/ScheduleEmail.vue"),
           },
           {
-            path: '/:scheduledEmailId',
+            path: ':scheduledEmailId',
             name: 'MailMergeReportsPage-ScheduleEmailDetails',
             component: () =>
               import(/* webpackChunkName: "MailMergeReportsPage-MailMergeReportsPage" */ "../pages/ScheduleEmail/ViewScheduleEmail.vue"),

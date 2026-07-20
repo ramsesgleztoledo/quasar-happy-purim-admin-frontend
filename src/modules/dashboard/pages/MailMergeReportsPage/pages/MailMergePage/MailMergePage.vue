@@ -276,7 +276,7 @@
                         bordered
                         :rows="rowsAux"
                         :columns="columns"
-                        row-key="ID"
+                        :row-key="(row) => `${row.ID}-${row.MemberId}`"
                         selection="multiple"
                         v-model:selected="$rStore.$state.selectedRecipients"
                         :pagination="{
@@ -1008,7 +1008,7 @@ const onGeneratePDF = async () => {
           isAsc.value,
         )
       : $rStore.$state.selectedRecipients
-    ).map((re) => re.ID),
+    ).map((re) => (typeof re === 'number' ? re : re.ID || re.MemberId!)),
   }).catch(console.error)
 }
 
@@ -1108,7 +1108,9 @@ const onSendEmail = async (date?: Date | string, isSchedule?: boolean) => {
     fieldID: fieldID as string,
     subject: realForm.value.emailSubject.value,
     content,
-    memberIds: $rStore.$state.selectedRecipients.map((re) => re.ID),
+    memberIds: $rStore.$state.selectedRecipients.map((re) =>
+      typeof re === 'number' ? re : re.ID || re.MemberId!,
+    ),
     date,
     timeZone: timeZoneSelect.value || '',
     sendNow: !date ? true : false,

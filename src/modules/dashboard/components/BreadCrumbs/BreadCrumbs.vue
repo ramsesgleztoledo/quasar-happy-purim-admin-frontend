@@ -5,10 +5,14 @@
         v-for="mr in breadCrumbRoutes"
         :key="mr.name"
         :icon="mr.icon"
-        :to="{
-          name: mr.name,
-          params: mr.params,
-        }"
+        :to="
+          mr.clickable
+            ? {
+                name: mr.name,
+                params: mr.params,
+              }
+            : undefined
+        "
         :label="mr.label"
       />
     </q-breadcrumbs>
@@ -28,6 +32,7 @@ interface BreadCrumbRoutesInterface {
   params: routeParamInterface | undefined
   icon: string
   label: string
+  clickable?: boolean
 }
 
 const $route = useRoute()
@@ -45,6 +50,7 @@ const breadCrumbRoutes = computed<BreadCrumbRoutesInterface[]>(() => {
       icon: found.icon,
       name: found.name,
       params,
+      clickable: !found.nonClickable,
       label: found.titleParam ? found.titleParam(params) : found.title,
     })
   }

@@ -7,9 +7,9 @@ const currentUrl = window.location.origin
 
 
 const loginAccountsAux: LoginAccountInterface[] = [
-  { id: 757, name: `Elana's School`, guid: 'E834CD68-3272-424B-9851-30EF830A4E98', token: "IIiteGH1xpeGKnVAoyDFxPX2jEwl9IfIJ5ltNUzaFuIC+4JNcdZfigaPWY1MzmNFvdH5OA3vXJXecEdxxRqiRg==" },
+  { id: 757, name: `Elana's School`, guid: 'E834CD68-3272-424B-9851-30EF830A4E98', token: "I3kRNCADv2s//NvhUQ7ed36n12L6ceP/IJGWtxIndonU+9bAx5aSW8Q/D9gmTbcuAJPBfuUVDtmhBzQanqLl0w==" },
   { id: 783, name: `Test School`, guid: 'AB958CEA-5BFB-45E3-B3B5-60561B93A598', token: "5DOTr9y2QULoWpQEtGjADR/oAXOzr4RHIrS+kRNtZKATKESAt7/msjfBWBLC7R0tYX1I+rA+d89kU49m6bEP6Q==" },
-  { id: 334, name: `Yeshiva Toras Chaim Toras Emes`, guid: '4103410A-7A61-4C42-A7A8-75DE0014F4D9', token: "+Q4V35+oGu9DzIMXSgG0gOX46yoiMc1lm9Rzka/+oFqtm3pATaCY6XKBAeWN86GT8JjwcUbuX9KDvOKb3qbpbQ==" },
+  { id: 334, name: `Yeshiva Toras Chaim Toras Emes`, guid: '53C737BF-A018-40AE-9344-D55E3C83E4B1', token: "kt9po+8iKMFju8Fk0CL36fdytVXueIG95emMcG+Zaz9b2Ma+A7ZtmfakTvkQ/4IF2mxHUZR+ZW0yDbGAAdMtBg==" },
   { id: 275, name: `Young Israel of Holliswood`, guid: '49B8697D-D609-4094-BC30-05C55F2E866B', token: "k4ZTeJqtLItIypSdN0od7eibNp2kg/IS1xeZSxZYXqzMl/4ZksOiJMrbBLTF/V5uFJ/YEX61AIkuPZNoLZjN5w==" },
   { id: 107, name: 'KJ - Kehilath Jeshurun', guid: '540EE815-6F63-4E50-B365-F867888C1664', token: "7h8b//ODayscR05gPc4PVhV+YXNTWKl2RfRoguF5h7gim7gcoT2PU8+0rXQ9LPTK0B+qr5AbmA1msp/74PWxQg==" },
   { id: 637, name: 'Beth Jacob High School', guid: '23AADF55-21CA-4CCE-8C6D-2AB50762BCB8', token: "r2Qr3BPMQxhznMdJzsXRlrHcMHL5tR0to6P4NgygY2mMpoI+OebpqoG3aaEin3yxTTbbH4EujqkUiqKijXxmuA==" },

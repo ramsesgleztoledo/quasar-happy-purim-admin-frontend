@@ -82,13 +82,13 @@ export const useMailMergeService = () => {
         memberIds: number[]
       }
     }, extraOptions?: ExtraOptionsInterface): Promise<ApiCallResponseInterface<MergedContentPrintInterface[]>> => {
-      const nextUrl = `/print-merge-content?reportId=${data.reportId}`;
+      const nextUrl = `/print-merge-content?reportId=${data.reportId}&fieldID=${data.fieldID}`;
       const url = `${baseUrl}${nextUrl}`;
       return await apiCall({
         url,
         extraOptions
         , method: 'POST',
-        data: { ...data.data, fieldID: data.fieldID }
+        data: { ...data.data, fieldId: data.fieldID }
       })
     },
 

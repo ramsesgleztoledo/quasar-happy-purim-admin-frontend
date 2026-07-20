@@ -106,7 +106,7 @@ export const useReportsService = () => {
       })
     },
     getReportRecipientsByReportIdCustomWithSQL: async (data: RecipientDataFormInterface, extraOptions?: ExtraOptionsInterface): Promise<ApiCallResponseInterface<RecipientDataInterface>> => {
-      const nextUrl = `/Custom-Reports/run-and-get-report/${data.id}?searchTerm=${data.searchTerm || ""}`;
+      const nextUrl = `/Custom-Reports/run-and-get-report/${data.fieldID}?searchTerm=${data.searchTerm || ""}`;
       const url = `${baseUrl}${nextUrl}`;
       return await apiCall({
         url,

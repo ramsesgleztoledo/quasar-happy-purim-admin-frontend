@@ -78,7 +78,9 @@ const pos = ref('1')
 const respError = ref(false)
 const isLoading = ref(false)
 
-const members = computed(() => $rStore.$state.selectedRecipients.map((re) => re.ID))
+const members = computed(() =>
+  $rStore.$state.selectedRecipients.map((re) => (typeof re === 'number' ? re : (re.ID || re.MemberId))),
+)
 
 const previewBody = ref('')
 const previewSubject = ref('')

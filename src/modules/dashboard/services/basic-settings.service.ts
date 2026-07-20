@@ -1,6 +1,6 @@
 import { useApiCall } from "src/services/apiCall";
 import type { ApiCallResponseInterface, ExtraOptionsInterface } from "src/services/api-interfaces";
-import type { FundraiserCoordinatorFormInterface, GiftBasketProgramFormInterface, OrganizationInformationFormInterface, OrganizationSettingsInterface, UploadListStatusInterface } from "../interfaces/basic-settings.interfaces";
+import type { FundraiserCheckProcessingFormInterface, FundraiserCoordinatorFormInterface, GiftBasketProgramFormInterface, OrganizationInformationFormInterface, OrganizationSettingsInterface, UploadListStatusInterface } from "../interfaces/basic-settings.interfaces";
 import { AxiosHeaders } from "axios";
 
 
@@ -24,6 +24,17 @@ export const useBasicSettingsService = () => {
     updateOrganizationInformation: async (data: OrganizationInformationFormInterface, extraOptions?: ExtraOptionsInterface): Promise<ApiCallResponseInterface<unknown>> => {
 
       const nextUrl = `/update-shul-info`;
+      const url = `${baseUrl}${nextUrl}`;
+      return await apiCall({
+        url,
+        extraOptions,
+        method: 'PUT',
+        data
+      })
+    },
+    updateCheckProcessing: async (data: FundraiserCheckProcessingFormInterface, extraOptions?: ExtraOptionsInterface): Promise<ApiCallResponseInterface<unknown>> => {
+
+      const nextUrl = `/update-check-processing-info`;
       const url = `${baseUrl}${nextUrl}`;
       return await apiCall({
         url,

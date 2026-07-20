@@ -13,6 +13,40 @@
       }"
     >
       <q-input
+        v-model="realForm.payeeCheckName.value"
+        outlined
+        label="Payee Check Name *"
+        lazy-rules
+        maxlength="50"
+        :hint="`${realForm.payeeCheckName.value.length}/50 characters`"
+        :rules="[lazyRules.required(), lazyRules.maxCharacters(50)]"
+      />
+    </div>
+    <div
+      class="q-pl-sm q-pr-sm q-mt-md"
+      :class="{
+        'col-6': !isMobile,
+        'col-12': isMobile,
+      }"
+    >
+      <q-input
+        v-model="realForm.payeeEmail.value"
+        outlined
+        label="Payee Email *"
+        lazy-rules
+        :rules="[lazyRules.required(), lazyRules.isEmail()]"
+      />
+    </div>
+  </div>
+  <div class="row">
+    <div
+      class="q-pl-sm q-pr-sm q-mt-md"
+      :class="{
+        'col-6': !isMobile,
+        'col-12': isMobile,
+      }"
+    >
+      <q-input
         v-model="realForm.contactName.value"
         outlined
         label="Contact Name *"
@@ -81,7 +115,6 @@
         outlined
         label="Contact Phone *"
         class="regular-number-input"
-        
         lazy-rules
         :rules="[lazyRules.required()]"
       />
@@ -112,13 +145,15 @@ const { isMobile } = useUI()
 const { basicSettingsState, updateFundraiserCoordinator } = useBasicSettings()
 
 const { realForm, isValidForm, resetForm, getFormValue } = useForm({
+  payeeCheckName: { value: '', validations: [validations.required, validations.maxCharacters(50)] },
+  payeeEmail: { value: '', validations: [validations.required, validations.isEmail] },
   contactName: { value: '', validations: [validations.required] },
 
   contactEmail: { value: '', validations: [validations.required, validations.isEmail] },
 
-  bccReceiptsTo: { value: '' },
+  bccReceiptsTo: { value: '', validations: [validations.isEmail] },
 
-  replyTo: { value: '', validations: [validations.required] },
+  replyTo: { value: '', validations: [validations.required, validations.isEmail] },
 
   contactPhone: {
     value: '',

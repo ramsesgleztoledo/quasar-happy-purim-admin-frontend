@@ -1,7 +1,7 @@
 import { computed } from "vue";
 import { useBasicSettingsService } from "../services/basic-settings.service";
 import { useBasicSettingsStore } from "../store/basicSettingsStore/basicSettingsStore";
-import type { FundraiserCoordinatorFormInterface, GiftBasketProgramFormInterface, OrganizationInformationFormInterface, OrganizationSettingsInterface } from "../interfaces/basic-settings.interfaces";
+import type { FundraiserCheckProcessingFormInterface, FundraiserCoordinatorFormInterface, GiftBasketProgramFormInterface, OrganizationInformationFormInterface, OrganizationSettingsInterface } from "../interfaces/basic-settings.interfaces";
 import { useQuasar } from "quasar";
 import type { ApiCallResponseInterface } from "src/services/api-interfaces";
 import { useUI } from "src/modules/UI/composables";
@@ -17,7 +17,7 @@ export const useBasicSettings = () => {
   const { getFundraiserStatus } = useDashboardService()
   const $q = useQuasar()
 
-  const { getSettings, updateOrganizationInformation, updateFundraiserCoordinator, updatePricingSettings, getWelcomePage, updateWelcomePage, getFiles, uploadFile, deleteFile } = useBasicSettingsService()
+  const { getSettings, updateOrganizationInformation, updateFundraiserCoordinator, updatePricingSettings, getWelcomePage, updateWelcomePage, getFiles, uploadFile, deleteFile, updateCheckProcessing } = useBasicSettingsService()
 
   const { showToast } = useUI()
 
@@ -80,8 +80,17 @@ export const useBasicSettings = () => {
       })
 
       showToast(resp.ok, 'Fundraiser Coordinator Information Updated', `Something went wrong updating the fundraiser coordinator information`)
+    },
 
+    async updateCheckProcessing(data: FundraiserCheckProcessingFormInterface) {
+      const resp = await updateCheckProcessing(data, {
+        loading: {
+          message: 'Loading...'
+        },
+        dontRedirect: true
+      })
 
+      showToast(resp.ok, 'Fundraiser check processing Information Updated', `Something went wrong updating the fundraiser check processing information`)
     },
     async updatePricingSettings(data: GiftBasketProgramFormInterface) {
       const resp = await updatePricingSettings(data, {

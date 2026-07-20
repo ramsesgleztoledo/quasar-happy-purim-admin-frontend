@@ -11,7 +11,7 @@ const { logOut } = useAuth()
 
 onMounted(() => {
   $q.loading.show({ message: 'Login you out ...' })
-  logOut()
+  logOut(true)
   $q.loading.hide()
 })
 </script>

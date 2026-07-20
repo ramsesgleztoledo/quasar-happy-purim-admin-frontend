@@ -205,6 +205,7 @@ export const useBreadcrumb = () => {
       title: 'Home',
       icon: 'home',
       name: 'DashboardLayout',
+
     },
     {
       title: 'Dashboard',
@@ -392,6 +393,7 @@ export const useBreadcrumb = () => {
       icon: 'report',
       name: 'MailMergeReportsPage-MailMergePageLayout',
       params: ['reportId'],
+      nonClickable: true,
       titleParam: (
         // value?: routeParamInterface
       ) => cutName($rStore.getReportSelectedReportData?.name || 'Report', 44)

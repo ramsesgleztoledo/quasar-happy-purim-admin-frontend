@@ -21,6 +21,7 @@
           :to="{
             name: 'MailMergeReportsPage-MailMergePage',
             params: { reportId },
+            query: { fieldID },
           }"
         />
       </div>
@@ -186,7 +187,7 @@
                 bordered
                 :rows="rows"
                 :columns="columns"
-                row-key="ID"
+                :row-key="(row) => `${row.ID}-${row.MemberId}`"
                 selection="multiple"
                 v-model:selected="$rStore.$state.selectedRecipients"
                 :pagination="{
@@ -310,6 +311,7 @@ import { cutName } from 'src/helpers/cutName'
 
 const { getFilterOptions, getReportData } = useReport()
 const { reportId } = useRoute().params
+const { fieldID } = useRoute().query
 const $dStore = useDashboardStore()
 const $rStore = useReportStore()
 const { isMobile } = useUI()
@@ -414,16 +416,15 @@ const columns = computed(() => {
 
 const getInitialData = async () => {
   goToPageWithFilters()
-  const res = await getReportData(
-    {
-      ...filter.value,
-      id: reportId as string,
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      categories: filter.value.categories?.map((ca) => `${(ca as any).categoryID}`) || [],
-    },
-    $rStore.$state.isCustom,
-    notFirstTime.value,
-  )
+  const data = {
+    ...filter.value,
+    id: reportId as string,
+    fieldID: fieldID as string,
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    categories: filter.value.categories?.map((ca) => `${(ca as any).categoryID}`) || [],
+  }
+
+  const res = await getReportData(data, $rStore.$state.isCustom, notFirstTime.value)
   notFirstTime.value = true
   report.value = res
   isTableLoading.value = false
@@ -454,9 +455,12 @@ const goToPageWithFilters = () => {
   const routeQuery = $route.query
 
   $router.replace({
-    ...routeQuery,
-    query,
+    query: {
+      ...routeQuery,
+      ...query,
+    },
   })
+
   // $router.push({
   //   name: 'MailMergeReportsPage-ViewReport',
   //   params: { reportId },

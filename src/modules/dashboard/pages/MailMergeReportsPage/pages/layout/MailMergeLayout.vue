@@ -51,6 +51,7 @@ watch(
       $rStore.setSelectedRecipients([...(res?.members || [])])
       $rStore.setRecipientsFiltered([...(res?.members || [])])
       $rStore.setReportId(reportId as string)
+      $rStore.setReportReportFieldIdId(fieldID as string)
 
       isReady.value = true
     })

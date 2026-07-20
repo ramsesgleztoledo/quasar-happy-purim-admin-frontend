@@ -4,7 +4,7 @@
       <p class="page-main-title">Mail Merge & Reports</p>
       <div class="separator-right q-mr-sm q-ml-sm"></div>
       <p>
-        In this section, you can view reports and start the
+        In this section, you can view reports, edit, filter, select members, and start the
         <b> Mail Merge </b>
         process by selecting a report and choosing either
         <b> Email </b>

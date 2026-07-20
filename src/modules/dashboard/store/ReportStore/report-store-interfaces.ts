@@ -11,6 +11,7 @@ export interface reportStateInterface {
   selectedRecipients: RecipientMemberInterface[];
   recipientsFiltered: RecipientMemberInterface[];
   reportId: string | number;
+  reportFieldId: string | number;
   images: string[];
   tokens: TokenInterface[];
   isCustom: boolean;

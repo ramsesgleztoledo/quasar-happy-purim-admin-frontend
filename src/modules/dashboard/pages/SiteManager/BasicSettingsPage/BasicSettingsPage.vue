@@ -80,9 +80,10 @@
           'col-12': isMobile,
         }"
       >
-        <!-- <div class="w-full q-pa-md">
-          <PaymentProcessing />
-        </div> -->
+        <div v-if="basicSettingsState.settings?.hasOwnProcessing" class="w-full q-pa-md">
+          <!-- <PaymentProcessing /> -->
+          <FundraiserCheckProcessing />
+        </div>
       </div>
     </div>
   </div>
@@ -98,6 +99,7 @@ import FundraiserCoordinator from './components/FundraiserCoordinator/Fundraiser
 // import PaymentProcessing from './components/PaymentProcessing/PaymentProcessing.vue'
 import { onMounted, ref } from 'vue'
 import { useBasicSettings } from 'src/modules/dashboard/composables/useBasicSettings'
+import FundraiserCheckProcessing from './components/FundraiserCheckProcessing/FundraiserCheckProcessing.vue'
 
 const { isMobile } = useUI()
 const { getSettings, basicSettingsState } = useBasicSettings()

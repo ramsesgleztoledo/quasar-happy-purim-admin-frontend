@@ -82,6 +82,7 @@ export interface RecipientDataInterface {
 
 export interface RecipientMemberInterface {
   ID: number;
+  MemberId?: number;
   "Last Name": string;
   "First Name": string;
   Spouse: string;

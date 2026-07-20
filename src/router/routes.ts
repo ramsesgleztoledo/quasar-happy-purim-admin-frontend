@@ -19,6 +19,11 @@ const routes: RouteRecordRaw[] = [
 
   //! Error routes
   ...errorRoutes,
+  {
+    path: '/:catchAll(.*)*',
+    component: () => import(/* webpackChunkName: "404-page" */ 'pages/ErrorNotFound.vue'),
+    name: '404',
+  },
 
 ];
 

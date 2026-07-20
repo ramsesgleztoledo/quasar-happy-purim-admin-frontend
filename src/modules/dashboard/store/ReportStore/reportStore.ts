@@ -14,6 +14,7 @@ const initialState: reportStateInterface = {
   selectedRecipients: [],
   recipientsFiltered: [],
   reportId: "",
+  reportFieldId: "",
   images: [],
   tokens: [],
   isCustom: false,
@@ -29,17 +30,40 @@ export const useReportStore = defineStore('reportStore', {
 
   getters: {
     getReportSelectedReportData(state: reportStateInterface) {
-      const basic = state.basicReports.find(rp => rp.reportID == state.reportId)
-      if (basic)
-        return basic
+      const basic = state.basicReports.filter(rp => {
 
-      const advanced = state.advancedReports.find(rp => rp.reportID == state.reportId)
-      if (advanced)
-        return advanced
+        return rp.reportID == state.reportId
+      })
+      if (basic.length) {
+        if (basic.length === 1)
+          return basic[0]
+        else
+          return basic.find(re => `${re.fieldID}` === `${state.reportFieldId}`)
+      }
 
-      const custom = state.customReports.find(rp => rp.reportID == state.reportId)
-      if (custom)
-        return custom
+      const advanced = state.advancedReports.filter(rp => rp.reportID == state.reportId)
+      if (advanced.length) {
+        if (advanced.length === 1)
+          return advanced[0]
+        else
+          return advanced.find(re => `${re.fieldID}` === `${state.reportFieldId}`)
+      }
+
+
+
+      const custom = state.customReports.filter(rp => rp.reportID == state.reportId)
+
+
+
+
+
+      if (custom.length) {
+        if (custom.length === 1)
+          return custom[0]
+        else
+          return custom.find(re => `${re.fieldID}` === `${state.reportFieldId}`)
+      }
+
 
       return undefined
 
@@ -77,6 +101,9 @@ export const useReportStore = defineStore('reportStore', {
     },
     setReportId(reportId: string | number) {
       this.reportId = reportId
+    },
+    setReportReportFieldIdId(reportFieldId: string | number) {
+      this.reportFieldId = reportFieldId
     },
     setImages(images: string[]) {
       this.images = images.map(img => img)
