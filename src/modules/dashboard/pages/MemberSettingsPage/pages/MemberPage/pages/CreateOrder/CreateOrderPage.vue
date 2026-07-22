@@ -206,7 +206,7 @@ const {
   getInitialData,
   updateCart,
   setUpdatedPromotions,
-  orderTotal,
+  // orderTotal,
   placeOrder,
   addMemberShipToCart,
   updateGreetingsRecipientsByMemberId,
@@ -367,10 +367,11 @@ onMounted(() => {
           ? [
               {
                 btnText: 'CONTINUE',
-                disabled: () =>
-                  !orderTotal.value &&
-                  !$moStore.totalFromBackend &&
-                  !$moStore.getCartData.totalPriceMembers,
+                disabled: () => false,
+                // disabled: () =>
+                //   !orderTotal.value &&
+                //   !$moStore.totalFromBackend &&
+                //   !$moStore.getCartData.totalPriceMembers,
                 method: continueToPayment,
                 page: '',
                 pageId: 4,

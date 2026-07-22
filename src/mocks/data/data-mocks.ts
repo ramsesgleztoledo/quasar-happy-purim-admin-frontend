@@ -8,6 +8,7 @@ const currentUrl = window.location.origin
 
 const loginAccountsAux: LoginAccountInterface[] = [
   { id: 757, name: `Elana's School`, guid: 'E834CD68-3272-424B-9851-30EF830A4E98', token: "I3kRNCADv2s//NvhUQ7ed36n12L6ceP/IJGWtxIndonU+9bAx5aSW8Q/D9gmTbcuAJPBfuUVDtmhBzQanqLl0w==" },
+  { id: 596, name: `EBJC Men's Club`, guid: '342CE884-7639-4C32-803F-0A9F37416A25', token: "jnvjBkBkLGDc5N3MjuWFPHcNeOVdHAzgVcCXJnS4yD2E1quk4GAkVjA6YxVmcPWtHN9BRAsTgqPO9BlPqWISgQ==" },
   { id: 783, name: `Test School`, guid: 'AB958CEA-5BFB-45E3-B3B5-60561B93A598', token: "5DOTr9y2QULoWpQEtGjADR/oAXOzr4RHIrS+kRNtZKATKESAt7/msjfBWBLC7R0tYX1I+rA+d89kU49m6bEP6Q==" },
   { id: 334, name: `Yeshiva Toras Chaim Toras Emes`, guid: '53C737BF-A018-40AE-9344-D55E3C83E4B1', token: "kt9po+8iKMFju8Fk0CL36fdytVXueIG95emMcG+Zaz9b2Ma+A7ZtmfakTvkQ/4IF2mxHUZR+ZW0yDbGAAdMtBg==" },
   { id: 275, name: `Young Israel of Holliswood`, guid: '49B8697D-D609-4094-BC30-05C55F2E866B', token: "k4ZTeJqtLItIypSdN0od7eibNp2kg/IS1xeZSxZYXqzMl/4ZksOiJMrbBLTF/V5uFJ/YEX61AIkuPZNoLZjN5w==" },

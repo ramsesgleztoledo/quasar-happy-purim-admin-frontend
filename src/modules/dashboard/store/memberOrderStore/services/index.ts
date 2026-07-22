@@ -37,9 +37,12 @@ export const s_fee = (state: MemberOrderStateInterface) => {
 export const s_isPaymentFormInvalid = (state: MemberOrderStateInterface) => {
   if (!state.paymentForm.paymentType) return true
 
-  const carData = s_cartData(state)
+  // const carData = s_cartData(state)
 
-  if (!carData.totalNoFee) return true
+  // if (!carData.totalNoFee) return true
+
+  if (!state.orderItems.length && !state.customShippingItems.length && !state.membersSelected.length) return true
+
 
   const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
@@ -141,8 +144,10 @@ export const s_cartData = (state: MemberOrderStateInterface) => {
     totalPriceMembers = totalMembers
   }
 
-  if (state.shulSetting?.sMaximum && totalPriceMembers > state.shulSetting?.sMaximum)
-    totalPriceMembers = state.shulSetting.sMaximum
+  const sMax = s_currentMax(state)
+
+  if (sMax !== undefined && totalPriceMembers > sMax)
+    totalPriceMembers = sMax
 
 
   let totalAux = totalBefore + feePerperson + (state.settings?.hasCustomPricing && state.totalFromBackend ? state.totalFromBackend : totalPriceMembers)
@@ -207,6 +212,26 @@ export const s_cartData = (state: MemberOrderStateInterface) => {
     },
   }
 }
+export const s_currentMax = (state: MemberOrderStateInterface) => {
+  if (!state.settings || !state.settings?.maximumCharge) return undefined
+
+  const big = 99999999999
+
+  const max = state.settings.hasCustomPricing ? big : state.settings.maximumCharge
+
+  const pricePerson = state.settings.costPerPerson
+
+  const totalPerson = state.memberList.original.reduce((pre, cur) => pre + (cur.paid ? pricePerson : 0), 0)
+
+  if (totalPerson >= max) return 0
+
+  return max - totalPerson
+}
+
+
+
+
+
 // export const s_cartData2 = (state: MemberOrderStateInterface) => {
 
 //   const totalBefore = s_orderTotal(state)

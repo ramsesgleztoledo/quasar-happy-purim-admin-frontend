@@ -1,9 +1,19 @@
 <template>
   <div v-if="!!dashboardState.membersLogged">
-    <div class="row q-mb-md">
-      <div class="col-12 top-title-col">
-        <p class="page-main-title">Processed Transactions ({{ transactions?.count || 0 }})</p>
-        <div class="separator-right q-mr-sm q-ml-sm"></div>
+    <div class="row">
+      <div class="col-12 top-title-col justify-content-space-between">
+        <div style="height: 100%; display: flex">
+          <p class="page-main-title">Processed Transactions ({{ transactions?.count || 0 }})</p>
+          <div class="separator-right q-mr-sm q-ml-sm"></div>
+        </div>
+        <q-btn
+          :disable="exportDisabled"
+          label="Export to Excel"
+          color="primary"
+          icon="import_export"
+          @click="onExportToExcel"
+          :loading="exportDisabled"
+        />
       </div>
     </div>
 
@@ -90,6 +100,7 @@ import type {
 import { convertToUSDate, convertWithCommas } from 'src/helpers'
 
 const { dashboardState } = useDashboard()
+const exportDisabled = ref(false)
 
 const columns: QTableColumn<TransactionInterface>[] = [
   {
@@ -104,7 +115,7 @@ const columns: QTableColumn<TransactionInterface>[] = [
   {
     name: 'cardType',
     required: true,
-    label: 'Card Type',
+    label: 'Payment Type',
     align: 'left',
     field: 'cardType',
     sortable: true,
@@ -148,7 +159,7 @@ const columns: QTableColumn<TransactionInterface>[] = [
   },
 ]
 
-const { getTransactions } = useTransaction()
+const { getTransactions, downloadTransactionCSV } = useTransaction()
 
 const transactions = ref<TransactionsInterface>({
   count: 0,
@@ -163,6 +174,13 @@ const rows = computed(() =>
 
 const searchText = ref<string>('')
 const isFullScreen = ref<boolean>(false)
+
+const onExportToExcel = () => {
+  exportDisabled.value = true
+  downloadTransactionCSV()
+    .catch(console.error)
+    .finally(() => (exportDisabled.value = false))
+}
 
 onMounted(() => {
   console.log('transactions history started')

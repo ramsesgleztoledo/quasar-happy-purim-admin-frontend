@@ -629,7 +629,7 @@ const membersSelected = computed<OrderMemberListInterface[]>(() => {
 })
 
 const additionalBasketForPersonalUse = computed(() =>
-  memberOrderState.value.orderItems.find((item) => item.itemId === -1),
+  memberOrderState.value.orderItems.find((item) => item.itemId === -1 || item.itemId === 1),
 )
 
 const addiTionalItems = computed(() =>

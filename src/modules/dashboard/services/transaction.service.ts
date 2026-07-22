@@ -37,6 +37,15 @@ export const useTransactionService = () => {
         responseType: 'text'
       })
     },
+    downloadTransactionCSV: async (extraOptions?: ExtraOptionsInterface): Promise<ApiCallResponseInterface<unknown>> => {
+      const nextUrl = `/transactions/export`;
+      const url = `${baseUrl}${nextUrl}`;
+      return await apiCall({
+        url,
+        extraOptions,
+        responseType: 'text'
+      })
+    },
     getReciprocityCharges: async (extraOptions?: ExtraOptionsInterface): Promise<ApiCallResponseInterface<ReciprocityChargeInterface[]>> => {
       const nextUrl = `/reciprocity-charges`;
       const url = `${baseUrl}${nextUrl}`;

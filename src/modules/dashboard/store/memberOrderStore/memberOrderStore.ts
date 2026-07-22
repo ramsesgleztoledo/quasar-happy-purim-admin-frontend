@@ -4,7 +4,7 @@ import type { MemberOrderStateInterface } from './memberOrder-store-interfaces';
 import type { OrderMemberListInterface, OrderPromotionInterface, MemberOrderItemsInterface, MemberOrderOrgSettingInterface, MemberAdditionalCharityOptionsInterface, MemberCharityOptionInterface, CustomShippingOptionInterface, CustomShippingItemInterface, AdditionalOrderOptionInterface, DiscountInterface, PaymentMethodTypeInterface, ShulSettingInterface, LocalDeliveryInterface, PageStepInterface, GreetingsRecipientInterface, } from '../../interfaces/memberOrder-interfaces';
 import type { NoneType } from '../../services/service-interfaces';
 import type { OrderItemSettingsInterface, Tab2AddonInterface } from '../../interfaces/advanced-settings.interfaces';
-import { s_cartData, s_customShippingItemsTotal, s_donations, s_fee, s_hasExtraOptions, s_isPaymentFormInvalid, s_orderTotal } from './services';
+import { s_cartData, s_customShippingItemsTotal, s_donations, s_fee, s_hasExtraOptions, s_isPaymentFormInvalid, s_orderTotal, s_currentMax } from './services';
 import type { OrganizationSettingsInterface } from '../../interfaces/basic-settings.interfaces';
 
 
@@ -75,6 +75,8 @@ export const useMemberOrderStore = defineStore('memberOrderStore', {
     getCustomShippingItemsTotal: (state: MemberOrderStateInterface): number => s_customShippingItemsTotal(state),
 
     getTotalCost: (state: MemberOrderStateInterface): number => s_orderTotal(state),
+
+    getCurrentMax: (state: MemberOrderStateInterface): (number | undefined) => s_currentMax(state),
 
     getFee: (state: MemberOrderStateInterface) => s_fee(state),
 
