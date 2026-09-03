@@ -52,7 +52,7 @@
         <q-input
           class="q-mr-sm q-mb-sm"
           :style="{ width: isMobile ? '100%' : '250px' }"
-          v-model="filter.searchTerm"
+          v-model="$rStore.$state.filters.searchTerm"
           outlined
           label="Search"
           clearable
@@ -67,7 +67,7 @@
           class="q-mr-sm q-mb-sm"
           :style="{ width: isMobile ? '100%' : '250px' }"
           outlined
-          v-model="filter.categories"
+          v-model="$rStore.$state.filters.categories"
           multiple
           option-label="categoryName"
           option-value="categoryName"
@@ -78,8 +78,16 @@
         <div
           v-if="$rStore.$state.isCustom && $rStore.getReportSelectedReportData?.reportID != '12'"
         >
-          <q-checkbox class="q-mr-sm" v-model="filter.yesOnly" label="Show Yes Only" />
-          <q-checkbox class="q-mr-sm" v-model="filter.hideNL" label="Hide (N/L) = Not Logged In" />
+          <q-checkbox
+            class="q-mr-sm"
+            v-model="$rStore.$state.filters.yesOnly"
+            label="Show Yes Only"
+          />
+          <q-checkbox
+            class="q-mr-sm"
+            v-model="$rStore.$state.filters.hideNL"
+            label="Hide (N/L) = Not Logged In"
+          />
         </div>
         <template v-if="showMoreFilters">
           <template v-if="!$rStore.$state.isCustom">
@@ -90,7 +98,7 @@
                 multiple
                 class="q-mr-sm q-mb-sm"
                 :style="{ width: isMobile ? '100%' : '150px' }"
-                v-model="filter.basketSize"
+                v-model="$rStore.$state.filters.basketSize"
                 outlined
                 label="Basket Size"
                 :options="filterOptions.basketSize"
@@ -101,7 +109,7 @@
                 clearable
                 class="q-mr-sm q-mb-sm"
                 :style="{ width: isMobile ? '100%' : '150px' }"
-                v-model="filter.donateBasket"
+                v-model="$rStore.$state.filters.donateBasket"
                 outlined
                 label="Donate Basket"
                 :options="filterOptions.donate"
@@ -113,7 +121,7 @@
                 multiple
                 class="q-mr-sm q-mb-sm"
                 :style="{ width: isMobile ? '100%' : '150px' }"
-                v-model="filter.routeCode"
+                v-model="$rStore.$state.filters.routeCode"
                 outlined
                 label="Route Code"
                 :options="filterOptions.routeCode"
@@ -125,7 +133,7 @@
                 multiple
                 class="q-mr-sm q-mb-sm"
                 :style="{ width: isMobile ? '100%' : '150px' }"
-                v-model="filter.zipCode"
+                v-model="$rStore.$state.filters.zipCode"
                 outlined
                 label="Zip Code"
                 :options="filterOptions.zipCode"
@@ -299,7 +307,12 @@ import type {
   RecipientDataInterface,
   RecipientMemberInterface,
 } from 'src/modules/dashboard/interfaces/report.interface'
-import { computed, onMounted, ref, watch } from 'vue'
+import {
+  computed,
+  // onMounted,
+  ref,
+  watch,
+} from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import InnerViewRow from './InnerViewRow.vue'
 import { useDashboardStore } from 'src/modules/dashboard/store/dashboardStore/dashboardStore'
@@ -309,7 +322,10 @@ import { useUI } from 'src/modules/UI/composables'
 import type { QTableColumn } from 'quasar'
 import { cutName } from 'src/helpers/cutName'
 
-const { getFilterOptions, getReportData } = useReport()
+const {
+  // getFilterOptions,
+  getReportData,
+} = useReport()
 const { reportId } = useRoute().params
 const { fieldID } = useRoute().query
 const $dStore = useDashboardStore()
@@ -340,30 +356,20 @@ const report = ref<RecipientDataInterface | NoneType>($rStore.$state.report)
 const rows = computed<RecipientMemberInterface[]>(() => {
   const rec: RecipientMemberInterface[] = $rStore.$state.recipientsFiltered || []
 
-  if (!$rStore.$state.isCustom) return rec
+  // if (!$rStore.$state.isCustom) return rec
+  return rec
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  return rec.filter((row: any) => {
-    const customOptionField = `${row['Custom Option']}`
+  // return rec.filter((row: any) => {
+  //   const customOptionField = `${row['Custom Option']}`
 
-    if (filter.value.yesOnly && customOptionField.toLowerCase() != 'yes') return false
+  //   if (filter.value.yesOnly && customOptionField.toLowerCase() != 'yes') return false
 
-    if (filter.value.hideNL && customOptionField.toLowerCase() === 'n/l') return false
+  //   if (filter.value.hideNL && customOptionField.toLowerCase() === 'n/l') return false
 
-    return true
-  })
+  //   return true
+  // })
 })
 
-const filter = ref({
-  basketSize: [],
-  categories: [],
-  donateBasket: '',
-  routeCode: [],
-  searchTerm: '',
-  zipCode: [],
-  yesOnly: false,
-  hideNL: false,
-})
 const filterOptions = ref<{
   zipCode: string[]
   routeCode: string[]
@@ -378,7 +384,7 @@ const filterOptions = ref<{
 
 const areFilterInApplied = () => {
   const { basketSize, categories, donateBasket, routeCode, searchTerm, zipCode, hideNL, yesOnly } =
-    filter.value
+    $rStore.$state.filters
 
   return (
     (basketSize && basketSize.length) ||
@@ -417,11 +423,11 @@ const columns = computed(() => {
 const getInitialData = async () => {
   goToPageWithFilters()
   const data = {
-    ...filter.value,
+    ...$rStore.$state.filters,
     id: reportId as string,
     fieldID: fieldID as string,
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    categories: filter.value.categories?.map((ca) => `${(ca as any).categoryID}`) || [],
+    categories: $rStore.$state.filters.categories?.map((ca) => `${(ca as any).categoryID}`) || [],
   }
 
   const res = await getReportData(data, $rStore.$state.isCustom, notFirstTime.value)
@@ -435,21 +441,21 @@ const goToPageWithFilters = () => {
   let query: any = {}
   if (!$rStore.$state.isCustom)
     query = {
-      basketSize: JSON.stringify(filter.value.basketSize),
-      categories: JSON.stringify(filter.value.categories),
-      donateBasket: filter.value.donateBasket,
-      routeCode: JSON.stringify(filter.value.routeCode),
-      searchTerm: filter.value.searchTerm,
-      zipCode: JSON.stringify(filter.value.zipCode),
+      basketSize: JSON.stringify($rStore.$state.filters.basketSize),
+      categories: JSON.stringify($rStore.$state.filters.categories),
+      donateBasket: $rStore.$state.filters.donateBasket,
+      routeCode: JSON.stringify($rStore.$state.filters.routeCode),
+      searchTerm: $rStore.$state.filters.searchTerm,
+      zipCode: JSON.stringify($rStore.$state.filters.zipCode),
       isCustom: 'false',
     }
   else
     query = {
-      yesOnly: `${filter.value.yesOnly}`,
-      hideNL: `${filter.value.hideNL}`,
+      yesOnly: `${$rStore.$state.filters.yesOnly}`,
+      hideNL: `${$rStore.$state.filters.hideNL}`,
       isCustom: 'true',
-      categories: JSON.stringify(filter.value.categories),
-      searchTerm: filter.value.searchTerm,
+      categories: JSON.stringify($rStore.$state.filters.categories),
+      searchTerm: $rStore.$state.filters.searchTerm,
     }
 
   const routeQuery = $route.query
@@ -469,7 +475,7 @@ const goToPageWithFilters = () => {
 }
 
 const clearFilters = () => {
-  filter.value = {
+  $rStore.$state.filters = {
     basketSize: [],
     categories: [],
     donateBasket: '',
@@ -482,7 +488,7 @@ const clearFilters = () => {
 }
 
 watch(
-  filter,
+  () => $rStore.$state.filters,
   async () => {
     isTableLoading.value = true
     if (timeOut.value) clearTimeout(timeOut.value)
@@ -494,49 +500,6 @@ watch(
     deep: true,
   },
 )
-
-onMounted(async () => {
-  const {
-    basketSize,
-    categories,
-    donateBasket,
-    routeCode,
-    searchTerm,
-    zipCode,
-    yesOnly: yesOnlyValue,
-    hideNL: hideNLValue,
-  } = useRoute().query
-
-  const auxFilters = {
-    basketSize: [],
-    categories: [],
-    donateBasket: '',
-    routeCode: [],
-    searchTerm: '',
-    zipCode: [],
-    yesOnly: false,
-    hideNL: false,
-  }
-
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  auxFilters.basketSize = basketSize ? JSON.parse(basketSize as any) : []
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  auxFilters.categories = categories ? JSON.parse(categories as any) : []
-  auxFilters.donateBasket = donateBasket ? (donateBasket as string) : ''
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  auxFilters.routeCode = routeCode ? JSON.parse(routeCode as any) : []
-  auxFilters.searchTerm = searchTerm ? (searchTerm as string) : ''
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  auxFilters.zipCode = zipCode ? JSON.parse(zipCode as any) : []
-
-  auxFilters.yesOnly = yesOnlyValue ? (yesOnlyValue as string) == 'true' : false
-  auxFilters.hideNL = hideNLValue ? (hideNLValue as string) == 'true' : false
-
-  filter.value = { ...auxFilters }
-
-  if (!$rStore.showExtraFilters) return
-  filterOptions.value = await getFilterOptions()
-})
 </script>
 
 <style scoped lang="scss">

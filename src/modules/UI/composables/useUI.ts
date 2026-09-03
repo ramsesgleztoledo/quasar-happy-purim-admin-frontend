@@ -231,6 +231,9 @@ export const useUI = () => {
     setAppColor,
     isDev: computed(() => process.env.NODE_ENV === 'development'
     ),
+    isProduction: computed(() => `${process.env.VITE_IS_PRODUCTION}` === 'true'
+    ),
+
     happyText: computed(() => $aStore.$state.shul?.isHrhClient ? 'HappyRoshHashanah' : 'HappyPurim'
     ),
     version: computed(() => process.env.VERSION || ''),

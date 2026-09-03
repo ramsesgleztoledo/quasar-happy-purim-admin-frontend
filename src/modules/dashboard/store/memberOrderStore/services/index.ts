@@ -145,7 +145,7 @@ export const s_cartData = (state: MemberOrderStateInterface) => {
   }
 
   const sMax = s_currentMax(state)
-
+ 
   if (sMax !== undefined && totalPriceMembers > sMax)
     totalPriceMembers = sMax
 

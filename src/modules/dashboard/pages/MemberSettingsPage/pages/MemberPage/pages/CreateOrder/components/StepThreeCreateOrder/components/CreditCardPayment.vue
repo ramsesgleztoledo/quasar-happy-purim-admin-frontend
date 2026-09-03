@@ -53,6 +53,40 @@
               lazyRules.minCharacters(7, 'Incorrect date mm/yyyy'),
               ...creditFormDateRule,
             ]"
+            label="Expiration Date"
+          >
+            <template v-slot:append>
+              <q-icon name="event" class="cursor-pointer">
+                <q-popup-proxy cover transition-show="scale" transition-hide="scale">
+                  <q-date
+                    class="month-year-picker"
+                    mask="MM/YYYY"
+                    emit-immediately
+                    default-view="Years"
+                    minimal
+                    :options="() => false"
+                    :navigation-min-year-month="getCurrentYearMonth"
+                    v-model="paymentForm.realForm.value.date.value"
+                  >
+                    <div class="row items-center justify-end">
+                      <q-btn v-close-popup label="Close" color="primary" flat />
+                    </div>
+                  </q-date>
+                </q-popup-proxy>
+              </q-icon>
+            </template>
+          </q-input>
+          <!-- <q-input
+            v-model="paymentForm.realForm.value.date.value"
+            outlined
+            mask="##/####"
+            hint="mm/yyyy"
+            lazy-rules
+            :rules="[
+              lazyRules.required(),
+              lazyRules.minCharacters(7, 'Incorrect date mm/yyyy'),
+              ...creditFormDateRule,
+            ]"
             label="Expiration Date *"
             readonly
           >
@@ -76,7 +110,7 @@
                 </q-popup-proxy>
               </q-icon>
             </template>
-          </q-input>
+          </q-input> -->
         </div>
         <div class="col-6 q-pr-sm q-pl-sm">
           <q-input

@@ -64,9 +64,9 @@
               <q-input
                 v-model="realForm.displayName.value"
                 outlined
-                label="Display Name"
+                label="Display Name *"
                 lazy-rules
-                :rules="[]"
+                :rules="[lazyRules.required()]"
               />
             </div>
           </div>
@@ -93,7 +93,7 @@
           </div>
           <div class="row q-mt-md">
             <div class="col-6 q-pl-sm q-pr-sm">
-               <q-input v-model="realForm.state.value" outlined label="State" />
+              <q-input v-model="realForm.state.value" outlined label="State" />
               <!-- <q-select
                 popup-content-class="q-menu-300"
                 v-model="realForm.state.value"
@@ -105,7 +105,6 @@
             <div class="col-6 q-pl-sm q-pr-sm">
               <q-input
                 class="regular-number-input"
-
                 v-model="realForm.zip.value"
                 outlined
                 label="Zip Code"
@@ -119,7 +118,6 @@
                 outlined
                 label="Primary Telephone"
                 class="regular-number-input"
-
                 lazy-rules
                 :rules="[]"
               />
@@ -130,7 +128,6 @@
                 outlined
                 label="Optional 2nd Telephone"
                 class="regular-number-input"
-
                 lazy-rules
                 :rules="[]"
               />
@@ -482,7 +479,7 @@ const { realForm, isValidForm, getFormValue, resetForm } = useForm<CreateMemberF
   lastName: { value: '', required: true },
   firstName: { value: '', required: true },
   misc: { value: '', required: true },
-  displayName: { value: '' },
+  displayName: { value: '', required: true },
   spouse: { value: '', validations: [] },
   title: { value: '', validations: [] },
   address1: { value: '', validations: [] },

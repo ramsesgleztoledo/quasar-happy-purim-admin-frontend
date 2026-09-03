@@ -80,7 +80,7 @@
           'col-12': isMobile,
         }"
       >
-        <div v-if="basicSettingsState.settings?.hasOwnProcessing" class="w-full q-pa-md">
+        <div v-if="!basicSettingsState.settings?.hasOwnProcessing" class="w-full q-pa-md">
           <!-- <PaymentProcessing /> -->
           <FundraiserCheckProcessing />
         </div>

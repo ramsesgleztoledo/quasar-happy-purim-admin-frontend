@@ -117,8 +117,12 @@
                       reportId: item.reportID,
                     },
                     query: {
-                      isCustom: pageView === '3' ? true : false,
+                      isCustom: pageView === '3' ? 'true' : 'false',
                       fieldID: item.fieldID,
+                      yesOnly: 'false',
+                      hideNL: 'false',
+                      categories: JSON.stringify([]),
+                      searchTerm: '',
                     },
                   }"
                 >

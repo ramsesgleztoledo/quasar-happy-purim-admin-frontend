@@ -33,7 +33,7 @@ export const useAuth = () => {
   const $aStore = useAuthStore()
 
 
-  const { login: authLogin, loginWithUserAndPass: loginWithUserAndPass_se } = useAuthService()
+  const { login: authLogin, loginWithUserAndPass: loginWithUserAndPass_se, loginWithShulGUID: loginWithShulGUID_se } = useAuthService()
 
   const $q = useQuasar();
   const $router = useRouter()
@@ -192,6 +192,21 @@ export const useAuth = () => {
   }
 
 
+  const loginWithShulGUID = async (Guid: string) => {
+
+    const resp = await loginWithShulGUID_se(Guid, {
+      dontRedirect: true,
+      loading: {
+        message: 'Loading ...'
+      }
+    })
+    if (!resp.ok) return ""
+
+    return resp.data.token
+
+  };
+
+
   return {
 
     isAuthenticated: computed(() => $aStore.isAuthenticated),
@@ -201,6 +216,7 @@ export const useAuth = () => {
     loginWithUserAndPass,
     refreshToken,
     logOut,
+    loginWithShulGUID,
 
     checkLocalStoreAuth: () => {
       const authState: authStateInterface | null = $q.localStorage.getItem('authState')

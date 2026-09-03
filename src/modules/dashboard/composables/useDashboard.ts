@@ -13,11 +13,13 @@ import { useBasicSettingsService } from "../services/basic-settings.service";
 import { useCustomShippingOptionsService } from "../services/customShippingOptions.service";
 import type { CustomShippingOptionInterface } from "../interfaces/memberOrder-interfaces";
 import type { UploadListStatusInterface } from "../interfaces/basic-settings.interfaces";
+import { useUI } from "src/modules/UI/composables";
 
 export const useDashboard = () => {
 
 
   const $dStore = useDashboardStore();
+  const { isProduction } = useUI()
   const $q = useQuasar()
 
   const { getBasketInfo, getBasketSizeBreakdown, getFundraiserStatus, getFundraiserTotals, getMembersOrdersGraph, getMemberSummary, getOrderItems, getOrderTotalGraph, getParticipationInfoGraph, getParticipationRate, getTopTransactions, getTotalsRaised, getPercentageOfRunningTotal } = useDashboardService()
@@ -106,9 +108,7 @@ export const useDashboard = () => {
         ])
 
 
-
-      $dStore.$patch({
-        // canUploadList: canUploadListValue.ok ? false : false,
+      const pathValues = {
         canUploadList: canUploadListValue.ok ? canUploadListValue.data : {
           canRevert: false,
           canUpload: false
@@ -131,7 +131,17 @@ export const useDashboard = () => {
         percentageRunningTotal: percentageRunningTotal.ok ? percentageRunningTotal.data : undefined,
         customShippingOptions: customShippingOptions.ok ? customShippingOptions.data : [],
         showGreetingsPage: showGreetingsPageValue.ok ? showGreetingsPageValue.data : false
-      })
+      }
+
+      //! for dev only
+      if (!isProduction.value)
+        pathValues.canUploadList = {
+          canRevert: true,
+          canUpload: true
+        }
+
+
+      $dStore.$patch(pathValues)
 
       $q.loading.hide()
     },
@@ -267,6 +277,13 @@ export const useDashboard = () => {
     },
 
     async updateCanUpload() {
+
+      //! for dev only
+      if (!isProduction.value) return $dStore.setCanUploadList({
+        canRevert: true,
+        canUpload: true
+      })
+
       const canUploadListValue = (await canUploadList({
         dontRedirect: true,
         dontShowToast: true
@@ -275,6 +292,7 @@ export const useDashboard = () => {
         canRevert: false,
         canUpload: false
       })
+
 
     }
 

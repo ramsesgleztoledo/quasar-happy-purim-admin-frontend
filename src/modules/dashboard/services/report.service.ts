@@ -1,6 +1,6 @@
 import { useApiCall } from "src/services/apiCall";
 import type { ApiCallResponseInterface, ExtraOptionsInterface } from "src/services/api-interfaces";
-import type { CustomReportInterface, HTCBasketReport, RecipientDataFormInterface, RecipientDataInterface, ReportResponseInterface, SpecialReportInterface } from "../interfaces/report.interface";
+import type { CustomReportInterface, HTCBasketReport, RecipientDataFormInterface, RecipientDataInterface, RecipientsProfileQuestionReport, ReportResponseInterface, SpecialReportInterface } from "../interfaces/report.interface";
 
 
 
@@ -46,6 +46,15 @@ export const useReportsService = () => {
     },
     downloadCustomReportExcelByReportId: async (reportId: string | number, extraOptions?: ExtraOptionsInterface): Promise<ApiCallResponseInterface<unknown>> => {
       const nextUrl = `/Custom-Report/generate-excel/${reportId}`;
+      const url = `${baseUrl}${nextUrl}`;
+      return await apiCall({
+        url,
+        extraOptions,
+        responseType: 'arraybuffer',
+      })
+    },
+    downloadCustom42ReportExcelByFieldId: async (fieldId: string | number, extraOptions?: ExtraOptionsInterface): Promise<ApiCallResponseInterface<unknown>> => {
+      const nextUrl = `/Custom-Reports/profile-report-get-excel/${fieldId}`;
       const url = `${baseUrl}${nextUrl}`;
       return await apiCall({
         url,
@@ -103,6 +112,16 @@ export const useReportsService = () => {
         url,
         extraOptions,
 
+      })
+    },
+    getReportRecipientsProfileQuestionReportByFieldId: async (fieldId: string | number, data: RecipientsProfileQuestionReport, extraOptions?: ExtraOptionsInterface): Promise<ApiCallResponseInterface<RecipientDataInterface>> => {
+      const nextUrl = `/Custom-Reports/run-profile-get-report/${fieldId}`;
+      const url = `${baseUrl}${nextUrl}`;
+      return await apiCall({
+        url,
+        extraOptions,
+        method: 'POST',
+        data
       })
     },
     getReportRecipientsByReportIdCustomWithSQL: async (data: RecipientDataFormInterface, extraOptions?: ExtraOptionsInterface): Promise<ApiCallResponseInterface<RecipientDataInterface>> => {

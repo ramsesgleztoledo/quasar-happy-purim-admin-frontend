@@ -68,6 +68,13 @@ export interface RecipientDataFormInterface {
   basketSize?: string[];
   routeCode?: string[];
   donateBasket?: string;
+  hideNL?: boolean;
+  yesOnly?: boolean;
+}
+export interface RecipientsProfileQuestionReport {
+  hideNL: boolean,
+  yesOnly: boolean,
+  searchTerm: string,
 }
 
 

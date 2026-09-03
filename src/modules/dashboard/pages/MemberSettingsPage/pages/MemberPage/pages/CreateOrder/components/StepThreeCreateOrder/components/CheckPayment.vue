@@ -44,10 +44,16 @@
             :rules="[lazyRules.required()]"
             label="Check Date"
             readonly
+            @click="checkDateRef?.show()"
           >
             <template v-slot:append>
               <q-icon name="event" class="cursor-pointer">
-                <q-popup-proxy cover transition-show="scale" transition-hide="scale">
+                <q-popup-proxy
+                  ref="checkDateRef"
+                  cover
+                  transition-show="scale"
+                  transition-hide="scale"
+                >
                   <q-date
                     mask="MM/DD/YYYY"
                     emit-immediately
@@ -66,15 +72,17 @@
     </div>
   </div>
 </template>
-
+<!-- eslint-disable @typescript-eslint/no-explicit-any -->
 <script setup lang="ts">
 import { lazyRules, useForm, validations } from 'src/composables'
 import type { PaymentCheckFormInterface } from 'src/modules/dashboard/interfaces/memberOrder-interfaces'
 import { useMemberOrderStore } from 'src/modules/dashboard/store/memberOrderStore/memberOrderStore'
 
-import { onMounted } from 'vue'
+import { onMounted, ref } from 'vue'
 
 const $moStore = useMemberOrderStore()
+
+const checkDateRef = ref<any>(null)
 
 const paymentForm = useForm<PaymentCheckFormInterface>({
   checkOrCCNumber: { value: '', required: true },

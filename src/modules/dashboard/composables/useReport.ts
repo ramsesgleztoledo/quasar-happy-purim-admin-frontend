@@ -28,6 +28,8 @@ export const useReport = () => {
     getAdvancedSpecialReports,
     getReportRecipientsByReportIdFilterOnly,
     getReportRecipientsByReportIdCustomWithSQL12,
+    getReportRecipientsProfileQuestionReportByFieldId,
+    downloadCustom42ReportExcelByFieldId
   } = useReportsService()
   const {
     getTokensByReportId,
@@ -88,18 +90,35 @@ export const useReport = () => {
 
         })
 
-      else
-        await downloadFile(async () => downloadCustomReportExcelByReportId(report.reportID, {
-          dontRedirect: true,
-          loading: {
-            message: 'Loading...'
-          }
-        }), {
-          fileType: 'excel',
-          fileName: report.name,
-          extension: 'xlsx',
+      else {
+        if (`${report.reportID}` == '42')
+          await downloadFile(async () => downloadCustom42ReportExcelByFieldId(report.fieldID, {
+            dontRedirect: true,
+            loading: {
+              message: 'Loading...'
+            }
+          }), {
+            fileType: 'excel',
+            fileName: report.name,
+            extension: 'xlsx',
 
-        })
+          })
+
+
+
+        else
+          await downloadFile(async () => downloadCustomReportExcelByReportId(report.reportID, {
+            dontRedirect: true,
+            loading: {
+              message: 'Loading...'
+            }
+          }), {
+            fileType: 'excel',
+            fileName: report.name,
+            extension: 'xlsx',
+
+          })
+      }
     },
 
 
@@ -143,7 +162,7 @@ export const useReport = () => {
 
     async getViewReport(data: RecipientDataFormInterface, isCustom: boolean) {
 
-      
+
 
 
       $rStore.setIsLoadingReportData(true)
@@ -206,11 +225,23 @@ export const useReport = () => {
         //   // }
         // });
 
-        resp = await getReportRecipientsByReportIdCustomWithSQL(data, {
-          // loading: {
-          //   message: 'Loading...'
-          // }
-        })
+        if (`${data.id}` == '42')
+
+          resp = await getReportRecipientsProfileQuestionReportByFieldId(data.fieldID || 0, {
+            searchTerm: data.searchTerm || "",
+            hideNL: false,
+            yesOnly: false
+          }, {
+            // loading: {
+            //   message: 'Loading...'
+            // }
+          })
+        else
+          resp = await getReportRecipientsByReportIdCustomWithSQL(data, {
+            // loading: {
+            //   message: 'Loading...'
+            // }
+          })
       }
 
 
@@ -247,13 +278,31 @@ export const useReport = () => {
       }
 
 
+
+
       else {
         // resp = (await getReportRecipientsByReportIdCustomWithSQL(data.id, {
         //   // loading: {
         //   //   message: 'Loading...'
         //   // }
         // }))
-        if (data.id == 12)
+
+        if (`${data.id}` === '42') {
+
+
+          resp = await getReportRecipientsProfileQuestionReportByFieldId(data.fieldID || 0,
+            {
+              searchTerm: data.searchTerm || "",
+              hideNL: !!data.hideNL,
+              yesOnly: !!data.yesOnly
+            }, {
+            // loading: {
+            //   message: 'Loading...'
+            // }
+          })
+        }
+
+        else if (`${data.id}` == '12')
           resp = (await getReportRecipientsByReportIdCustomWithSQL12({
             id: data.id,
             categories: (data.categories || []).join(', '),

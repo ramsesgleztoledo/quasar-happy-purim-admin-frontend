@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import type { HTCBasketReport, RecipientDataInterface, RecipientMemberInterface, ReportDataInterface, SpecialReportInterface, TokenInterface } from "../../interfaces/report.interface";
 import type { NoneType } from "../../services/service-interfaces";
 
@@ -18,4 +19,14 @@ export interface reportStateInterface {
   advancedReportsSpecial: SpecialReportInterface[];
   customReportsSpecial: SpecialReportInterface[];
   isLoadingReportData: boolean
+  filters: {
+    basketSize: any[];
+    categories: any[];
+    donateBasket: string;
+    routeCode: any[];
+    searchTerm: string;
+    zipCode: any[];
+    yesOnly: boolean;
+    hideNL: boolean;
+  }
 }

@@ -47,6 +47,7 @@
                     <div class="row">
                       <div class="col-6 q-pr-sm q-pl-sm">
                         <q-input
+                          @click="checkDatePopup?.show()"
                           v-model="checkForm.date.value"
                           outlined
                           mask="date"
@@ -57,7 +58,12 @@
                         >
                           <template v-slot:append>
                             <q-icon name="event" class="cursor-pointer">
-                              <q-popup-proxy cover transition-show="scale" transition-hide="scale">
+                              <q-popup-proxy
+                                ref="checkDatePopup"
+                                cover
+                                transition-show="scale"
+                                transition-hide="scale"
+                              >
                                 <q-date emit-immediately v-model="checkForm.date.value">
                                   <div class="row items-center justify-end">
                                     <q-btn v-close-popup label="Close" color="primary" flat />
@@ -121,19 +127,6 @@
                     </div>
                     <div class="row">
                       <div class="col-6 q-pr-sm q-pl-sm">
-                        <!-- <q-input
-                          v-model="creditForm.date.value"
-                          outlined
-                          label="Expiration Date"
-                          lazy-rules
-                          :rules="[
-                            lazyRules.required(),
-                            lazyRules.minCharacters(7, 'Incorrect date mm/yyyy'),
-                            ...creditFormDateRule,
-                          ]"
-                          mask="##/####"
-                          hint="mm/yyyy"
-                        /> -->
                         <q-input
                           v-model="creditForm.date.value"
                           outlined
@@ -276,10 +269,16 @@
                           :rules="[lazyRules.required()]"
                           label="Date"
                           readonly
+                          @click="otherDatePopup?.show()"
                         >
                           <template v-slot:append>
                             <q-icon name="event" class="cursor-pointer">
-                              <q-popup-proxy cover transition-show="scale" transition-hide="scale">
+                              <q-popup-proxy
+                                ref="otherDatePopup"
+                                cover
+                                transition-show="scale"
+                                transition-hide="scale"
+                              >
                                 <q-date emit-immediately v-model="otherForm.date.value">
                                   <div class="row items-center justify-end">
                                     <q-btn v-close-popup label="Close" color="primary" flat />
@@ -498,7 +497,7 @@
     </div>
   </template>
 </template>
-
+<!-- eslint-disable @typescript-eslint/no-explicit-any -->
 <script setup lang="ts">
 import type { QTableColumn, ValidationRule } from 'quasar'
 import { lazyRules, useForm, validations } from 'src/composables'
@@ -523,6 +522,9 @@ defineProps<RecordPaymentDialogInterface>()
 const $emit = defineEmits<{
   (e: 'update:modelValue', value: boolean): void
 }>()
+
+const checkDatePopup = ref<any>(null)
+const otherDatePopup = ref<any>(null)
 
 const $route = useRoute()
 const { getUnPaidOrdersByMemberId, recordCheckPayment, recordCCPayment, recordCreditPayment } =

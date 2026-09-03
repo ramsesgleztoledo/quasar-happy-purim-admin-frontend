@@ -16,7 +16,7 @@ const isAuth = async (to: RouteLocation, from: RouteLocation, next: NavigationGu
 
   if (homePath && !isLogged) {
     return next({
-      name: '401'
+      name: 'authPage'
     })
   }
   if (authPath && isLogged) {

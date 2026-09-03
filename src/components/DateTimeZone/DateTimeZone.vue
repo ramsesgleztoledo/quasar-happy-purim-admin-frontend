@@ -15,10 +15,16 @@
         lazy-rules
         :rules="[...dateRules]"
         label="Date *"
+        @click="fundraiserDateRef?.show()"
       >
         <template v-slot:append>
           <q-icon name="event" class="cursor-pointer">
-            <q-popup-proxy cover transition-show="scale" transition-hide="scale">
+            <q-popup-proxy
+              ref="fundraiserDateRef"
+              cover
+              transition-show="scale"
+              transition-hide="scale"
+            >
               <!-- :options="dateOptionsFn" -->
               <q-date v-model="value.dateValue" mask="MM/DD/YYYY">
                 <div class="row items-center justify-end">
@@ -45,10 +51,16 @@
         mask="##:## a.a"
         lazy-rules
         :rules="[...timeRules]"
+        @click="fundraiserTimeRef?.show()"
       >
         <template v-slot:append>
           <q-icon name="access_time" class="cursor-pointer">
-            <q-popup-proxy cover transition-show="scale" transition-hide="scale">
+            <q-popup-proxy
+              ref="fundraiserTimeRef"
+              cover
+              transition-show="scale"
+              transition-hide="scale"
+            >
               <!-- :options="timeOptionsFn" -->
               <q-time v-model="value.timeValue" mask="hh:mm aa">
                 <div class="row items-center justify-end">
@@ -116,6 +128,10 @@ interface DateTimeZonePropsInterface {
     timeZoneValue?: string
   }
 }
+
+const fundraiserDateRef = ref<any>(null)
+const fundraiserTimeRef = ref<any>(null)
+
 // const userTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone || ''
 const $props = withDefaults(defineProps<DateTimeZonePropsInterface>(), {
   modelValue: () => ({

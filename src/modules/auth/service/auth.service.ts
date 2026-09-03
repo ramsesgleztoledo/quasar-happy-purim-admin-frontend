@@ -55,6 +55,18 @@ export const useAuthService = () => {
         data,
       })
     },
+    loginWithShulGUID: async (Guid: string, extraOptions?: ExtraOptionsInterface): Promise<ApiCallResponseInterface<{ token: string }>> => {
+      const nextUrl = '/generate-token';
+      const url = `${baseUrl}${nextUrl}`;
+      return await apiCall({
+        url,
+        extraOptions,
+        method: 'POST',
+        data: {
+          Guid
+        },
+      })
+    },
 
     // ...loinFunctions,
   }

@@ -21,6 +21,17 @@ const initialState: reportStateInterface = {
   advancedReportsSpecial: [],
   customReportsSpecial: [],
   isLoadingReportData: true,
+  filters: {
+    basketSize: [],
+    categories: [],
+    donateBasket: '',
+    routeCode: [],
+    searchTerm: '',
+    zipCode: [],
+    yesOnly: false,
+    hideNL: false,
+  }
+
 }
 
 export const useReportStore = defineStore('reportStore', {

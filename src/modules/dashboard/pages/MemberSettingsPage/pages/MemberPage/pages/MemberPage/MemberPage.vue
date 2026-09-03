@@ -317,7 +317,7 @@
               @mousemove="updateHoverPos"
             >
               SignOn Link:
-              <b class="user-select-none"> {{ fixedSignOnLink}}</b>
+              <b class="user-select-none"> {{ fixedSignOnLink }}</b>
               <q-icon name="copy_all" />
               <p
                 v-if="showHoverCopy"
@@ -1061,7 +1061,7 @@ const $route = useRoute()
 const $router = useRouter()
 const $q = useQuasar()
 const { dashboardState } = useDashboard()
-const { copyToClipboard, isMobile, scrollToTarget, isDev } = useUI()
+const { copyToClipboard, isMobile, scrollToTarget, isDev, isProduction } = useUI()
 const {
   memberState,
   deleteMemberById_Co,
@@ -1072,13 +1072,19 @@ const {
 const $aStore = useAuthStore()
 
 const fixedSignOnLink = computed(() => {
-  const link = (memberState.value?.selectedMember?.signOnLink || '').split('?token=')
+  if (isProduction.value) {
+    const link = (memberState.value?.selectedMember?.signOnLink || '').split('?token=')
 
-  const firstPart = $aStore.$state.shul?.isHrhClient
-    ? 'https://www.happyroshhashanah.com/sso.aspx?token='
-    : 'https://www.happypurim.com/sso.aspx?token='
+    const firstPart = $aStore.$state.shul?.isHrhClient
+      ? 'https://www.happyroshhashanah.com/sso.aspx?token='
+      : 'https://www.happypurim.com/sso.aspx?token='
 
-  return link.length && link.length === 2 ? firstPart + link[1] : firstPart
+    return link.length && link.length === 2 ? firstPart + link[1] : firstPart
+  } else {
+    return $aStore.$state.shul?.isHrhClient
+      ? `https://client-hrh-app.happypurim.dev/#/${memberState.value?.selectedMember?.memberGuid}`
+      : `https://client-app.happypurim.dev/#/${memberState.value?.selectedMember?.memberGuid}`
+  }
 })
 
 const paginationCustomRef = ref(undefined)

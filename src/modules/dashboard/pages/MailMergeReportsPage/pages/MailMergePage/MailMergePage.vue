@@ -1,3 +1,4 @@
+<!-- eslint-disable @typescript-eslint/no-explicit-any -->
 <template>
   <div class="row q-mb-sm">
     <div
@@ -231,25 +232,33 @@
                 <!--=========================== END OF SECTION ===========================-->
               </div>
               <div v-show="pageView == '2'">
-                <div class="row">
-                  <q-select
-                    v-if="$dStore.categories.length && !$rStore.$state.isCustom"
-                    popup-content-class="q-menu-300"
-                    :debounce="500"
-                    class="q-mr-sm q-mb-sm"
-                    :class="{ 'item-width-300': !isMobile, 'w-full': isMobile }"
-                    v-model="categoryFiltered"
-                    outlined
-                    multiple
-                    :options="$dStore.categories"
-                    label="Filter by categories "
-                    option-label="categoryName"
-                    option-value="categoryID"
-                    clearable
-                  />
+                <q-input
+                  class="q-mr-sm q-mb-sm"
+                  :style="{ width: isMobile ? '100%' : '300px' }"
+                  v-model="$rStore.$state.filters.searchTerm"
+                  outlined
+                  label="Search"
+                  clearable
+                  :debounce="500"
+                />
 
-                  <q-checkbox v-model="showSelectedOnly" label="Show Selected Members Only" />
-                </div>
+                <q-select
+                  v-if="$dStore.categories.length && !$rStore.$state.isCustom"
+                  popup-content-class="q-menu-300"
+                  :debounce="500"
+                  class="q-mr-sm q-mb-sm"
+                  :class="{ 'item-width-300': !isMobile, 'w-full': isMobile }"
+                  v-model="categoryFiltered"
+                  outlined
+                  multiple
+                  :options="$dStore.categories"
+                  label="Filter by categories "
+                  option-label="categoryName"
+                  option-value="categoryID"
+                  clearable
+                />
+
+                <q-checkbox v-model="showSelectedOnly" label="Show Selected Members Only" />
 
                 <div class="q-pa-md">
                   <div class="row white-container" :class="{ fullscreen: isFullScreen }">
@@ -347,14 +356,6 @@
         <div class="row q-mt-lg cancel-save-btn-container">
           <div class="col-12 q-pa-sm" :style="{ flexDirection: isMobile ? 'column' : 'row' }">
             <q-btn
-              outline
-              label="Close"
-              class="q-mr-sm q-mb-sm"
-              style="color: #990000; border-color: #990000"
-              @click="cancelDialogFlag = true"
-            />
-
-            <q-btn
               :disable="!$rStore.$state.selectedRecipients.length"
               class="q-mr-sm q-mb-sm"
               :label="`${preview ? 'Continue' : 'Preview'}`"
@@ -366,6 +367,14 @@
             </q-btn>
 
             <template v-if="!preview">
+              <q-btn
+                outline
+                label="Close"
+                class="q-mr-sm q-mb-sm"
+                style="color: #990000; border-color: #990000"
+                @click="cancelDialogFlag = true"
+              />
+
               <q-btn
                 style="background: var(--happypurim); color: white"
                 icon="warning"
@@ -608,10 +617,16 @@
               lazy-rules
               :rules="[...dateRules]"
               label="Date *"
+              @click="dateRef?.show()"
             >
               <template v-slot:append>
                 <q-icon name="event" class="cursor-pointer">
-                  <q-popup-proxy cover transition-show="scale" transition-hide="scale">
+                  <q-popup-proxy
+                    ref="dateRef"
+                    cover
+                    transition-show="scale"
+                    transition-hide="scale"
+                  >
                     <!-- :options="dateOptionsFn" -->
                     <q-date v-model="dateValue">
                       <div class="row items-center justify-end">
@@ -638,10 +653,16 @@
               mask="##:## a.a"
               lazy-rules
               :rules="[...timeRules]"
+              @click="timeRef?.show()"
             >
               <template v-slot:append>
                 <q-icon name="access_time" class="cursor-pointer">
-                  <q-popup-proxy cover transition-show="scale" transition-hide="scale">
+                  <q-popup-proxy
+                    ref="timeRef"
+                    cover
+                    transition-show="scale"
+                    transition-hide="scale"
+                  >
                     <!-- :options="timeOptionsFn" -->
                     <q-time v-model="timeValue" mask="hh:mm aa">
                       <div class="row items-center justify-end">
@@ -766,7 +787,7 @@
 
   <!--=========================== END OF SECTION ===========================-->
 </template>
-
+<!-- eslint-disable @typescript-eslint/no-explicit-any -->
 <script setup lang="ts">
 import { useUI } from 'src/modules/UI/composables'
 import { computed, onMounted, ref, watch } from 'vue'
@@ -799,6 +820,9 @@ import { useAuth } from 'src/modules/auth/composables/useAuth'
 import InfoDialog from 'src/components/InfoDialog/InfoDialog.vue'
 import { readMoreEmails } from './data/readMoreEmails'
 import SpamAnalyzerComponent from './components/SpamAnalyzerComponent/SpamAnalyzerComponent.vue'
+
+const dateRef = ref<any>(null)
+const timeRef = ref<any>(null)
 
 const $router = useRouter()
 const { fieldID } = useRoute().query
@@ -853,28 +877,35 @@ watch(
 const isRecipientsTableLoading = ref(false)
 const categoryFilteredDebounce = ref<NodeJS.Timeout | undefined>(undefined)
 
+const getDataOnWatch = async () => {
+  isRecipientsTableLoading.value = true
+  const resp = await getReportData(
+    {
+      searchTerm: $rStore.$state.filters.searchTerm || '',
+      id: $rStore.$state.reportId,
+      categories: categoryFiltered.value?.map((cat) => `${cat.categoryID}`) || [],
+    },
+    $rStore.$state.isCustom,
+  )
+  rows.value = resp?.members || []
+  isRecipientsTableLoading.value = false
+}
+
 watch(
-  categoryFiltered,
-  async (value: ShulCategoryInterface[] | undefined) => {
+  () => $rStore.$state.filters.searchTerm,
+  async () => {
+    await getDataOnWatch()
+  },
+)
+
+watch(
+  () => categoryFiltered.value,
+  async () => {
     if (categoryFilteredDebounce.value) clearTimeout(categoryFilteredDebounce.value)
 
     categoryFilteredDebounce.value = setTimeout(async () => {
       if ($rStore.$state.isCustom) return
-      if (!value) {
-        rows.value = $rStore.$state.report?.members || []
-        return
-      }
-
-      isRecipientsTableLoading.value = true
-      const resp = await getReportData(
-        {
-          id: $rStore.$state.reportId,
-          categories: value.map((cat) => `${cat.categoryID}`),
-        },
-        $rStore.$state.isCustom,
-      )
-      rows.value = resp?.members || []
-      isRecipientsTableLoading.value = false
+      await getDataOnWatch()
     }, 600)
   },
   {
