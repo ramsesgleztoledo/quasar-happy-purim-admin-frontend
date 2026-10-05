@@ -1,0 +1,47 @@
+.invoice-school {
+  font-family: arial;
+  font-size: 12pt;
+  font-weight: bold;
+}
+.invoice-address {
+  font-family: arial;
+  font-size: 9pt;
+}
+
+.invoice-table-2 {
+  font: normal 8pt verdana;
+}
+
+.invoice-weight-bold {
+  font-weight: bold;
+}
+.invoice-title {
+  font-family: Arial Black;
+  font-size: 16pt;
+}
+.invoice-app {
+  font-family: arial;
+  font-size: 12px;
+}
+
+tr:hover {
+  background-color: rgba(255, 255, 255, 0);
+}
+
+.recipient-style {
+  font-family: arial;
+  font-size: 8pt;
+}
+.invoice-amount-due {
+  padding: 5px;
+  margin-top: 5px;
+  margin-bottom: 5px;
+  height: 40px;
+  width: 150px;
+  border: solid 2px black;
+}
+
+.invoice-total {
+  font-size: 14pt;
+  font-weight: bold;
+}

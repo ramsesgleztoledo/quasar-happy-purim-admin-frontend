@@ -132,3 +132,25 @@ export const advance: ReportInterface[] = [
     download: true,
   },
 ]
+export const invoiceReports = [
+  {
+    name: "Invoice Report",
+    description: "Shows all orders that used the 'Invoice' payment method. Can be printed and mailed to your members.",
+    to: {
+      name: 'MailMergeReportsPage-InvoicesPage',
+      query: {
+        reciprocity: false,
+      },
+    }
+  },
+  {
+    name: "Reciprocity Invoices Report",
+    description: "These are the invoices for reciprocity only.",
+    to: {
+      name: 'MailMergeReportsPage-InvoicesPage',
+      query: {
+        reciprocity: true,
+      },
+    }
+  }
+]

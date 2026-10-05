@@ -9,6 +9,7 @@ import type { ExtraOptionsInterface } from './api-interfaces';
 import type { authStateInterface } from "src/modules/auth/store/auth-store-interfaces";
 import { useUI } from "src/modules/UI/composables";
 import { cache } from "./database-cache";
+import { useSlackService } from "./slack-service";
 
 
 
@@ -16,6 +17,7 @@ import { cache } from "./database-cache";
 export const useApiCall = () => {
 
   const { goBack } = useUI()
+  const slackService = useSlackService()
 
   const $q = useQuasar();
   const $router = useRouter();
@@ -113,7 +115,6 @@ export const useApiCall = () => {
 
 
   const apiCall = async <T>(options: ApiCallInterface): Promise<ApiCallResponseInterface<T>> => {
-
     const method: string = options.method || 'GET';
     const responseType = options.responseType || 'json';
     const authState: authStateInterface | null = $q.localStorage.getItem('authState')
@@ -169,31 +170,24 @@ export const useApiCall = () => {
 
     } catch (error: AxiosError | any) {
 
+      //! Slack service here
+      slackService.sendSlackErrorMessage(error, options.data).catch(error => console.error('Error sending Slack message:', error));
+
       if (error instanceof AxiosError) {
         if (!extraOptions?.dontUseErrorAction) {
           let respError = ''
           if (extraOptions?.useRespAsError)
             respError = error.response?.data
-
           if (extraOptions && respError && typeof respError === 'string')
             extraOptions.errorMsg = respError
-
           errorAction(error.status!, extraOptions)
-
         }
       }
 
-
       else {
-
-
-
         if (!extraOptions?.dontUseErrorAction)
           errorAction(500.1, extraOptions)
       }
-
-
-
 
       if (extraOptions?.loading) {
         $q.loading.hide()

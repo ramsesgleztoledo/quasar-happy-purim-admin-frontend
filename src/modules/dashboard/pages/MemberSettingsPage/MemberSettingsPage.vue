@@ -459,6 +459,4 @@ watch(
 )
 </script>
 
-<style scoped lang="scss">
-@import './MemberSettingsPage.scss';
-</style>
+<style scoped lang="scss" src="./MemberSettingsPage.scss" />

@@ -51,9 +51,10 @@
         popup-content-class="q-menu-300"
         :class="{ 'item-width-300': !isMobile }"
         v-model="types"
+        multiple
         outlined
         :options="$dStore.categories"
-        label="Filter by categories"
+        label="Filter by categories "
         option-label="categoryName"
         option-value="categoryID"
         clearable
@@ -287,7 +288,10 @@
                           </div>
                         </template>
                       </div>
-                      <div class="row w-100 q-pa-sm justify-content-end align-items-end" style="flex: 1;">
+                      <div
+                        class="row w-100 q-pa-sm justify-content-end align-items-end"
+                        style="flex: 1"
+                      >
                         <template v-if="hasTwoBasketButtons">
                           {{
                             convertWithCommas(getMemberTwoBtnPrice(props.row.id).value, {
@@ -397,7 +401,7 @@ const isFullScreen = ref(false)
 const alreadyPaidModel = ref(true)
 
 const search = ref('')
-const types = ref<ShulCategoryInterface | undefined>(undefined)
+const types = ref<ShulCategoryInterface[]>([])
 
 const orderHistory = ref<{ value: number; label: string }[]>([])
 const ordersHistory = ref([
@@ -451,27 +455,6 @@ const columns = ref<QTableColumn<OrderMemberListInterface>[]>([
   },
 ])
 
-const allSelected = computed({
-  get() {
-    const totalSelected = $moStore.membersSelected.length
-    const totals = rows.value.filter((item) => !item.paid).length
-
-    if (totalSelected && totalSelected < totals) return ''
-    return totalSelected === totals
-  },
-  set(val: boolean) {
-    toggleSelectAll(val)
-  },
-})
-
-const toggleSelectAll = (selectAll: boolean) => {
-  if (selectAll) {
-    $moStore.membersSelected = [...rows.value.filter((item) => !item.paid)]
-  } else {
-    $moStore.membersSelected = []
-  }
-}
-
 const rows = computed(() =>
   memberOrderState.value.memberList.copy.filter((item) => {
     const se =
@@ -499,15 +482,50 @@ const rows = computed(() =>
       if (!valid) return false
     }
 
-    const typeArray = types.value || undefined
+    const typeArray = types.value
 
-    if (!typeArray) return true
+    if (!typeArray?.length) return true
 
-    if (!item.memberCategories.includes(`${typeArray?.categoryID}`)) return false
+    const memberCategories = item?.memberCategories?.split(',') || []
+    const categoriesSelected = typeArray.map((type) => `${type.categoryID}`)
+
+    if (!memberCategories.some((cat) => categoriesSelected.includes(cat))) return false
 
     return true
   }),
 )
+
+const allSelected = computed({
+  get() {
+    const totalSelected = $moStore.membersSelected.filter((item) =>
+      rows.value.find((row) => row.id === item.id),
+    ).length
+
+    const totals = rows.value.filter((item) => !item.paid).length
+
+    if (totalSelected === 0) return false
+    if (totalSelected === totals) return true
+    return ''
+  },
+  set(val: boolean) {
+    toggleSelectAll(val)
+  },
+})
+
+const toggleSelectAll = (selectAll: boolean) => {
+  if (selectAll) {
+    const unpaid = rows.value.filter((item) => !item.paid)
+
+    $moStore.membersSelected = [
+      ...$moStore.membersSelected,
+      ...unpaid.filter((item) => !$moStore.membersSelected.find((se) => se.id === item.id)),
+    ]
+  } else {
+    $moStore.membersSelected = $moStore.membersSelected.filter(
+      (item) => !rows.value.find((row) => row.id === item.id),
+    )
+  }
+}
 
 // const rows = ref<OrderMemberListInterface[]>([])
 // const selected = ref<OrderMemberListInterface[]>([])

@@ -154,9 +154,12 @@ export const dashboardRoutes: RouteRecordRaw[] = [
             component: () =>
               import(/* webpackChunkName: "MailMergeReportsPage-MailMergeReportsPage" */ "../pages/MailMergeReportsPage/MailMergeReportsPage/MailMergeReportsPage.vue"),
           },
-
-
-
+          {
+            path: 'invoices',
+            name: 'MailMergeReportsPage-InvoicesPage',
+            component: () =>
+              import(/* webpackChunkName: "MailMergeReportsPage-InvoicesPage" */ "../pages/MailMergeReportsPage/pages/InvoicesPage/InvoicesPage.vue"),
+          },
           {
             path: 'view/:reportId',
             name: 'MailMergeReportsPage-MailMergePageLayout',

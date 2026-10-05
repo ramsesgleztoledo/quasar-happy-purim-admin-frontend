@@ -56,7 +56,7 @@
   </div>
   <div class="row" v-if="pageView != '1'">
     <div class="col-12 MailMergeReportsPage-container">
-      <div class="row q-mb-sm" v-for="item in specialReports" :key="item.name">
+      <div class="row q-mb-sm" v-for="item in invoiceReportsData" :key="item.name">
         <div class="col-12">
           <q-item class="MailMergeReportsPage-item">
             <q-item-section
@@ -75,8 +75,9 @@
                   color="primary"
                   flat
                   icon="visibility"
-                  @click="viewSpecialReport(item.url)"
+                  :to="item.to"
                 >
+                  <!-- @click="viewSpecialReport(item.url)" -->
                   <q-tooltip>
                     <div>View Report</div>
                   </q-tooltip>
@@ -228,9 +229,10 @@ import { useRoute, useRouter } from 'vue-router'
 import { useReport } from 'src/modules/dashboard/composables/useReport'
 import type {
   ReportDataInterface,
-  SpecialReportInterface,
+  // SpecialReportInterface,
 } from 'src/modules/dashboard/interfaces/report.interface'
 import { useReportStore } from 'src/modules/dashboard/store/ReportStore/reportStore'
+import { invoiceReports } from './data/data'
 
 const $route = useRoute()
 const $router = useRouter()
@@ -247,14 +249,17 @@ const reports = computed<ReportDataInterface[]>(() => {
       return $rStore.$state.customReports
   }
 })
-const specialReports = computed<SpecialReportInterface[]>(() => {
-  switch (pageView.value) {
-    case '2':
-      return $rStore.$state.advancedReportsSpecial
-    default:
-      return $rStore.$state.customReportsSpecial
-  }
-})
+
+const invoiceReportsData = ref(invoiceReports)
+
+// const specialReports = computed<SpecialReportInterface[]>(() => {
+//   switch (pageView.value) {
+//     case '2':
+//       return $rStore.$state.advancedReportsSpecial
+//     default:
+//       return $rStore.$state.customReportsSpecial
+//   }
+// })
 
 const pageView = ref('1')
 const pageOption = ref([
@@ -286,11 +291,11 @@ const loadPage = () => {
   } else goToPage('1')
 }
 
-const viewSpecialReport = (url: string) => {
-  // "_blank" = new tab
-  // "noopener" y "noreferrer" security (nothing great here, cause both domain are from 3nom)
-  window.open(url, '_blank', 'noopener,noreferrer')
-}
+// const viewSpecialReport = (url: string) => {
+//   // "_blank" = new tab
+//   // "noopener" y "noreferrer" security (nothing great here, cause both domain are from 3nom)
+//   window.open(url, '_blank', 'noopener,noreferrer')
+// }
 
 watch(pageView, (value) => {
   goToPage(value)

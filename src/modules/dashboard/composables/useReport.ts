@@ -29,7 +29,8 @@ export const useReport = () => {
     getReportRecipientsByReportIdFilterOnly,
     getReportRecipientsByReportIdCustomWithSQL12,
     getReportRecipientsProfileQuestionReportByFieldId,
-    downloadCustom42ReportExcelByFieldId
+    downloadCustom42ReportExcelByFieldId,
+    getInvoices
   } = useReportsService()
   const {
     getTokensByReportId,
@@ -352,10 +353,24 @@ export const useReport = () => {
         fileName: 'RouteReport',
         extension: 'doc',
       })
+    },
+
+    async getInvoices(reciprocal: boolean) {
 
 
+      const resp = await getInvoices(reciprocal, {
+        // dontRedirect: true ,
+        // dontShowToast: true,
+        // dontUseErrorAction: true,
+        loading: {
+          message: 'Loading, this make take a while...'
+        },
+        ttl: 1000 * 60 * 10, // 10 minutes
+      })
+      return resp.ok ? resp.data : []
 
-    }
+    },
+
 
 
   }

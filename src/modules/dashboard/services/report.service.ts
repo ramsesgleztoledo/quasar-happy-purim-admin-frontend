@@ -1,6 +1,6 @@
 import { useApiCall } from "src/services/apiCall";
 import type { ApiCallResponseInterface, ExtraOptionsInterface } from "src/services/api-interfaces";
-import type { CustomReportInterface, HTCBasketReport, RecipientDataFormInterface, RecipientDataInterface, RecipientsProfileQuestionReport, ReportResponseInterface, SpecialReportInterface } from "../interfaces/report.interface";
+import type { CustomReportInterface, HTCBasketReport, InvoiceDataInterface, RecipientDataFormInterface, RecipientDataInterface, RecipientsProfileQuestionReport, ReportResponseInterface, SpecialReportInterface } from "../interfaces/report.interface";
 
 
 
@@ -11,6 +11,14 @@ export const useReportsService = () => {
   const { apiCall } = useApiCall()
 
   return {
+    getInvoices: async (reciprocal: boolean, extraOptions?: ExtraOptionsInterface): Promise<ApiCallResponseInterface<InvoiceDataInterface[]>> => {
+      const nextUrl = `/invoices?reciprocity=${reciprocal}`;
+      const url = `${baseUrl}${nextUrl}`;
+      return await apiCall({
+        url,
+        extraOptions,
+      })
+    },
     getReportList: async (extraOptions?: ExtraOptionsInterface): Promise<ApiCallResponseInterface<ReportResponseInterface>> => {
       const nextUrl = `/Basic-and-Advanced/Get-Report-List`;
       const url = `${baseUrl}${nextUrl}`;

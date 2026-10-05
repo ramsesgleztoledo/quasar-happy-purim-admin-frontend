@@ -24,6 +24,7 @@
     "Manot",
     "Membershipfee",
     "Mishloach",
+    "Nameon",
     "ondemand",
     "orderoptions",
     "Ordersheet",
@@ -31,6 +32,7 @@
     "pendingdeletion",
     "Perperson",
     "personalbaskets",
+    "Processeddate",
     "Qqeqweqweqwe",
     "receivingbaskets",
     "Rosh",
@@ -41,6 +43,7 @@
     "spamscanner",
     "tempcode",
     "trancctype",
+    "tranid",
     "trantotalcharge"
   ],
   "java.configuration.updateBuildConfiguration": "interactive"

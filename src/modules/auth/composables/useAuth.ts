@@ -207,6 +207,19 @@ export const useAuth = () => {
   };
 
 
+  const checkLocalStoreAuth = () => {
+    const authState: authStateInterface | null = $q.localStorage.getItem('authState')
+    if (!authState) return
+
+    const currentTime = Math.floor(new Date().getTime() / 1000);
+    const exp = authState.token?.token_exp
+
+    if (!exp || currentTime >= (exp - 600)) return logOut(true)
+
+    $aStore.$patch(authState)
+    prepareTokenTime(authState.token!.token_exp!)
+  }
+
   return {
 
     isAuthenticated: computed(() => $aStore.isAuthenticated),
@@ -217,14 +230,7 @@ export const useAuth = () => {
     refreshToken,
     logOut,
     loginWithShulGUID,
-
-    checkLocalStoreAuth: () => {
-      const authState: authStateInterface | null = $q.localStorage.getItem('authState')
-      if (authState) {
-        $aStore.$patch(authState)
-        prepareTokenTime(authState.token!.token_exp!)
-      }
-    }
+    checkLocalStoreAuth
   }
 
 };

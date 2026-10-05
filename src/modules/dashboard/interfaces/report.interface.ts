@@ -138,3 +138,55 @@ export interface TokenInterface {
   hasTooltip: boolean;
   tooltip: string | null | undefined;
 }
+
+export interface InvoiceDataInterface {
+  tranid: number;
+  tranCCTYPE: string;
+  tranCreditCard: string;
+  tranEXPMonth: string;
+  tranEXPYear: string;
+  tranNameonCard: string;
+  tranAddress: string;
+  tranAddress2: string;
+  tranCity: string;
+  tranState: string;
+  tranZip: string;
+  tranPhone: string;
+  tranTotalCharge: number;
+  tranPostedDate: Date | string;
+  tranProcesseddate: Date | string | null;
+  tranAuthCode: string | null;
+  tranProcessed: number;
+  m_id: number;
+  tranLast4Digits: string;
+  tranReciprocity: number;
+  cardNumber: null;
+  invoiceText: string;
+  memberName: string;
+  memberAddress: string;
+  memberPhone: string;
+  orderItems: OrderItem[];
+  recipients: Recipient[];
+}
+
+export interface OrderItem {
+  transactionID: number;
+  orderItemID: number;
+  price: number;
+  description: string;
+  itemID: number;
+  quantity: number;
+  m_LastName?: string;
+  m_FName?: null | string;
+  m_SFName?: string;
+}
+
+export interface Recipient {
+  transactionID: number;
+  m_id: number;
+  m_LastName: string;
+  m_FName: null | string;
+  m_SFName: string;
+}
+
+

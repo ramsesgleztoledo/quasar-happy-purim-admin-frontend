@@ -370,6 +370,12 @@ export const useBreadcrumb = () => {
     },
     {
 
+      title: 'Invoices',
+      icon: 'receipt',
+      name: 'MailMergeReportsPage-InvoicesPage',
+    },
+    {
+
       title: 'Scheduled Emails',
       icon: 'forward_to_inbox',
       name: 'dashboard-ScheduledEmailsPage',
