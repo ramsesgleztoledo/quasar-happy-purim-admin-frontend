@@ -27,7 +27,7 @@
             </div>
           </div> -->
           <ColorSettings />
-          
+
           <!-- <q-btn flat round color="primary" icon="logout" @click="logOut(true)">
             <q-tooltip transition-show="flip-right" transition-hide="flip-left">
               Log Out
@@ -93,6 +93,8 @@ import { useDashboard } from '../composables/useDashboard'
 import { useBreadcrumb } from '../components/BreadCrumbs/composables/useBreadcrumb'
 // import { useAuthStore } from 'src/modules/auth/store/auth.store'
 import ColorSettings from '../components/ColorSettings/ColorSettings.vue'
+import { useQuasar } from 'quasar'
+import type { authStateInterface } from 'src/modules/auth/store/auth-store-interfaces.js'
 
 const { linksData } = useBreadcrumb()
 // const { logOut } = useAuth()
@@ -101,6 +103,7 @@ const $uiStore = useUIStore()
 const $router = useRouter()
 const { isMobile, version } = useUI()
 const { loadStartedData, getMemberSummary } = useDashboard()
+const $q = useQuasar()
 
 const isLoading = ref(true)
 
@@ -120,6 +123,13 @@ const loadData = async () => {
     isLoading.value = false
     if (getMembersSummaryInterval) clearInterval(getMembersSummaryInterval)
     getMembersSummaryInterval = setInterval(() => {
+      const authState: authStateInterface | null = $q.localStorage.getItem('authState')
+      const now = Math.floor(Date.now() / 1000)
+      const token_exp = authState?.token?.token_exp || 0
+      if (!authState || !authState.user || now >= token_exp) {
+        if (getMembersSummaryInterval) clearInterval(getMembersSummaryInterval)
+        return
+      }
       getMemberSummary().catch(console.error)
     }, 30000)
   } catch {
