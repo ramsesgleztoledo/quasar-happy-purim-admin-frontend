@@ -218,6 +218,39 @@
           </q-item>
         </div>
       </div>
+      <div class="col-12" v-if="pageView === '3'">
+        <q-item
+          v-for="reportFunction in $rStore.$state.reportFunctions"
+          :key="reportFunction.id"
+          class="MailMergeReportsPage-item q-mb-sm"
+        >
+          <q-item-section
+            ><q-item-label class="q-mb-sm">
+              <div class="row">
+                <div v-html="reportFunction.rName" />
+              </div>
+            </q-item-label>
+            <q-item-label caption>
+              <div class="" v-html="reportFunction.rDescription" /> </q-item-label
+          ></q-item-section>
+          <q-item-section side>
+            <div class="row">
+              <q-btn
+                class="q-mr-sm"
+                padding="none"
+                color="primary"
+                flat
+                icon="download"
+                @click="downloadReportFunctions(reportFunction)"
+              >
+                <q-tooltip>
+                  <div>Download Report</div>
+                </q-tooltip>
+              </q-btn>
+            </div>
+          </q-item-section>
+        </q-item>
+      </div>
     </div>
   </div>
 </template>
@@ -233,10 +266,12 @@ import type {
 } from 'src/modules/dashboard/interfaces/report.interface'
 import { useReportStore } from 'src/modules/dashboard/store/ReportStore/reportStore'
 import { invoiceReports } from './data/data'
+import { useReportFunctions } from 'src/modules/dashboard/composables/useReportFunctions'
 
 const $route = useRoute()
 const $router = useRouter()
 const { downloadReportExcelByReportId, downloadRouteReport } = useReport()
+const { downloadReportFunctions } = useReportFunctions()
 const $rStore = useReportStore()
 
 const reports = computed<ReportDataInterface[]>(() => {

@@ -1,4 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
+import type { ReportFunctionsInterface } from "../../interfaces/report-functions.interface";
 import type { HTCBasketReport, RecipientDataInterface, RecipientMemberInterface, ReportDataInterface, SpecialReportInterface, TokenInterface } from "../../interfaces/report.interface";
 import type { NoneType } from "../../services/service-interfaces";
 
@@ -6,6 +7,7 @@ import type { NoneType } from "../../services/service-interfaces";
 export interface reportStateInterface {
   basicReports: ReportDataInterface[];
   htcBasketReport: HTCBasketReport | undefined;
+  reportFunctions: ReportFunctionsInterface[];
   advancedReports: ReportDataInterface[];
   customReports: ReportDataInterface[];
   report: RecipientDataInterface | NoneType;

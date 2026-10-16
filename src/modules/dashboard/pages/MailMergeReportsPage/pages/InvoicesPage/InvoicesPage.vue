@@ -48,7 +48,10 @@
                 </tr>
                 <tr>
                   <td colspan="2">
-                    <br />Bill To:<br />
+                    <br />Bill To:
+                    <br />
+                    <span class="invoice-weight-bold" v-html="invoice.memberName"></span>
+                    <br />
                     <span class="invoice-weight-bold" v-html="invoice.memberAddress"></span>
                   </td>
                 </tr>

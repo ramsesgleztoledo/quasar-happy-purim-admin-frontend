@@ -3,6 +3,7 @@ import { defineStore, acceptHMRUpdate } from 'pinia';
 import type { reportStateInterface } from './report-store-interfaces';
 import type { RecipientDataInterface, RecipientMemberInterface, ReportDataInterface, SpecialReportInterface, TokenInterface } from '../../interfaces/report.interface';
 import type { NoneType } from '../../services/service-interfaces';
+import type { ReportFunctionsInterface } from '../../interfaces/report-functions.interface';
 
 
 const initialState: reportStateInterface = {
@@ -20,6 +21,7 @@ const initialState: reportStateInterface = {
   isCustom: false,
   advancedReportsSpecial: [],
   customReportsSpecial: [],
+  reportFunctions: [],
   isLoadingReportData: true,
   filters: {
     basketSize: [],
@@ -93,6 +95,9 @@ export const useReportStore = defineStore('reportStore', {
     },
     setBasicReports(basicReports: ReportDataInterface[]) {
       this.basicReports = basicReports.map(item => ({ ...item }));
+    },
+    setReportFunctions(reportFunctions: ReportFunctionsInterface[]) {
+      this.reportFunctions = reportFunctions.map(item => ({ ...item }));
     },
     setCustomReports(customReports: ReportDataInterface[]) {
       this.customReports = customReports.map(item => ({ ...item }));

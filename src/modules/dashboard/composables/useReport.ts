@@ -4,6 +4,7 @@ import { useReportStore } from "../store/ReportStore/reportStore";
 import type { RecipientDataFormInterface, ReportDataInterface } from "../interfaces/report.interface";
 import { useQuasar } from "quasar";
 import { useMailMergeService } from "../services/mailMerge.service";
+import { useReportFunctions } from "./useReportFunctions";
 
 export const useReport = () => {
 
@@ -39,6 +40,8 @@ export const useReport = () => {
   const $rStore = useReportStore()
   const { downloadFile, showLoading, stopLoading } = useUI()
   const $q = useQuasar()
+  const { getReportFunctions } = useReportFunctions()
+
 
   return {
     async getReportList() {
@@ -53,6 +56,7 @@ export const useReport = () => {
         getAdvancedSpecialReports(),
         getCustomSpecialReports(),
         getHTCBasketReport(),
+        getReportFunctions(),
       ])
 
 
@@ -72,7 +76,8 @@ export const useReport = () => {
         ] : [],
         advancedReportsSpecial: resp[1].ok ? resp[1].data : [],
         customReportsSpecial: resp[2].ok ? resp[2].data : [],
-        htcBasketReport: resp[3].ok ? resp[3].data : undefined
+        htcBasketReport: resp[3].ok ? resp[3].data : undefined,
+        reportFunctions: resp[4],
       })
       $q.loading.hide()
     },
