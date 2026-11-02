@@ -78,8 +78,10 @@ import { useTransaction } from '../../composables/useTransaction'
 import type { DonationInterface } from '../../interfaces/transaction-interfaces'
 import { convertWithCommas } from 'src/helpers'
 import TableCustom from 'src/components/TableCustom/TableCustom.vue'
+import { useMemberOrderStore } from '../../store/memberOrderStore/memberOrderStore'
 
 const isFullScreen = ref(false)
+const $moStore = useMemberOrderStore()
 
 const columns: QTableColumn<DonationInterface>[] = [
   {
@@ -88,7 +90,7 @@ const columns: QTableColumn<DonationInterface>[] = [
     label: 'Amount',
     align: 'left',
     field: 'amount',
-    format: (amount: number) => `$${convertWithCommas(amount,{
+    format: (amount: number) => `${$moStore.getSymbol} ${convertWithCommas(amount,{
               dontAllowZero: true
             })}`,
     sortable: true,

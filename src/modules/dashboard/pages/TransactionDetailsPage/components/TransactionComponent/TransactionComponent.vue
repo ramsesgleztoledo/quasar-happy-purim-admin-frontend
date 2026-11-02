@@ -110,9 +110,12 @@
       <div class="row q-mb-sm" v-for="(people, i) in transactionDetails.recipients" :key="i">
         <div class="col-6">{{ people.sendingTo }}</div>
         <div class="col-6">
-          {{ people.price ? '$' : '' }}{{ convertWithCommas(people.price || 0,{
-              dontAllowZero: true
-            }) }}
+          {{ people.price ? `${$moStore.getSymbol}` : ''
+          }}{{
+            convertWithCommas(people.price || 0, {
+              dontAllowZero: true,
+            })
+          }}
         </div>
       </div>
       <hr />
@@ -141,9 +144,12 @@
             <div class="row">
               <div class="col-6"></div>
               <div class="col-6">
-                {{ item.price ? '$' : '' }}{{ convertWithCommas(item.price || 0,{
-              dontAllowZero: true
-            }) }}
+                {{ item.price ? `${$moStore.getSymbol}` : ''
+                }}{{
+                  convertWithCommas(item.price || 0, {
+                    dontAllowZero: true,
+                  })
+                }}
               </div>
             </div>
           </div>
@@ -158,7 +164,7 @@
               <b>Settlement Amount: </b>
             </div>
             <div class="col-6">
-              {{ transactionDetails.paymentInfo.charge ? '$' : ''
+              {{ transactionDetails.paymentInfo.charge ? `${$moStore.getSymbol}` : ''
               }}{{ convertWithCommas(transactionDetails.paymentInfo.charge || 0) }}
             </div>
           </div>
@@ -173,9 +179,11 @@ import { convertToUSDate, convertWithCommas } from 'src/helpers'
 import { printElement } from 'src/helpers/printHelper'
 import { useAuthStore } from 'src/modules/auth/store/auth.store'
 import type { TransactionDetailsInterface } from 'src/modules/dashboard/interfaces/transaction-interfaces'
+import { useMemberOrderStore } from 'src/modules/dashboard/store/memberOrderStore/memberOrderStore'
 import { computed, ref } from 'vue'
 
 const $aStore = useAuthStore()
+const $moStore = useMemberOrderStore()
 
 interface TransactionComponentPropsInterface {
   transactionDetails: TransactionDetailsInterface | undefined

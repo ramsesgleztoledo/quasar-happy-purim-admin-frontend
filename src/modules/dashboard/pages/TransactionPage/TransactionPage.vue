@@ -98,8 +98,10 @@ import type {
   TransactionsInterface,
 } from '../../interfaces/transaction-interfaces'
 import { convertToUSDate, convertWithCommas } from 'src/helpers'
+import { useMemberOrderStore } from '../../store/memberOrderStore/memberOrderStore'
 
 const { dashboardState } = useDashboard()
+const $moStore = useMemberOrderStore()
 const exportDisabled = ref(false)
 
 const columns: QTableColumn<TransactionInterface>[] = [
@@ -136,7 +138,7 @@ const columns: QTableColumn<TransactionInterface>[] = [
     align: 'left',
     field: 'charge',
     format: (amount: number) =>
-      `$${convertWithCommas(amount, {
+      `${$moStore.getSymbol} ${convertWithCommas(amount, {
         dontAllowZero: true,
       })}`,
     sortable: true,

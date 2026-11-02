@@ -77,9 +77,11 @@ import { convertToUSDate } from 'src/helpers/convertToUSDate'
 import { convertWithCommas } from 'src/helpers/convertWithCommas'
 // import TableCustom from 'src/components/TableCustom/TableCustom.vue'
 import { useDashboardStore } from 'src/modules/dashboard/store/dashboardStore/dashboardStore'
+import { useMemberOrderStore } from 'src/modules/dashboard/store/memberOrderStore/memberOrderStore'
 import { computed, ref } from 'vue'
 
-const dStore = useDashboardStore()
+const $dStore = useDashboardStore()
+const $moStore = useMemberOrderStore()
 
 const isFullScreen = ref<boolean>(false)
 
@@ -116,7 +118,7 @@ const auxColumns: QTableColumn[] = [
     label: 'Amount',
     align: 'left',
     field: 'amount',
-    format: (amount: number) => `$${convertWithCommas(amount || 0, )}`,
+    format: (amount: number) => `${$moStore.getSymbol} ${convertWithCommas(amount || 0)}`,
     sortable: true,
   },
   {
@@ -138,7 +140,7 @@ const columns: QTableColumn[] = auxColumns.map((co) => ({
 }))
 
 const rows = computed(() => [
-  ...dStore.topTransactions.map((order) => ({
+  ...$dStore.topTransactions.map((order) => ({
     id: order.order,
     processed: new Date(order.processed).toISOString(),
     amount: order.amount,

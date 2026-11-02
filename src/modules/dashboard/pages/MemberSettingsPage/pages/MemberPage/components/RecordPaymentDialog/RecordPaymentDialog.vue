@@ -335,7 +335,9 @@
                   <div class="row">
                     <div class="col-12 justify-content-space-between">
                       <div class="q-table__title align-items-center">
-                        {{ `Total due: $${convertWithCommas(totalDue, { dontAllowZero: true })}` }}
+                        {{
+                          `Total due: ${$moStore.getSymbol} ${convertWithCommas(totalDue, { dontAllowZero: true })}`
+                        }}
                       </div>
                       <q-btn
                         style="font-size: 12px"
@@ -455,7 +457,7 @@
 
         <q-card-actions class="custom-dialog-footer-container justify-content-space-between">
           <div>
-            <b> Total Applied: ${{ convertWithCommas(totalApplied) }} </b>
+            <b> Total Applied: {{ $moStore.getSymbol }}{{ convertWithCommas(totalApplied) }} </b>
           </div>
           <div>
             <q-btn
@@ -510,6 +512,7 @@ import type {
   RecordCCPaymentFormInterface,
   RecordCheckPaymentFormInterface,
 } from 'src/modules/dashboard/interfaces/payment-interface'
+import { useMemberOrderStore } from 'src/modules/dashboard/store/memberOrderStore/memberOrderStore'
 import { ref, onMounted, computed, watch } from 'vue'
 import { useRoute } from 'vue-router'
 
@@ -522,6 +525,8 @@ defineProps<RecordPaymentDialogInterface>()
 const $emit = defineEmits<{
   (e: 'update:modelValue', value: boolean): void
 }>()
+
+const $moStore = useMemberOrderStore()
 
 const checkDatePopup = ref<any>(null)
 const otherDatePopup = ref<any>(null)
@@ -629,7 +634,7 @@ const columns: QTableColumn<InvoiceUnpaidOrderInterface>[] = [
     field: 'OrderTotal',
     sortable: true,
     format: (amount: number) =>
-      `${convertWithCommas(amount, {
+      `${$moStore.getSymbol} ${convertWithCommas(amount, {
         dontAllowZero: true,
       })}`,
   },
@@ -638,14 +643,14 @@ const columns: QTableColumn<InvoiceUnpaidOrderInterface>[] = [
     label: 'Paid',
     field: 'Paid',
     sortable: true,
-    format: (amount: number) => `$${convertWithCommas(amount)}`,
+    format: (amount: number) => `${$moStore.getSymbol} ${convertWithCommas(amount)}`,
   },
   {
     name: 'due',
     label: 'Due',
     field: 'Due',
     sortable: true,
-    format: (amount: number) => `$${convertWithCommas(amount)}`,
+    format: (amount: number) => `${$moStore.getSymbol} ${convertWithCommas(amount)}`,
   },
 ]
 

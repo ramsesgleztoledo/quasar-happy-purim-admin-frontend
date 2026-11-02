@@ -105,10 +105,12 @@
               <b>Total Due From Baskets: </b>
             </div>
             <div class="col-6">
-              {{ receipt.dueFromBaskets ? '$' : '' }}
-              {{ convertWithCommas(receipt.dueFromBaskets || 0,{
-              dontAllowZero: true
-            }) }}
+              {{ receipt.dueFromBaskets ? `${$moStore.getSymbol}` : '' }}
+              {{
+                convertWithCommas(receipt.dueFromBaskets || 0, {
+                  dontAllowZero: true,
+                })
+              }}
             </div>
           </div>
         </div>
@@ -121,9 +123,12 @@
           <div class="row">
             <div class="col-6"></div>
             <div class="col-6">
-              {{ item.totalPrice ? '$' : '' }}{{ convertWithCommas(item.totalPrice || 0,{
-              dontAllowZero: true
-            }) }}
+              {{ item.totalPrice ? `${$moStore.getSymbol}` : ''
+              }}{{
+                convertWithCommas(item.totalPrice || 0, {
+                  dontAllowZero: true,
+                })
+              }}
             </div>
           </div>
         </div>
@@ -136,9 +141,10 @@
             <div class="col-6">
               <b>Total Amount Due: </b>
             </div>
-            <div class="col-6">{{ convertWithCommas(receipt.amountDue || 0,{
-              dontAllowZero: true
-            }) }}</div>
+            <div class="col-6">
+              {{ `${$moStore.getSymbol}` }}
+              convertWithCommas(receipt.amountDue || 0, { dontAllowZero: true, }) }}
+            </div>
           </div>
         </div>
       </div>
@@ -151,10 +157,12 @@
               <b>Total Amount Paid: </b>
             </div>
             <div class="col-6">
-              {{ receipt.totalAmountPaid ? '$' : '' }}
-              {{ convertWithCommas(receipt.totalAmountPaid || 0,{
-              dontAllowZero: true
-            }) }}
+              {{ receipt.totalAmountPaid ? `${$moStore.getSymbol}` : '' }}
+              {{
+                convertWithCommas(receipt.totalAmountPaid || 0, {
+                  dontAllowZero: true,
+                })
+              }}
             </div>
           </div>
         </div>
@@ -168,10 +176,12 @@ import { convertWithCommas } from 'src/helpers'
 import { printElement } from 'src/helpers/printHelper'
 import { useAuthStore } from 'src/modules/auth/store/auth.store'
 import { useOrderArchive } from 'src/modules/dashboard/composables/useOrderArchive'
+import { useMemberOrderStore } from 'src/modules/dashboard/store/memberOrderStore/memberOrderStore'
 import { computed, ref } from 'vue'
 
 const { ordersArchiveState } = useOrderArchive()
 const $aStore = useAuthStore()
+const $moStore = useMemberOrderStore()
 
 const receipt = computed(() => ordersArchiveState.value.selectedOrderReceipt)
 

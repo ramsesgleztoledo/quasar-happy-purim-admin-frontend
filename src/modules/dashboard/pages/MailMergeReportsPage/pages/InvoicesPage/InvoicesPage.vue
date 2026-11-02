@@ -96,9 +96,9 @@
                   </td>
 
                   <td style="text-align: right; width: 200px">
-                    {{ orderItem.quantity }}@ ${{ convertWithCommas(orderItem.price) }} .... ${{
-                      convertWithCommas(orderItem.price * orderItem.quantity)
-                    }}
+                    {{ orderItem.quantity }}@ {{ $moStore.getSymbol
+                    }}{{ convertWithCommas(orderItem.price) }} .... {{ $moStore.getSymbol
+                    }}{{ convertWithCommas(orderItem.price * orderItem.quantity) }}
                   </td>
                 </tr>
               </tbody>
@@ -111,7 +111,7 @@
             Total Amount Due:
             <span class="invoice-amount-due"
               ><span class="invoice-total"
-                >${{ convertWithCommas(invoice.tranTotalCharge) }}</span
+                >{{ $moStore.getSymbol }}{{ convertWithCommas(invoice.tranTotalCharge) }}</span
               ></span
             >
           </td>
@@ -132,12 +132,15 @@ import { printElement } from 'src/helpers/printHelper'
 import { useAuthStore } from 'src/modules/auth/store/auth.store'
 import { useReport } from 'src/modules/dashboard/composables/useReport'
 import type { InvoiceDataInterface } from 'src/modules/dashboard/interfaces/report.interface'
+import { useMemberOrderStore } from 'src/modules/dashboard/store/memberOrderStore/memberOrderStore'
 import { ref } from 'vue'
 import { computed, watch } from 'vue'
 import { useRoute } from 'vue-router'
 
 const { query } = useRoute()
 const { getInvoices } = useReport()
+
+const $moStore = useMemberOrderStore()
 
 const reciprocity = computed(() => {
   const re = (query.reciprocity as string) || ''

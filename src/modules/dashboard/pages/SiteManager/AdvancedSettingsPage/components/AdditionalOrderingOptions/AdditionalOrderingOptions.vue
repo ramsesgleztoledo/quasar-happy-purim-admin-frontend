@@ -231,10 +231,12 @@
 
                             <q-td key="price" :props="props">
                               <div>
-                                {{ props.row.price ? '$' : ''
-                                }}{{ convertWithCommas(Number(props.row.price) || 0,{
-              dontAllowZero: true
-            }) }}
+                                {{ props.row.price ? `${$moStore.getSymbol}` : ''
+                                }}{{
+                                  convertWithCommas(Number(props.row.price) || 0, {
+                                    dontAllowZero: true,
+                                  })
+                                }}
                               </div>
                             </q-td>
                             <q-td key="sortOrder" :props="props">
@@ -337,6 +339,7 @@ import { lazyRules } from 'src/composables'
 import { convertWithCommas } from 'src/helpers'
 import { useAdvancedSettings } from 'src/modules/dashboard/composables/useAdvancedSettings'
 import type { Tab2AdditionalItemInterface } from 'src/modules/dashboard/interfaces/advanced-settings.interfaces'
+import { useMemberOrderStore } from 'src/modules/dashboard/store/memberOrderStore/memberOrderStore'
 // import { useUI } from 'src/modules/UI/composables'
 import { onMounted, ref } from 'vue'
 
@@ -350,6 +353,8 @@ const {
   updateAdditionalOrderingItems,
   updateAdditionalOrderingItem,
 } = useAdvancedSettings()
+
+const $moStore = useMemberOrderStore()
 
 // const { isMobile } = useUI()
 // const infoAlertText = `To handle "Additional Profile Questions/Options" we strongly recommend to use yor phone or tablet in landscape and the fullscreen mode`

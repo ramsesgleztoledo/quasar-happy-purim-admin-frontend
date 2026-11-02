@@ -448,7 +448,7 @@ const columns = ref<QTableColumn<OrderMemberListInterface>[]>([
     align: 'left',
     field: 'price',
     format: (amount: number) =>
-      `$${convertWithCommas(amount || $moStore.getSPrice, {
+      `${$moStore.getSymbol} ${convertWithCommas(amount || $moStore.getSPrice, {
         dontAllowZero: true,
       })}`,
     sortable: true,

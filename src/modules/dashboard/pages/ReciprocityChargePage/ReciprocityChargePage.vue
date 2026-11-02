@@ -88,8 +88,10 @@ import { onMounted, ref } from 'vue'
 import { useTransaction } from '../../composables/useTransaction'
 import type { ReciprocityChargeInterface } from '../../interfaces/transaction-interfaces'
 import { convertWithCommas } from 'src/helpers'
+import { useMemberOrderStore } from '../../store/memberOrderStore/memberOrderStore'
 
 const { downloadReciprocityChargesCSV, getReciprocityCharges } = useTransaction()
+const $moStore = useMemberOrderStore()
 
 const columns: QTableColumn<ReciprocityChargeInterface>[] = [
   {
@@ -156,9 +158,10 @@ const columns: QTableColumn<ReciprocityChargeInterface>[] = [
     required: true,
     align: 'left',
     sortable: true,
-    format: (amount: number) => `$${convertWithCommas(amount,{
-              dontAllowZero: true
-            })}`,
+    format: (amount: number) =>
+      `${$moStore.getSymbol}${convertWithCommas(amount, {
+        dontAllowZero: true,
+      })}`,
   },
 ]
 

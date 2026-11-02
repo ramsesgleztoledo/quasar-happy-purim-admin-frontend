@@ -75,6 +75,7 @@ import type { QTableColumn } from 'quasar'
 import { convertToUSDate } from 'src/helpers/convertToUSDate'
 import { convertWithCommas } from 'src/helpers/convertWithCommas'
 import { useUI } from 'src/modules/UI/composables'
+import { useMemberOrderStore } from 'src/modules/dashboard/store/memberOrderStore/memberOrderStore'
 const { isMobile } = useUI()
 
 const contentDialogFlag = ref(true)
@@ -88,6 +89,9 @@ const listViewOptions = ref([
 const currentView = computed(() =>
   listViewOptions.value.find((lvo) => lvo.value === listView.value),
 )
+
+
+const $moStore = useMemberOrderStore()
 
 const columns: QTableColumn[] = [
   {
@@ -114,7 +118,7 @@ const columns: QTableColumn[] = [
     label: 'Amount',
     align: 'left',
     field: 'amount',
-    format: (amount: number) => `$${convertWithCommas(amount,{
+    format: (amount: number) => `${$moStore.getSymbol}${convertWithCommas(amount,{
               dontAllowZero: true
             })}`,
     sortable: true,

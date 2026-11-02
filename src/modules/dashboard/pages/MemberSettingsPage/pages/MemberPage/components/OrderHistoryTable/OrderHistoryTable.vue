@@ -96,6 +96,7 @@ import type { MemberTransactionInterface } from 'src/modules/dashboard/interface
 import { useMember } from 'src/modules/dashboard/composables/useMember'
 import { ref } from 'vue'
 import DialogAlert from 'src/components/DialogAlert/DialogAlert.vue'
+import { useMemberOrderStore } from 'src/modules/dashboard/store/memberOrderStore/memberOrderStore'
 // import { useRouter } from 'vue-router'
 
 const { memberState, emailReceiptByTransactionId_Co } = useMember()
@@ -104,6 +105,7 @@ const onSendEmailFlag = ref(false)
 
 const colValue = ref<number | undefined>(undefined)
 // const $router = useRouter()
+const $moStore = useMemberOrderStore()
 
 const onSendEmail = async () => {
   if (!colValue.value) return
@@ -175,7 +177,7 @@ const columns: QTableColumn<MemberTransactionInterface>[] = [
     required: true,
     align: 'left',
     sortable: true,
-    format: (amount: number) => `$${convertWithCommas(amount)}`,
+    format: (amount: number) => `${$moStore.getSymbol} ${convertWithCommas(amount)}`,
   },
   {
     field: 'paid',
@@ -184,7 +186,7 @@ const columns: QTableColumn<MemberTransactionInterface>[] = [
     required: true,
     align: 'left',
     sortable: true,
-    format: (amount: number) => `$${convertWithCommas(amount)}`,
+    format: (amount: number) => `${$moStore.getSymbol} ${convertWithCommas(amount)}`,
   },
   {
     field: 'balanceDue',
@@ -193,7 +195,7 @@ const columns: QTableColumn<MemberTransactionInterface>[] = [
     required: true,
     align: 'left',
     sortable: true,
-    format: (amount: number) => `$${convertWithCommas(amount)}`,
+    format: (amount: number) => `${$moStore.getSymbol} ${convertWithCommas(amount)}`,
   },
 ]
 </script>

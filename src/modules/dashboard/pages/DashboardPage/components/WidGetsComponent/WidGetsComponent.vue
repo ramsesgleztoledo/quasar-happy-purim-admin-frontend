@@ -8,7 +8,7 @@
   >
     <WidGet
       icon="discount"
-      :first-p="`$${convertWithCommas(dailyTotal.total)}`"
+      :first-p="`${$moStore.getSymbol} ${convertWithCommas(dailyTotal.total)}`"
       second-p="Daily Total:"
       :third-p="`${convertToTextDate(dailyTotal.date)}`"
       icon-color="#3cd856"
@@ -25,7 +25,7 @@
     <WidGet
       class-name="justify-content-center"
       icon="signal_cellular_alt"
-      :first-p="`$${convertWithCommas(runningTotal.total)}`"
+      :first-p="`${$moStore.getSymbol} ${convertWithCommas(runningTotal.total)}`"
       second-p="Running Total:"
       :third-p="`${dashboardStore.percentageRunningTotal?.percentageIncrease || 0}% Up From Yesterday`"
       icon-color="#5A65FA"
@@ -57,9 +57,11 @@ import WidGet from '../../../../components/widget/WidGet.vue'
 import { convertToTextDate, convertWithCommas } from 'src/helpers'
 import { useDashboardStore } from 'src/modules/dashboard/store/dashboardStore/dashboardStore'
 import { computed } from 'vue'
+import { useMemberOrderStore } from 'src/modules/dashboard/store/memberOrderStore/memberOrderStore.js'
 const { isMobile } = useUI()
 
 const dashboardStore = useDashboardStore()
+const $moStore = useMemberOrderStore()
 
 const participationRate = computed(() => ({
   today: dashboardStore.participationRate?.participationRate || 0,

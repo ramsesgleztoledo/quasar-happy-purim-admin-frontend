@@ -809,13 +809,13 @@
       </div>
     </form>
 
-    <div class="row q-mt-lg">
-      <div class="col-12" ref="orderHistoryTableRef">
+    <div class="row q-mt-lg" ref="orderHistoryTableRef">
+      <div class="col-12">
         <OrderHistoryTable />
       </div>
     </div>
     <div class="row q-mt-sm">
-      <div class="col-12" ref="orderHistoryTableRef">
+      <div class="col-12">
         <ReceivingFromTable />
       </div>
     </div>

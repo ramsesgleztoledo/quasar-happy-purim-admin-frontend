@@ -21,13 +21,15 @@ import DisplayItem from '../../../../components/DisplayItem/DisplayItem.vue'
 import { useDashboardStore } from 'src/modules/dashboard/store/dashboardStore/dashboardStore'
 import type { ItemBasketInterface } from 'src/modules/dashboard/interfaces/item-interfaces'
 import { convertWithCommas } from 'src/helpers'
+import { useMemberOrderStore } from 'src/modules/dashboard/store/memberOrderStore/memberOrderStore.js'
 
-const dStore = useDashboardStore()
+const $dStore = useDashboardStore()
+const $moStore = useMemberOrderStore()
 
 const orderItems = computed<ItemBasketInterface[]>(() => [
-  ...dStore.orderItems.map((item) => ({
+  ...$dStore.orderItems.map((item) => ({
     label: item.itemDescription,
-    value: `$${convertWithCommas(item.itemTotal, {
+    value: `${$moStore.getSymbol} ${convertWithCommas(item.itemTotal, {
       dontAllowZero: true,
     })}`,
     redirectTo: {

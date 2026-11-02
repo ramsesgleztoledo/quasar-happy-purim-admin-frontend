@@ -37,10 +37,12 @@
 <script setup lang="ts">
 import { convertWithCommas } from 'src/helpers'
 import { useDashboardStore } from 'src/modules/dashboard/store/dashboardStore/dashboardStore'
+import { useMemberOrderStore } from 'src/modules/dashboard/store/memberOrderStore/memberOrderStore'
 import { computed } from 'vue'
 import { useRouter } from 'vue-router'
 
 const $dStore = useDashboardStore()
+const $moStore = useMemberOrderStore()
 
 const $router = useRouter()
 
@@ -60,7 +62,7 @@ const totalsRaised = computed<TotalsRaisedInterface[]>(() => [
     text: 'Total Funds Raised',
     caption: `(${isFundraiserClosed.value ? 'With' : 'Without'} Reciprocity)`,
     // - ($${convertWithCommas($dStore.totalsRaised?.totalFundsFromReciprocity || 0)})`,
-    number: `$${convertWithCommas($dStore.totalsRaised?.totalFunds || 0)}`,
+    number: `${$moStore.getSymbol} ${convertWithCommas($dStore.totalsRaised?.totalFunds || 0)}`,
     color: 'var(--c-color1)',
     redirect: {
       name: 'dashboard-transactionPage',
@@ -69,7 +71,7 @@ const totalsRaised = computed<TotalsRaisedInterface[]>(() => [
   {
     text: 'Charitable Contributions',
     caption: '(Included in Total Funds Raised)',
-    number: `$${convertWithCommas($dStore.totalsRaised?.totalCharity || 0)}`,
+    number: `${$moStore.getSymbol} ${convertWithCommas($dStore.totalsRaised?.totalCharity || 0)}`,
     color: 'var(--c-color2)',
     redirect: {
       name: 'dashboard-donationPage',
@@ -78,7 +80,7 @@ const totalsRaised = computed<TotalsRaisedInterface[]>(() => [
   {
     text: 'Total Reciprocity',
     caption: isFundraiserClosed.value ? '' : '*Estimated to Date',
-    number: `$${convertWithCommas($dStore.totalsRaised?.totalReciprocity || 0)}`,
+    number: `${$moStore.getSymbol} ${convertWithCommas($dStore.totalsRaised?.totalReciprocity || 0)}`,
     color: 'var(--c-color3)',
     // redirect: {
     //   name: 'dashboard-reciprocityChargePage',

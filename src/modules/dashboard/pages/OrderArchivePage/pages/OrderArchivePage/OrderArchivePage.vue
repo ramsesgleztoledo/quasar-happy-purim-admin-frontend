@@ -47,8 +47,10 @@ import type { QTableColumn } from 'quasar'
 import { convertToUSDate, convertWithCommas } from 'src/helpers'
 import TableCustom from 'src/components/TableCustom/TableCustom.vue'
 import { useOrderArchive } from '../../../../composables/useOrderArchive'
+import { useMemberOrderStore } from 'src/modules/dashboard/store/memberOrderStore/memberOrderStore'
 
 const { getOrdersArchive, ordersArchiveState } = useOrderArchive()
+const $moStore = useMemberOrderStore()
 
 const searchText = ref('')
 const isFullScreen = ref(false)
@@ -111,7 +113,7 @@ const columns: QTableColumn[] = [
     field: 'total',
     label: 'Total',
     align: 'left',
-    format: (total: number) => `$${convertWithCommas(total)}`,
+    format: (total: number) => `${$moStore.getSymbol} ${convertWithCommas(total)}`,
     required: true,
     sortable: true,
   },
