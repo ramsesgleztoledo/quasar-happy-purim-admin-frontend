@@ -6,6 +6,7 @@ import type { NoneType } from '../../services/service-interfaces';
 import type { OrderItemSettingsInterface, Tab2AddonInterface } from '../../interfaces/advanced-settings.interfaces';
 import { s_cartData, s_customShippingItemsTotal, s_donations, s_fee, s_hasExtraOptions, s_isPaymentFormInvalid, s_orderTotal, s_currentMax } from './services';
 import type { OrganizationSettingsInterface } from '../../interfaces/basic-settings.interfaces';
+import { useAuthStore } from 'src/modules/auth/store/auth.store';
 
 
 
@@ -71,10 +72,13 @@ export const useMemberOrderStore = defineStore('memberOrderStore', {
     membersLastYear: (state) => state.memberList.copy.filter(member => (member.iSentLastYear == 1 || member.reciprocal == 'Yes' || member.sentToMeLastYear == 1)),
 
     getMemberList: (state) => state.memberList,
-    getSymbol: (state) => state.orgSettings?.symbol || '$',
+
+    getSymbol: () => useAuthStore().$state.shul?.currencySymbol,
+
     getCustomShippingItemsTotal: (state: MemberOrderStateInterface): number => s_customShippingItemsTotal(state),
 
-    getTotalCost: (state: MemberOrderStateInterface): number => s_orderTotal(state),
+    getTotalCost: (state: MemberOrderStateInterface): number =>
+      s_orderTotal(state),
 
     getCurrentMax: (state: MemberOrderStateInterface): (number | undefined) => s_currentMax(state),
 
@@ -82,7 +86,9 @@ export const useMemberOrderStore = defineStore('memberOrderStore', {
 
     getDonations: (state: MemberOrderStateInterface) => s_donations(state),
 
-    IsPaymentFormInvalid: (state: MemberOrderStateInterface) => s_isPaymentFormInvalid(state),
+    IsPaymentFormInvalid: (state: MemberOrderStateInterface) =>
+
+      s_isPaymentFormInvalid(state),
 
     getCartData: (state: MemberOrderStateInterface) => s_cartData(state),
 

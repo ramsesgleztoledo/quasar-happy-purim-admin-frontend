@@ -79,7 +79,8 @@ export const useDashboard = () => {
           ApiCallResponseInterface<PercentageRunningTotalInterface>,
           ApiCallResponseInterface<CustomShippingOptionInterface[]>,
           ApiCallResponseInterface<UploadListStatusInterface>,
-          ApiCallResponseInterface<boolean>
+          ApiCallResponseInterface<boolean>,
+          
 
         ]
         = await Promise.all([

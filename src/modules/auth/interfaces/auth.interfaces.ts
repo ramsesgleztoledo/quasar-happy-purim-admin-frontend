@@ -21,4 +21,6 @@ export interface AuthJWTInterface {
   iss: string;
   aud: string;
   isHrhClient: string;
+  currency: string;
+  currencySymbol: string;
 }

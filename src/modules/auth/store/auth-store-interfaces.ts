@@ -8,6 +8,8 @@ export interface authShulInterface {
   shulId: string;
   shulName: string;
   isHrhClient: boolean;
+  currency: string;
+  currencySymbol: string;
 }
 export interface authUserInterface {
   id: string;

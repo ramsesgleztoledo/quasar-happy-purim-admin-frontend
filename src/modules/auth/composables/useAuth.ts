@@ -104,15 +104,19 @@ export const useAuth = () => {
 
       const payload = decodeJWT<AuthJWTInterface>(result.data.accessToken)
 
+      console.log({ payload });
+
+
       if (!payload)
         return logOut()
-
 
       const authState: authStateInterface = {
         shul: {
           shulId: payload.shulId,
           shulName: payload.shulName,
-          isHrhClient: payload.isHrhClient === 'true' ? true : false
+          isHrhClient: payload.isHrhClient === 'true' ? true : false,
+          currency: payload.currency || "USD",
+          currencySymbol: payload.currencySymbol || "$",
         },
         user: {
           id: payload.u_id || "",
